@@ -1,0 +1,5 @@
+.venv/
+coverage_html_report
+.coverage/
+Dockerfile
+static/

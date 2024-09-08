@@ -1,0 +1,61 @@
+services:
+  nginx:
+    container_name: app_server_conf
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    environment:
+      - PUBLIC_URL=127.0.0.1
+    networks:
+      - app_network
+    volumes:
+      - staticfiles:/staticfiles
+
+  channels:
+    image: redis:7
+    container_name: channels
+    networks:
+      - app_network
+    ports:
+      - "6379:6379"
+
+  backend:
+    container_name: backend
+    ports:
+      - "8000:8000"
+    build:
+      context: backend
+      dockerfile: ./Dockerfile
+    command: "make run"
+    depends_on:
+      - channels
+    networks:
+      - app_network
+    volumes:
+      - staticfiles:/app/static/
+    environment:
+      - CHANNEL_URL=channels
+    
+  database:
+    container_name: database
+    image: postgres:latest
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+  staticfiles:
+  static:
+
+networks:
+  app_network:
+    name: Application network

@@ -1,0 +1,8 @@
+/.coverage
+/coverage_html_report/
+data/migrations/
+__pycache__/
+.venv/
+.vscode/
+db.sqlite3
+static/
