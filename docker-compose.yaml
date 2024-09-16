@@ -1,6 +1,5 @@
 services:
-  nginx:
-    container_name: app_server_conf
+  frontend:
     build:
       context: ./
       dockerfile: ./Dockerfile
@@ -10,52 +9,46 @@ services:
       - backend
     environment:
       - PUBLIC_URL=127.0.0.1
-    networks:
-      - app_network
+      - JEST_CONFIG=./config/jest.config.js react-scripts test
     volumes:
-      - staticfiles:/staticfiles
+      - static:/static
+    command: sh -c "cp -r /home/build/static/* /static ; nginx -g 'daemon off;'"
 
   channels:
     image: redis:7
-    container_name: channels
-    networks:
-      - app_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
       - "6379:6379"
 
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+
   backend:
-    container_name: backend
+    build: backend
+    command: sh -c "make migrate ; make run"
+    volumes:
+      - static:/backend/static/
+      - ./backend:/backup
     ports:
       - "8000:8000"
-    build:
-      context: backend
-      dockerfile: ./Dockerfile
-    command: "make run"
     depends_on:
-      - channels
-    networks:
-      - app_network
-    volumes:
-      - staticfiles:/app/static/
+      - db
     environment:
-      - CHANNEL_URL=channels
-    
-  database:
-    container_name: database
-    image: postgres:latest
-    restart: always
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - "POSTGRES_HOST_AUTH_METHOD=trust"
-    networks:
-      - app_network
+      - DB_HOST=db
+    env_file:
+      - .env
 
 volumes:
   postgres_data:
-  staticfiles:
   static:
-
-networks:
-  app_network:
-    name: Application network

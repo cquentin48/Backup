@@ -1,55 +1,47 @@
-## Install requirements from 'requirements.txt' file
-install:
+help: ## Show the commands and the associated description
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+install: ## Install requirements from 'requirements.txt' file
 	pip install -r requirements.txt
 
-## Activate venv shell
-shell:
+shell: ## Activate venv shell
 	pipenv shell
 
-## Generates migrations
-make_migrations:
+make_migrations: ## Generates migrations
 	./manage.py makemigrations
 
-## Migrate model data
-migrate:
+migrate: ## Migrate model data
 	./manage.py migrate
 
-## Launch django app shell
-app_shell:
-	./manage.py shell
-
-## Generates static files
-generate_static:
-	./manage.py collectstatic
-
-## Generates static files
-generate_static_auto:
-	./manage.py collectstatic --noinput
-
-## Run the server
-run:
-	daphne server.asgi:application -b 0.0.0.0
-
-## Create super user
-create_super_user:
+super_user: ## Creates a root user
 	./manage.py createsuperuser
 
-## Check lint
-lint:
-	pylint --load-plugins pylint_django --django-settings-module=server.settings apps_tests data server tools
+app_shell: ## Launch django app shell
+	./manage.py shell
 
-## Run test suite:
-tests:
+generate_static: ## Generates static files
+	./manage.py collectstatic
+
+generate_static_auto: ## Generates static files
+	./manage.py collectstatic --noinput
+
+run: ## Run the server
+	daphne server.asgi:application -b 0.0.0.0
+
+create_super_user: ## Create super user
+	./manage.py createsuperuser
+
+lint: ## Check lint
+	pylint --rcfile .pylintrc --load-plugins pylint_django --django-settings-module=server.settings apps_tests data server tools
+
+tests: ## Run test suite
 	./manage.py test
 
-## Generate coverage data from test suite
-coverage_gen:
-	coverage run ./manage.py test
+coverage_gen: ## Launch the unit test for later coverage
+	python -m coverage run --source='.' ./manage.py test
 
-## Display shell coverage
-coverage_shell:
+coverage_shell: ## Display unit test coverage result (in a shell format)
 	coverage report
 
-## Display html coverage
-coverage_html:
-	coverage html
+coverage_html: ## Display unit test coverage result (in a web page)
+	python -m coverage html
