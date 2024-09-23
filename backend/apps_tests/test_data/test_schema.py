@@ -1,7 +1,7 @@
 from django.test import SimpleTestCase
 
 from data.models import ObjectModel
-from data.schema import Query
+from data.sub_schema import Query
 
 class SchemaQueryTest(SimpleTestCase):
     """Schema test class from

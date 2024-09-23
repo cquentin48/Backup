@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'data',
-    'graphene_django'
+    'graphene_django',
+    'docs'
 ]
 
 MIDDLEWARE = [
@@ -166,3 +167,6 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DOCS_ACCESS = 'public'
+DOCS_ROOT = os.path.join(BASE_DIR, 'docs/build/html')

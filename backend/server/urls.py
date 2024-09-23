@@ -38,6 +38,7 @@ schema_view = get_schema_view( # pylint: disable=invalid-name
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('docs',include('docs.urls')),
     path('api/v1/auth/', include('rest_framework.urls')),#Todo : move to 'users' app
     re_path(r'^swagger(?P<format>\.json|\.yaml)$',
         schema_view.without_ui(cache_timeout=0), name='schema-json'),

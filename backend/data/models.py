@@ -37,7 +37,7 @@ class Device(models.Model):
     How many cores does the device has
     """
     
-    memory = models.IntegerField(
+    memory = models.BigIntegerField(
         verbose_name=LOCALE.load_localised_text("DEVICE_MEMORY_VALUE")
     )
     """

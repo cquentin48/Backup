@@ -7,7 +7,7 @@ module.exports = {
     'plugin:react/recommended',
     'standard-with-typescript'
   ],
-  ignorePatterns:[
+  ignorePatterns: [
     "setupTests.ts",
     "index.tsx",
     "react-app-env.d.ts",
@@ -24,8 +24,10 @@ module.exports = {
     'react'
   ],
   rules: {
-    '@typescript-eslint/quotes':'off',
-    '@typescript-eslint/semi':'off'
+    '@typescript-eslint/quotes': 'off',
+    '@typescript-eslint/semi': 'off',
+    "@typescript-eslint/indent": ["error", 4],
+    'padded-blocks': 'off'
   },
   settings: {
     react: {
