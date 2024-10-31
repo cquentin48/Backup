@@ -19,6 +19,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 
 django_asgi_app = get_asgi_application()
 
+# pylint: disable=wrong-import-position
 from data.routing import websocket_urlpatterns
 
 application = ProtocolTypeRouter({

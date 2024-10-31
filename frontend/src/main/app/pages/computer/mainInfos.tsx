@@ -1,121 +1,197 @@
 import React from "react";
-import { CalendarMonth, CalendarToday, Microsoft, Memory, Storage, Delete } from "@mui/icons-material"
-import { Avatar, Button, Card, CardContent, CardHeader, Grid2, Tooltip } from "@mui/material"
+import { Memory, Storage, Delete } from "@mui/icons-material"
+import { Avatar, Button, Card, CardContent, CardHeader, Grid2, Tooltip, Typography } from "@mui/material"
+import Icon from '@mdi/react';
+import {
+    mdiCpu64Bit,
+    mdiMicrosoftWindows,
+    mdiUbuntu,
+    mdiCalendarSync,
+    mdiCalendarPlusOutline
+} from '@mdi/js';
 import type Computer from "../../model/computer"
 
+/**
+ * Props interface for the computer main information display component class
+ */
 interface ComputerMainInfosProps {
     // TODO : put them inside a class
     computer: Computer
-
 }
 
-export default function ComputerMainInfos (props: ComputerMainInfosProps): JSX.Element {
-    const computer = props.computer;
-    let coresLabel;
-    if (computer.cores > 1) {
-        coresLabel = "cores"
-    } else {
-        coresLabel = "core"
+/**
+ * Computer main informations display component class
+ */
+export default class ComputerMainInfos extends React.Component<ComputerMainInfosProps> {
+    /**
+     * Fetch the correct icon from the mdi labs
+     * @param os
+     * @returns string
+     */
+    getOSIcon (os: string): string {
+        if (os.toLowerCase().includes("ubuntu")) {
+            return mdiUbuntu;
+        } else {
+            return mdiMicrosoftWindows;
+        }
     }
-    // TODO : put elements left aligned and horizontally aligned with their icons ; put the computer name at the top (bigger text size)
-    return (
-        <div>
-            {/*
-            Computer specs
-        */}
-            <div id="computerMainInfos" style={{ display: "inline-block" }}>
-                <div id="computerName">
-                    <Tooltip title={computer.operatingSystem} placement='top'><Microsoft /></Tooltip> {computer.name}
+
+    render (): React.ReactNode {
+        const computer = this.props.computer;
+        let coresLabel;
+        if (computer.cores > 1) {
+            coresLabel = "cores"
+        } else {
+            coresLabel = "core"
+        }
+        return (
+            <div id="computerMainInfos" style={{
+                marginTop: "16px"
+            }}>
+                <div id="computerMainInfosHeader" style={{
+                    display: "flex"
+                }}>
+                    {/*
+                    Computer specs
+                    */}
+                    <div id="computerName" style={{
+                        textAlign: "left",
+                        paddingLeft: "12px",
+                        alignItems: "center",
+                        display: "flex"
+                    }}>
+                        <Tooltip title={computer.operatingSystem} placement='top'>
+                            <Icon path={this.getOSIcon(this.props.computer.operatingSystem)} size={2} />
+                        </Tooltip>
+                        <Typography variant="h4">
+                            {computer.name}
+                        </Typography>
+                    </div>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        startIcon={<Delete />}
+                        sx={{
+                            marginLeft: "auto",
+                            paddingRight: "-160px",
+                            marginRight: "16px"
+                        }}
+                    >
+                        Delete device data
+                    </Button>
                 </div>
+                <br />
+                <Grid2 container spacing={2} sx={{ padding: "1em" }}>
+                    <Grid2 size={{ md: 2 }}>
+                        <Card sx={{
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column"
+                        }}>
+                            <CardHeader avatar={
+                                <Avatar>
+                                    <Icon path={mdiCpu64Bit} size={1} />
+                                </Avatar>
+                            }
+                            title="Processor"
+                            />
+                            <CardContent>
+                                {computer.processor}
+                            </CardContent>
+                        </Card>
+                    </Grid2>
+                    <Grid2 size={{ md: 2 }}>
+                        <Card sx={{
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column"
+                        }}>
+                            <CardHeader avatar={
+                                <Avatar>
+                                    <Memory />
+                                </Avatar>
+                            }
+                            title="Computer cores"
+                            />
+                            <CardContent>
+                                {computer.cores} {coresLabel}
+                            </CardContent>
+                        </Card>
+                    </Grid2>
+                    <Grid2 size={{ md: 2 }}>
+                        <Card sx={{
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column"
+                        }}>
+                            <CardHeader avatar={
+                                <Avatar>
+                                    <Storage />
+                                </Avatar>
+                            }
+                            title="Processor"
+                            />
+                            <CardContent>
+                                {computer.formatBytes(computer.memory)} RAM in total
+                            </CardContent>
+                        </Card>
+                    </Grid2>
+                    <Grid2 size={{ md: 2 }}>
+                        <Card sx={{
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column"
+                        }}>
+                            <CardHeader avatar={
+                                <Avatar>
+                                    <Icon path={mdiCalendarPlusOutline} size={1} />
+                                </Avatar>
+                            }
+                            title="Device added on"
+                            />
+                            <CardContent>
+                                {"Date here"}
+                            </CardContent>
+                        </Card>
+                    </Grid2>
+                    <Grid2 size={{ md: 2 }}>
+                        <Card sx={{
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column"
+                        }}>
+                            <CardHeader avatar={
+                                <Avatar>
+                                    <Icon path={mdiCalendarSync} size={1} />
+                                </Avatar>
+                            }
+                            title="Last Update"
+                            />
+                            <CardContent>
+                                {"Date here"}
+                            </CardContent>
+                        </Card>
+                    </Grid2>
+                    <Grid2 size={{ md: 2 }}>
+                        <Card sx={{
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column"
+                        }}>
+                            <CardHeader avatar={
+                                <Avatar>
+                                    <Storage />
+                                </Avatar>
+                            }
+                            title="Storage"
+                            />
+                            <CardContent>
+                                {"Amount of storage here"} used in the backup server {/* Replace it */}
+                            </CardContent>
+                        </Card>
+                    </Grid2>
+                </Grid2>
             </div>
-            <Button variant="contained" color="error" startIcon={<Delete/>}>Delete device data</Button>
-            <br />
-            <Grid2 container spacing={2} sx={{ padding: "1em" }}>
-                <Grid2 size={{ md: 2 }}>
-                    <Card>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <Memory />
-                            </Avatar>
-                        }
-                        title="Processor"
-                        />
-                        <CardContent>
-                            {computer.processor}
-                        </CardContent>
-                    </Card>
-                </Grid2>
-                <Grid2 size={{ md: 2 }}>
-                    <Card>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <Memory />
-                            </Avatar>
-                        }
-                        title="Computer cores"
-                        />
-                        <CardContent>
-                            {computer.cores} {coresLabel}
-                        </CardContent>
-                    </Card>
-                </Grid2>
-                <Grid2 size={{ md: 2 }}>
-                    <Card>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <Storage />
-                            </Avatar>
-                        }
-                        title="Processor"
-                        />
-                        <CardContent>
-                            {computer.formatBytes(computer.memory)} RAM used
-                        </CardContent>
-                    </Card>
-                </Grid2>
-                <Grid2 size={{ md: 2 }}>
-                    <Card>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <CalendarMonth />
-                            </Avatar>
-                        }
-                        title="Device added on"
-                        />
-                        <CardContent>
-                            {"Date here"}
-                        </CardContent>
-                    </Card>
-                </Grid2>
-                <Grid2 size={{ md: 2 }}>
-                    <Card>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <CalendarToday />
-                            </Avatar>
-                        }
-                        title="Last Update"
-                        />
-                        <CardContent>
-                            {"Date here"}
-                        </CardContent>
-                    </Card>
-                </Grid2>
-                <Grid2 size={{ md: 2 }}>
-                    <Card>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <Storage />
-                            </Avatar>
-                        }
-                        title="Storage"
-                        />
-                        <CardContent>
-                            {"Amount of storage here"} used in storage
-                        </CardContent>
-                    </Card>
-                </Grid2>
-            </Grid2>
-        </div>
-    )
+        )
+    }
 }

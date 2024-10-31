@@ -13,9 +13,9 @@ import os
 
 from pathlib import Path
 
-from tools.localisation import Localisation
-
 import mimetypes
+
+from tools.localisation import Localisation
 
 mimetypes.add_type("text/css",".css",True)
 
@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'graphene_django',
     'docs'
 ]
+
+GRAPHQL_URL = "http://0.0.0.0:8000/api/v1/data/graphql/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

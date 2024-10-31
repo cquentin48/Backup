@@ -36,7 +36,7 @@ create_super_user:
 
 ## Check lint
 lint:
-	pylint --load-plugins pylint_django --django-settings-module=server.settings apps_tests data server tools
+	pylint --rcfile .pylintrc --load-plugins pylint_django --django-settings-module=server.settings apps_tests data server tools
 
 ## Run test suite:
 tests:
@@ -44,7 +44,7 @@ tests:
 
 ## Generate coverage data from test suite
 coverage_gen:
-	coverage run ./manage.py test
+	coverage run --source='.' ./manage.py test
 
 ## Display shell coverage
 coverage_shell:
