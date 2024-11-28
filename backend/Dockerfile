@@ -6,12 +6,15 @@ COPY ./ /app
 
 RUN make install
 
-RUN make make_migrations
-
-RUN make migrate
-
-RUN make generate_static_auto
+RUN apt update -y
+RUN apt install iputils-ping -y
 
 EXPOSE 8000
+
+RUN chmod +x database_prepare.sh
+RUN ./database_prepare.sh
+
+RUN make make_migrations
+RUN make migrate
 
 CMD [ "make", "run" ]

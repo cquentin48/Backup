@@ -1,55 +1,44 @@
-## Install requirements from 'requirements.txt' file
-install:
+help: ## Show the commands and the associated description
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+install: ## Install requirements from 'requirements.txt' file
 	pip install -r requirements.txt
 
-## Activate venv shell
-shell:
+shell: ## Activate venv shell
 	pipenv shell
 
-## Generates migrations
-make_migrations:
+make_migrations: ## Generates migrations
 	./manage.py makemigrations
 
-## Migrate model data
-migrate:
+migrate: ## Migrate model data
 	./manage.py migrate
 
-## Launch django app shell
-app_shell:
+app_shell: ## Launch django app shell
 	./manage.py shell
 
-## Generates static files
-generate_static:
+generate_static: ## Generates static files
 	./manage.py collectstatic
 
-## Generates static files
-generate_static_auto:
+generate_static_auto: ## Generates static files
 	./manage.py collectstatic --noinput
 
-## Run the server
-run:
+run: ## Run the server
 	daphne server.asgi:application -b 0.0.0.0
 
-## Create super user
-create_super_user:
+create_super_user: ## Create super user
 	./manage.py createsuperuser
 
-## Check lint
-lint:
+lint: ## Check lint
 	pylint --rcfile .pylintrc --load-plugins pylint_django --django-settings-module=server.settings apps_tests data server tools
 
-## Run test suite:
-tests:
+tests: ## Run test suite
 	./manage.py test
 
-## Generate coverage data from test suite
-coverage_gen:
+coverage_gen: ## Launch the unit test for later coverage
 	coverage run --source='.' ./manage.py test
 
-## Display shell coverage
-coverage_shell:
+coverage_shell: ## Display unit test coverage result (in a shell format)
 	coverage report
 
-## Display html coverage
-coverage_html:
+coverage_html: ## Display unit test coverage result (in a web page)
 	coverage html

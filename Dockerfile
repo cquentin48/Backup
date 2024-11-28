@@ -17,8 +17,14 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /app /home/
 
 WORKDIR /usr/share/nginx/html
+
+RUN apt update -y
+RUN apt install npm -y
+
+ENV CI=true
 
 EXPOSE 80
 
