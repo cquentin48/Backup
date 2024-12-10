@@ -44,6 +44,8 @@ class SchemaQueryTest(GraphQLTestCase):
             }
             '''
         )
+        
+        print(response)
 
         op_result = response.json()['data']['allDevices']
 

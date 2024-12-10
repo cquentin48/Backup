@@ -1,20 +1,16 @@
 FROM python:3.10
 
-WORKDIR /app
-
-COPY ./ /app
-
+# Installing the requirements
+WORKDIR /backup
+COPY requirements.txt ./
+COPY Makefile ./
 RUN make install
+COPY ./ /backup/
 
-RUN apt update -y
-RUN apt install iputils-ping -y
-
+# Exposing backend port
 EXPOSE 8000
 
-RUN chmod +x database_prepare.sh
-RUN ./database_prepare.sh
-
+# Generates static and creating the migrations
 RUN make make_migrations
-RUN make migrate
 
-CMD [ "make", "run" ]
+CMD [ "make", "migrate" ]

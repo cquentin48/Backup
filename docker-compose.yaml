@@ -1,6 +1,5 @@
 services:
-  nginx:
-    container_name: app_server_conf
+  frontend:
     build:
       context: ./
       dockerfile: ./Dockerfile
@@ -10,16 +9,12 @@ services:
       - backend
     environment:
       - PUBLIC_URL=127.0.0.1
-    networks:
-      - app_network
     volumes:
-      - staticfiles:/staticfiles
+      - static:/static
+    command: sh -c "cp -r /home/build/static/* /static ; nginx -g 'daemon off;'"
 
   channels:
     image: redis:7
-    container_name: channels
-    networks:
-      - app_network
     healthcheck:
       test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
       interval: 5s
@@ -28,51 +23,28 @@ services:
     ports:
       - "6379:6379"
 
-  backend:
-    container_name: backend
-    ports:
-      - "8000:8000"
-    build:
-      context: backend
-      dockerfile: ./Dockerfile
-    command: make run
-    depends_on:
-      - channels
-      - database
-    restart: on-failure
-    networks:
-      - app_network
+  db:
+    image: postgres
     volumes:
-      - staticfiles:/app/static/
-    environment:
-      - CHANNEL_URL=channels
-    
-  database:
-    image: postgres:latest
-    container_name: database
-    restart: always
-    hostname: database
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - "POSTGRES_HOST_AUTH_METHOD=trust"
-    networks:
-      - app_network
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
     ports:
       - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
-      interval: 1m30s
-      timeout: 30s
-      retries: 5
+
+  backend:
+    build: backend
+    command: sh -c "make generate_static_auto ; make migrate ; make run"
+    volumes:
+      - static:/static/
+      - ./backend:/backup
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
 
 volumes:
   postgres_data:
-  staticfiles:
   static:
-
-networks:
-  app_network:
-    name: Application network
-    driver: host
-    external: true

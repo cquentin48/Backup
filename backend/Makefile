@@ -13,6 +13,9 @@ make_migrations: ## Generates migrations
 migrate: ## Migrate model data
 	./manage.py migrate
 
+super_user: ## Creates a root user
+	./manage.py createsuperuser
+
 app_shell: ## Launch django app shell
 	./manage.py shell
 

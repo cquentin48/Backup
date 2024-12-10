@@ -182,8 +182,7 @@ class CommandHistory(models.Model):
     command = models.ForeignKey(
         Command,
         verbose_name=LOCALE.load_localised_text("COMMAND_HISTORY_COMMAND"),
-        on_delete=models.PROTECT,
-        unique=True
+        on_delete=models.PROTECT
     )
     """
     Command done

@@ -38,12 +38,6 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
 
     render (): React.ReactNode {
         const computer = this.props.computer;
-        let coresLabel;
-        if (computer.cores > 1) {
-            coresLabel = "cores"
-        } else {
-            coresLabel = "core"
-        }
         return (
             <div id="computerMainInfos" style={{
                 marginTop: "16px"
@@ -114,7 +108,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
                             title="Computer cores"
                             />
                             <CardContent>
-                                {computer.cores} {coresLabel}
+                                {computer.cores}
                             </CardContent>
                         </Card>
                     </Grid2>
@@ -129,7 +123,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
                                     <Storage />
                                 </Avatar>
                             }
-                            title="Processor"
+                            title="RAM"
                             />
                             <CardContent>
                                 {computer.formatBytes(computer.memory)} RAM in total
