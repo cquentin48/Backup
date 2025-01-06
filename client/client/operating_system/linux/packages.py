@@ -2,6 +2,8 @@ from glob import glob
 import subprocess
 import pandas as pd
 
+def fetch_repositories() -> dict:
+    pass
 
 def fetch_snap_packages() -> dict:
     """

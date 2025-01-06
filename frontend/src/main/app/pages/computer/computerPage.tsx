@@ -1,25 +1,46 @@
 import React from 'react';
-import type Computer from '../../model/computer';
 
+import gqlClient from '../../model/queries/client';
+import typedefs from '../../../res/queries/computer_infos.graphql';
 import ComputerMainInfos from './mainInfos';
-import ComputerElements from './computerElements';
+import ComputerInfos from '../../model/queries/computer/computerInfos';
+import { useParams } from 'react-router-dom';
+import type Computer from '../../model/computer/computer';
 
 interface ComputerPageProps {
-    // TODO : put them inside a class
-    computer: Computer
-
+    graphqlQueryOperationManager: typeof gqlClient
 }
 
-class ComputerPage extends React.Component<ComputerPageProps> {
-    render (): JSX.Element {
-        const computer = this.props.computer;
+export default function ComputerPage (props: ComputerPageProps): JSX.Element {
+    const { id } = useParams()
+    const dataRetriever = new ComputerInfos()
+    const [device, setDevice] = React.useState<Computer | null>(null);
+    React.useEffect(() => {
+        (async () => {
+            const deviceInfos = await dataRetriever.compute_query(
+                gqlClient,
+                typedefs.kind,
+                Object({
+                    deviceID: id
+                })
+            )
+            setDevice(deviceInfos.data)
+        })().catch(
+            error => {
+                console.error(error)
+            }
+        );
+    }, []);
+
+    if (device === null) {
+        return (
+            <p>Loading device informations...</p>
+        )
+    } else {
         return (
             <div>
-                <ComputerMainInfos computer={computer}/>
-                <ComputerElements computer={computer}/>
+                <ComputerMainInfos computer={device} />
             </div>
-        );
+        )
     }
 }
-
-export default ComputerPage;

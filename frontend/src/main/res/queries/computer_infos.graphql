@@ -1,0 +1,9 @@
+query getDeviceInfos($deviceID:String!){
+  deviceInfos(deviceId:$deviceID){
+    versions{
+      packageType,
+      name,
+      versionId
+    }
+  }
+}

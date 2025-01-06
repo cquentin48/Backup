@@ -1,5 +1,5 @@
 import React from "react";
-import type Computer from "../../model/computer";
+import type Computer from "../../model/computer/computer";
 
 import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';

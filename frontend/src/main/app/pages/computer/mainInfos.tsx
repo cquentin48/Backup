@@ -9,7 +9,7 @@ import {
     mdiCalendarSync,
     mdiCalendarPlusOutline
 } from '@mdi/js';
-import type Computer from "../../model/computer"
+import type Computer from "../../model/computer/computer";
 
 /**
  * Props interface for the computer main information display component class

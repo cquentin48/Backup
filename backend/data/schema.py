@@ -52,8 +52,6 @@ class DeviceInfoType(graphene.ObjectType):
         :type device_id: str
         :param device_id: ID of the device
 
-        :raises: 
-
         :rtype: dict
         """
         try:
@@ -63,18 +61,13 @@ class DeviceInfoType(graphene.ObjectType):
             
             versions_data = []
             for save in saves:
-                new_info = {}
-                new_info['date'] = save.save_date,
-                new_info['versions'] = []
                 for version in list(save.versions.all()):
-                    new_info['versions'].append(
+                    versions_data.append(
                         DeviceVersionInfo(
                             version_id = version.chosen_version,
                             name = version.package.name,
                             package_type = version.package.type
                         ))
-                print(f"New size : {len(new_info['versions'])}")
-                versions_data.append(new_info)
 
             return DeviceInfo(
                 device_id=device.id,

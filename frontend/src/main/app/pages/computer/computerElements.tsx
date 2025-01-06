@@ -1,5 +1,5 @@
 import React from "react";
-import type Computer from "../../model/computer";
+import type Computer from "../../model/computer/computer";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import { Folder, Info, Settings } from "@mui/icons-material";
 import Icon from '@mdi/react';
