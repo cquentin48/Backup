@@ -5,6 +5,7 @@ import gqlClient from "./model/queries/client";
 import "../res/css/App.css";
 import ComputerPage from "./pages/computer/computerPage";
 import TopBar from "./widget/topbar";
+import RedirectStatic from "./config/StaticRedirection";
 
 function App (): JSX.Element {
     return (
@@ -12,6 +13,7 @@ function App (): JSX.Element {
             <ApolloProvider client={gqlClient.get_query_client()}>
                 <TopBar />
                 <BrowserRouter>
+                    <RedirectStatic/>
                     <Routes>
                         <Route path="/" element={<p>Bonjour!</p>} />
                         <Route path="/test" element={<p>Element de test!</p>} />
