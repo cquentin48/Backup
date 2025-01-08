@@ -25,26 +25,25 @@ class BackupQueryClient {
 
     /**
      * Execute a graphQL query and returns the results
-     * @param query GraphQL query
+     * @param queryPath GraphQL query path
      * @param variables query variables
      * @returns Result of the query
      */
-    async execute_query (query: string, variables: [object]): Promise<ApolloQueryResult<any>> {
+    async execute_query (queryPath: string, variables: [object]): Promise<ApolloQueryResult<any>> {
         if (variables !== undefined && variables.length > 0) {
             const data = await this.query_client.query({
-                query: gql`${query}`,
+                query: gql`${queryPath}`,
                 variables
             })
             return data
         }
         try {
             const data = await this.query_client.query({
-                query: gql`${query}`
+                query: gql`${queryPath}`
             })
             return data
         } catch (e) {
             console.error(e)
-            console.log(variables)
             throw e
         }
     }

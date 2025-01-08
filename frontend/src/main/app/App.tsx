@@ -1,11 +1,11 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import gqlClient from "./model/queries/client";
+
 import "../res/css/App.css";
 import ComputerPage from "./pages/computer/computerPage";
 import TopBar from "./widget/topbar";
-import RedirectStatic from "./config/StaticRedirection";
 
 function App (): JSX.Element {
     return (
@@ -13,9 +13,17 @@ function App (): JSX.Element {
             <ApolloProvider client={gqlClient.get_query_client()}>
                 <TopBar />
                 <BrowserRouter>
-                    <RedirectStatic/>
                     <Routes>
-                        <Route path="/" element={<p>Bonjour!</p>} />
+                        <Route path="/" element={
+                            <div>
+                                <p>Bonjour!</p>
+                                <p><Link
+                                    to={{
+                                        pathname: "/test"
+                                    }}
+                                /></p>
+                            </div>
+                        } />
                         <Route path="/test" element={<p>Element de test!</p>} />
                         <Route path="/computer/:id"
                             element={<ComputerPage graphqlQueryOperationManager={gqlClient} />} />
