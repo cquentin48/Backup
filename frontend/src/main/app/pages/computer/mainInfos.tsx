@@ -28,7 +28,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
      * @param os
      * @returns string
      */
-    getOSIcon (os: string): string {
+    getOSIcon(os: string): string {
         if (os.toLowerCase().includes("ubuntu")) {
             return mdiUbuntu;
         } else {
@@ -36,7 +36,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
         }
     }
 
-    render (): React.ReactNode {
+    render(): React.ReactNode {
         const computer = this.props.computer;
         return (
             <div id="computerMainInfos" style={{
@@ -87,7 +87,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
                                     <Icon path={mdiCpu64Bit} size={1} />
                                 </Avatar>
                             }
-                            title="Processor"
+                                title="Processor"
                             />
                             <CardContent>
                                 {computer.processor}
@@ -105,7 +105,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
                                     <Memory />
                                 </Avatar>
                             }
-                            title="Computer cores"
+                                title="Computer cores"
                             />
                             <CardContent>
                                 {computer.cores}
@@ -123,7 +123,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
                                     <Storage />
                                 </Avatar>
                             }
-                            title="RAM"
+                                title="RAM"
                             />
                             <CardContent>
                                 {computer.formatBytes(computer.memory)} RAM in total
@@ -141,10 +141,17 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
                                     <Icon path={mdiCalendarPlusOutline} size={1} />
                                 </Avatar>
                             }
-                            title="Device added on"
+                                title="Device added on"
                             />
                             <CardContent>
-                                {"Date here"}
+                                {
+                                   computer.snapshots[0]?.uploadDate.toLocaleDateString(window.navigator.language, {
+                                    weekday: "long",
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                    })
+                                }
                             </CardContent>
                         </Card>
                     </Grid2>
@@ -159,10 +166,16 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
                                     <Icon path={mdiCalendarSync} size={1} />
                                 </Avatar>
                             }
-                            title="Last Update"
+                                title="Last Update"
                             />
                             <CardContent>
-                                {"Date here"}
+                                {
+                                    computer.snapshots[0]?.uploadDate.toLocaleDateString(window.navigator.language, {
+                                    weekday: "long",
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                })}
                             </CardContent>
                         </Card>
                     </Grid2>
@@ -177,7 +190,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
                                     <Storage />
                                 </Avatar>
                             }
-                            title="Storage"
+                                title="Storage"
                             />
                             <CardContent>
                                 {"Amount of storage here"} used in the backup server {/* Replace it */}

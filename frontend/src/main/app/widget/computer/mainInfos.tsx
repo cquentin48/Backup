@@ -10,10 +10,10 @@ interface MainInfosFrameProps {
 }
 
 export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element {
-    const [age, setAge] = React.useState('');
+    const [packageType, setPackageType] = React.useState('');
 
     const handleChange = (event: SelectChangeEvent): void => {
-        setAge(event.target.value);
+        setPackageType(event.target.value);
     };
 
     return (
@@ -38,38 +38,24 @@ export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element
                     minWidth: "256px",
                     maxWidth: "512px"
                 }}>
-                    <InputLabel id="updateTime">Age</InputLabel>
-                    <Select
-                        labelId="updateTime-label"
-                        id="updateTime-select"
-                        value={age}
-                        label="Age"
-                        onChange={handleChange}
-                    >
-                        {/* Add here the list with the updates */}
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                </FormControl>
-
-                <FormControl sx={{
-                    minWidth: "256px",
-                    maxWidth: "512px"
-                }}>
                     <InputLabel id="dataType">Type of data</InputLabel>
                     <Select
                         labelId="dataType-label"
                         id="dataType-select"
-                        value={age}
-                        label="Age"
+                        value={packageType}
+                        label="Type of data"
                         onChange={handleChange}
                         autoWidth
                     >
                         {/* Add here the list with the updates */}
                         <MenuItem value={10}><Icon path={mdiClockOutline} size={1} />Librairies</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        {
+                            props.computer.snapshots.map((snapshot, index) =>{
+                                return(
+                                    <MenuItem value={snapshot?.id}>{snapshot?.localizedUploadDate()}</MenuItem>
+                                )
+                            })
+                        }
                     </Select>
                 </FormControl>
             </div>
@@ -82,8 +68,6 @@ export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element
                     borderRadius: "6.25px"
                 }}
             >
-                Actuellement il y a 16 librairies stockées dans 6 types :
-                <br/>
                 {/* Display here the libraries */}
             </div>
         </div>

@@ -1,3 +1,4 @@
+import BasicQueryParameters from "./basicQueryParameters";
 import gqlClient from "./client";
 
 export default interface QueryPattern{
@@ -8,5 +9,5 @@ export default interface QueryPattern{
      * @param parameters GraphQL parameters
      * @returns query result
      */
-    compute_query(client: typeof gqlClient, query:String, parameters: [Object]) : Object | [Object];
+    compute_query(client: typeof gqlClient, query:String, parameters: BasicQueryParameters) : Object | [Object];
 }

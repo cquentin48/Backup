@@ -244,7 +244,7 @@ class Shell(models.Model):
         return f"{self.sh_type} - {history_lines_format} | {configuration_lines_format}"
 
 
-class Save(models.Model):
+class Snapshot(models.Model):
     """
     Save Database manager class
     """

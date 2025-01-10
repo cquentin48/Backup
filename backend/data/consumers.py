@@ -8,7 +8,7 @@ from channels.generic.websocket import WebsocketConsumer
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Device, Package, ChosenVersion, Save, Repository
+from .models import Device, Package, ChosenVersion, Snapshot, Repository
 
 
 class BackupImportConsumer(WebsocketConsumer):
@@ -167,7 +167,7 @@ class BackupImportConsumer(WebsocketConsumer):
                 library = device_data['libraries'][library_type[1]]
                 versions = self.append_libraries_chosen_version(
                     library, library_type[1])
-                new_save = Save.objects.create(
+                new_save = Snapshot.objects.create(
                     related_device=device,
                     save_date=datetime.now()
                 )

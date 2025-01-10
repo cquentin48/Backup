@@ -1,7 +1,8 @@
 from datetime import datetime
 
 from django.test import SimpleTestCase
-from data.models import ChosenVersion, Command, CommandHistory, Device, Package, Repository, Save, Shell
+from data.models import (ChosenVersion, Command, CommandHistory,
+                         Device, Package, Repository, Snapshot, Shell)
 
 from apps_tests.test_data.utils import create_test_package, create_test_device
 
@@ -141,7 +142,7 @@ class TestSave(SimpleTestCase):
     databases = '__all__'
 
     def tearDown(self) -> None:
-        Save.objects.all().delete()
+        Snapshot.objects.all().delete()
         Device.objects.all().delete()
 
     def test_str(self):
@@ -153,7 +154,7 @@ class TestSave(SimpleTestCase):
             name="Mon objet!"
         )
         save_date = datetime.now()
-        test_object = Save.objects.create(
+        test_object = Snapshot.objects.create(
             related_device=device,
             save_date=save_date
         )

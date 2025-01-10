@@ -1,0 +1,13 @@
+query getSaveInfos($saveID:String!){
+  saveInfos(saveId:$saveID){
+    versions{
+      softwareVersion,
+      name,
+      softwareInstallType
+    },
+    repositories{
+      sourcesLines,
+      name
+    }
+  }
+}

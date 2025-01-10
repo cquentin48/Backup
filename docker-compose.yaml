@@ -34,9 +34,9 @@ services:
 
   backend:
     build: backend
-    command: sh -c "make generate_static_auto ; make migrate ; make run"
+    command: sh -c "make migrate ; make run"
     volumes:
-      - static:/static/
+      - static:/backend/static/
       - ./backend:/backup
     ports:
       - "8000:8000"

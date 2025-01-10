@@ -1,6 +1,7 @@
 import { ApolloClient, type ApolloQueryResult, InMemoryCache, type NormalizedCacheObject, gql } from '@apollo/client';
 
 import { Config } from '../../config/backupConfig';
+import BasicQueryParameters from './basicQueryParameters';
 
 /**
  * Backup frontend graphQL query client interface manager
@@ -29,8 +30,8 @@ class BackupQueryClient {
      * @param variables query variables
      * @returns Result of the query
      */
-    async execute_query (queryPath: string, variables: [object]): Promise<ApolloQueryResult<any>> {
-        if (variables !== undefined && variables.length > 0) {
+    async execute_query (queryPath: string, variables: BasicQueryParameters|undefined): Promise<ApolloQueryResult<any>> {
+        if (variables !== undefined) {
             const data = await this.query_client.query({
                 query: gql`${queryPath}`,
                 variables

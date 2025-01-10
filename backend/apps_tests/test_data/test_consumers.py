@@ -9,7 +9,7 @@ from django.test import SimpleTestCase
 import pytest
 
 from data.consumers import BackupImportConsumer
-from data.models import Device, Package, ChosenVersion, Repository, Save
+from data.models import Device, Package, ChosenVersion, Repository, Snapshot
 
 
 class TestConsumers(SimpleTestCase):
@@ -20,7 +20,7 @@ class TestConsumers(SimpleTestCase):
     databases = '__all__'
 
     def tearDown(self):
-        Save.objects.all().delete()
+        Snapshot.objects.all().delete()
         Device.objects.all().delete()
         ChosenVersion.objects.all().delete()
         Package.objects.all().delete()

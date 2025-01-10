@@ -7,6 +7,9 @@ COPY Makefile ./
 RUN make install
 COPY ./ /backup/
 
+# Generatic static html page file (js, css, ...)
+RUN make generate_static_auto
+
 # Exposing backend port
 EXPOSE 8000
 

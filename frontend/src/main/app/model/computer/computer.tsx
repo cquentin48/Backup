@@ -1,14 +1,15 @@
+import Snapshot from "./saves";
 
 /**
  * Computer Data class
  */
 class Computer {
-
     name: string;
     processor: string;
     cores: number;
     memory: number;
     operatingSystem: string;
+    snapshots: [Snapshot?];
 
     /**
      * Constructor method
@@ -17,13 +18,17 @@ class Computer {
      * @param cores computer cores
      * @param memory computer volatile memory
      * @param operatingSystem computer operating system name
+     * @param snapshots header of every save uploaded from the device
      */
-    constructor (name: string, processor: string, cores: number, memory: number, operatingSystem: string) {
+    constructor (
+        name: string, processor: string, cores: number, memory: number,
+        operatingSystem: string, snapshots: [Snapshot?]) {
         this.name = name;
         this.processor = processor;
         this.cores = cores;
         this.memory = memory;
         this.operatingSystem = operatingSystem;
+        this.snapshots = snapshots;
     }
 
     /**

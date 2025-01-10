@@ -1,6 +1,6 @@
 from graphene_django.utils.testing import GraphQLTestCase
 
-from data.models import Device, Package, Save, ChosenVersion
+from data.models import Device, Package, Snapshot, ChosenVersion
 from apps_tests.test_data.utils import (
     create_test_chosen_version,
     create_test_device,
@@ -19,7 +19,7 @@ class SchemaQueryTest(GraphQLTestCase):
         """After each test function
         which flush database
         """
-        Save.objects.all().delete()
+        Snapshot.objects.all().delete()
         ChosenVersion.objects.all().delete()
         Package.objects.all().delete()
         Device.objects.all().delete()
@@ -44,8 +44,6 @@ class SchemaQueryTest(GraphQLTestCase):
             }
             '''
         )
-        
-        print(response)
 
         op_result = response.json()['data']['allDevices']
 
@@ -127,7 +125,7 @@ class SchemaQueryTest(GraphQLTestCase):
         )
 
         save_date = "2020-01-01"
-        test_save = Save.objects.create(
+        test_save = Snapshot.objects.create(
             related_device=test_device,
             save_date=save_date
         )

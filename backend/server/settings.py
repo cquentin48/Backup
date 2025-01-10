@@ -89,7 +89,7 @@ REST_FRAMEWORK = {
 }
 
 GRAPHENE = {
-    "SCHEMA": "data.schema.schema"
+    "SCHEMA": "data.schemas.schema.schema"
 }
 
 CHANNEL_LAYERS = {
