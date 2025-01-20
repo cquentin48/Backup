@@ -1,0 +1,45 @@
+/* Computer side navigation bar main div */
+#computerSideNav{
+    background-color:#BDBDBD;
+    border-radius: 0% 20px 20px 0%;
+    padding-right: 8px;
+    padding-left: 12px;
+}
+
+/* Computer side navigation bar child elements */
+#computerSideNav > *:first-child{
+    margin-top: 4px;
+}
+
+#computerSideNav > *:last-child{
+    margin-bottom: 4px;
+}
+
+#computerSideNav >*{
+    margin-bottom: 4px;
+}
+.sideBarNavElement{
+    margin-right: 4px;
+}
+.sideBarNavElement:hover{
+    color:cadetblue;
+    background-color: chartreuse;
+}
+
+/* Navigation items */
+#mainInformationsLabel{
+    display: none;
+}
+#librariesLabel{
+    display: none;
+}
+#softwareConfigurationsLabel{
+    display: none;
+}
+#folderStorageLabel{
+    display: none;
+}
+
+#folderStorageIcon:hover ~ #folderStorageLabel{
+    display: block;
+}

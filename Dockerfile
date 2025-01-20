@@ -21,6 +21,9 @@ COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/build /usr/share/nginx/html
 COPY --from=builder /app /home/
 
+# Adding the manifest.json file inside the static html folder
+RUN cp /home/public/manifest.json /usr/share/nginx/html
+
 # Installing npm
 RUN apt update -y
 RUN apt install npm -y

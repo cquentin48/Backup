@@ -17,7 +17,9 @@ export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element
     };
 
     return (
-        <div>
+        <div style={{
+            flex: "auto"
+        }}>
             <div
                 id="mainInfosTableSelectHeader"
                 style={{
