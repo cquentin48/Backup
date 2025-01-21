@@ -11,11 +11,12 @@ import {
 } from '@mdi/js';
 import type Computer from "../../model/computer/computer";
 
+import '../../../res/css/ComputerMainInfos.css';
+
 /**
  * Props interface for the computer main information display component class
  */
 interface ComputerMainInfosProps {
-    // TODO : put them inside a class
     computer: Computer
 }
 
@@ -39,9 +40,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
     render(): React.ReactNode {
         const computer = this.props.computer;
         return (
-            <div id="computerMainInfos" style={{
-                marginTop: "16px"
-            }}>
+            <div id="computerMainInfos">
                 <div id="computerMainInfosHeader" style={{
                     display: "flex"
                 }}>

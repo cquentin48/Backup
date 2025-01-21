@@ -49,7 +49,7 @@ export default function ComputerPage (props: ComputerPageProps): JSX.Element {
         )
     } else {
         return (
-            <div>
+            <div id="ComputerMainInfosPage">
                 <ComputerMainInfos computer={device} />
                 <ComputerElements computer={device} />
             </div>

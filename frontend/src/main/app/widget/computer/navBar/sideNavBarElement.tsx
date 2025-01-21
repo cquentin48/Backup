@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+import '../../../../res/css/NavBar.css'
+
 /**
  * Props interface for the side navigation bar child component.
  */
@@ -10,7 +12,7 @@ interface SideNavBarElementProps {
     updateSelectedNumber: (newIndex: Number) => void;
     componentPath: string;
     id: Number;
-    classId:string;
+    classId: string;
 }
 
 /**
@@ -22,11 +24,16 @@ export default function SideNavBarElement(props: SideNavBarElementProps) {
     const classNames = props.id === props.selectedElement ? "sideBarNavElement selected" : "sideBarNavElement";
     return (
         <div className={classNames}>
-            <Link to={{
-                pathname: props.componentPath,
-            }} style={{
-                textDecoration: 'none'
-            }}>
+            <Link
+                to={{
+                    pathname: props.componentPath,
+                }}
+                style={{
+                    textDecoration: 'none',
+                    display: 'flex',
+                    padding: '6px 0px'
+                }}
+            >
                 <div id={`${props.classId}Icon`}>
                     {props.image}
                 </div>
@@ -37,11 +44,11 @@ export default function SideNavBarElement(props: SideNavBarElementProps) {
                         display: 'inline-block',
                         color: 'black'
                     }}
-                    >
-                        <div id={`${props.classId}Label`}>
-                            {props.navBarLabel}
-                        </div>
-                    </span>
+                >
+                    <div id={`${props.classId}Label`}>
+                        {props.navBarLabel}
+                    </div>
+                </span>
             </Link>
         </div>
     )

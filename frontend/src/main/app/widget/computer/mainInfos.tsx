@@ -5,6 +5,8 @@ import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';
 import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent } from "@mui/material";
 
+import '../../../res/css/ComputerMainInfos.css';
+
 interface MainInfosFrameProps {
     computer: Computer
 }
@@ -17,35 +19,19 @@ export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element
     };
 
     return (
-        <div style={{
-            flex: "auto"
-        }}>
-            <div
-                id="mainInfosTableSelectHeader"
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginLeft: "16px",
-                    marginRight: "16px",
-                    padding: "8px",
-                    backgroundColor: "#c2c2c2",
-                    borderRadius: "6.25px"
-                }}
-            >
+        <div id="mainInfosTable">
+            <div id="mainInfosTableSelectHeader">
                 <Icon path={mdiClockOutline} size={1} />
-
-                Updated on the {/* add the last update here! */}
 
                 <FormControl sx={{
                     minWidth: "256px",
                     maxWidth: "512px"
                 }}>
-                    <InputLabel id="dataType">Type of data</InputLabel>
+                    <InputLabel id="dataType">Save date</InputLabel>
                     <Select
                         labelId="dataType-label"
                         id="dataType-select"
                         value={packageType}
-                        label="Type of data"
                         onChange={handleChange}
                         autoWidth
                     >
@@ -61,14 +47,7 @@ export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element
                     </Select>
                 </FormControl>
             </div>
-            <div id="mainInfosLibraryPieChart"
-                style={{
-                    marginLeft: "16px",
-                    marginRight: "16px",
-                    padding: "8px",
-                    backgroundColor: "#c2c2c2",
-                    borderRadius: "6.25px"
-                }}
+            <div id="mainInfosFiles"
             >
                 {/* Display here the libraries */}
             </div>
