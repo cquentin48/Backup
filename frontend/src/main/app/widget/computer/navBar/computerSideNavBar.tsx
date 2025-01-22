@@ -21,7 +21,8 @@ export default function ComputeSideNavBar(props: ComputerSideNavProps) {
                 image={
                     <Info style={{
                         display: "inline-block",
-                        verticalAlign: "middle"
+                        verticalAlign: "middle",
+                            color: 'black'
                     }} />
                 }
                 id={0}
@@ -38,7 +39,8 @@ export default function ComputeSideNavBar(props: ComputerSideNavProps) {
                         size={1}
                         style={{
                             display: "inline-block",
-                            verticalAlign: "middle"
+                            verticalAlign: "middle",
+                            color: 'black'
                         }}
                     />
                 }
@@ -53,7 +55,8 @@ export default function ComputeSideNavBar(props: ComputerSideNavProps) {
                     <Settings
                         style={{
                             display: "inline-block",
-                            verticalAlign: "middle"
+                            verticalAlign: "middle",
+                            color: 'black'
                         }}
                     />
                 }
@@ -68,7 +71,8 @@ export default function ComputeSideNavBar(props: ComputerSideNavProps) {
                     <Folder
                         style={{
                             display: "inline-block",
-                            verticalAlign: "middle"
+                            verticalAlign: "middle",
+                            color: 'black'
                         }}
                     />
                 }

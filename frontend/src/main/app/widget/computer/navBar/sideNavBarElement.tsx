@@ -21,7 +21,7 @@ interface SideNavBarElementProps {
  * @returns View component rendered in the browser.
  */
 export default function SideNavBarElement(props: SideNavBarElementProps) {
-    const classNames = props.id === props.selectedElement ? "sideBarNavElement selected" : "sideBarNavElement";
+    const classNames = props.id === props.selectedElement ? "sidebarNavElement selected" : "sidebarNavElement";
     return (
         <div className={classNames}>
             <Link
@@ -31,23 +31,17 @@ export default function SideNavBarElement(props: SideNavBarElementProps) {
                 style={{
                     textDecoration: 'none',
                     display: 'flex',
-                    padding: '6px 0px'
+                    padding: '6px 0px',
+                    alignItems: 'center'
                 }}
             >
                 <div id={`${props.classId}Icon`}>
                     {props.image}
                 </div>
-                <span
-                    className="navBarLabel"
-                    style={{
-                        verticalAlign: 'middle',
-                        display: 'inline-block',
-                        color: 'black'
-                    }}
-                >
-                    <div id={`${props.classId}Label`}>
-                        {props.navBarLabel}
-                    </div>
+                <span className="navBarLabel">
+                        <div>
+                            {props.navBarLabel}
+                        </div>
                 </span>
             </Link>
         </div>

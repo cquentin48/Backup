@@ -22,17 +22,23 @@
     padding-right: 8px;
     padding-left: 12px;
 }
-.sideBarNavElement{
+.sidebarNavElement{
     margin-right: 4px;
 }
-.sideBarNavElement:hover{
-    color:cadetblue;
-    background-color: chartreuse;
+.sidebarNavElement:hover{
+    background-color: cadetblue;
+
+    /* When hovering navigation item label */
+    .navBarLabel{
+        display: inline-block;
+        vertical-align: middle;
+    }
 }
 
 span.navBarLabel{
-    vertical-align: 'middle';
-    color: 'black'
+    vertical-align: middle;
+    color: black;
+    display: none;
 }
 
 /* Navigation items */
@@ -48,6 +54,6 @@ span.navBarLabel{
 #folderStorageLabel{
     display: none;
 }
-.sideBarNavElement:hover ~ #folderStorageLabel{
+.sidebarNavElement:hover ~ #folderStorageLabel{
     display: block;
 }
