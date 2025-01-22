@@ -2,17 +2,18 @@ import React from "react";
 import type Computer from "../../model/computer/computer";
 
 import Icon from '@mdi/react';
-import { mdiBookOutline, mdiClockOutline, mdiFileOutline } from '@mdi/js';
-import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, Paper } from "@mui/material";
+import { mdiClockOutline } from '@mdi/js';
+import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, Grid2, rgbToHex, Paper } from "@mui/material";
 
+import AccordionFormats from "./accordion/accordionFormats";
+import AccordionMainInfos from "./accordion/accordionMainInfos";
 import '../../../res/css/ComputerMainInfos.css';
-import { PieChart } from "@mui/x-charts";
 
 interface MainInfosFrameProps {
     computer: Computer
 }
 
-export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element {
+export default function MainInfosFrame(props: MainInfosFrameProps): JSX.Element {
     const [packageType, setPackageType] = React.useState('');
 
     const handleChange = (event: SelectChangeEvent): void => {
@@ -23,7 +24,6 @@ export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element
         <div id="mainInfosTable">
             <div id="mainInfosTableSelectHeader">
                 <Icon path={mdiClockOutline} size={1} />
-
                 <FormControl sx={{
                     minWidth: "256px",
                     maxWidth: "512px"
@@ -39,8 +39,8 @@ export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element
                         {/* Add here the list with the updates */}
                         <MenuItem value={10}><Icon path={mdiClockOutline} size={1} />Librairies</MenuItem>
                         {
-                            props.computer.snapshots.map((snapshot, index) =>{
-                                return(
+                            props.computer.snapshots.map((snapshot, index) => {
+                                return (
                                     <MenuItem value={snapshot?.id}>{snapshot?.localizedUploadDate()}</MenuItem>
                                 )
                             })
@@ -48,63 +48,15 @@ export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element
                     </Select>
                 </FormControl>
             </div>
-            { /* Group it into accordion */}
-            <div id="mainInfosFiles"
-                style={{
-                    display: "flex",
-                    flexDirection: "row"
-                }}
-            >
-                <Paper elevation={1} sx={{height:"fit-content"}}>
-                    <div>
-                        <Icon path={mdiBookOutline} size={1}/>
-                        Software repartitions
-                    </div>
-                    <PieChart
-                        series={[
-                            {
-                                data:[
-                                    {id:0, value: 150, label: "APT"},
-                                    {id:1, value: 20, label: "Snapcraft"}
-                                ]
-                            }
-                        ]}
-                        width={400}
-                        height={200}
-                        sx={{
-                            width: "fit-content",
-                            flexDirection: "column",
-                            display: "flex"
-                        }}
-                    />
-                </Paper>
-                <Paper elevation={1} sx={{height:"fit-content"}}>
-                    <div>
-                        <Icon path={mdiFileOutline} size={1}/>File repartition
-                    </div>
-                    <PieChart
-                        series={[
-                            {
-                                data:[
-                                    {id:0, value: 26, label: "Text/Other"},
-                                    {id:1, value: 50, label: "Images"},
-                                    {id:2, value: 75, label: "Videos"},
-                                    {id:3, value: 155, label: "Shared Libraries"},
-                                    {id:4, value: 75, label: "Music"},
-                                    {id:5, value: 155, label: "Other"}
-                                ]
-                            }
-                        ]}
-                        width={600}
-                        height={200}
-                        sx={{
-                            width: "fit-content",
-                            flexDirection: "column",
-                            display: "flex"
-                        }}
-                    />
-                </Paper>
-            </div>
+            <Paper elevation={2} sx={{
+                backgroundColor: '#c2c2c2',
+                marginTop: '16px'
+            }}>
+                <Grid2 spacing={2}>
+                    <AccordionMainInfos computer={props.computer} />
+                    <AccordionFormats />
+                </Grid2>
+            </Paper>
         </div>
     );
 }
