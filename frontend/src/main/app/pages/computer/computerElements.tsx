@@ -11,7 +11,7 @@ export default function ComputerElements(props: ComputerElementProps): JSX.Eleme
     const [selectedID, updateSelectedID] = React.useState(0);
 
     return (
-        <div id="computerElementsPage" style={{
+        <div id="deviceElementsPage" style={{
             display: "flex"
         }}>
             <ComputeSideNavBar

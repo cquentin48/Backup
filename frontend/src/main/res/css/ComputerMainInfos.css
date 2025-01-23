@@ -16,11 +16,10 @@
     flex-flow: column nowrap;
 }
 
-#computerElementsPage{
+#deviceElementsPage{
     display: flex;
     flex: 1 1 auto;
 }
-
 #mainInfosTableSelectHeader {
     display: flex;
     align-items: center;
@@ -30,10 +29,28 @@
     flex: 0 0 auto;
 }
 
+.deviceInfosMainHeader{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 #mainInfosFiles{
     margin: 8px 0px;
     padding: 8px;
     background-color: rgb(194, 194, 194);
     border-radius: 6.25px;
     flex: 1 1 auto;
+}
+
+#detailsContainer{
+    background-color: rgb(194, 194, 194);
+    margin-top: 16px;
+    padding: 16px;
+}
+
+.DisplayedPieChart{
+    width: fit-content;
+    flex-direction: column;
+    display: flex
 }

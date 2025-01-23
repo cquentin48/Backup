@@ -7,6 +7,7 @@ import { ExpandMore, Memory, Storage } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, Avatar, Card, CardContent, CardHeader, Grid2 } from "@mui/material";
 
 import Computer from "../../../model/computer/computer";
+import '../../../../res/css/ComputerMainInfos.css';
 
 /**
  * Device selected for the main informations display
@@ -30,11 +31,7 @@ export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.
                 aria-controls="mainInfos-content"
                 id="mainInfos-header"
             >
-                <div style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: 'center'
-                }}>
+                <div className="deviceInfosMainHeader">
                     <Icon path={mdiBookCogOutline} style={{width:'40px'}}/>
                     <span style={{
                         fontSize: '26px'

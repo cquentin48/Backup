@@ -48,10 +48,7 @@ export default function MainInfosFrame(props: MainInfosFrameProps): JSX.Element 
                     </Select>
                 </FormControl>
             </div>
-            <Paper elevation={2} sx={{
-                backgroundColor: '#c2c2c2',
-                marginTop: '16px'
-            }}>
+            <Paper elevation={2} id="detailsContainer">
                 <Grid2 spacing={2}>
                     <AccordionMainInfos computer={props.computer} />
                     <AccordionFormats />
