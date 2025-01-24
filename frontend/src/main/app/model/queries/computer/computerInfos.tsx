@@ -1,7 +1,7 @@
 import type QueryPattern from "../query_pattern";
 import type gqlClient from "../client";
 import Computer from "../../computer/computer";
-import BasicQueryParameters from "../basicQueryParameters";
+import type BasicQueryParameters from "../basicQueryParameters";
 import Snapshot from "../../computer/saves";
 
 export default class ComputerInfos implements QueryPattern {
@@ -9,7 +9,7 @@ export default class ComputerInfos implements QueryPattern {
         const result = (await client.execute_query(query, parameters)).data.deviceInfos;
         const rawSnapshots = result.snapshots;
         const snapshots: [Snapshot?] = []
-        rawSnapshots.forEach((element:any) => {
+        rawSnapshots.forEach((element: any) => {
             snapshots.push(
                 new Snapshot(
                     element.snapshotId,

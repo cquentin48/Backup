@@ -6,8 +6,8 @@ import { mdiCpu64Bit, mdiCalendarPlusOutline, mdiCalendarSync, mdiBookCogOutline
 import { ExpandMore, Memory, Storage } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, Avatar, Card, CardContent, CardHeader, Grid2 } from "@mui/material";
 
-import Computer from "../../../model/computer/computer";
-import '../../../../res/css/ComputerMainInfos.css';
+import type Computer from "../../../../model/computer/computer";
+import '../../../../../res/css/ComputerMainInfos.css';
 
 /**
  * Device selected for the main informations display
@@ -18,10 +18,10 @@ interface AccordionMainInfosProps {
 
 /**
  * Accordion containing the device main informations
- * @param props computer linked to the widget
- * @returns Accordion with the device main informations
+ * @param {AccordionMainInfosProps} props computer linked to the widget
+ * @returns {React.JSX.Element} Accordion with the device main informations
  */
-export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.Element {
+export default function AccordionMainInfos (props: AccordionMainInfosProps): JSX.Element {
     const computer = props.computer;
 
     return (
@@ -32,7 +32,7 @@ export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.
                 id="mainInfos-header"
             >
                 <div className="deviceInfosMainHeader">
-                    <Icon path={mdiBookCogOutline} style={{width:'40px'}}/>
+                    <Icon path={mdiBookCogOutline} style={{ width: '40px' }}/>
                     <span style={{
                         fontSize: '26px'
                     }}>
@@ -53,7 +53,7 @@ export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.
                                     <Icon path={mdiCpu64Bit} size={1} />
                                 </Avatar>
                             }
-                                title="Processor"
+                            title="Processor"
                             />
                             <CardContent>
                                 {computer.processor}
@@ -71,7 +71,7 @@ export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.
                                     <Memory />
                                 </Avatar>
                             }
-                                title="Computer cores"
+                            title="Computer cores"
                             />
                             <CardContent>
                                 {computer.cores}
@@ -89,7 +89,7 @@ export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.
                                     <Storage />
                                 </Avatar>
                             }
-                                title="RAM"
+                            title="RAM"
                             />
                             <CardContent>
                                 {computer.formatBytes(computer.memory)} RAM in total
@@ -107,7 +107,7 @@ export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.
                                     <Icon path={mdiCalendarPlusOutline} size={1} />
                                 </Avatar>
                             }
-                                title="Device added on"
+                            title="Device added on"
                             />
                             <CardContent>
                                 {
@@ -115,7 +115,7 @@ export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.
                                         weekday: "long",
                                         year: "numeric",
                                         month: "long",
-                                        day: "numeric",
+                                        day: "numeric"
                                     })
                                 }
                             </CardContent>
@@ -132,7 +132,7 @@ export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.
                                     <Icon path={mdiCalendarSync} size={1} />
                                 </Avatar>
                             }
-                                title="Last Update"
+                            title="Last Update"
                             />
                             <CardContent>
                                 {
@@ -140,7 +140,7 @@ export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.
                                         weekday: "long",
                                         year: "numeric",
                                         month: "long",
-                                        day: "numeric",
+                                        day: "numeric"
                                     })}
                             </CardContent>
                         </Card>
@@ -156,7 +156,7 @@ export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.
                                     <Storage />
                                 </Avatar>
                             }
-                                title="Storage"
+                            title="Storage"
                             />
                             <CardContent>
                                 {"Amount of storage here"} used in the backup server {/* Replace it */}

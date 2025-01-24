@@ -1,19 +1,30 @@
 import React from "react";
-import type Computer from "../../model/computer/computer";
+import type Computer from "../../../model/computer/computer";
 
 import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';
-import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, Grid2, rgbToHex, Paper } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, Grid2, Paper } from "@mui/material";
 
 import AccordionFormats from "./accordion/accordionFormats";
 import AccordionMainInfos from "./accordion/accordionMainInfos";
-import '../../../res/css/ComputerMainInfos.css';
+import '../../../../res/css/ComputerMainInfos.css';
 
+/**
+ * Main informations frame props interface
+ */
 interface MainInfosFrameProps {
+    /**
+     * Device selected for its main information to be displayed in the web component
+     */
     computer: Computer
 }
 
-export default function MainInfosFrame(props: MainInfosFrameProps): JSX.Element {
+/**
+ * Main informations frame view component
+ * @param {MainInfosFrameProps} props Selected device passed from the {ComputerElement} view page.
+ * @returns {React.JSX.Element} View component
+ */
+export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element {
     const [packageType, setPackageType] = React.useState('');
 
     const handleChange = (event: SelectChangeEvent): void => {
@@ -41,7 +52,7 @@ export default function MainInfosFrame(props: MainInfosFrameProps): JSX.Element 
                         {
                             props.computer.snapshots.map((snapshot, index) => {
                                 return (
-                                    <MenuItem value={snapshot?.id}>{snapshot?.localizedUploadDate()}</MenuItem>
+                                    <MenuItem key={index} value={snapshot?.id}>{snapshot?.localizedUploadDate()}</MenuItem>
                                 )
                             })
                         }

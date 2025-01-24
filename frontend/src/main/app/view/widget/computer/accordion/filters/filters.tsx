@@ -12,33 +12,33 @@ interface FilterTableProps {
      * Function to add a new filter
      * @param newFilter newly created filter
      */
-    addNewFilter: (newFilter: string) => void;
+    addNewFilter: (newFilter: string) => void
 
     /**
      * Remove filter function
      * @param elementIndexes index of every filter removed
      */
-    removeFilters: (elementIndexes: [number?]) => void;
+    removeFilters: (elementIndexes: [number?]) => void
 
     /**
      * Filters set by the user
      */
-    filters: [string?];
+    filters: [string?]
 }
 
 /**
  * Filters components for the main informations view of the device page
- * @param props Elements passed from the device main informations page
- * @returns Filter view component
+ * @param {FilterTableProps} props Elements passed from the device main informations page
+ * @returns {React.JSX.Element} Filter view component
  */
-export default function Filters(props: FilterTableProps): React.JSX.Element {
+export default function Filters (props: FilterTableProps): React.JSX.Element {
     const declaredFilters = ['a'];
-    const table = declaredFilters.length > 0 ?
-        <FilterTable
+    const table = declaredFilters.length > 0
+        ? <FilterTable
             filters={props.filters}
             removeSelectedIndexes={props.removeFilters}
-        /> :
-        <div>No filter has been added yet</div>;
+        />
+        : <div>No filter has been added yet</div>;
     return (
         <div id="computerMainInfosFilterTable">
             {table}

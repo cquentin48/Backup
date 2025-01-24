@@ -2,16 +2,16 @@
  * Device snapshot header class
  * Composed of the index of database stored data and the upload date.
  */
-export default class Snapshot{
+export default class Snapshot {
     id: string;
     uploadDate: Date;
 
     /**
      * Construction method
-     * @param id snapshot database id
-     * @param uploadDate snapshot date upload
+     * @param { string } id snapshot database id
+     * @param { string } uploadDate snapshot date upload
      */
-    constructor(id:string, uploadDate: string){
+    constructor (id: string, uploadDate: string) {
         this.id = id;
         const uploadDateArray = uploadDate.split('-');
         this.uploadDate = new Date(
@@ -23,15 +23,15 @@ export default class Snapshot{
 
     /**
      * Format the snapshot upload date for display in the web application
-     * @returns string
+     * @returns {string} Localized snapshot upload date
      */
-    localizedUploadDate():string{
+    localizedUploadDate (): string {
         return this.uploadDate.toLocaleDateString(window.navigator.language, {
             weekday: "long",
             year: "numeric",
             month: "long",
             day: "numeric"
         }
-    )
+        )
     }
 }

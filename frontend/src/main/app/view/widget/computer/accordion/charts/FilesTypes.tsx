@@ -1,11 +1,16 @@
+import React from "react";
+
 import { mdiFileOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 
-import { Avatar, Card, CardContent, CardHeader} from "@mui/material";
+import { Avatar, Card, CardContent, CardHeader } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
-import React from "react";
 
-export default function FilesTypes() {
+/**
+ *  Files types pie chart view component
+ *  @returns {React.JSX.Element} View component
+ */
+export default function FilesTypes (): React.JSX.Element {
     return (
         <Card sx={{ width: "fit-content" }}>
             <CardHeader

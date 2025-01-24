@@ -1,17 +1,14 @@
 import React from "react";
-import { Memory, Storage, Delete } from "@mui/icons-material"
-import { Avatar, Button, Card, CardContent, CardHeader, Grid2, Tooltip, Typography } from "@mui/material"
+import { Delete } from "@mui/icons-material"
+import { Button, Tooltip, Typography } from "@mui/material"
 import Icon from '@mdi/react';
 import {
-    mdiCpu64Bit,
     mdiMicrosoftWindows,
-    mdiUbuntu,
-    mdiCalendarSync,
-    mdiCalendarPlusOutline
+    mdiUbuntu
 } from '@mdi/js';
-import type Computer from "../../model/computer/computer";
+import type Computer from "../../../model/computer/computer";
 
-import '../../../res/css/ComputerMainInfos.css';
+import '../../../../res/css/ComputerMainInfos.css';
 
 /**
  * Props interface for the computer main information display component class
@@ -26,10 +23,10 @@ interface ComputerMainInfosProps {
 export default class ComputerMainInfos extends React.Component<ComputerMainInfosProps> {
     /**
      * Fetch the correct icon from the mdi labs
-     * @param os
-     * @returns string
+     * @param {string} os Device operating system
+     * @returns {string} Operating system linked icon
      */
-    getOSIcon(os: string): string {
+    getOSIcon (os: string): string {
         if (os.toLowerCase().includes("ubuntu")) {
             return mdiUbuntu;
         } else {
@@ -37,7 +34,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
         }
     }
 
-    render(): React.ReactNode {
+    render (): React.ReactNode {
         const computer = this.props.computer;
         return (
             <div id="computerMainInfos">

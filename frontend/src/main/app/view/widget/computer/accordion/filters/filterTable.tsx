@@ -1,7 +1,9 @@
-import { JSX } from "react";
+import React from "react";
+
+import { type JSX } from "react";
 
 import { Paper } from "@mui/material";
-import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
+import { DataGrid, type GridColDef, type GridRowSelectionModel } from "@mui/x-data-grid";
 
 /**
  * Elements passed from the filter component to this one
@@ -10,13 +12,13 @@ interface FilterTableProps {
     /**
      * Filters set by the user
      */
-    filters: [string?];
+    filters: [string?]
 
     /**
      * Function set to remove indexes selected by the user
      * @param indexes Indexes ticked by the user
      */
-    removeSelectedIndexes: (indexes: [number]) => void;
+    removeSelectedIndexes: (indexes: [number]) => void
 }
 
 /**
@@ -58,16 +60,17 @@ const filterTableColumns: GridColDef[] = [
 /**
  * Table displaying the filters used to displays selected informations
  * in the device main informations page.
- * @returns 
+ * @param {FilterTableProps} props Fitler and linked delete function associated
+ * @returns {JSX.Element} Web component
  */
-export default function FilterTable(props: FilterTableProps): JSX.Element {
+export default function FilterTable (props: FilterTableProps): JSX.Element {
     return (
         <Paper className="FilterTable">
             <DataGrid
                 columns={filterTableColumns}
-                rows={rows}
+                rows={props.filters}
                 checkboxSelection
-                onRowSelectionModelChange={(event:GridRowSelectionModel) => {
+                onRowSelectionModelChange={(event: GridRowSelectionModel) => {
                     props.removeSelectedIndexes((event.values as any) as [number])
                 }}
             />

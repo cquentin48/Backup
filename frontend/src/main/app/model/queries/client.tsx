@@ -1,7 +1,7 @@
 import { ApolloClient, type ApolloQueryResult, InMemoryCache, type NormalizedCacheObject, gql } from '@apollo/client';
 
 import { Config } from '../../config/backupConfig';
-import BasicQueryParameters from './basicQueryParameters';
+import type BasicQueryParameters from './basicQueryParameters';
 
 /**
  * Backup frontend graphQL query client interface manager
@@ -18,7 +18,7 @@ class BackupQueryClient {
 
     /**
      * Getter for the query client (used only in the app component)
-     * @returns GraphQL query client
+     * @returns {ApolloClient<NormalizedCacheObject>} GraphQL query client
      */
     get_query_client (): ApolloClient<NormalizedCacheObject> {
         return this.query_client;
@@ -26,11 +26,11 @@ class BackupQueryClient {
 
     /**
      * Execute a graphQL query and returns the results
-     * @param queryPath GraphQL query path
-     * @param variables query variables
-     * @returns Result of the query
+     * @param { string } queryPath GraphQL query path
+     * @param { BasicQueryParameters } variables query variables
+     * @returns { Promise<ApolloQueryResult<any>> } Result of the query
      */
-    async execute_query (queryPath: string, variables: BasicQueryParameters|undefined): Promise<ApolloQueryResult<any>> {
+    async execute_query (queryPath: string, variables: BasicQueryParameters | undefined): Promise<ApolloQueryResult<any>> {
         if (variables !== undefined) {
             const data = await this.query_client.query({
                 query: gql`${queryPath}`,

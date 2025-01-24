@@ -1,24 +1,47 @@
-import Snapshot from "./saves";
+import type Snapshot from "./saves";
 
 /**
  * Computer Data class
  */
 class Computer {
+    /**
+     * Computer name
+     */
     name: string;
+
+    /**
+     * Computer processor device name
+     */
     processor: string;
+
+    /**
+     * Computer cores amount
+     */
     cores: number;
+
+    /**
+     * Computer volatile memory amount
+     */
     memory: number;
+
+    /**
+     * Computer operating system name
+     */
     operatingSystem: string;
+
+    /**
+     * Computer save snapshots
+     */
     snapshots: [Snapshot?];
 
     /**
      * Constructor method
-     * @param name computer network name
-     * @param processor computer processor model
-     * @param cores computer cores
-     * @param memory computer volatile memory
-     * @param operatingSystem computer operating system name
-     * @param snapshots header of every save uploaded from the device
+     * @param { string } name computer network name
+     * @param { string } processor computer processor model
+     * @param { number } cores computer cores
+     * @param { number } memory computer volatile memory
+     * @param { string } operatingSystem computer operating system name
+     * @param { [Snapshot?] } snapshots header of every save uploaded from the device
      */
     constructor (
         name: string, processor: string, cores: number, memory: number,
@@ -33,8 +56,8 @@ class Computer {
 
     /**
      * Format memory for visualisation
-     * @param memory volatile memory quantity
-     * @returns string
+     * @param { number } memory volatile memory quantity
+     * @returns { string } Amount in bytes formated
      */
     formatBytes (memory: number): string {
         const units = ['Bytes', 'kB', 'MB', 'GB', 'TB']

@@ -1,49 +1,45 @@
 import React from "react";
 
-import { mdiFileCogOutline, mdiFilterOutline, mdiPlus } from "@mdi/js";
+import { mdiFileCogOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 
 import { ExpandMore } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, Grid2, IconButton, Menu, MenuItem, Tooltip, } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Grid2 } from "@mui/material";
 
-import '../../../../res/css/ComputerMainInfos.css';
+import '../../../../../res/css/ComputerMainInfos.css';
 import SoftwareOrigins from "./charts/SoftwareOrigins";
 import FilesTypes from "./charts/FilesTypes";
 import Filters from "./filters/filters";
 
 /**
- * Page current state 
+ * Page current state
  */
-interface AccordionFormatsState{
+interface AccordionFormatsState {
     /**
      * Filters set by the user
      */
-    filters: [string?];
+    filters: [string?]
 }
 
 /**
  * Accordion displaying the formats (software and libraries) inside pie charts
  */
-export default class AccordionFormats extends React.Component<{}, AccordionFormatsState>{
-
+export default class AccordionFormats extends React.Component<null, AccordionFormatsState> {
     /**
-     * Class constructor method
+     * Component state
      */
-    constructor(props:{}){
-        super(props);
-        this.state = {
-            filters: []
-        }
+    state: AccordionFormatsState = {
+        filters: []
     }
 
     /**
      * Adds a new filter to display selected data.
-     * @param newFilter new filter to add
+     * @param {string} newFilter new filter to add
      */
-    addNewFilter(newFilter: string){
-        if(this.state.filters.includes(newFilter)){
+    addNewFilter (newFilter: string): void {
+        if (this.state.filters.includes(newFilter)) {
             console.log("This filter has already been set!")
-        }else{
+        } else {
             const filters = this.state.filters;
             filters.push(newFilter);
             this.setState({
@@ -54,30 +50,28 @@ export default class AccordionFormats extends React.Component<{}, AccordionForma
 
     /**
      * Remove filters selected by the user
-     * @param indexes filters indexes set in the array
+     * @param {[number?]} indexes filters indexes set in the array
      */
-    removeFilters(indexes: [number?]){
+    removeFilters (indexes: [number?]): void {
         const filters = this.state.filters;
         const reverseSortedIndexes = indexes.sort(
             (a: number | undefined, b: number | undefined) => {
-                if(a == undefined || b == undefined){
+                if (a === undefined || b === undefined) {
                     throw new Error("No filter has been chosen for the suppression!!")
                 }
-                return a-b
+                return a - b
             }
         ).reverse()
-        if(reverseSortedIndexes.length > 0){
-            reverseSortedIndexes.forEach((index:number|undefined) => {
-                if(index == undefined){
+        if (reverseSortedIndexes.length > 0) {
+            reverseSortedIndexes.forEach((index: number | undefined) => {
+                if (index === undefined) {
                     throw new Error("The index is not set!");
-                }
-                else if(index < 0){
+                } else if (index < 0) {
                     throw new Error("Impossible to remove this element : it is below 0!");
-                }
-                else if(index > filters.length-1){
+                } else if (index > filters.length - 1) {
                     throw new Error("Impossible to remove this element : no element has its index")
-                }else{
-                    filters.splice(index,1);
+                } else {
+                    filters.splice(index, 1);
                 }
             })
         }
@@ -85,11 +79,11 @@ export default class AccordionFormats extends React.Component<{}, AccordionForma
 
     /**
      * Render the component
-     * @returns Accordion displaying the file formats and libraries types
+     * @returns {React.JSX.Element} Accordion displaying the file formats and libraries types
      */
-    render(): JSX.Element {
+    render (): React.JSX.Element {
         const state = this.state
-    
+
         return (
             <Accordion>
                 <AccordionSummary

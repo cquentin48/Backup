@@ -4,14 +4,31 @@ import { Info, Settings, Folder } from "@mui/icons-material";
 import Icon from '@mdi/react';
 import SideNavBarElement from "./sideNavBarElement";
 
-import '../../../../res/css/NavBar.css';
+import '../../../../../res/css/NavBar.css';
 
-interface ComputerSideNavProps{
-    updateSelectedID: (newID: number) => void;
+/**
+ * Computer side navigation bar props
+ */
+interface ComputerSideNavProps {
+    /**
+     * Update the selected item index
+     * @param {number} newID newly selected item from the navigation bar
+     * @returns {void}
+     */
+    updateSelectedID: (newID: number) => void
+
+    /**
+     * Index of the selectedItem
+     */
     selectedID: number
 }
 
-export default function ComputeSideNavBar(props: ComputerSideNavProps) {
+/**
+ * Computer side navigation bar
+ * @param {ComputerSideNavProps} props Props passed from the page
+ * @returns {React.JSX.Element} Navigation bar view component
+ */
+export default function ComputeSideNavBar (props: ComputerSideNavProps): React.JSX.Element {
     return (
         <div id="computerSideNav">
             <SideNavBarElement
@@ -22,7 +39,7 @@ export default function ComputeSideNavBar(props: ComputerSideNavProps) {
                     <Info style={{
                         display: "inline-block",
                         verticalAlign: "middle",
-                            color: 'black'
+                        color: 'black'
                     }} />
                 }
                 id={0}

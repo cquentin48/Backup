@@ -1,12 +1,18 @@
+import React from "react";
+
 import { mdiBookOutline, mdiFilterOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 
 import { Avatar, Card, CardContent, CardHeader, IconButton } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 
-export default function SoftwareOrigins() {
+/**
+ *  Sofware Origins pie charts view component
+ *  @returns {React.JSX.Element} View component
+ */
+export default function SoftwareOrigins (): React.JSX.Element {
     return (
-        <Card sx={{width:"fit-content"}}>
+        <Card sx={{ width: "fit-content" }}>
             <CardHeader
                 avatar={
                     <Avatar

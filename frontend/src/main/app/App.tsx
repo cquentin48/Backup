@@ -4,10 +4,14 @@ import { ApolloProvider } from "@apollo/client";
 import gqlClient from "./model/queries/client";
 
 import "../res/css/App.css";
-import ComputerPage from "./pages/computer/computerPage";
-import TopBar from "./widget/topbar";
+import ComputerPage from "./view/pages/computer/computerPage";
+import TopBar from "./view/widget/topbar";
 
-function App (): JSX.Element {
+/**
+ * Web application main function
+ * @returns { React.JSX.Element } Application main component in the HTML page
+ */
+function App (): React.JSX.Element {
     return (
         <div className="App">
             <ApolloProvider client={gqlClient.get_query_client()}>
