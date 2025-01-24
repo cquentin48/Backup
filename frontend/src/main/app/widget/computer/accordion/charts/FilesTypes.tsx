@@ -1,21 +1,11 @@
-import { mdiFileOutline, mdiFilterOutline, mdiPlus } from "@mdi/js";
+import { mdiFileOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 
-import { Avatar, Card, CardContent, CardHeader, IconButton, Menu, MenuItem, Switch, TextField } from "@mui/material";
+import { Avatar, Card, CardContent, CardHeader} from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 import React from "react";
 
 export default function FilesTypes() {
-
-    const [anchorEl, setanchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setanchorEl(event.currentTarget);
-    }
-    const handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setanchorEl(null);
-    }
-
     return (
         <Card sx={{ width: "fit-content" }}>
             <CardHeader
@@ -27,32 +17,6 @@ export default function FilesTypes() {
                     </Avatar>
                 }
                 title="Types of files"
-                action={
-                    <IconButton
-                        aria-label="settings"
-                        aria-controls={open ? 'basic-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}>
-                        <Icon path={mdiFilterOutline} size={1} />
-                        <Menu
-                            id="file-types-filter-menu"
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            MenuListProps={{
-                                'aria-labelledby': 'basic-button'
-                            }}
-                        >
-                            <MenuItem>
-                                No filter added.
-                                <IconButton>
-                                    <Icon path={mdiPlus} size={1}/>
-                                </IconButton>
-                            </MenuItem>
-                        </Menu>
-                    </IconButton>
-                }
             />
             <CardContent>
                 <PieChart

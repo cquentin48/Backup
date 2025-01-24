@@ -58,6 +58,11 @@ module.exports = ({ mode } = { mode: "production" }) => {
       static: {
         directory: path.resolve(__dirname, 'build')
       }
+    },
+    performance: {
+      hints: false,
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000
     }
   }
 };
