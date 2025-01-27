@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/ban-types: 0 */
 import React from "react";
 
 import { mdiFileCogOutline } from "@mdi/js";
@@ -24,7 +25,7 @@ interface AccordionFormatsState {
 /**
  * Accordion displaying the formats (software and libraries) inside pie charts
  */
-export default class AccordionFormats extends React.Component<null, AccordionFormatsState> {
+export default class AccordionFormats extends React.Component<{}, AccordionFormatsState> {
     /**
      * Component state
      */

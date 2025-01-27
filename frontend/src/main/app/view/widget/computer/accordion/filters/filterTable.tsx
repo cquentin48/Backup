@@ -4,6 +4,8 @@ import { type JSX } from "react";
 
 import { Paper } from "@mui/material";
 import { DataGrid, type GridColDef, type GridRowSelectionModel } from "@mui/x-data-grid";
+import { FilterGridToolbar } from "./filterGridToolbar";
+import { filterManager } from "../../../../model/filters/FilterManager";
 
 /**
  * Elements passed from the filter component to this one
@@ -68,10 +70,13 @@ export default function FilterTable (props: FilterTableProps): JSX.Element {
         <Paper className="FilterTable">
             <DataGrid
                 columns={filterTableColumns}
-                rows={props.filters}
+                rows={filterManager.getFilters()}
                 checkboxSelection
                 onRowSelectionModelChange={(event: GridRowSelectionModel) => {
                     props.removeSelectedIndexes((event.values as any) as [number])
+                }}
+                slots={{
+                    toolbar: FilterGridToolbar
                 }}
             />
         </Paper>

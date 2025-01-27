@@ -62,7 +62,7 @@ export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element
             <Paper elevation={2} id="detailsContainer">
                 <Grid2 spacing={2}>
                     <AccordionMainInfos computer={props.computer} />
-                    <AccordionFormats />
+                    <AccordionFormats/>
                 </Grid2>
             </Paper>
         </div>

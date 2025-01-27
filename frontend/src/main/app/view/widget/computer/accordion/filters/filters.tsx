@@ -42,12 +42,6 @@ export default function Filters (props: FilterTableProps): React.JSX.Element {
     return (
         <div id="computerMainInfosFilterTable">
             {table}
-            <Button
-                className="rightEndControlButton"
-                startIcon={<Icon path={mdiPlus} />}
-            >
-                Add new filter
-            </Button>
         </div>
     )
 }
