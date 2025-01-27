@@ -114,7 +114,7 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
                         addFilter.performAction(
                             inputs
                         )
-                        filterManager.getFilters()
+                        console.log(filterManager.getFilters().length)
                     }catch(error){
                         if(error instanceof AlreadyAddedWarning){
                             console.warn(error.message);

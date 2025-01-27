@@ -66,6 +66,7 @@ const filterTableColumns: GridColDef[] = [
  * @returns {JSX.Element} Web component
  */
 export default function FilterTable (props: FilterTableProps): JSX.Element {
+    console.log(`Readed list : ${JSON.stringify(filterManager.getFilters())}`)
     return (
         <Paper className="FilterTable">
             <DataGrid

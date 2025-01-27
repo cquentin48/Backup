@@ -1,13 +1,10 @@
 import { Paper } from "@mui/material";
 import NewFilterForm from "./form";
 
+import "../../../../../../../res/css/ComputerMainInfos.css";
+
 export default function NewFilterPaperDialog(){
-    return <Paper sx={{
-        position: "absolute",
-        top: "97px",
-        zIndex: "1",
-        left: "0px"
-    }}>
+    return <Paper id="NewFilterPaperDialog">
         <NewFilterForm/>
     </Paper>
 }

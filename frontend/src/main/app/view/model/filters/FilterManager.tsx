@@ -2,13 +2,24 @@ import AlreadyAddedWarning from "../exception/warning/alreadyAdded";
 import Filter from "./Filter";
 
 /**
+ * 
+ */
+interface FilterRow{
+    elementType: "File" | "Library"
+    fieldName: string
+    comparisonType: "<" | ">" | "!=" | "=="
+    value: object
+    id: number
+}
+
+/**
  * MainDeviceInformationsFilterManager
  */
 class FilterManager{
     /**
      * Filters set in the filter main device informations
      */
-    private filters:[Filter?] = [];
+    private filters:[Filter?] = [new Filter("File", "test", "!=", 3 as unknown as object)];
 
     /**
      * Adds a new filter inside the table
@@ -31,6 +42,10 @@ class FilterManager{
         }
     }
 
+    /**
+     * Remove a filter based off its index in the array
+     * @param {number} filterID id of the stored filter in the array
+     */
     removeFilter(filterID: number){
         if(filterID >= this.filters.length){
             throw new Error("")
@@ -39,10 +54,18 @@ class FilterManager{
 
     /**
      * Fetch every filter set
+     * @returns {FilterRow[]} Filter list 
      */
-    public getFilters (): [Filter?]{
-        return this.filters;
+    public getFilters (): FilterRow[] {
+        const input = JSON.parse(JSON.stringify(this.filters));
+        input.forEach((element:FilterRow, index: number) => {
+            element.id = index
+        });
+        return input;
     }
 }
 
+/**
+ * Singleton controller object used for the filter managment in the device main informations page
+ */
 export const filterManager = new FilterManager();

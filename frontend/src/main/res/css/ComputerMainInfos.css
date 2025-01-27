@@ -54,3 +54,11 @@
     flex-direction: column;
     display: flex
 }
+
+#NewFilterPaperDialog{
+    position: absolute;
+    top: 40px;
+    z-index: 1;
+    left: 0px;
+    display: block;
+}

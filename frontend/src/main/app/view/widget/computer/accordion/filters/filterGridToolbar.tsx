@@ -10,7 +10,7 @@ import {
     GridToolbarFilterButton,
     GridToolbarProps,
 } from "@mui/x-data-grid";
-import NewFilterPaperDialog from "./newFilter/paperDialog";
+import GridToolbarAdd from "./newFilter/GridToolbarAdd";
 
 export const FilterGridToolbar = React.forwardRef<HTMLDivElement, GridToolbarProps>(
     function GridToolbar(props, ref) {
@@ -20,13 +20,7 @@ export const FilterGridToolbar = React.forwardRef<HTMLDivElement, GridToolbarPro
                 <GridToolbarFilterButton />
                 <GridToolbarDensitySelector />
                 <Tooltip title={"Add new filter"}>
-                    <div>
-                        <Button startIcon={<Add />}>
-                            New filter
-
-                        </Button>
-                        <NewFilterPaperDialog />
-                    </div>
+                    <GridToolbarAdd/>
                 </Tooltip>
                 <GridToolbarExport />
             </GridToolbarContainer>
