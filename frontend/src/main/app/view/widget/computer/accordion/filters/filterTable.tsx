@@ -3,9 +3,11 @@ import React from "react";
 import { type JSX } from "react";
 
 import { Paper } from "@mui/material";
-import { DataGrid, type GridColDef, type GridRowSelectionModel } from "@mui/x-data-grid";
+import { DataGrid, useGridApiRef, type GridColDef, type GridRowSelectionModel } from "@mui/x-data-grid";
 import { FilterGridToolbar } from "./filterGridToolbar";
-import { filterManager } from "../../../../model/filters/FilterManager";
+import { filterManager, FilterRow } from "../../../../model/filters/FilterManager";
+import { addFilter } from "../../../../controller/deviceMainInfos/addFilter";
+import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 
 /**
  * Elements passed from the filter component to this one
@@ -60,26 +62,83 @@ const filterTableColumns: GridColDef[] = [
 ];
 
 /**
+ * State of the filter table
+ */
+interface FilterTableState {
+    rows: FilterRow[]
+    tableManager: React.RefObject<GridApiCommunity>
+}
+
+/**
  * Table displaying the filters used to displays selected informations
  * in the device main informations page.
  * @param {FilterTableProps} props Fitler and linked delete function associated
  * @returns {JSX.Element} Web component
  */
-export default function FilterTable (props: FilterTableProps): JSX.Element {
-    console.log(`Readed list : ${JSON.stringify(filterManager.getFilters())}`)
-    return (
-        <Paper className="FilterTable">
-            <DataGrid
-                columns={filterTableColumns}
-                rows={filterManager.getFilters()}
-                checkboxSelection
-                onRowSelectionModelChange={(event: GridRowSelectionModel) => {
-                    props.removeSelectedIndexes((event.values as any) as [number])
-                }}
-                slots={{
-                    toolbar: FilterGridToolbar
-                }}
-            />
-        </Paper>
-    )
+export default class FilterTable extends React.Component<FilterTableProps, FilterTableState> {
+
+    constructor(props: FilterTableProps) {
+        super(props);
+        this.state = {
+            rows: [],
+            tableManager: useGridApiRef()
+        }
+        addFilter.addObservable("mainDeviceInfosFilterTable", this.updateRows)
+    }
+
+    /**
+     * Update rows method callback
+     * @param newRows 
+     */
+    updateRows(newRows: unknown[]) {
+        console.log(newRows)
+        console.log("Updated rows")
+        this.setState({
+            rows: newRows as FilterRow[]
+        })
+        console.log(this.state.rows)
+        
+        const tableManager = this.state.tableManager;
+        tableManager.current?.updateRows(
+            this.state.rows.map(
+                (row: FilterRow, index:number) => ({
+                    id: index,
+                    elementType: row.elementType,
+                    fieldName: row.fieldName,
+                    opType: row.comparisonType,
+                    filterValue: row.value
+                })
+            )
+        )
+    }
+
+    componentWillUnmount(): void {
+        addFilter.removeObservable("mainDeviceInfosFilterTable")
+    }
+
+    /**
+     * Table displaying the filters used to displays selected informations
+     * in the device main informations page.
+     * @param {FilterTableProps} props Fitler and linked delete function associated
+     * @returns {JSX.Element} Web component
+     */
+    render(): JSX.Element {
+        const props = this.props;
+        const state = this.state;
+        return (
+            <Paper className="FilterTable">
+                <DataGrid
+                    columns={filterTableColumns}
+                    rows={state.rows}
+                    checkboxSelection
+                    onRowSelectionModelChange={(event: GridRowSelectionModel) => {
+                        props.removeSelectedIndexes((event.values as any) as [number])
+                    }}
+                    slots={{
+                        toolbar: FilterGridToolbar
+                    }}
+                />
+            </Paper>
+        )
+    }
 }

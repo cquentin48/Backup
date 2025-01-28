@@ -52,7 +52,9 @@ export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element
                         {
                             props.computer.snapshots.map((snapshot, index) => {
                                 return (
-                                    <MenuItem key={index} value={snapshot?.id}>{snapshot?.localizedUploadDate()}</MenuItem>
+                                    <MenuItem key={index} value={snapshot?.id}>
+                                        {snapshot?.localizedUploadDate()}
+                                    </MenuItem>
                                 )
                             })
                         }

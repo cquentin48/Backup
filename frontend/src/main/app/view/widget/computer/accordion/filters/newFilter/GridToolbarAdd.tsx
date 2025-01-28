@@ -10,7 +10,6 @@ export default function GridToolbarAdd() {
             <Tooltip title={"Add new filter"}>
                 <Button startIcon={<Add />} className="newFilterButton" onClick={() => {
                     setOpenedDialog(!openedDialog)
-                    console.log(openedDialog)
                 }}>
                     New filter
                 </Button>

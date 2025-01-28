@@ -2,9 +2,9 @@ import AlreadyAddedWarning from "../exception/warning/alreadyAdded";
 import Filter from "./Filter";
 
 /**
- * 
+ * Rows of the filter
  */
-interface FilterRow{
+export interface FilterRow{
     elementType: "File" | "Library"
     fieldName: string
     comparisonType: "<" | ">" | "!=" | "=="

@@ -17,7 +17,6 @@ interface NewFilterFormState {
     comparison: string;
     value: string;
     fieldName: string;
-    pressedKey: number;
 }
 
 /**
@@ -30,8 +29,7 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
         value: "",
         fieldName: Filter.inputFieldName(
             Filter.authorizedInputTypes[0] as "File" | "Library"
-        )[0],
-        pressedKey: 3
+        )[0]
     };
 
     /**
@@ -39,14 +37,7 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
      * @param {KeyboardEvent} pressedKey pressed event 
      */
     handlePressedKey(pressedKey: KeyboardEvent) {
-        if (pressedKey.key === "Tab") {
-            console.log("Tab key pressed!")
-            const previousPressedKey = this.state.pressedKey;
-            this.setState({
-                pressedKey: (previousPressedKey + 1) % 4
-            })
-        } else if (pressedKey.key === "Enter") {
-            console.log("Enter key pressed!")
+        if (pressedKey.key === "Enter") {
             this.addsNewFilter();
         }
     }
@@ -166,17 +157,18 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
                     id="computerMainInfosFilterValueField"
                     label="Field value"
                     variant="standard"
-                    autoFocus
                     onChange={(newValue:
                         React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
                         this.setState({
                             value: newValue.target.value
                         })
                     }}
-                    inputRef={(input: HTMLInputElement) => input && input.focus()}
                 />
                 <Tooltip title="Adds new filter">
-                    <IconButton aria-label="add" onClick={() => this.addsNewFilter()}>
+                    <IconButton
+                        aria-label="add"
+                        onClick={() => this.addsNewFilter()}
+                    >
                         <Add />
                     </IconButton>
                 </Tooltip>
