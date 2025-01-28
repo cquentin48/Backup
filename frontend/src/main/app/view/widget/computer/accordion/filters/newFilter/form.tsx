@@ -1,17 +1,23 @@
 import React from "react";
 
-import { Button, MenuItem, Select, TextField } from "@mui/material";
+import {
+    FormControl, IconButton, InputLabel,
+    MenuItem, Select, TextField, Tooltip
+} from "@mui/material";
 import Filter from "../../../../../model/filters/Filter";
 import { Add } from "@mui/icons-material";
 import { addFilter } from "../../../../../controller/deviceMainInfos/addFilter";
 import AlreadyAddedWarning from "../../../../../model/exception/warning/alreadyAdded";
 import { filterManager } from "../../../../../model/filters/FilterManager";
 
+import '../../../../../../../res/css/Filters.css';
+
 interface NewFilterFormState {
     inputType: string;
     comparison: string;
     value: string;
     fieldName: string;
+    pressedKey: number;
 }
 
 /**
@@ -24,8 +30,62 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
         value: "",
         fieldName: Filter.inputFieldName(
             Filter.authorizedInputTypes[0] as "File" | "Library"
-        )[0]
+        )[0],
+        pressedKey: 3
     };
+
+    /**
+     * Key pressed handling method
+     * @param {KeyboardEvent} pressedKey pressed event 
+     */
+    handlePressedKey(pressedKey: KeyboardEvent) {
+        if (pressedKey.key === "Tab") {
+            console.log("Tab key pressed!")
+            const previousPressedKey = this.state.pressedKey;
+            this.setState({
+                pressedKey: (previousPressedKey + 1) % 4
+            })
+        } else if (pressedKey.key === "Enter") {
+            console.log("Enter key pressed!")
+            this.addsNewFilter();
+        }
+    }
+
+    /**
+     * Mount form component lifecycle method
+     */
+    componentDidMount(): void {
+        document.addEventListener("keydown", (event) => this.handlePressedKey(event), false);
+    }
+
+    /**
+     * Unmount form component lifecycle method
+     */
+    componentWillUnmount(): void {
+        document.removeEventListener("keydown", this.handlePressedKey, false);
+    }
+
+    /**
+     * Adds a new filter to the main device informations filter list
+     */
+    addsNewFilter() {
+        const state = this.state
+        const inputs = [
+            state.inputType,
+            state.fieldName,
+            state.comparison,
+            state.value
+        ]
+        try {
+            addFilter.performAction(
+                inputs
+            )
+        } catch (error) {
+            if (error instanceof AlreadyAddedWarning) {
+                console.warn(error.message);
+            }
+        }
+    }
 
     /**
      * Render the component
@@ -34,95 +94,92 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
     render(): React.JSX.Element {
         const state = this.state
         return (
-            <div>
-                <Select
-                    id="inputType"
-                    labelId="inputTypeLabel"
-                    value={state.inputType}
-                    label="Data type"
-                    onChange={(newInputType) => {
-                        this.setState({
-                            inputType: newInputType.target.value
-                        })
-                    }}
-                >
-                    {
-                        Filter.authorizedInputTypes.map((inputType) => {
-                            return (
-                                <MenuItem value={inputType}>{inputType}</MenuItem>
-                            )
-                        })
-                    }
-                </Select>
-                <Select
-                    id="fieldName"
-                    labelId="fieldNameLabel"
-                    label="Field name"
-                    value={state.fieldName}
-                    onChange={(newFieldName) => {
-                        this.setState({
-                            fieldName: newFieldName.target.value
-                        })
-                    }}
-                >
-                    {
-                        Filter.inputFieldName(state.inputType as "File" | "Library").map((comparison) => {
-                            return (
-                                <MenuItem value={comparison}>{comparison}</MenuItem>
-                            )
-                        })
-                    }
-                </Select>
-                <Select
-                    id="comparisonOperator"
-                    labelId="comparisonOperatorLabel"
-                    label="Type of comparison"
-                    value={state.comparison}
-                    onChange={(newComparisonOperator) => {
-                        this.setState({
-                            comparison: newComparisonOperator.target.value
-                        })
-                    }}
-                >
-                    {
-                        Filter.authorizedComparisonOperations.map((comparison) => {
-                            return (
-                                <MenuItem value={comparison}>{comparison}</MenuItem>
-                            )
-                        })
-                    }
-                </Select>
+            <div className="newElementDialog">
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                    <InputLabel id="inputTypeLabel">Input type</InputLabel>
+                    <Select
+                        id="inputType"
+                        labelId="inputTypeLabel"
+                        value={state.inputType}
+                        label="Data type"
+                        onChange={(newInputType) => {
+                            this.setState({
+                                inputType: newInputType.target.value
+                            })
+                        }}
+                    >
+                        {
+                            Filter.authorizedInputTypes.map((inputType) => {
+                                return (
+                                    <MenuItem value={inputType}>{inputType}</MenuItem>
+                                )
+                            })
+                        }
+                    </Select>
+                </FormControl>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                    <InputLabel id="fieldNameLabel">Field name</InputLabel>
+                    <Select
+                        id="fieldName"
+                        labelId="fieldNameLabel"
+                        label="Field name"
+                        value={state.fieldName}
+                        onChange={(newFieldName) => {
+                            this.setState({
+                                fieldName: newFieldName.target.value
+                            })
+                        }}
+                    >
+                        {
+                            Filter.inputFieldName(state.inputType as "File" | "Library").map(
+                                (comparison) => {
+                                    return (
+                                        <MenuItem value={comparison}>{comparison}</MenuItem>
+                                    )
+                                })
+                        }
+                    </Select>
+                </FormControl>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                    <InputLabel id="comparisonOperatorLabel">Type of comparison</InputLabel>
+                    <Select
+                        id="comparisonOperator"
+                        labelId="comparisonOperatorLabel"
+                        label="Type of comparison"
+                        value={state.comparison}
+                        onChange={(newComparisonOperator) => {
+                            this.setState({
+                                comparison: newComparisonOperator.target.value
+                            })
+                        }}
+                    >
+                        {
+                            Filter.authorizedComparisonOperations.map((comparison) => {
+                                return (
+                                    <MenuItem value={comparison}>{comparison}</MenuItem>
+                                )
+                            })
+                        }
+                    </Select>
+                </FormControl>
                 <TextField
-                    id="value"
-                    label="value"
+                    id="computerMainInfosFilterValueField"
+                    label="Field value"
+                    variant="standard"
                     autoFocus
-                    onChange={(newValue) => {
+                    onChange={(newValue:
+                        React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
                         this.setState({
                             value: newValue.target.value
                         })
                     }}
+                    inputRef={(input: HTMLInputElement) => input && input.focus()}
                 />
-                <Button startIcon={<Add />} onClick={() => {
-                    const state = this.state
-                    const inputs = [
-                        state.inputType,
-                        state.fieldName,
-                        state.comparison,
-                        state.value
-                    ]
-                    try {
-                        addFilter.performAction(
-                            inputs
-                        )
-                        console.log(filterManager.getFilters().length)
-                    }catch(error){
-                        if(error instanceof AlreadyAddedWarning){
-                            console.warn(error.message);
-                        }
-                    }
-                }}>
-                    Adds new filter
-                </Button>
+                <Tooltip title="Adds new filter">
+                    <IconButton aria-label="add" onClick={() => this.addsNewFilter()}>
+                        <Add />
+                    </IconButton>
+                </Tooltip>
             </div>
         )
     }

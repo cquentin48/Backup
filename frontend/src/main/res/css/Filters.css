@@ -1,0 +1,20 @@
+.newElementDialog{
+    display: flex;
+    flex-direction: row;
+
+    >*:first-child{
+        margin: 8px 0px 8px 8px;
+    }
+
+    >*:last-child{
+        margin: 8px 8px 8px 0px;
+    }
+
+    >*:not(:first-child):not(:last-child){
+        margin: 8px 0px 8px 0px;
+    }
+}
+
+.newElementDialog #MuiInputBase-root {
+    margin: 8px 0px 8px 0px;
+}
