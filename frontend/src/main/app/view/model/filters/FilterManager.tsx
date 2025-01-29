@@ -21,6 +21,7 @@ class FilterManager {
      * Filters set in the filter main device informations
      */
     private filters: [Filter?] = [];
+    private selectedFilters: number[] = [];
 
     /**
      * Adds a new filter inside the table
@@ -41,6 +42,14 @@ class FilterManager {
         } else {
             this.filters.push(newFilter);
         }
+    }
+
+    /**
+     * Update the selected ids in the device main infos filter
+     * @param {number[]} selectedIDS selected filters
+     */
+    updateSelectedIDS(selectedIDS:number[]){
+        this.selectedFilters = selectedIDS;
     }
 
     /**

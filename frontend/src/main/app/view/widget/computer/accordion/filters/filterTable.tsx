@@ -145,6 +145,9 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
                         toolbar: FilterGridToolbar,
                         footer: DeviceMainInfosGridFooter
                     }}
+                    onRowSelectionModelChange={(event) => {
+                        console.log(event)
+                    }}
                     apiRef={this.tableManager}
                 />
             </Paper>
