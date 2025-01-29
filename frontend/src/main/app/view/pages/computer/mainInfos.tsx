@@ -67,7 +67,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
                             marginRight: "16px"
                         }}
                     >
-                        Delete device data
+                        Delete device
                     </Button>
                 </div>
                 <br />

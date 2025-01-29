@@ -10,7 +10,7 @@ import {
     GridToolbarFilterButton,
     GridToolbarProps,
 } from "@mui/x-data-grid";
-import GridToolbarAdd from "./newFilter/GridToolbarAdd";
+import GridToolbarAdd from "./GridToolbarAdd";
 
 export const FilterGridToolbar = React.forwardRef<HTMLDivElement, GridToolbarProps>(
     function GridToolbar(props, ref) {

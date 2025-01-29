@@ -1,13 +1,15 @@
-import React from "react";
+import React, { createRef } from "react";
 
 import { type JSX } from "react";
 
 import { Paper } from "@mui/material";
-import { DataGrid, useGridApiRef, type GridColDef, type GridRowSelectionModel } from "@mui/x-data-grid";
-import { FilterGridToolbar } from "./filterGridToolbar";
-import { filterManager, FilterRow } from "../../../../model/filters/FilterManager";
-import { addFilter } from "../../../../controller/deviceMainInfos/addFilter";
+import { DataGrid, type GridColDef} from "@mui/x-data-grid";
+import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
+
+import { FilterRow } from "../../../../model/filters/FilterManager";
+import { addFilter } from "../../../../controller/deviceMainInfos/addFilter";
+import DeviceMainInfosGridFooter from './footer/GridFooter';
 
 /**
  * Elements passed from the filter component to this one
@@ -66,7 +68,6 @@ const filterTableColumns: GridColDef[] = [
  */
 interface FilterTableState {
     rows: FilterRow[]
-    tableManager: React.RefObject<GridApiCommunity>
 }
 
 /**
@@ -76,42 +77,52 @@ interface FilterTableState {
  * @returns {JSX.Element} Web component
  */
 export default class FilterTable extends React.Component<FilterTableProps, FilterTableState> {
+    /**
+     * Datagrid row table manager
+     */
+    tableManager: React.RefObject<GridApiCommunity>;
 
+    /**
+     * Filter table web component constructor
+     * @param {FilterTableProps} props elements passed from the filter web component
+     */
     constructor(props: FilterTableProps) {
         super(props);
         this.state = {
-            rows: [],
-            tableManager: useGridApiRef()
+            rows: []
         }
         addFilter.addObservable("mainDeviceInfosFilterTable", this.updateRows)
+        this.tableManager = createRef();
     }
 
     /**
      * Update rows method callback
-     * @param newRows 
+     * @param {unknown[]} newRows Updated rows list for the datagrid
      */
-    updateRows(newRows: unknown[]) {
-        console.log(newRows)
-        console.log("Updated rows")
+    updateRows = (newRows: unknown[]) => {
         this.setState({
             rows: newRows as FilterRow[]
         })
-        console.log(this.state.rows)
         
-        const tableManager = this.state.tableManager;
-        tableManager.current?.updateRows(
-            this.state.rows.map(
-                (row: FilterRow, index:number) => ({
-                    id: index,
-                    elementType: row.elementType,
-                    fieldName: row.fieldName,
-                    opType: row.comparisonType,
-                    filterValue: row.value
-                })
+        const tableManager = this.tableManager;
+        if(tableManager.current){
+            tableManager.current.updateRows(
+                this.state.rows.map(
+                    (row: FilterRow, index:number) => ({
+                        id: index,
+                        elementType: row.elementType,
+                        fieldName: row.fieldName,
+                        opType: row.comparisonType,
+                        filterValue: row.value
+                    })
+                )
             )
-        )
+        }
     }
 
+    /**
+     * Destruction of the table component lifecycle triggered method
+     */
     componentWillUnmount(): void {
         addFilter.removeObservable("mainDeviceInfosFilterTable")
     }
@@ -123,7 +134,6 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
      * @returns {JSX.Element} Web component
      */
     render(): JSX.Element {
-        const props = this.props;
         const state = this.state;
         return (
             <Paper className="FilterTable">
@@ -131,12 +141,11 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
                     columns={filterTableColumns}
                     rows={state.rows}
                     checkboxSelection
-                    onRowSelectionModelChange={(event: GridRowSelectionModel) => {
-                        props.removeSelectedIndexes((event.values as any) as [number])
-                    }}
                     slots={{
-                        toolbar: FilterGridToolbar
+                        toolbar: FilterGridToolbar,
+                        footer: DeviceMainInfosGridFooter
                     }}
+                    apiRef={this.tableManager}
                 />
             </Paper>
         )

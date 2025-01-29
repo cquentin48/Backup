@@ -3,10 +3,15 @@
  */
 export default interface ControllerAction {
     /**
-     * Controller action set
-     * @param {[object]} inputs Inputs set for the action
+     * List of every observable linked to the controller
      */
-    performAction(inputs: object[]): void;
+    observable: Observable;
+
+    /**
+     * Controller action set
+     * @param {[unknown]} inputs Inputs set for the action
+     */
+    performAction(inputs: unknown[]): void;
 
     /**
      * Adds a new observable for later notifying
