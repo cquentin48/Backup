@@ -29,6 +29,10 @@
     flex: 0 0 auto;
 }
 
+#detailsContainer{
+    height: 100%;
+}
+
 .deviceInfosMainHeader{
     display: flex;
     flex-direction: row;
@@ -62,4 +66,11 @@
     left: 0px;
     display: block;
     margin-left: 4px;
+}
+.PieChartCard{
+    width: 100%;
+}
+
+#pieCharts{
+    padding: 1em 0em 1em 0em;
 }

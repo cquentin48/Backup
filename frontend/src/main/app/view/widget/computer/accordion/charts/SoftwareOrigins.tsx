@@ -6,13 +6,15 @@ import Icon from "@mdi/react";
 import { Avatar, Card, CardContent, CardHeader, IconButton } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 
+import '../../../../../../res/css/ComputerMainInfos.css';
+
 /**
  *  Sofware Origins pie charts view component
  *  @returns {React.JSX.Element} View component
  */
 export default function SoftwareOrigins (): React.JSX.Element {
     return (
-        <Card sx={{ width: "fit-content" }}>
+        <Card className="PieChartCard">
             <CardHeader
                 avatar={
                     <Avatar

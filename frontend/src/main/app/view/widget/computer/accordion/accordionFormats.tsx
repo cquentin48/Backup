@@ -109,7 +109,7 @@ export default class AccordionFormats extends React.Component<{}, AccordionForma
                         removeFilters={this.removeFilters}
                         addNewFilter={this.addNewFilter}
                     />
-                    <Grid2 container spacing={2} sx={{ padding: '1em' }}>
+                    <Grid2 container spacing={2} id="pieCharts">
                         <Grid2 size={6}>
                             <SoftwareOrigins />
                         </Grid2>
