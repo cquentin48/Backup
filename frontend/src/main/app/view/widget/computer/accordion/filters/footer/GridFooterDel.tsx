@@ -1,21 +1,29 @@
-import React from "react";
+import React, { type JSX } from "react";
 
 import { Delete } from "@mui/icons-material";
 import { Button, Tooltip } from "@mui/material";
-import { GridRowModel, useGridApiContext } from "@mui/x-data-grid";
+import { removeDeviceMainInfosFilter } from "../../../../../controller/deviceMainInfos/removeFilters";
 
-export default function GridFooterDelete() {
-    const dataAPI = useGridApiContext();
-    const selectedRows = dataAPI.current?.getSelectedRows();
-    const ids:number[] = []
-    selectedRows!.forEach((row: GridRowModel) =>{
-        const id = row.id;
-        ids.push(id);
-    })
-    console.log(JSON.stringify(ids))
+/**
+ * Selected filtered ids passed from the device main infos footer
+ */
+interface GridFooterDeleteProps {
+    /**
+     * Selected filters id
+     */
+    selectedIds: number[]
+}
+
+/**
+ * Delete button passed from the Device Main infos Grid footer
+ * @param {GridFooterDeleteProps} props Selected filter ids passed from the footer
+ * @returns {JSX.Element} Rendered DOM component
+ */
+export default function GridFooterDelete (props: GridFooterDeleteProps): JSX.Element {
     return (
         <Tooltip title="Delete filters">
-            <Button startIcon={<Delete/>} disabled={ids.length === 0}>
+            <Button startIcon={<Delete />}
+                onClick={() => { removeDeviceMainInfosFilter.performAction(props.selectedIds) }}>
                 Delete filters
             </Button>
         </Tooltip>

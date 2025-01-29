@@ -47,9 +47,9 @@ export default class Filter {
      * @param {string} inputType Input type check
      * @see {@link} Authorized input types
      */
-    public static inputTypeAuthorizedList(inputType:string){
+    public static inputTypeAuthorizedList (inputType: string): void {
         const authorizedList = ["File", "Library"];
-        if(!authorizedList.includes(inputType)){
+        if (!authorizedList.includes(inputType)) {
             throw new ValidationError(`The input type ${inputType} set is not valid. "+
                 "The only ones accepted are : "File" or "Library".`)
         }
@@ -60,9 +60,9 @@ export default class Filter {
      * @param {string} comparaison Filter comparison operator
      * @see {@link} Authorized comparison operators
      */
-    public static comparisonTypesCheck(comparaison: string){
+    public static comparisonTypesCheck (comparaison: string): void {
         const authorizedList = ["<", ">", "!=", "=="];
-        if(!authorizedList.includes(comparaison)){
+        if (!authorizedList.includes(comparaison)) {
             throw new ValidationError(`The comparison ${comparaison} set is not valid. "+
                 "The only ones accepted are : "<", ">", "!=" or "==".`)
         }
@@ -81,14 +81,15 @@ export default class Filter {
 
     /**
      * Based of the ``inputType``, fetch every single field name
-     * @param {"File" | "Library"} inputType Input type 
+     * @param {"File" | "Library"} inputType Input type
+     * @returns {string[]} Input field name list
      */
-    public static inputFieldName(inputType:"File" | "Library" | ""){
-        if(inputType == "File"){
-            return ['name','creationDate','lastUpdateDate','size','path','type']
-        }else if(inputType == "Library"){
-            return ['name','firstUploadDate','lastUploadDate','size','repository','version']
-        }else{
+    public static inputFieldName (inputType: "File" | "Library" | ""): string[] {
+        if (inputType === "File") {
+            return ['name', 'creationDate', 'lastUpdateDate', 'size', 'path', 'type']
+        } else if (inputType === "Library") {
+            return ['name', 'firstUploadDate', 'lastUploadDate', 'size', 'repository', 'version']
+        } else {
             return ['Please choose a type']
         }
     }

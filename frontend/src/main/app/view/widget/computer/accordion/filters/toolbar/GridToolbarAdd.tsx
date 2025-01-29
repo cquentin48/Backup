@@ -1,9 +1,14 @@
+import React, { JSX } from "react";
+
 import { Add } from "@mui/icons-material";
 import { Tooltip, Button } from "@mui/material";
 import NewFilterPaperDialog from "./paperDialog";
-import React from "react";
 
-export default function GridToolbarAdd() {
+/**
+ * Toolbar icon button add
+ * @returns {JSX.Element} Rendered component
+ */
+export default function GridToolbarAdd (): React.JSX.Element {
     const [openedDialog, setOpenedDialog] = React.useState(false);
     return (
         <div>
@@ -14,7 +19,7 @@ export default function GridToolbarAdd() {
                     New filter
                 </Button>
             </Tooltip>
-            {openedDialog && <NewFilterPaperDialog />}
+            {openedDialog && <NewFilterPaperDialog updateOpenedDialog={setOpenedDialog}/>}
         </div>
     )
 }

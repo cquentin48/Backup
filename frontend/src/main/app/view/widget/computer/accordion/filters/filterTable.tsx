@@ -3,13 +3,15 @@ import React, { createRef } from "react";
 import { type JSX } from "react";
 
 import { Paper } from "@mui/material";
-import { DataGrid, type GridColDef} from "@mui/x-data-grid";
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
-import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
+import { type GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 
-import { FilterRow } from "../../../../model/filters/FilterManager";
+import { type FilterRow } from "../../../../model/filters/FilterManager";
 import { addFilter } from "../../../../controller/deviceMainInfos/addFilter";
 import DeviceMainInfosGridFooter from './footer/GridFooter';
+import { updateDeviceMainInfosFilter } from "../../../../controller/deviceMainInfos/updateSelectedFilters";
+import { removeDeviceMainInfosFilter } from "../../../../controller/deviceMainInfos/removeFilters";
 
 /**
  * Elements passed from the filter component to this one
@@ -73,8 +75,7 @@ interface FilterTableState {
 /**
  * Table displaying the filters used to displays selected informations
  * in the device main informations page.
- * @param {FilterTableProps} props Fitler and linked delete function associated
- * @returns {JSX.Element} Web component
+ * @implements {React.Component<FilterTableProps, FilterTableState>}
  */
 export default class FilterTable extends React.Component<FilterTableProps, FilterTableState> {
     /**
@@ -86,7 +87,7 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
      * Filter table web component constructor
      * @param {FilterTableProps} props elements passed from the filter web component
      */
-    constructor(props: FilterTableProps) {
+    constructor (props: FilterTableProps) {
         super(props);
         this.state = {
             rows: []
@@ -95,20 +96,24 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
         this.tableManager = createRef();
     }
 
+    componentDidMount(): void {
+        removeDeviceMainInfosFilter.addObservable("mainDeviceInfosFilterTable", this.updateRows)
+    }
+
     /**
      * Update rows method callback
      * @param {unknown[]} newRows Updated rows list for the datagrid
      */
-    updateRows = (newRows: unknown[]) => {
+    updateRows = (newRows: unknown[]): void => {
         this.setState({
             rows: newRows as FilterRow[]
         })
-        
+
         const tableManager = this.tableManager;
-        if(tableManager.current){
+        if (tableManager.current != null) {
             tableManager.current.updateRows(
                 this.state.rows.map(
-                    (row: FilterRow, index:number) => ({
+                    (row: FilterRow, index: number) => ({
                         id: index,
                         elementType: row.elementType,
                         fieldName: row.fieldName,
@@ -123,17 +128,17 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
     /**
      * Destruction of the table component lifecycle triggered method
      */
-    componentWillUnmount(): void {
+    componentWillUnmount (): void {
         addFilter.removeObservable("mainDeviceInfosFilterTable")
+        removeDeviceMainInfosFilter.removeObservable("mainDeviceInfosFilterTable")
     }
 
     /**
      * Table displaying the filters used to displays selected informations
      * in the device main informations page.
-     * @param {FilterTableProps} props Fitler and linked delete function associated
      * @returns {JSX.Element} Web component
      */
-    render(): JSX.Element {
+    render (): JSX.Element {
         const state = this.state;
         return (
             <Paper className="FilterTable">
@@ -146,7 +151,7 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
                         footer: DeviceMainInfosGridFooter
                     }}
                     onRowSelectionModelChange={(event) => {
-                        console.log(event)
+                        updateDeviceMainInfosFilter.performAction(event as unknown[])
                     }}
                     apiRef={this.tableManager}
                 />

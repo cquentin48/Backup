@@ -1,20 +1,21 @@
 import NotFoundError from "../../model/exception/errors/notFoundError";
 import { filterManager } from "../../model/filters/FilterManager";
-import ControllerAction, { CallbackMethod, Observable } from "../controllerActions";
+import { type CallbackMethod, type Observable } from "../controllerActions";
+import type ControllerAction from "../controllerActions";
 
 class RemoveDeviceMainInfosFilter implements ControllerAction {
     observable: Observable;
 
-    constructor() {
+    constructor () {
         this.observable = {};
     }
 
     /**
-         * Fetch the observable based off its name.
-         * @param {string} name Observable name
-         * @returns {Observable} observable used for later callback
-         */
-    getObservable(name: string): CallbackMethod {
+     * Fetch the observable based off its name.
+     * @param {string} name Observable name
+     * @returns {Observable} observable used for later callback
+     */
+    getObservable (name: string): CallbackMethod {
         if (!(name in this.observable)) {
             throw new NotFoundError("The filter table in the device main informations" +
                 " page hasn't been mounted yet!")
@@ -23,8 +24,8 @@ class RemoveDeviceMainInfosFilter implements ControllerAction {
         return tableViewObservable;
     }
 
-    performAction(inputs: unknown[]): void {
-        var filterIDS = inputs.map((filterID: unknown) => {
+    performAction (inputs: unknown[]): void {
+        let filterIDS = inputs.map((filterID: unknown) => {
             return filterID as number;
         });
         filterIDS = filterIDS.sort((firstID, secondID) => {
@@ -40,14 +41,15 @@ class RemoveDeviceMainInfosFilter implements ControllerAction {
         callBackMethod(filterManager.getFilters())
     }
 
-    addObservable(name: string, callback: (updatedData: unknown[]) => void): void {
-        this.observable[name] = callback
+    addObservable (name: string, callback: (updatedData: unknown[]) => void): void {
+        this.observable[name] = callback;
     }
 
-    removeObservable(name: string): void {
+    removeObservable (name: string): void {
         if (!(name in this.observable)) {
             throw new NotFoundError(`The observable with the key name ${name} has not been set!`)
         }
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete this.observable[name];
     }
 }

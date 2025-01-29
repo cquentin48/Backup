@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type Dispatch, type SetStateAction } from "react";
 
 import {
     FormControl, IconButton, InputLabel,
@@ -8,21 +8,52 @@ import Filter from "../../../../../model/filters/Filter";
 import { Add } from "@mui/icons-material";
 import { addFilter } from "../../../../../controller/deviceMainInfos/addFilter";
 import AlreadyAddedWarning from "../../../../../model/exception/warning/alreadyAdded";
-import { filterManager } from "../../../../../model/filters/FilterManager";
 
 import '../../../../../../../res/css/Filters.css';
 
+/**
+ * State of the new filter form dialog
+ */
 interface NewFilterFormState {
-    inputType: string;
-    comparison: string;
-    value: string;
-    fieldName: string;
+    /**
+     * Type of input
+     * @see {@link Filter}
+     */
+    inputType: string
+
+    /**
+     * Comparison operator
+     * @see {@link Filter}
+     */
+    comparison: string
+
+    /**
+     * Value used in the comparison
+     * @see {@link Filter}
+     */
+    value: string
+
+    /**
+     * Name of the property used for the comparison
+     * @see {@link Filter}
+     */
+    fieldName: string
+}
+
+/**
+ * Method which closes the new filter dialog once its done.
+ */
+interface NewFilterFormProps {
+    /**
+     * Close new filter dialog method
+     */
+    closesDialog: Dispatch<SetStateAction<boolean>>
 }
 
 /**
  * New filter form in the device main infos page
  */
-export default class NewFilterForm extends React.Component<{}, NewFilterFormState> {
+export default class NewFilterForm extends React.Component<NewFilterFormProps, NewFilterFormState> {
     state: Readonly<NewFilterFormState> = {
         inputType: Filter.authorizedInputTypes[0],
         comparison: Filter.authorizedComparisonOperations[0],
@@ -34,9 +65,9 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
 
     /**
      * Key pressed handling method
-     * @param {KeyboardEvent} pressedKey pressed event 
+     * @param {KeyboardEvent} pressedKey pressed event
      */
-    handlePressedKey(pressedKey: KeyboardEvent) {
+    handlePressedKey (pressedKey: KeyboardEvent): void {
         if (pressedKey.key === "Enter") {
             this.addsNewFilter();
         }
@@ -45,21 +76,21 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
     /**
      * Mount form component lifecycle method
      */
-    componentDidMount(): void {
-        document.addEventListener("keydown", (event) => this.handlePressedKey(event), false);
+    componentDidMount (): void {
+        document.addEventListener("keydown", (event) => { this.handlePressedKey(event); }, false);
     }
 
     /**
      * Unmount form component lifecycle method
      */
-    componentWillUnmount(): void {
+    componentWillUnmount (): void {
         document.removeEventListener("keydown", this.handlePressedKey, false);
     }
 
     /**
      * Adds a new filter to the main device informations filter list
      */
-    addsNewFilter() {
+    addsNewFilter (): void {
         const state = this.state
         const inputs = [
             state.inputType,
@@ -71,6 +102,7 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
             addFilter.performAction(
                 inputs
             )
+            this.props.closesDialog(false);
         } catch (error) {
             if (error instanceof AlreadyAddedWarning) {
                 console.warn(error.message);
@@ -82,7 +114,7 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
      * Render the component
      * @returns {React.JSX.Element} Form view component
      */
-    render(): React.JSX.Element {
+    render (): React.JSX.Element {
         const state = this.state
         return (
             <div className="newElementDialog">
@@ -100,9 +132,9 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
                         }}
                     >
                         {
-                            Filter.authorizedInputTypes.map((inputType) => {
+                            Filter.authorizedInputTypes.map((inputType, index) => {
                                 return (
-                                    <MenuItem value={inputType}>{inputType}</MenuItem>
+                                    <MenuItem value={inputType} key={index}>{inputType}</MenuItem>
                                 )
                             })
                         }
@@ -123,9 +155,9 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
                     >
                         {
                             Filter.inputFieldName(state.inputType as "File" | "Library").map(
-                                (comparison) => {
+                                (comparison, index) => {
                                     return (
-                                        <MenuItem value={comparison}>{comparison}</MenuItem>
+                                        <MenuItem value={comparison} key={index}>{comparison}</MenuItem>
                                     )
                                 })
                         }
@@ -145,9 +177,9 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
                         }}
                     >
                         {
-                            Filter.authorizedComparisonOperations.map((comparison) => {
+                            Filter.authorizedComparisonOperations.map((comparison, index) => {
                                 return (
-                                    <MenuItem value={comparison}>{comparison}</MenuItem>
+                                    <MenuItem value={comparison} key={index}>{comparison}</MenuItem>
                                 )
                             })
                         }
@@ -158,7 +190,7 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
                     label="Field value"
                     variant="standard"
                     onChange={(newValue:
-                        React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                    React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
                         this.setState({
                             value: newValue.target.value
                         })
@@ -167,7 +199,7 @@ export default class NewFilterForm extends React.Component<{}, NewFilterFormStat
                 <Tooltip title="Adds new filter">
                     <IconButton
                         aria-label="add"
-                        onClick={() => this.addsNewFilter()}
+                        onClick={() => { this.addsNewFilter(); }}
                     >
                         <Add />
                     </IconButton>

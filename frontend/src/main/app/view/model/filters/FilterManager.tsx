@@ -20,22 +20,22 @@ class FilterManager {
     /**
      * Filters set in the filter main device informations
      */
-    private filters: [Filter?] = [];
+    private readonly filters: [Filter?] = [];
     private selectedFilters: number[] = [];
 
     /**
      * Adds a new filter inside the table
-     * @param {"File" | "Library" } elementType 
-     * @param {string} fieldName 
-     * @param { "<" | ">" | "!=" | "==" } comparisonType 
-     * @param {object} value 
+     * @param {"File" | "Library" } elementType Type of element to apply the filter on
+     * @param {string} fieldName Name of the property on which the filter will apply
+     * @param { "<" | ">" | "!=" | "==" } comparisonType Type of the comparison (e.g. lower than, higher than, ...)
+     * @param {object} value Value for the filter to apply on
      */
     addFilter(
         elementType: "File" | "Library",
         fieldName: string,
         comparisonType: "<" | ">" | "!=" | "==",
         value: object
-    ) {
+    ): void {
         const newFilter = new Filter(elementType, fieldName, comparisonType, value);
         if (this.filters.includes(newFilter)) {
             throw new AlreadyAddedWarning("The filter is already set! It will be ignored!")
@@ -48,7 +48,7 @@ class FilterManager {
      * Update the selected ids in the device main infos filter
      * @param {number[]} selectedIDS selected filters
      */
-    updateSelectedIDS(selectedIDS:number[]){
+    updateSelectedIDS(selectedIDS: number[]): void {
         this.selectedFilters = selectedIDS;
     }
 
@@ -57,16 +57,17 @@ class FilterManager {
      * @param {number} filterID id of the stored filter in the array
      * @throws {NotFoundError} Id set by the user outside of the range of the array indexes
      */
-    removeFilter(filterID: number) {
+    removeFilter(filterID: number): void {
         if (filterID >= this.filters.length) {
             throw new NotFoundError(`The index ${filterID} set is not in the array list!`)
         }
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete this.filters[filterID];
     }
 
     /**
      * Fetch every filter set
-     * @returns {FilterRow[]} Filter list 
+     * @returns {FilterRow[]} Filter list
      */
     public getFilters(): FilterRow[] {
         const input = JSON.parse(JSON.stringify(this.filters));
@@ -82,11 +83,11 @@ class FilterManager {
      * @returns {Filter|undefined} Filter set at the id requested by the user
      * @throws {NotFoundError} Id set by the user outside of the range of the array indexes
      */
-    public getFilter(id: number): Filter {
+    public getFilter(id: number): Filter | undefined {
         if (id >= this.filters.length) {
-            throw new NotFoundError(`The index ${id} set is not in the array list!`)
+            throw new NotFoundError(`The index ${id} set is not in the array list!`);
         }
-        return this.filters[id]!;
+        return this.filters[id];
     }
 }
 

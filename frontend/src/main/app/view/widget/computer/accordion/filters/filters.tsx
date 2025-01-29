@@ -1,7 +1,5 @@
-import { mdiPlus } from "@mdi/js";
-import Icon from "@mdi/react";
-import { Button } from "@mui/material";
 import React from "react";
+
 import FilterTable from "./filterTable";
 
 /**
