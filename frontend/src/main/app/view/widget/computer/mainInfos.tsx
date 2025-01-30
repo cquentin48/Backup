@@ -5,8 +5,7 @@ import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';
 import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, Grid2, Paper } from "@mui/material";
 
-import AccordionFormats from "./accordion/accordionFormats";
-import AccordionMainInfos from "./accordion/accordionMainInfos";
+import Formats from "./sections/Formats";
 import '../../../../res/css/ComputerMainInfos.css';
 
 /**
@@ -24,7 +23,7 @@ interface MainInfosFrameProps {
  * @param {MainInfosFrameProps} props Selected device passed from the {ComputerElement} view page.
  * @returns {React.JSX.Element} View component
  */
-export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element {
+export default function MainInfosFrame(props: MainInfosFrameProps): JSX.Element {
     const [packageType, setPackageType] = React.useState('');
 
     const handleChange = (event: SelectChangeEvent): void => {
@@ -62,10 +61,7 @@ export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element
                 </FormControl>
             </div>
             <Paper elevation={2} id="detailsContainer">
-                <Grid2 spacing={2}>
-                    <AccordionMainInfos computer={props.computer} />
-                    <AccordionFormats/>
-                </Grid2>
+                <Formats />
             </Paper>
         </div>
     );

@@ -21,7 +21,7 @@ interface AccordionFormatsState {
 /**
  * Accordion displaying the formats (software and libraries) inside pie charts
  */
-export default class AccordionFormats extends React.Component<{}, AccordionFormatsState> {
+export default class Formats extends React.Component<{}, AccordionFormatsState> {
     /**
      * Component state
      */

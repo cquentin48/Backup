@@ -1,10 +1,10 @@
 import React from "react";
 
 import Icon from "@mdi/react";
-import { mdiCpu64Bit, mdiCalendarPlusOutline, mdiCalendarSync, mdiBookCogOutline } from "@mdi/js";
+import { mdiCpu64Bit, mdiCalendarPlusOutline, mdiCalendarSync } from "@mdi/js";
 
-import { ExpandMore, Memory, Storage } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, Avatar, Card, CardContent, CardHeader, Grid2 } from "@mui/material";
+import { Memory, Storage } from "@mui/icons-material";
+import { Avatar, Card, CardContent, CardHeader, Grid2 } from "@mui/material";
 
 import type Computer from "../../../../model/computer/computer";
 import '../../../../../res/css/ComputerMainInfos.css';
@@ -21,12 +21,12 @@ interface AccordionMainInfosProps {
  * @param {AccordionMainInfosProps} props computer linked to the widget
  * @returns {React.JSX.Element} Accordion with the device main informations
  */
-export default function AccordionMainInfos(props: AccordionMainInfosProps): JSX.Element {
+export default function MainInfos(props: AccordionMainInfosProps): JSX.Element {
     const computer = props.computer;
 
     return (
         <div>
-            <Grid2 container spacing={2} sx={{ padding: "1em 0em 1em 0em" }}>
+            <Grid2 container spacing={2} sx={{ padding: "0em 1em 0em 1em" }}>
                 <Grid2 size={{ md: 2 }}>
                     <Card sx={{
                         height: "100%",

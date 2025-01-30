@@ -9,6 +9,7 @@ import {
 import type Computer from "../../../model/computer/computer";
 
 import '../../../../res/css/ComputerMainInfos.css';
+import MainInfos from "../../widget/computer/sections/MainInfos";
 
 /**
  * Props interface for the computer main information display component class
@@ -38,6 +39,7 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
         const computer = this.props.computer;
         return (
             <div id="computerMainInfos">
+                <MainInfos computer={computer} />
                 <div id="computerMainInfosHeader" style={{
                     display: "flex"
                 }}>
