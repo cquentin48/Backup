@@ -1,11 +1,7 @@
 /* eslint @typescript-eslint/ban-types: 0 */
 import React from "react";
 
-import { mdiFileCogOutline } from "@mdi/js";
-import Icon from "@mdi/react";
-
-import { ExpandMore } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, Grid2 } from "@mui/material";
+import { Grid2 } from "@mui/material";
 
 import '../../../../../res/css/ComputerMainInfos.css';
 import SoftwareOrigins from "./charts/SoftwareOrigins";
@@ -37,7 +33,7 @@ export default class AccordionFormats extends React.Component<{}, AccordionForma
      * Adds a new filter to display selected data.
      * @param {string} newFilter new filter to add
      */
-    addNewFilter (newFilter: string): void {
+    addNewFilter(newFilter: string): void {
         if (this.state.filters.includes(newFilter)) {
             console.log("This filter has already been set!")
         } else {
@@ -53,7 +49,7 @@ export default class AccordionFormats extends React.Component<{}, AccordionForma
      * Remove filters selected by the user
      * @param {[number?]} indexes filters indexes set in the array
      */
-    removeFilters (indexes: [number?]): void {
+    removeFilters(indexes: [number?]): void {
         const filters = this.state.filters;
         const reverseSortedIndexes = indexes.sort(
             (a: number | undefined, b: number | undefined) => {
@@ -82,43 +78,25 @@ export default class AccordionFormats extends React.Component<{}, AccordionForma
      * Render the component
      * @returns {React.JSX.Element} Accordion displaying the file formats and libraries types
      */
-    render (): React.JSX.Element {
+    render(): React.JSX.Element {
         const state = this.state
 
         return (
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMore />}
-                    aria-controls="types-content"
-                    id="types-conent-header"
-                >
-                    <div className="deviceInfosMainHeader">
-                        <Icon path={mdiFileCogOutline} style={{
-                            width: '40px'
-                        }} />
-                        <span style={{
-                            fontSize: '26px'
-                        }}>
-                            Files & types formats
-                        </span>
-                    </div>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Filters
-                        filters={state.filters}
-                        removeFilters={this.removeFilters}
-                        addNewFilter={this.addNewFilter}
-                    />
-                    <Grid2 container spacing={2} id="pieCharts">
-                        <Grid2 size={6}>
-                            <SoftwareOrigins />
-                        </Grid2>
-                        <Grid2 size={6}>
-                            <FilesTypes />
-                        </Grid2>
+            <div>
+                <Filters
+                    filters={state.filters}
+                    removeFilters={this.removeFilters}
+                    addNewFilter={this.addNewFilter}
+                />
+                <Grid2 container spacing={2} id="pieCharts">
+                    <Grid2 size={6}>
+                        <SoftwareOrigins />
                     </Grid2>
-                </AccordionDetails>
-            </Accordion>
+                    <Grid2 size={6}>
+                        <FilesTypes />
+                    </Grid2>
+                </Grid2>
+            </div>
         )
     }
 }

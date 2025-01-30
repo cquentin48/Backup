@@ -62,7 +62,7 @@ class FilterManager {
             throw new NotFoundError(`The index ${filterID} set is not in the array list!`)
         }
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        delete this.filters[filterID];
+        this.filters.splice(filterID, 1);
     }
 
     /**

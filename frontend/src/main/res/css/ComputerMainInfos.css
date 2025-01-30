@@ -14,6 +14,7 @@
     margin: 0px 8px 8px 56px;
     display: flex;
     flex-flow: column nowrap;
+    width: 100%;
 }
 
 #deviceElementsPage{

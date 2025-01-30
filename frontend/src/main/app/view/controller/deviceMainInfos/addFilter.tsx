@@ -26,7 +26,7 @@ class AddDeviceMainInfosFilter implements ControllerAction {
     getObservable (name: string): CallbackMethod {
         if (!(name in this.observable)) {
             throw new NotFoundError("The filter table in the device main informations" +
-                " page hasn't been mounted yet!")
+                " page hasn't been mounted yet for the filter adding operation!")
         }
         const tableViewObservable = this.observable[name]
         return tableViewObservable;
@@ -51,7 +51,6 @@ class AddDeviceMainInfosFilter implements ControllerAction {
             comparison as "<" | ">" | "!=" | "==",
             value
         )
-
         const callBackMethod = this.getObservable("mainDeviceInfosFilterTable");
 
         callBackMethod(filterManager.getFilters())

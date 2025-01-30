@@ -1,11 +1,19 @@
-import NotFoundError from "../../model/exception/errors/notFoundError";
-import { filterManager } from "../../model/filters/FilterManager";
-import { type CallbackMethod, type Observable } from "../controllerActions";
+import { type Observable, type CallbackMethod } from "../controllerActions";
 import type ControllerAction from "../controllerActions";
 
+import { filterManager } from "../../model/filters/FilterManager";
+import NotFoundError from "../../model/exception/errors/notFoundError";
+
+/**
+ * 
+ * ``Filter(s) removal`` controller action set in the device main information page.
+ */
 class RemoveDeviceMainInfosFilter implements ControllerAction {
     observable: Observable;
 
+    /**
+     * Controller for the filter addition in the device main informations page
+     */
     constructor () {
         this.observable = {};
     }
@@ -18,12 +26,16 @@ class RemoveDeviceMainInfosFilter implements ControllerAction {
     getObservable (name: string): CallbackMethod {
         if (!(name in this.observable)) {
             throw new NotFoundError("The filter table in the device main informations" +
-                " page hasn't been mounted yet!")
+                " page hasn't been mounted yet for the filter delete operation!")
         }
         const tableViewObservable = this.observable[name]
         return tableViewObservable;
     }
 
+    /**
+     * Set new filter inside for the device main information view.
+     * @param { unknown[] } inputs Inputs set by the user for the new filter.
+     */
     performAction (inputs: unknown[]): void {
         let filterIDS = inputs.map((filterID: unknown) => {
             return filterID as number;
@@ -37,7 +49,6 @@ class RemoveDeviceMainInfosFilter implements ControllerAction {
         });
 
         const callBackMethod = this.getObservable("mainDeviceInfosFilterTable");
-
         callBackMethod(filterManager.getFilters())
     }
 

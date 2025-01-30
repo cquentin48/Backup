@@ -23,7 +23,7 @@
   },
   "include": [
     "src"
-  ],
+, "../client/removeFilters.tsx"  ],
   "files": ["src/@types/graphql.d.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

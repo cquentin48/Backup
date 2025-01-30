@@ -66,6 +66,26 @@ const filterTableColumns: GridColDef[] = [
 ];
 
 /**
+ * Deleted filter row interface
+ */
+interface DeleteRow{
+    /**
+     * Row id of the filter in the datagrid
+     */
+    id: number;
+
+    /**
+     * Row update action (``delete`` here)
+     */
+    _action?: 'delete';
+}
+
+/**
+ * Update row type used for the row update transaction
+ */
+type UpdateRow = DeleteRow | FilterRow;
+
+/**
  * State of the filter table
  */
 interface FilterTableState {
@@ -93,11 +113,45 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
             rows: []
         }
         addFilter.addObservable("mainDeviceInfosFilterTable", this.updateRows)
+        removeDeviceMainInfosFilter.addObservable("mainDeviceInfosFilterTable", this.updateRows)
         this.tableManager = createRef();
     }
 
-    componentDidMount(): void {
-        removeDeviceMainInfosFilter.addObservable("mainDeviceInfosFilterTable", this.updateRows)
+    /**
+     * Between the update filter list and the current filter list, compute
+     * the differences done.
+     * @param { FilterRow[] } currentRows Current filter list set in the datagrid
+     * @param { FilterRow[] } newRows New filter list computed in the recently done operation
+     * @returns {UpdateRow[]} Row updated list ready for the transaction
+     */
+    getDiffElements(currentRows: FilterRow[], newRows: FilterRow[]): UpdateRow[]{
+        const updatedRows: UpdateRow[] = [];
+        console.log(`Old rows : ${JSON.stringify(currentRows)}`);
+        console.log(`New rows : ${JSON.stringify(newRows)}`);
+        // Fetch the deleted rows
+        currentRows.forEach((currentRow: FilterRow, index: number) => {
+            const hasRowBeenDeleted = newRows.find(
+                (newRow:FilterRow) => {return newRow === currentRow}) !== undefined
+            if(!hasRowBeenDeleted){
+                updatedRows.push({id: index, _action:'delete'})
+            }
+        })
+
+        // Fetch the created rows
+        newRows.forEach((newRow: FilterRow, index: number) => {
+            const hasRowBeenCreated = currentRows.find(
+                (currentRow: FilterRow) => {return newRow === currentRow}) !== undefined;
+            if(!hasRowBeenCreated){
+                updatedRows.push({
+                    id:index,
+                    comparisonType: newRow.comparisonType,
+                    fieldName: newRow.fieldName,
+                    elementType: newRow.elementType,
+                    value: newRow.value
+                })
+            }
+        })
+        return updatedRows;
     }
 
     /**
@@ -105,23 +159,17 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
      * @param {unknown[]} newRows Updated rows list for the datagrid
      */
     updateRows = (newRows: unknown[]): void => {
-        this.setState({
-            rows: newRows as FilterRow[]
-        })
-
         const tableManager = this.tableManager;
         if (tableManager.current != null) {
-            tableManager.current.updateRows(
-                this.state.rows.map(
-                    (row: FilterRow, index: number) => ({
-                        id: index,
-                        elementType: row.elementType,
-                        fieldName: row.fieldName,
-                        opType: row.comparisonType,
-                        filterValue: row.value
-                    })
+            const updatedElements = this.getDiffElements(this.state.rows, newRows as FilterRow[]);
+            updatedElements.forEach((element: UpdateRow) => {
+                tableManager.current?.updateRows(
+                    [element]
                 )
-            )
+            })
+            this.setState({
+                rows: newRows as FilterRow[]
+            })
         }
     }
 
