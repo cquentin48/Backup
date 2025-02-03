@@ -33,7 +33,7 @@ export default class Formats extends React.Component<{}, AccordionFormatsState> 
      * Adds a new filter to display selected data.
      * @param {string} newFilter new filter to add
      */
-    addNewFilter(newFilter: string): void {
+    addNewFilter (newFilter: string): void {
         if (this.state.filters.includes(newFilter)) {
             console.log("This filter has already been set!")
         } else {
@@ -49,7 +49,7 @@ export default class Formats extends React.Component<{}, AccordionFormatsState> 
      * Remove filters selected by the user
      * @param {[number?]} indexes filters indexes set in the array
      */
-    removeFilters(indexes: [number?]): void {
+    removeFilters (indexes: [number?]): void {
         const filters = this.state.filters;
         const reverseSortedIndexes = indexes.sort(
             (a: number | undefined, b: number | undefined) => {
@@ -78,7 +78,7 @@ export default class Formats extends React.Component<{}, AccordionFormatsState> 
      * Render the component
      * @returns {React.JSX.Element} Accordion displaying the file formats and libraries types
      */
-    render(): React.JSX.Element {
+    render (): React.JSX.Element {
         const state = this.state
 
         return (

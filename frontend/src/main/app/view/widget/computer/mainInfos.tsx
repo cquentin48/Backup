@@ -3,7 +3,7 @@ import type Computer from "../../../model/computer/computer";
 
 import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';
-import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, Grid2, Paper } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, Paper } from "@mui/material";
 
 import Formats from "./sections/Formats";
 import '../../../../res/css/ComputerMainInfos.css';
@@ -23,7 +23,7 @@ interface MainInfosFrameProps {
  * @param {MainInfosFrameProps} props Selected device passed from the {ComputerElement} view page.
  * @returns {React.JSX.Element} View component
  */
-export default function MainInfosFrame(props: MainInfosFrameProps): JSX.Element {
+export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element {
     const [packageType, setPackageType] = React.useState('');
 
     const handleChange = (event: SelectChangeEvent): void => {

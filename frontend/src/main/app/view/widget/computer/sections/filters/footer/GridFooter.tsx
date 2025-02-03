@@ -19,24 +19,24 @@ interface DeviceMainInfosGridFooterState {
  * Device main infos datagrid footer
  */
 export default class DeviceMainInfosGridFooter extends React.Component<
-    NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
+NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
 > {
     /**
      * Device main infos grid footer web component initialisation
      * @param {NonNullable<GridSlotsComponentsProps['footer']>} props Elements passed from the datagrid
      */
-    constructor(props: NonNullable<GridSlotsComponentsProps['footer']>) {
+    constructor (props: NonNullable<GridSlotsComponentsProps['footer']>) {
         super(props);
         this.state = {
             idsList: []
         }
     }
 
-    componentDidMount(): void {
+    componentDidMount (): void {
         updateDeviceMainInfosFilter.addObservable('deviceMainInfosFooter', this.handleUpdatedSelectedRows)
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount (): void {
         updateDeviceMainInfosFilter.removeObservable('deviceMainInfosFooter')
     }
 
@@ -54,12 +54,12 @@ export default class DeviceMainInfosGridFooter extends React.Component<
      * Render web component
      * @returns {React.JSX.Element} Rendered component
      */
-    render(): JSX.Element {
+    render (): JSX.Element {
         const ids = this.state.idsList
         if (ids.length > 0) {
             return (
                 <Box sx={{ p: 1, display: 'flex' }}>
-                    <p>{`${ids.length}`} filtre{(ids.length > 1) && "s"} 
+                    <p>{`${ids.length}`} filtre{(ids.length > 1) && "s"}
                         sélectionné{(ids.length > 1) && "s"}!</p>
                     <GridFooterDelete selectedIds={ids} />
                 </Box>

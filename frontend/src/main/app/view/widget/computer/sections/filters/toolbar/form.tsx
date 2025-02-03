@@ -69,7 +69,6 @@ export default class NewFilterForm extends React.Component<NewFilterFormProps, N
      */
     handlePressedKey (pressedKey: KeyboardEvent): void {
         if (pressedKey.key === "Enter") {
-            console.log("Pressed key!")
             this.addsNewFilter();
         }
     }
@@ -100,7 +99,6 @@ export default class NewFilterForm extends React.Component<NewFilterFormProps, N
             state.value
         ]
         try {
-            console.log("Button pressed!")
             addFilter.performAction(
                 inputs
             )
@@ -201,7 +199,7 @@ export default class NewFilterForm extends React.Component<NewFilterFormProps, N
                 <Tooltip title="Adds new filter">
                     <IconButton
                         aria-label="add"
-                        onClick={() => { console.log("Button pressed"); this.addsNewFilter(); }}
+                        onClick={() => { this.addsNewFilter(); }}
                     >
                         <Add />
                     </IconButton>

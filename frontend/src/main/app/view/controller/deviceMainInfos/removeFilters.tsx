@@ -5,7 +5,7 @@ import { filterManager } from "../../model/filters/FilterManager";
 import NotFoundError from "../../model/exception/errors/notFoundError";
 
 /**
- * 
+ *
  * ``Filter(s) removal`` controller action set in the device main information page.
  */
 class RemoveDeviceMainInfosFilter implements ControllerAction {

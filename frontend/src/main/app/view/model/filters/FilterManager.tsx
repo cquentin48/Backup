@@ -30,7 +30,7 @@ class FilterManager {
      * @param { "<" | ">" | "!=" | "==" } comparisonType Type of the comparison (e.g. lower than, higher than, ...)
      * @param {object} value Value for the filter to apply on
      */
-    addFilter(
+    addFilter (
         elementType: "File" | "Library",
         fieldName: string,
         comparisonType: "<" | ">" | "!=" | "==",
@@ -48,7 +48,7 @@ class FilterManager {
      * Update the selected ids in the device main infos filter
      * @param {number[]} selectedIDS selected filters
      */
-    updateSelectedIDS(selectedIDS: number[]): void {
+    updateSelectedIDS (selectedIDS: number[]): void {
         this.selectedFilters = selectedIDS;
     }
 
@@ -57,7 +57,7 @@ class FilterManager {
      * @param {number} filterID id of the stored filter in the array
      * @throws {NotFoundError} Id set by the user outside of the range of the array indexes
      */
-    removeFilter(filterID: number): void {
+    removeFilter (filterID: number): void {
         if (filterID >= this.filters.length) {
             throw new NotFoundError(`The index ${filterID} set is not in the array list!`)
         }
@@ -69,7 +69,7 @@ class FilterManager {
      * Fetch every filter set
      * @returns {FilterRow[]} Filter list
      */
-    public getFilters(): FilterRow[] {
+    public getFilters (): FilterRow[] {
         const input = JSON.parse(JSON.stringify(this.filters));
         input.forEach((element: FilterRow, index: number) => {
             element.id = index
@@ -83,7 +83,7 @@ class FilterManager {
      * @returns {Filter|undefined} Filter set at the id requested by the user
      * @throws {NotFoundError} Id set by the user outside of the range of the array indexes
      */
-    public getFilter(id: number): Filter | undefined {
+    public getFilter (id: number): Filter | undefined {
         if (id >= this.filters.length) {
             throw new NotFoundError(`The index ${id} set is not in the array list!`);
         }

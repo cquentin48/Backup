@@ -68,16 +68,16 @@ const filterTableColumns: GridColDef[] = [
 /**
  * Deleted filter row interface
  */
-interface DeleteRow{
+interface DeleteRow {
     /**
      * Row id of the filter in the datagrid
      */
-    id: number;
+    id: number
 
     /**
      * Row update action (``delete`` here)
      */
-    _action?: 'delete';
+    _action?: 'delete'
 }
 
 /**
@@ -124,26 +124,26 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
      * @param { FilterRow[] } newRows New filter list computed in the recently done operation
      * @returns {UpdateRow[]} Row updated list ready for the transaction
      */
-    getDiffElements(currentRows: FilterRow[], newRows: FilterRow[]): UpdateRow[]{
+    getDiffElements (currentRows: FilterRow[], newRows: FilterRow[]): UpdateRow[] {
         const updatedRows: UpdateRow[] = [];
         console.log(`Old rows : ${JSON.stringify(currentRows)}`);
         console.log(`New rows : ${JSON.stringify(newRows)}`);
         // Fetch the deleted rows
         currentRows.forEach((currentRow: FilterRow, index: number) => {
             const hasRowBeenDeleted = newRows.find(
-                (newRow:FilterRow) => {return newRow === currentRow}) !== undefined
-            if(!hasRowBeenDeleted){
-                updatedRows.push({id: index, _action:'delete'})
+                (newRow: FilterRow) => { return newRow === currentRow }) !== undefined
+            if (!hasRowBeenDeleted) {
+                updatedRows.push({ id: index, _action: 'delete' })
             }
         })
 
         // Fetch the created rows
         newRows.forEach((newRow: FilterRow, index: number) => {
             const hasRowBeenCreated = currentRows.find(
-                (currentRow: FilterRow) => {return newRow === currentRow}) !== undefined;
-            if(!hasRowBeenCreated){
+                (currentRow: FilterRow) => { return newRow === currentRow }) !== undefined;
+            if (!hasRowBeenCreated) {
                 updatedRows.push({
-                    id:index,
+                    id: index,
                     comparisonType: newRow.comparisonType,
                     fieldName: newRow.fieldName,
                     elementType: newRow.elementType,

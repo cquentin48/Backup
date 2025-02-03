@@ -21,7 +21,7 @@ interface AccordionMainInfosProps {
  * @param {AccordionMainInfosProps} props computer linked to the widget
  * @returns {React.JSX.Element} Accordion with the device main informations
  */
-export default function MainInfos(props: AccordionMainInfosProps): JSX.Element {
+export default function MainInfos (props: AccordionMainInfosProps): JSX.Element {
     const computer = props.computer;
 
     return (
@@ -38,7 +38,7 @@ export default function MainInfos(props: AccordionMainInfosProps): JSX.Element {
                                 <Icon path={mdiCpu64Bit} size={1} />
                             </Avatar>
                         }
-                            title="Processor"
+                        title="Processor"
                         />
                         <CardContent>
                             {computer.processor}
@@ -56,7 +56,7 @@ export default function MainInfos(props: AccordionMainInfosProps): JSX.Element {
                                 <Memory />
                             </Avatar>
                         }
-                            title="Computer cores"
+                        title="Computer cores"
                         />
                         <CardContent>
                             {computer.cores}
@@ -74,7 +74,7 @@ export default function MainInfos(props: AccordionMainInfosProps): JSX.Element {
                                 <Storage />
                             </Avatar>
                         }
-                            title="RAM"
+                        title="RAM"
                         />
                         <CardContent>
                             {computer.formatBytes(computer.memory)} RAM in total
@@ -92,7 +92,7 @@ export default function MainInfos(props: AccordionMainInfosProps): JSX.Element {
                                 <Icon path={mdiCalendarPlusOutline} size={1} />
                             </Avatar>
                         }
-                            title="Device added on"
+                        title="Device added on"
                         />
                         <CardContent>
                             {
@@ -117,7 +117,7 @@ export default function MainInfos(props: AccordionMainInfosProps): JSX.Element {
                                 <Icon path={mdiCalendarSync} size={1} />
                             </Avatar>
                         }
-                            title="Last Update"
+                        title="Last Update"
                         />
                         <CardContent>
                             {
@@ -141,7 +141,7 @@ export default function MainInfos(props: AccordionMainInfosProps): JSX.Element {
                                 <Storage />
                             </Avatar>
                         }
-                            title="Storage"
+                        title="Storage"
                         />
                         <CardContent>
                             {"Amount of storage here"} used in the backup server {/* Replace it */}
