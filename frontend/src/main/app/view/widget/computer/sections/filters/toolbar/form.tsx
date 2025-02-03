@@ -1,4 +1,4 @@
-import React, { type Dispatch, type SetStateAction } from "react";
+import React, { useEffect, type Dispatch, type SetStateAction } from "react";
 
 import {
     FormControl, IconButton, InputLabel,
@@ -52,57 +52,50 @@ interface NewFilterFormProps {
 
 /**
  * New filter form in the device main infos page
+ * @param props Close form dialog function
  */
-export default class NewFilterForm extends React.Component<NewFilterFormProps, NewFilterFormState> {
-    state: Readonly<NewFilterFormState> = {
-        inputType: Filter.authorizedInputTypes[0],
-        comparison: Filter.authorizedComparisonOperations[0],
-        value: "",
-        fieldName: Filter.inputFieldName(
-            Filter.authorizedInputTypes[0] as "File" | "Library"
-        )[0]
-    };
+export default function NewFilterForm (props: NewFilterFormProps) {
+    //export default class NewFilterForm extends React.Component<NewFilterFormProps, NewFilterFormState> {
+    const [inputType, updateInputType] = React.useState(Filter.authorizedInputTypes[0]);
+    const [comparison, updateComparison] = React.useState(Filter.authorizedComparisonOperations[0]);
+    const [value, updateValue] = React.useState("");
+    const [fieldName, updateFieldName] = React.useState(Filter.inputFieldName(
+        Filter.authorizedInputTypes[0] as "File" | "Library"
+    )[0]);
+    const [focusedInput, updateFocusedInput] = React.useState(3)
 
     /**
      * Key pressed handling method
      * @param {KeyboardEvent} pressedKey pressed event
      */
-    handlePressedKey (pressedKey: KeyboardEvent): void {
-        if (pressedKey.key === "Enter") {
-            this.addsNewFilter();
+    const handlePressedKey = (pressedKey: KeyboardEvent): void => {
+        if(pressedKey.key === "Tab"){
+            pressedKey.preventDefault();
+            updateFocusedInput((focusedInput+1)%4)
+            console.log(`${focusedInput}`)
         }
-    }
-
-    /**
-     * Mount form component lifecycle method
-     */
-    componentDidMount (): void {
-        document.addEventListener("keydown", (event) => { this.handlePressedKey(event); }, false);
-    }
-
-    /**
-     * Unmount form component lifecycle method
-     */
-    componentWillUnmount (): void {
-        document.removeEventListener("keydown", this.handlePressedKey, false);
+        if (pressedKey.key === "Enter") {
+            console.log("Enter key pressed!")
+            addsNewFilter();
+        }
     }
 
     /**
      * Adds a new filter to the main device informations filter list
      */
-    addsNewFilter (): void {
-        const state = this.state
+    const addsNewFilter = (): void => {
         const inputs = [
-            state.inputType,
-            state.fieldName,
-            state.comparison,
-            state.value
+            inputType,
+            fieldName,
+            comparison,
+            value
         ]
         try {
+            console.log("New filter added!")
             addFilter.performAction(
                 inputs
             )
-            this.props.closesDialog(false);
+            props.closesDialog(false);
         } catch (error) {
             if (error instanceof AlreadyAddedWarning) {
                 console.warn(error.message);
@@ -110,101 +103,102 @@ export default class NewFilterForm extends React.Component<NewFilterFormProps, N
         }
     }
 
-    /**
-     * Render the component
-     * @returns {React.JSX.Element} Form view component
-     */
-    render (): React.JSX.Element {
-        const state = this.state
-        return (
-            <div className="newElementDialog">
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel id="inputTypeLabel">Input type</InputLabel>
-                    <Select
-                        id="inputType"
-                        labelId="inputTypeLabel"
-                        value={state.inputType}
-                        label="Data type"
-                        onChange={(newInputType) => {
-                            this.setState({
-                                inputType: newInputType.target.value
-                            })
-                        }}
-                    >
-                        {
-                            Filter.authorizedInputTypes.map((inputType, index) => {
-                                return (
-                                    <MenuItem value={inputType} key={index}>{inputType}</MenuItem>
-                                )
-                            })
-                        }
-                    </Select>
-                </FormControl>
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel id="fieldNameLabel">Field name</InputLabel>
-                    <Select
-                        id="fieldName"
-                        labelId="fieldNameLabel"
-                        label="Field name"
-                        value={state.fieldName}
-                        onChange={(newFieldName) => {
-                            this.setState({
-                                fieldName: newFieldName.target.value
-                            })
-                        }}
-                    >
-                        {
-                            Filter.inputFieldName(state.inputType as "File" | "Library").map(
-                                (comparison, index) => {
-                                    return (
-                                        <MenuItem value={comparison} key={index}>{comparison}</MenuItem>
-                                    )
-                                })
-                        }
-                    </Select>
-                </FormControl>
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel id="comparisonOperatorLabel">Type of comparison</InputLabel>
-                    <Select
-                        id="comparisonOperator"
-                        labelId="comparisonOperatorLabel"
-                        label="Type of comparison"
-                        value={state.comparison}
-                        onChange={(newComparisonOperator) => {
-                            this.setState({
-                                comparison: newComparisonOperator.target.value
-                            })
-                        }}
-                    >
-                        {
-                            Filter.authorizedComparisonOperations.map((comparison, index) => {
+    useEffect(()=>{
+        document.addEventListener("keydown", handlePressedKey)
+        return () => document.removeEventListener("keydown", handlePressedKey)
+    })
+
+    return (
+        <div className="newElementDialog">
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="inputTypeLabel">Input type</InputLabel>
+                <Select
+                    id="inputType"
+                    labelId="inputTypeLabel"
+                    value={inputType}
+                    label="Data type"
+                    onChange={(newInputType) => {
+                        updateInputType(
+                            newInputType.target.value
+                        )
+                    }}
+                    inputRef={(input) => input && input.focus() && focusedInput == 0}
+                >
+                    {
+                        Filter.authorizedInputTypes.map((inputType, index) => {
+                            return (
+                                <MenuItem value={inputType} key={index}>{inputType}</MenuItem>
+                            )
+                        })
+                    }
+                </Select>
+            </FormControl>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="fieldNameLabel">Field name</InputLabel>
+                <Select
+                    id="fieldName"
+                    labelId="fieldNameLabel"
+                    label="Field name"
+                    value={fieldName}
+                    onChange={(newFieldName) => {
+                        updateFieldName(newFieldName.target.value)
+                    }}
+                    inputRef={(input) => input && input.focus() && focusedInput == 1}
+                >
+                    {
+                        Filter.inputFieldName(inputType as "File" | "Library").map(
+                            (comparison, index) => {
                                 return (
                                     <MenuItem value={comparison} key={index}>{comparison}</MenuItem>
                                 )
                             })
-                        }
-                    </Select>
-                </FormControl>
-                <TextField
-                    id="computerMainInfosFilterValueField"
-                    label="Field value"
-                    variant="standard"
-                    onChange={(newValue:
-                    React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-                        this.setState({
-                            value: newValue.target.value
-                        })
+                    }
+                </Select>
+            </FormControl>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="comparisonOperatorLabel">Type of comparison</InputLabel>
+                <Select
+                    id="comparisonOperator"
+                    labelId="comparisonOperatorLabel"
+                    label="Type of comparison"
+                    value={comparison}
+                    onChange={(newComparisonOperator) => {
+                        updateComparison(newComparisonOperator.target.value)
                     }}
-                />
-                <Tooltip title="Adds new filter">
-                    <IconButton
-                        aria-label="add"
-                        onClick={() => { this.addsNewFilter(); }}
-                    >
-                        <Add />
-                    </IconButton>
-                </Tooltip>
-            </div>
-        )
-    }
+                    inputRef={(input) => input && input.focus() && focusedInput == 2}
+                >
+                    {
+                        Filter.authorizedComparisonOperations.map((comparison, index) => {
+                            return (
+                                <MenuItem value={comparison} key={index}>{comparison}</MenuItem>
+                            )
+                        })
+                    }
+                </Select>
+            </FormControl>
+            <TextField
+                id="computerMainInfosFilterValueField"
+                label="Field value"
+                variant="standard"
+                onChange={(newValue:
+                    React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                    updateValue(
+                        newValue.target.value
+                    )
+                }}
+                inputRef={(input) => input && input.focus() && focusedInput == 3}
+            />
+            <Tooltip title="Adds new filter">
+                <IconButton
+                    aria-label="add"
+                    onClick={() => {
+                        console.log("Button clicked!")
+                        addsNewFilter();
+                    }}
+                >
+                    <Add />
+                </IconButton>
+            </Tooltip>
+        </div>
+    )
 }

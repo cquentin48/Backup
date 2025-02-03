@@ -59,7 +59,7 @@ NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
         if (ids.length > 0) {
             return (
                 <Box sx={{ p: 1, display: 'flex' }}>
-                    <p>{`${ids.length}`} filtre{(ids.length > 1) && "s"}
+                    <p>{`${ids.length}`} filtre{(ids.length > 1) && "s "}
                         sélectionné{(ids.length > 1) && "s"}!</p>
                     <GridFooterDelete selectedIds={ids} />
                 </Box>

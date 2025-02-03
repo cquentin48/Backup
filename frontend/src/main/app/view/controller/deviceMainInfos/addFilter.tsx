@@ -37,6 +37,7 @@ class AddDeviceMainInfosFilter implements ControllerAction {
      * @param { unknown[] } inputs Inputs set by the user for the new filter.
      */
     performAction (inputs: unknown[]): void {
+        console.log("Performed action!")
         const name = inputs[0] as string;
         const fieldName = inputs[1] as string;
         const comparison = inputs[2] as string;

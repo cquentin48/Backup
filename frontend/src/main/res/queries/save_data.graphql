@@ -1,5 +1,5 @@
-query getSaveInfos($saveID:String!){
-  saveInfos(saveId:$saveID){
+query getSaveInfos($snapshotId:String!){
+  snapshotInfos(snapshotId:$snapshotId){
     versions{
       softwareVersion,
       name,

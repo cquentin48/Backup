@@ -19,50 +19,82 @@ interface MainInfosFrameProps {
 }
 
 /**
+ * State of the main information frame
+ */
+interface MainInfosFrameState{
+    /**
+     * Type of package
+     */
+    packageType: string
+}
+
+/**
  * Main informations frame view component
  * @param {MainInfosFrameProps} props Selected device passed from the {ComputerElement} view page.
  * @returns {React.JSX.Element} View component
- */
-export default function MainInfosFrame (props: MainInfosFrameProps): JSX.Element {
-    const [packageType, setPackageType] = React.useState('');
+*/
+export default class MainInfosFrame extends React.Component<MainInfosFrameProps, MainInfosFrameState> {
+    state: Readonly<MainInfosFrameState> = {
+        packageType: ''
+    }
 
-    const handleChange = (event: SelectChangeEvent): void => {
-        setPackageType(event.target.value);
-    };
+    /**
+     * Update the type of package
+     * @param {string} newPackageType New package type
+     */
+    setPackageType = (newPackageType: string) => {
+        this.setState({
+            packageType: newPackageType
+        })
+    }
 
-    return (
-        <div id="mainInfosTable">
-            <div id="mainInfosTableSelectHeader">
-                <Icon path={mdiClockOutline} size={1} />
-                <FormControl sx={{
-                    minWidth: "256px",
-                    maxWidth: "512px"
-                }}>
-                    <InputLabel id="dataType">Save date</InputLabel>
-                    <Select
-                        labelId="dataType-label"
-                        id="dataType-select"
-                        value={packageType}
-                        onChange={handleChange}
-                        autoWidth
-                    >
-                        {/* Add here the list with the updates */}
-                        <MenuItem value={10}><Icon path={mdiClockOutline} size={1} />Librairies</MenuItem>
-                        {
-                            props.computer.snapshots.map((snapshot, index) => {
-                                return (
-                                    <MenuItem key={index} value={snapshot?.id}>
-                                        {snapshot?.localizedUploadDate()}
-                                    </MenuItem>
-                                )
-                            })
-                        }
-                    </Select>
-                </FormControl>
+    /**
+     * Render frame
+     * @returns {React.JSX.Element} View component
+     */
+    render (): JSX.Element {
+        const handleChange = (event: SelectChangeEvent): void => {
+            this.setPackageType(event.target.value);
+        };
+
+        const state = this.state;
+        const props = this.props;
+
+        return (
+            <div id="mainInfosTable">
+                <div id="mainInfosTableSelectHeader">
+                    <Icon path={mdiClockOutline} size={1} />
+                    <FormControl sx={{
+                        minWidth: "256px",
+                        maxWidth: "512px"
+                    }}>
+                        <InputLabel id="dataType">Save date</InputLabel>
+                        <Select
+                            labelId="dataType-label"
+                            id="dataType-select"
+                            value={state.packageType}
+                            onChange={handleChange}
+                            autoWidth
+                        >
+                            {/* Add here the list with the updates */}
+                            <MenuItem value={10}><Icon path={mdiClockOutline} size={1} />Librairies</MenuItem>
+                            {
+                                props.computer.snapshots.map((snapshot, index) => {
+                                    return (
+                                        <MenuItem key={index} value={snapshot?.id}>
+                                            {snapshot?.localizedUploadDate()}
+                                        </MenuItem>
+                                    )
+                                })
+                            }
+                        </Select>
+                    </FormControl>
+                </div>
+                <Paper elevation={2} id="detailsContainer">
+                    <Formats />
+                </Paper>
             </div>
-            <Paper elevation={2} id="detailsContainer">
-                <Formats />
-            </Paper>
-        </div>
-    );
+        );
+    }
+
 }

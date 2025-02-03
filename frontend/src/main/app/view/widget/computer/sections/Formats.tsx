@@ -82,7 +82,7 @@ export default class Formats extends React.Component<{}, AccordionFormatsState> 
         const state = this.state
 
         return (
-            <div>
+            <div className="DeviceMainInfos">
                 <Filters
                     filters={state.filters}
                     removeFilters={this.removeFilters}

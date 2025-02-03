@@ -112,9 +112,11 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
         this.state = {
             rows: []
         }
+
+        this.tableManager = createRef();
+
         addFilter.addObservable("mainDeviceInfosFilterTable", this.updateRows)
         removeDeviceMainInfosFilter.addObservable("mainDeviceInfosFilterTable", this.updateRows)
-        this.tableManager = createRef();
     }
 
     /**
