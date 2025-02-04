@@ -61,8 +61,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'data',
-    'graphene_django',
-    'docs'
+    'graphene_django'
 ]
 
 GRAPHQL_URL = "http://0.0.0.0:8000/api/v1/data/graphql/"

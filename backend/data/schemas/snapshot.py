@@ -1,4 +1,5 @@
 import graphene
+from graphql.error import GraphQLError
 
 from ..models import Snapshot
 
@@ -54,7 +55,6 @@ class DeviceSoftwareVersion(graphene.ObjectType):
         """
         description = "Device installed software data."
 
-
 class SnapshotData(graphene.ObjectType):
     """
     GraphQL response object class for the query ``resolve_snapshot``
@@ -67,14 +67,11 @@ class SnapshotData(graphene.ObjectType):
     """
     Every software version installed on the device
     """
-
+    
     repositories = graphene.List(
         RepositoryData,
-        description="Every source added to the device which uploaded this snapshot."
+        description="Every repositories linked to the snapshot"
     )
-    """
-    Every source added to the device which uploaded this snapshot.
-    """
 
 
 class SnapshotQuery(graphene.ObjectType):
@@ -96,15 +93,19 @@ class SnapshotQuery(graphene.ObjectType):
 
         :rtype: SnapshotData
         """
-        snapshot = Snapshot.objects.get(id=snapshot_id)
-        versions = []
-        for version in list(snapshot.versions.all()):
-            versions.append(
-                DeviceSoftwareVersion(
-                    version_id=version.chosen_version,
-                    name=version.package.name,
-                    package_type=version.package.type
-                ))
-        return SnapshotData(
-            versions=versions
-        )
+        try:
+            snapshot = Snapshot.objects.get(id=snapshot_id)
+            versions = []
+            for version in list(snapshot.versions.all()):
+                versions.append(
+                    DeviceSoftwareVersion(
+                        software_version=version.chosen_version,
+                        name=version.package.name,
+                        software_install_type=version.package.type
+                    ))
+            return SnapshotData(
+                versions=versions,
+                repositories=[]
+            )
+        except Exception as e:
+            raise GraphQLError(e)

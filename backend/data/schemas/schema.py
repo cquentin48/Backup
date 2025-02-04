@@ -41,7 +41,7 @@ class Query(graphene.ObjectType):
         """
         return DeviceInfoType.resolve_device_infos(self, info, device_id)
 
-    def resolve_snapshot(self, info, snapshot_id:str) -> SnapshotData:
+    def resolve_snapshot_infos(self, info, snapshot_id:str) -> SnapshotData:
         """ From a snapshot index in the database, retrieve every used libraries 
         alongside the repositories.
     
