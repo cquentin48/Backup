@@ -1,0 +1,52 @@
+import NotFoundError from "../exception/errors/notFoundError";
+import AlreadyAddedWarning from "../exception/warning/alreadyAdded";
+import { SnapshotSoftware } from "./snapshotLibrary";
+
+/**
+ * Snapshot data fetched from the query
+ */
+export class SnapshotData{
+    /**
+     * Every software
+     */
+    softwares: SnapshotSoftware[];
+
+    /**
+     * Class object constructor method
+     */
+    constructor(){
+        this.softwares = [];
+    }
+
+    /**
+     * 
+     * @param {string} softwareVersion Version of the software
+     * @param {string} softwareName Software name
+     * @param {string} softwareInstallType Software installation type (e.g. ``apt``, ``snap``)
+     * @throws {AlreadyAddedWarning} Already added sofware in the array
+     */
+    addSoftware(softwareVersion:string, softwareName: string, softwareInstallType:string){
+        const newSoftware = new SnapshotSoftware(
+            softwareVersion,
+            softwareName,
+            softwareInstallType
+        )
+        if(this.softwares.includes(newSoftware)){
+            throw new AlreadyAddedWarning("The snapshot has already been added! Thus the operation is ignored!")
+        }
+        this.softwares.push(newSoftware)
+    }
+
+    /**
+     * 
+     * @param softwareIndex 
+     * @returns {SnapshotSoftware}
+     * @throws {NotFoundError}
+     */
+    getSoftware(softwareIndex:number): SnapshotSoftware{
+        if(softwareIndex >= this.softwares.length){
+            throw new NotFoundError("The software ID exceeds the software array size!")
+        }
+        return this.softwares[softwareIndex]
+    }
+}

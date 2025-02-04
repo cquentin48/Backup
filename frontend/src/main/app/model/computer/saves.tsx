@@ -2,7 +2,7 @@
  * Device snapshot header class
  * Composed of the index of database stored data and the upload date.
  */
-export default class Snapshot {
+export default class SnapshotID {
     id: string;
     uploadDate: Date;
 

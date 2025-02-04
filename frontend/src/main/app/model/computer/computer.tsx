@@ -1,4 +1,4 @@
-import type Snapshot from "./saves";
+import type SnapshotID from "./saves";
 
 /**
  * Computer Data class
@@ -32,7 +32,7 @@ class Computer {
     /**
      * Computer save snapshots
      */
-    snapshots: [Snapshot?];
+    snapshots: [SnapshotID?];
 
     /**
      * Constructor method
@@ -41,11 +41,11 @@ class Computer {
      * @param { number } cores computer cores
      * @param { number } memory computer volatile memory
      * @param { string } operatingSystem computer operating system name
-     * @param { [Snapshot?] } snapshots header of every save uploaded from the device
+     * @param { [SnapshotID?] } snapshots header of every save uploaded from the device
      */
     constructor (
         name: string, processor: string, cores: number, memory: number,
-        operatingSystem: string, snapshots: [Snapshot?]) {
+        operatingSystem: string, snapshots: [SnapshotID?]) {
         this.name = name;
         this.processor = processor;
         this.cores = cores;
