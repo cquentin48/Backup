@@ -25,11 +25,7 @@ export default function SoftwareOrigins (): React.JSX.Element {
                 }
                 title="Software origins"
                 action={
-                    <IconButton aria-label="settings" onClick={
-                        () => {
-                            console.log("Filter software origin display")
-                        }
-                    }>
+                    <IconButton aria-label="settings">
                         <Icon path={mdiFilterOutline} size={1} />
                     </IconButton>
                 }

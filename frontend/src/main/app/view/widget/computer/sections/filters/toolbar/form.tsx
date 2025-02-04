@@ -1,15 +1,13 @@
-import React, { useEffect, type Dispatch, type SetStateAction } from "react";
+import React, { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 
-import {
-    FormControl, IconButton, InputLabel,
-    MenuItem, Select, TextField, Tooltip
-} from "@mui/material";
+import { FormControl, IconButton, TextField, Tooltip } from "@mui/material";
 import Filter from "../../../../../model/filters/Filter";
 import { Add } from "@mui/icons-material";
 import { addFilter } from "../../../../../controller/deviceMainInfos/addFilter";
-import AlreadyAddedWarning from "../../../../../model/exception/warning/alreadyAdded";
+import AlreadyAddedWarning from "../../../../../../model/exception/warning/alreadyAdded";
 
 import '../../../../../../../res/css/Filters.css';
+import FilterToolbar from "./selectFilter";
 
 /**
  * State of the new filter form dialog
@@ -55,7 +53,6 @@ interface NewFilterFormProps {
  * @param props Close form dialog function
  */
 export default function NewFilterForm (props: NewFilterFormProps) {
-    //export default class NewFilterForm extends React.Component<NewFilterFormProps, NewFilterFormState> {
     const [inputType, updateInputType] = React.useState(Filter.authorizedInputTypes[0]);
     const [comparison, updateComparison] = React.useState(Filter.authorizedComparisonOperations[0]);
     const [value, updateValue] = React.useState("");
@@ -63,19 +60,20 @@ export default function NewFilterForm (props: NewFilterFormProps) {
         Filter.authorizedInputTypes[0] as "File" | "Library"
     )[0]);
     const [focusedInput, updateFocusedInput] = React.useState(3)
+    const inputRefs = useRef<(() => void | undefined)[]>([]);
+    const [firstTime, updateFirstTime] = React.useState(true);
 
     /**
      * Key pressed handling method
      * @param {KeyboardEvent} pressedKey pressed event
      */
     const handlePressedKey = (pressedKey: KeyboardEvent): void => {
-        if(pressedKey.key === "Tab"){
+        if (pressedKey.key === "Tab") {
             pressedKey.preventDefault();
-            updateFocusedInput((focusedInput+1)%4)
-            console.log(`${focusedInput}`)
+            updateFocusedInput((focusedInput + 1) % 4);
+            (inputRefs.current[focusedInput] as any).focus();
         }
         if (pressedKey.key === "Enter") {
-            console.log("Enter key pressed!")
             addsNewFilter();
         }
     }
@@ -91,7 +89,6 @@ export default function NewFilterForm (props: NewFilterFormProps) {
             value
         ]
         try {
-            console.log("New filter added!")
             addFilter.performAction(
                 inputs
             )
@@ -103,97 +100,72 @@ export default function NewFilterForm (props: NewFilterFormProps) {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         document.addEventListener("keydown", handlePressedKey)
         return () => document.removeEventListener("keydown", handlePressedKey)
     })
 
+    const initInputRef = (input: never, i: number): void => {
+        inputRefs.current[i] = input;
+    }
+
     return (
         <div className="newElementDialog">
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="inputTypeLabel">Input type</InputLabel>
-                <Select
-                    id="inputType"
-                    labelId="inputTypeLabel"
-                    value={inputType}
-                    label="Data type"
-                    onChange={(newInputType) => {
-                        updateInputType(
-                            newInputType.target.value
-                        )
-                    }}
-                    inputRef={(input) => input && input.focus() && focusedInput == 0}
-                >
-                    {
-                        Filter.authorizedInputTypes.map((inputType, index) => {
-                            return (
-                                <MenuItem value={inputType} key={index}>{inputType}</MenuItem>
-                            )
-                        })
-                    }
-                </Select>
-            </FormControl>
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="fieldNameLabel">Field name</InputLabel>
-                <Select
-                    id="fieldName"
-                    labelId="fieldNameLabel"
-                    label="Field name"
-                    value={fieldName}
-                    onChange={(newFieldName) => {
-                        updateFieldName(newFieldName.target.value)
-                    }}
-                    inputRef={(input) => input && input.focus() && focusedInput == 1}
-                >
-                    {
-                        Filter.inputFieldName(inputType as "File" | "Library").map(
-                            (comparison, index) => {
-                                return (
-                                    <MenuItem value={comparison} key={index}>{comparison}</MenuItem>
-                                )
-                            })
-                    }
-                </Select>
-            </FormControl>
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="comparisonOperatorLabel">Type of comparison</InputLabel>
-                <Select
-                    id="comparisonOperator"
-                    labelId="comparisonOperatorLabel"
-                    label="Type of comparison"
-                    value={comparison}
-                    onChange={(newComparisonOperator) => {
-                        updateComparison(newComparisonOperator.target.value)
-                    }}
-                    inputRef={(input) => input && input.focus() && focusedInput == 2}
-                >
-                    {
-                        Filter.authorizedComparisonOperations.map((comparison, index) => {
-                            return (
-                                <MenuItem value={comparison} key={index}>{comparison}</MenuItem>
-                            )
-                        })
-                    }
-                </Select>
-            </FormControl>
+            <FilterToolbar
+                selectedValue={inputType}
+                initInputRef={initInputRef}
+                inputID={0}
+                selectedItem={Filter.authorizedInputTypes}
+                updateSelectedValue={updateInputType}
+                selectID="inputType"
+                selectLabel="Data type"
+            />
+            <FilterToolbar
+                selectedValue={fieldName}
+                initInputRef={initInputRef}
+                inputID={1}
+                selectedItem={Filter.inputFieldName(inputType as "File" | "Library")}
+                updateSelectedValue={updateFieldName}
+                selectID="fieldName"
+                selectLabel="Field name"
+            />
+            <FilterToolbar
+                selectedValue={comparison}
+                initInputRef={initInputRef}
+                inputID={2}
+                selectedItem={Filter.authorizedComparisonOperations}
+                updateSelectedValue={updateComparison}
+                selectID="comparisonOperator"
+                selectLabel="Type of comparison"
+            />
             <TextField
                 id="computerMainInfosFilterValueField"
                 label="Field value"
                 variant="standard"
+                type={Filter.getFieldNameType(inputType, fieldName)}
+                error={value.length == 0 && !firstTime}
+                helperText={value.length == 0 && !firstTime && "You must enter a value here!"}
                 onChange={(newValue:
                     React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                    if(firstTime){
+                        updateFirstTime(false);
+                    }
                     updateValue(
                         newValue.target.value
                     )
                 }}
-                inputRef={(input) => input && input.focus() && focusedInput == 3}
+                autoFocus
+                inputRef={(input) => (inputRefs.current[3] = input)}
             />
             <Tooltip title="Adds new filter">
                 <IconButton
                     aria-label="add"
                     onClick={() => {
-                        console.log("Button clicked!")
-                        addsNewFilter();
+                        if(value.length > 0){
+                            addsNewFilter();
+                        }else{
+                            console.log("You must enter a value!")
+                        }
                     }}
                 >
                     <Add />

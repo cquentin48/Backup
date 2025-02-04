@@ -1,5 +1,5 @@
-import NotFoundError from "../exception/errors/notFoundError";
-import AlreadyAddedWarning from "../exception/warning/alreadyAdded";
+import NotFoundError from "../../../model/exception/errors/notFoundError";
+import AlreadyAddedWarning from "../../../model/exception/warning/alreadyAdded";
 import Filter from "./Filter";
 
 /**

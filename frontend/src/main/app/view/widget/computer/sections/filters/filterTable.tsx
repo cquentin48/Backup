@@ -128,8 +128,6 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
      */
     getDiffElements (currentRows: FilterRow[], newRows: FilterRow[]): UpdateRow[] {
         const updatedRows: UpdateRow[] = [];
-        console.log(`Old rows : ${JSON.stringify(currentRows)}`);
-        console.log(`New rows : ${JSON.stringify(newRows)}`);
         // Fetch the deleted rows
         currentRows.forEach((currentRow: FilterRow, index: number) => {
             const hasRowBeenDeleted = newRows.find(

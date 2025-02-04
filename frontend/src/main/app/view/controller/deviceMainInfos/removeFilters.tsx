@@ -2,7 +2,7 @@ import { type Observable, type CallbackMethod } from "../controllerActions";
 import type ControllerAction from "../controllerActions";
 
 import { filterManager } from "../../model/filters/FilterManager";
-import NotFoundError from "../../model/exception/errors/notFoundError";
+import NotFoundError from "../../../model/exception/errors/notFoundError";
 
 /**
  *

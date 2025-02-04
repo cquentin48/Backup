@@ -1,4 +1,4 @@
-import NotFoundError from "../../model/exception/errors/notFoundError";
+import NotFoundError from "../../../model/exception/errors/notFoundError";
 import { filterManager } from "../../model/filters/FilterManager";
 import { type CallbackMethod, type Observable } from "../controllerActions";
 import type ControllerAction from "../controllerActions";

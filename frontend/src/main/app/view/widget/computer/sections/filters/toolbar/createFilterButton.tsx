@@ -31,7 +31,6 @@ export default function DeviceMainInfosFilterCreationButton
             <IconButton
                 aria-label="add"
                 onClick={() => {
-                    console.log("Button clicked!")
                     props.addNewFilter();
                 }}
             >

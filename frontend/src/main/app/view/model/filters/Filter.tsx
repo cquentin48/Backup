@@ -1,4 +1,19 @@
-import ValidationError from "../exception/errors/validationError";
+import ValidationError from "../../../model/exception/errors/validationError";
+
+/**
+ * Filter DOM Input details
+ */
+interface FilterInputDetails {
+    /**
+     * Type of the input (e.g. ``date``, ``text``)
+     */
+    inputType: string;
+
+    /**
+     * Allowed comparaison function|operators
+     */
+    comparisonOperators: string[];
+}
 
 /**
  * Filter object used in the device main informations pie charts
@@ -92,5 +107,113 @@ export default class Filter {
         } else {
             return ['Please choose a type']
         }
+    }
+
+    /**
+     * Input Types data
+     */
+    private static filterTypes: Map<string, Map<String, FilterInputDetails>> = new Map<string, Map<String, FilterInputDetails>>(
+        [
+            ["File", new Map<string, FilterInputDetails>(
+                [
+                    [
+                        "name", {
+                            inputType: 'text',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                    [
+                        "creationDate", {
+                            inputType: 'date',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                    [
+                        "lastUpdateDate", {
+                            inputType: 'date',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                    [
+                        "size", {
+                            inputType: 'number',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                    [
+                        "path", {
+                            inputType: 'text',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                    [
+                        "type", {
+                            inputType: 'text',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                ]
+            )],
+            ["Library", new Map<string, FilterInputDetails>(
+                [
+                    [
+                        "name", {
+                            inputType: 'text',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                    [
+                        "firstUploadDate", {
+                            inputType: 'date',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                    [
+                        "lastUploadDate", {
+                            inputType: 'date',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                    [
+                        "size", {
+                            inputType: 'number',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                    [
+                        "repository", {
+                            inputType: 'text',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                    [
+                        "version", {
+                            inputType: 'text',
+                            comparisonOperators: Filter.authorizedComparisonOperations
+                        }
+                    ],
+                ]
+            )],
+            ["Other", new Map<string, FilterInputDetails>(
+                [
+                    [
+                        "Please choose a type", {
+                            inputType: 'text',
+                            comparisonOperators: ['-']
+                        }
+                    ],
+                ]
+            )],
+        ]
+    )
+
+    /**
+     * From a specific field name and type, update the fitler input type
+     * @param {string} inputType type of the input (``File`` or ``Library`` or ``Undefined``)
+     * @param {string} inputName Name of the input field name
+     * @returns {string} Filter DOM input type
+     */
+    public static getFieldNameType = (inputType: string, inputName: string): string => {
+        return Filter.filterTypes.get(inputType)!.get(inputName)!.inputType
     }
 }

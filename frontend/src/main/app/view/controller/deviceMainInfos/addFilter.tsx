@@ -3,7 +3,7 @@ import type ControllerAction from "../controllerActions";
 
 import { filterManager } from "../../model/filters/FilterManager";
 import Filter from "../../model/filters/Filter";
-import NotFoundError from "../../model/exception/errors/notFoundError";
+import NotFoundError from "../../../model/exception/errors/notFoundError";
 
 /**
  * "Adds new filter" controller action set in the device main information page.
@@ -37,7 +37,6 @@ class AddDeviceMainInfosFilter implements ControllerAction {
      * @param { unknown[] } inputs Inputs set by the user for the new filter.
      */
     performAction (inputs: unknown[]): void {
-        console.log("Performed action!")
         const name = inputs[0] as string;
         const fieldName = inputs[1] as string;
         const comparison = inputs[2] as string;
