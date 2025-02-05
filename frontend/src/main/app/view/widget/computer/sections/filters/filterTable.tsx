@@ -158,17 +158,18 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
      * Update rows method callback
      * @param {unknown[]} newRows Updated rows list for the datagrid
      */
-    updateRows = (newRows: unknown[]): void => {
+    updateRows = (newRows: string): void => {
+        console.log(`New rows : ${newRows}`)
         const tableManager = this.tableManager;
         if (tableManager.current != null) {
-            const updatedElements = this.getDiffElements(this.state.rows, newRows as FilterRow[]);
+            const updatedElements = this.getDiffElements(this.state.rows, JSON.parse(newRows) as FilterRow[]);
             updatedElements.forEach((element: UpdateRow) => {
                 tableManager.current?.updateRows(
                     [element]
                 )
             })
             this.setState({
-                rows: newRows as FilterRow[]
+                rows: JSON.parse(newRows) as FilterRow[]
             })
         }
     }
@@ -199,7 +200,7 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
                         footer: DeviceMainInfosGridFooter
                     }}
                     onRowSelectionModelChange={(event) => {
-                        updateDeviceMainInfosFilter.performAction(event as unknown[])
+                        updateDeviceMainInfosFilter.performAction(JSON.stringify(event))
                     }}
                     apiRef={this.tableManager}
                 />

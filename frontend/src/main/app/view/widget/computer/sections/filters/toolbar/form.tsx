@@ -8,6 +8,7 @@ import AlreadyAddedWarning from "../../../../../../model/exception/warning/alrea
 
 import '../../../../../../../res/css/Filters.css';
 import FilterToolbar from "./selectFilter";
+import FieldValue from "./fieldValue";
 
 /**
  * State of the new filter form dialog
@@ -90,7 +91,7 @@ export default function NewFilterForm (props: NewFilterFormProps) {
         ]
         try {
             addFilter.performAction(
-                inputs
+                JSON.stringify(inputs)
             )
             props.closesDialog(false);
         } catch (error) {
@@ -138,24 +139,15 @@ export default function NewFilterForm (props: NewFilterFormProps) {
                 selectID="comparisonOperator"
                 selectLabel="Type of comparison"
             />
-            <TextField
-                id="computerMainInfosFilterValueField"
-                label="Field value"
-                variant="standard"
-                type={Filter.getFieldNameType(inputType, fieldName)}
-                error={value.length == 0 && !firstTime}
-                helperText={value.length == 0 && !firstTime && "You must enter a value here!"}
-                onChange={(newValue:
-                    React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-                    if(firstTime){
-                        updateFirstTime(false);
-                    }
-                    updateValue(
-                        newValue.target.value
-                    )
-                }}
-                autoFocus
-                inputRef={(input) => (inputRefs.current[3] = input)}
+            <FieldValue
+                fieldName={value}
+                firstTime={firstTime}
+                getfieldNameType={Filter.getFieldNameType(inputType, fieldName)}
+                index={3}
+                initInputRef={initInputRef}
+                updateFirstTime={updateFirstTime}
+                updateValue={updateValue}
+                value={value}
             />
             <Tooltip title="Adds new filter">
                 <IconButton

@@ -34,10 +34,11 @@ class RemoveDeviceMainInfosFilter implements ControllerAction {
 
     /**
      * Set new filter inside for the device main information view.
-     * @param { unknown[] } inputs Inputs set by the user for the new filter.
+     * @param { string } inputs Inputs set by the user for the new filter.
      */
-    performAction (inputs: unknown[]): void {
-        let filterIDS = inputs.map((filterID: unknown) => {
+    performAction (inputs: string): void {
+        const inputsIDS = JSON.parse(inputs) as string[]
+        let filterIDS = inputsIDS.map((filterID: unknown) => {
             return filterID as number;
         });
         filterIDS = filterIDS.sort((firstID, secondID) => {
@@ -49,10 +50,10 @@ class RemoveDeviceMainInfosFilter implements ControllerAction {
         });
 
         const callBackMethod = this.getObservable("mainDeviceInfosFilterTable");
-        callBackMethod(filterManager.getFilters())
+        callBackMethod(JSON.stringify(filterManager.getFilters()))
     }
 
-    addObservable (name: string, callback: (updatedData: unknown[]) => void): void {
+    addObservable (name: string, callback: (updatedData: string) => void): void {
         this.observable[name] = callback;
     }
 

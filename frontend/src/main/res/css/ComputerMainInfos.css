@@ -6,21 +6,40 @@
 
 #computerMainInfos {
     margin-top: 16px;
+    margin-left: 56px;
     flex: 0 0 auto;
 }
 
 #mainInfosTable {
     flex: 1 1 auto;
-    margin: 0px 8px 8px 56px;
+    margin: 0px 16px 8px 56px;
     display: flex;
     flex-flow: column nowrap;
     width: 100%;
+    overflow: hidden;
 }
 
-#deviceElementsPage{
+#computerMainInfosHeader{
+    display: flex;
+    margin-top: 8px;
+}
+
+#computerName {
+    text-align: left;
+    align-items: center;
+    display: flex;
+}
+
+#mainInfosSelectForm {
+    min-width: 256px;
+    max-width: 512px;
+}
+
+#deviceElementsPage {
     display: flex;
     flex: 1 1 auto;
 }
+
 #mainInfosTableSelectHeader {
     display: flex;
     align-items: center;
@@ -30,17 +49,17 @@
     flex: 0 0 auto;
 }
 
-#detailsContainer{
+#detailsContainer {
     height: 100%;
 }
 
-.deviceInfosMainHeader{
+.deviceInfosMainHeader {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-#mainInfosFiles{
+#mainInfosFiles {
     margin: 8px 0px;
     padding: 8px;
     background-color: rgb(194, 194, 194);
@@ -48,19 +67,19 @@
     flex: 1 1 auto;
 }
 
-#detailsContainer{
+#detailsContainer {
     background-color: rgb(194, 194, 194);
     margin-top: 16px;
     padding: 16px;
 }
 
-.DisplayedPieChart{
+.DisplayedPieChart {
     width: fit-content;
     flex-direction: column;
     display: flex
 }
 
-#NewFilterPaperDialog{
+#NewFilterPaperDialog {
     position: absolute;
     top: 40px;
     z-index: 1;
@@ -68,10 +87,11 @@
     display: block;
     margin-left: 4px;
 }
-.PieChartCard{
+
+.PieChartCard {
     width: 100%;
 }
 
-#pieCharts{
-    padding: 1em 0em 1em 0em;
+#pieCharts {
+    padding: 1em 0em 0em 0em;
 }

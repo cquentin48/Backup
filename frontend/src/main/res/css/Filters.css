@@ -18,3 +18,29 @@
 .newElementDialog #MuiInputBase-root {
     margin: 8px 0px 8px 0px;
 }
+
+#datePicker{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+
+    > * {
+        flex-grow: 0;
+    }
+
+    > MuiFormControl-root {
+        width: 52%;
+        > MuiInputBase-root > MuiInputAdornment-root {
+            margin-right: 16px;
+        }
+    }
+
+    > input {
+        width: 85px;
+    }
+
+    > .MuiInputAdornment-root {
+        margin-left: 16px;
+    }
+}

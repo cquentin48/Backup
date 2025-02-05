@@ -44,9 +44,9 @@ NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
      * Handles the footer based off the selected element in datagrid
      * @param {unknown[]} ids Selected filter ids
      */
-    handleUpdatedSelectedRows = (ids: unknown[]): void => {
+    handleUpdatedSelectedRows = (ids: string): void => {
         this.setState({
-            idsList: ids as number[]
+            idsList: JSON.parse(ids) as number[]
         })
     }
 

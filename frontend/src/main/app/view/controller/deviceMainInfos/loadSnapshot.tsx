@@ -2,13 +2,17 @@ import { type Observable, type CallbackMethod } from "../controllerActions";
 import type ControllerAction from "../controllerActions";
 
 import { filterManager } from "../../model/filters/FilterManager";
-import Filter from "../../model/filters/Filter";
 import NotFoundError from "../../../model/exception/errors/notFoundError";
+import snapshotData from "../../../../res/queries/snapshot.graphql";
+import gqlClient from "../../../model/queries/client";
+import { snapshotGQLData } from "../../../model/queries/computer/snapshotGQLData";
+import { SnapshotData } from "../../../model/snapshot/snapshotData";
+import { dataManager } from "../../../model/AppDataManager";
 
 /**
  * "Adds new filter" controller action set in the device main information page.
  */
-class AddDeviceMainInfosFilter implements ControllerAction {
+class LoadSnapshot implements ControllerAction {
     observable: Observable;
 
     /**
@@ -37,24 +41,22 @@ class AddDeviceMainInfosFilter implements ControllerAction {
      * @param { string } inputs Inputs set by the user for the new filter.
      */
     performAction (inputs: string): void {
-        inputs = JSON.parse(inputs)
-        const name = inputs[0] as string;
-        const fieldName = inputs[1] as string;
-        const comparison = inputs[2] as string;
-        const value = inputs[3] as unknown as object;
-
-        Filter.inputTypeAuthorizedList(name);
-        Filter.comparisonTypesCheck(comparison);
-
-        filterManager.addFilter(
-            name as "File" | "Library",
-            fieldName,
-            comparison as "<" | ">" | "!=" | "==",
-            value
-        )
-        const callBackMethod = this.getObservable("mainDeviceInfosFilterTable");
-
-        callBackMethod(JSON.stringify(filterManager.getFilters()))
+        const selectedSnapshotID = JSON.parse(inputs);
+        const query = snapshotData.loc?.source.body;
+        snapshotGQLData.compute_query(
+            gqlClient,
+            query ?? "",
+            {
+                snapshotID: selectedSnapshotID
+            }
+        ).then((result:SnapshotData)=>{
+            dataManager.addElement("snapshot", result);
+            const callBackMethod = this.getObservable("mainDeviceInfosSoftwareInfosPieChart");
+    
+            callBackMethod(JSON.stringify(filterManager.getFilters()));
+        }).catch((error) => {
+            console.error(error)
+        })
     }
 
     addObservable (name: string, callback: (updatedData: string) => void): void {
@@ -70,4 +72,4 @@ class AddDeviceMainInfosFilter implements ControllerAction {
     }
 }
 
-export const addFilter = new AddDeviceMainInfosFilter();
+export const loadSnapshot = new LoadSnapshot();

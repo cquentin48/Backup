@@ -40,18 +40,11 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
         return (
             <div id="computerMainInfos">
                 <MainInfos computer={computer} />
-                <div id="computerMainInfosHeader" style={{
-                    display: "flex"
-                }}>
+                <div id="computerMainInfosHeader">
                     {/*
                     Computer specs
                     */}
-                    <div id="computerName" style={{
-                        textAlign: "left",
-                        paddingLeft: "12px",
-                        alignItems: "center",
-                        display: "flex"
-                    }}>
+                    <div id="computerName">
                         <Tooltip title={computer.operatingSystem} placement='top'>
                             <Icon path={this.getOSIcon(this.props.computer.operatingSystem)} size={2} />
                         </Tooltip>

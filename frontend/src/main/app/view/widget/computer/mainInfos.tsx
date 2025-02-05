@@ -7,6 +7,7 @@ import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, Pape
 
 import Formats from "./sections/Formats";
 import '../../../../res/css/ComputerMainInfos.css';
+import { loadSnapshot } from "../../controller/deviceMainInfos/loadSnapshot";
 
 /**
  * Main informations frame props interface
@@ -21,7 +22,7 @@ interface MainInfosFrameProps {
 /**
  * State of the main information frame
  */
-interface MainInfosFrameState{
+interface MainInfosFrameState {
     /**
      * Type of package
      */
@@ -48,6 +49,10 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
         })
     }
 
+    componentDidMount (): void {
+        loadSnapshot.performAction(JSON.stringify("1"))
+    }
+
     /**
      * Render frame
      * @returns {React.JSX.Element} View component
@@ -64,10 +69,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
             <div id="mainInfosTable">
                 <div id="mainInfosTableSelectHeader">
                     <Icon path={mdiClockOutline} size={1} />
-                    <FormControl sx={{
-                        minWidth: "256px",
-                        maxWidth: "512px"
-                    }}>
+                    <FormControl id="mainInfosSelectForm">
                         <InputLabel id="dataType">Save date</InputLabel>
                         <Select
                             labelId="dataType-label"

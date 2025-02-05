@@ -23,7 +23,7 @@ export default function GridFooterDelete (props: GridFooterDeleteProps): JSX.Ele
     return (
         <Tooltip title="Delete filters">
             <Button startIcon={<Delete />}
-                onClick={() => { removeDeviceMainInfosFilter.performAction(props.selectedIds) }}>
+                onClick={() => { removeDeviceMainInfosFilter.performAction(JSON.stringify(props.selectedIds)) }}>
                 Delete filters
             </Button>
         </Tooltip>

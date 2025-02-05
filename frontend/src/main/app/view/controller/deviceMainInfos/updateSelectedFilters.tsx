@@ -27,15 +27,15 @@ class UpdateDeviceMainInfosFilter implements ControllerAction {
         return tableViewObservable;
     }
 
-    performAction (inputs: unknown[]): void {
-        const selectedIDS = inputs as number[];
+    performAction (inputs: string): void {
+        const selectedIDS = JSON.parse(inputs) as number[];
         filterManager.updateSelectedIDS(selectedIDS);
 
         const callbackmethod = this.getObservable('deviceMainInfosFooter');
-        callbackmethod(selectedIDS);
+        callbackmethod(JSON.stringify(selectedIDS));
     }
 
-    addObservable (name: string, callback: (updatedData: unknown[]) => void): void {
+    addObservable (name: string, callback: (updatedData: string) => void): void {
         this.observable[name] = callback;
     }
 
