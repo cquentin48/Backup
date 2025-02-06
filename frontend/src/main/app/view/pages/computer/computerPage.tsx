@@ -4,7 +4,7 @@ import gqlClient from '../../../model/queries/client';
 import getDeviceInfos from '../../../../res/queries/computer_infos.graphql';
 import ComputerMainInfos from './mainInfos';
 import ComputerInfos from '../../../model/queries/computer/computerInfos';
-import type Computer from '../../../model/computer/computer';
+import type Device from '../../../model/device/device';
 import ComputerElements from './computerElements';
 
 /**
@@ -22,7 +22,7 @@ interface ComputerPageProps {
 export default function ComputerPage (props: ComputerPageProps): React.JSX.Element {
     // const { id } = useParams()
     const dataRetriever = new ComputerInfos();
-    const [device, setDevice] = React.useState<Computer | null>(null);
+    const [device, setDevice] = React.useState<Device | null>(null);
     if (getDeviceInfos.loc !== null) {
         const query = getDeviceInfos.loc?.source.body;
         React.useEffect(() => {

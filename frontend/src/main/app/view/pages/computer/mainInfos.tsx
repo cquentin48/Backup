@@ -6,16 +6,16 @@ import {
     mdiMicrosoftWindows,
     mdiUbuntu
 } from '@mdi/js';
-import type Computer from "../../../model/computer/computer";
+import type Device from "../../../model/device/device";
 
 import '../../../../res/css/ComputerMainInfos.css';
-import MainInfos from "../../widget/computer/sections/MainInfos";
+import SpecsMainInfos from "../../widget/computer/sections/MainInfos";
 
 /**
  * Props interface for the computer main information display component class
  */
 interface ComputerMainInfosProps {
-    computer: Computer
+    computer: Device
 }
 
 /**
@@ -39,14 +39,19 @@ export default class ComputerMainInfos extends React.Component<ComputerMainInfos
         const computer = this.props.computer;
         return (
             <div id="computerMainInfos">
-                <MainInfos computer={computer} />
+                <SpecsMainInfos computer={computer} />
                 <div id="computerMainInfosHeader">
                     {/*
                     Computer specs
                     */}
                     <div id="computerName">
                         <Tooltip title={computer.operatingSystem} placement='top'>
-                            <Icon path={this.getOSIcon(this.props.computer.operatingSystem)} size={2} />
+                            <div id="OSIcon">
+                                <Icon
+                                    id="DeviceMainInfosOSIcon"
+                                    path={this.getOSIcon(this.props.computer.operatingSystem)} size={2}
+                                />
+                            </div>
                         </Tooltip>
                         <Typography variant="h4">
                             {computer.name}

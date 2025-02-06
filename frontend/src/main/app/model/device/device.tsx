@@ -1,9 +1,9 @@
-import type SnapshotID from "./saves";
+import type SnapshotID from "./snapshot";
 
 /**
- * Computer Data class
+ * Device Data class
  */
-class Computer {
+class Device {
     /**
      * Computer name
      */
@@ -72,4 +72,4 @@ class Computer {
     }
 }
 
-export default Computer;
+export default Device;

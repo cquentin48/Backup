@@ -1,5 +1,5 @@
 import React from "react";
-import type Computer from "../../../model/computer/computer";
+import type Device from "../../../model/device/device";
 import MainInfosFrame from "../../widget/computer/mainInfos";
 import ComputeSideNavBar from "../../widget/computer/navBar/computerSideNavBar";
 
@@ -10,7 +10,7 @@ interface ComputerElementProps {
     /**
      * Selected device
      */
-    computer: Computer
+    computer: Device
 }
 
 /**

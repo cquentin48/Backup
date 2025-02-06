@@ -1,5 +1,5 @@
 import React from "react";
-import type Computer from "../../../model/computer/computer";
+import type Device from "../../../model/device/device";
 
 import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';
@@ -16,7 +16,7 @@ interface MainInfosFrameProps {
     /**
      * Device selected for its main information to be displayed in the web component
      */
-    computer: Computer
+    computer: Device
 }
 
 /**
@@ -57,7 +57,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
      * Render frame
      * @returns {React.JSX.Element} View component
      */
-    render (): JSX.Element {
+    render (): React.JSX.Element {
         const handleChange = (event: SelectChangeEvent): void => {
             this.setPackageType(event.target.value);
         };
@@ -84,7 +84,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
                                 props.computer.snapshots.map((snapshot, index) => {
                                     return (
                                         <MenuItem key={index} value={snapshot?.id}>
-                                            {snapshot?.localizedUploadDate()}
+                                            {snapshot?.localizedDate()}
                                         </MenuItem>
                                     )
                                 })

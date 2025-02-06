@@ -1,11 +1,11 @@
 import type QueryPattern from "../query_pattern";
 import type gqlClient from "../client";
-import Computer from "../../computer/computer";
+import Device from "../../device/device";
 import type BasicQueryParameters from "../basicQueryParameters";
-import SnapshotID from "../../computer/saves";
+import SnapshotID from "../../device/snapshot";
 
 export default class ComputerInfos implements QueryPattern {
-    async compute_query (client: typeof gqlClient, query: string, parameters: BasicQueryParameters): Promise<Computer> {
+    async compute_query (client: typeof gqlClient, query: string, parameters: BasicQueryParameters): Promise<Device> {
         const result = (await client.execute_query(query, parameters)).data.deviceInfos;
         const rawSnapshots = result.snapshots;
         const snapshots: [SnapshotID?] = []
@@ -17,7 +17,7 @@ export default class ComputerInfos implements QueryPattern {
                 )
             )
         });
-        return new Computer(
+        return new Device(
             result.name,
             result.processor,
             result.cores,

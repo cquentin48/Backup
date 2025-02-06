@@ -9,7 +9,7 @@ export default class SnapshotID {
     /**
      * Construction method
      * @param { string } id snapshot database id
-     * @param { string } uploadDate snapshot date upload
+     * @param { string } uploadDate snapshot date upload (Must be of format ``YYYY``-``MM``-``DD``)
      */
     constructor (id: string, uploadDate: string) {
         this.id = id;
@@ -22,10 +22,10 @@ export default class SnapshotID {
     }
 
     /**
-     * Format the snapshot upload date for display in the web application
+     * Format the snapshot date for display in the web application according to the chosen language
      * @returns {string} Localized snapshot upload date
      */
-    localizedUploadDate (): string {
+    localizedDate (): string {
         return this.uploadDate.toLocaleDateString(window.navigator.language, {
             weekday: "long",
             year: "numeric",
