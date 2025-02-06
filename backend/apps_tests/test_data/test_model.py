@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 from django.test import SimpleTestCase
 from data.models import (ChosenVersion, Command, CommandHistory,
@@ -153,7 +153,7 @@ class TestSave(SimpleTestCase):
         device = create_test_device(
             name="Mon objet!"
         )
-        save_date = datetime.now()
+        save_date = timezone.now()
         test_object = Snapshot.objects.create(
             related_device=device,
             save_date=save_date
@@ -178,19 +178,22 @@ class TestShell(SimpleTestCase):
         Check if the __str__ function displays what it is supposed to.
         """
         # Given
-        cmd = Command.objects.create(
-            prefix="cmd",
-            arguments="none"
-        )
-        cmd_history = CommandHistory.objects.create(
-            command=cmd,
-            timestamp=datetime.now()
-        )
         sh_type = "shell"
 
         created_object = Shell.objects.create(
             sh_type=sh_type,
         )
+        cmd = Command.objects.create(
+            prefix="cmd",
+            arguments="none",
+            related_shell=created_object
+        )
+        cmd_history = CommandHistory.objects.create(
+            command=cmd,
+            timestamp=timezone.now(),
+            related_shell=created_object
+        )
+
         created_object.configuration = cmd
         created_object.history = cmd_history
 

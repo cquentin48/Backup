@@ -146,6 +146,36 @@ class ChosenVersion(models.Model):
         return f"{self.package.name} - {str(self.chosen_version)}"
 
 
+class Shell(models.Model):
+    """
+    POSIX shell storage class
+    """
+
+    id = models.AutoField(primary_key=True)
+    """
+    Primary key
+    """
+
+    sh_type = models.CharField(
+        max_length=16, verbose_name=LOCALE.load_localised_text("SHELL_TYPE"))
+    """
+    Shell Type (e.g. Bash, Oh-my-zsh, ...)
+    """
+
+    def __str__(self):
+        # How many lines are there in the history and configuration lines
+        history_lines_count = CommandHistory.objects.filter(related_shell=self).count()
+        configuration_lines_count = Command.objects.filter(related_shell=self).count()
+
+        # Format the counts
+        history_lines_format = f"{history_lines_count}" +\
+            f" {'lines' if history_lines_count > 1 else 'line'}"
+        configuration_lines_format = f"{configuration_lines_count} " +\
+            f"{'lines' if configuration_lines_count > 1 else 'line'}"
+
+        return f"{self.sh_type} - {history_lines_format} | {configuration_lines_format}"
+
+
 class Command(models.Model):
     """
     Command database class manager
@@ -166,6 +196,16 @@ class Command(models.Model):
         verbose_name=LOCALE.load_localised_text("COMMAND_ARGUMENTS"))
     """
     Arguments of the command (e.g ``-ltr`` for ``ls -ltr``)
+    """
+    
+    related_shell = models.ForeignKey(
+        to=Shell,
+        on_delete=models.PROTECT,
+        verbose_name=LOCALE.load_localised_text("SHELL_CONFIG"),
+        null=True
+    )
+    """
+    Shell containing the command history
     """
 
 
@@ -194,54 +234,16 @@ class CommandHistory(models.Model):
     """
     Timestamp of the command
     """
-
-
-class Shell(models.Model):
-    """
-    POSIX shell storage class
-    """
-
-    id = models.AutoField(primary_key=True)
-    """
-    Primary key
-    """
-
-    sh_type = models.CharField(
-        max_length=16, verbose_name=LOCALE.load_localised_text("SHELL_TYPE"))
-    """
-    Shell Type (e.g. Bash, Oh-my-zsh, ...)
-    """
-
-    history = models.ForeignKey(
-        to=CommandHistory,
-        on_delete=models.CASCADE,
-        verbose_name=LOCALE.load_localised_text("SHELL_HISTORY")
+    
+    related_shell = models.ForeignKey(
+        to=Shell,
+        on_delete=models.PROTECT,
+        verbose_name=LOCALE.load_localised_text("SHELL_HISTORY"),
+        null=True
     )
     """
-    Previous commands done with the shell
+    Shell containing the command history
     """
-
-    configuration = models.ForeignKey(
-        Command,
-        on_delete=models.CASCADE,
-        verbose_name=LOCALE.load_localised_text("SHELL_CONFIG")
-    )
-    """
-    Shell configuration lines
-    """
-
-    def __str__(self):
-        # How many lines are there in the history and configuration lines
-        history_lines_count = len(self.history)
-        configuration_lines_count = len(self.configuration)
-
-        # Format the counts
-        history_lines_format = f"{history_lines_count}" +\
-            f" {'lines' if history_lines_count > 1 else 'line'}"
-        configuration_lines_format = f"{configuration_lines_count} " +\
-            f"{'lines' if configuration_lines_count > 1 else 'line'}"
-
-        return f"{self.sh_type} - {history_lines_format} | {configuration_lines_format}"
 
 
 class Snapshot(models.Model):

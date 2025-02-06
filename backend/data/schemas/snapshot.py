@@ -1,5 +1,5 @@
 import graphene
-from graphql.error import GraphQLError
+from django.core.exceptions import ObjectDoesNotExist
 
 from ..models import Snapshot
 
@@ -107,5 +107,5 @@ class SnapshotQuery(graphene.ObjectType):
                 versions=versions,
                 repositories=[]
             )
-        except Exception as e:
-            raise GraphQLError(e)
+        except ObjectDoesNotExist as e:
+            return None

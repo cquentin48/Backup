@@ -1,6 +1,6 @@
 from typing import Literal
 
-from datetime import datetime
+from django.utils import timezone
 
 import json
 
@@ -169,7 +169,7 @@ class BackupImportConsumer(WebsocketConsumer):
                     library, library_type[1])
                 new_save = Snapshot.objects.create(
                     related_device=device,
-                    save_date=datetime.now()
+                    save_date=timezone.now()
                 )
                 for lib_version in versions:
                     new_save.versions.add(lib_version)

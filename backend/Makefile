@@ -38,10 +38,10 @@ tests: ## Run test suite
 	./manage.py test
 
 coverage_gen: ## Launch the unit test for later coverage
-	coverage run --source='.' ./manage.py test
+	python -m coverage run --source='.' ./manage.py test
 
 coverage_shell: ## Display unit test coverage result (in a shell format)
 	coverage report
 
 coverage_html: ## Display unit test coverage result (in a web page)
-	coverage html
+	python -m coverage html

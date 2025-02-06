@@ -44,4 +44,4 @@ def create_test_device(name: str) -> Device:
 
     :rtype: Device
     """
-    return Device.objects.create(name=name, cores=6, memory=32)
+    return Device.objects.create(name=name, cores=6, memory=32, operating_system="My OS!", processor="My processor!")
