@@ -14,11 +14,21 @@ module.exports = {
     "reportWebVitals.ts",
   ],
   overrides: [
+    {
+      files: [
+        "src/test/*.tsx",
+        "src/test/**/*.tsx"
+      ],
+      parserOptions: {
+        project: null,
+      },
+    },
   ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ["tsconfig.json"]
+    project: ["tsconfig.json"],
+    tsconfigRootDir: __dirname,
   },
   plugins: [
     'react',
@@ -28,7 +38,7 @@ module.exports = {
     '@typescript-eslint/quotes': 'off',
     '@typescript-eslint/semi': 'off',
     "@typescript-eslint/indent": ["error", 4],
-    'padded-blocks': 'off',        "jsdoc/check-access": 1,
+    'padded-blocks': 'off', "jsdoc/check-access": 1,
     "jsdoc/check-alignment": 1,
     "jsdoc/check-param-names": 1,
     "jsdoc/check-property-names": 1,

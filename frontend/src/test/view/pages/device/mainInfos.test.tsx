@@ -1,8 +1,12 @@
+import React from 'react';
+
 import { render, screen, fireEvent } from '@testing-library/react';
 
 import ComputerMainInfos from '../../../../main/app/view/pages/computer/mainInfos';
 import Device from '../../../../main/app/model/device/device';
 import SnapshotID from '../../../../main/app/model/device/snapshot';
+
+import '@testing-library/jest-dom'
 
 describe("Device main Infos unit test suite", () => {
     test("Successfull render (non Ubuntu OS)", async () => {
@@ -20,11 +24,11 @@ describe("Device main Infos unit test suite", () => {
         )
 
         // Acts
-        const renderResult = render(<ComputerMainInfos
+        const { container } = render(<ComputerMainInfos
             computer={testDevice}
-        />).container
-        const renderedDeviceHeader = renderResult.querySelector("#computerMainInfosHeader")
-        const renderedDeviceHeaderButton = renderResult.querySelector(".MuiButtonBase-root")
+        />)
+        const renderedDeviceHeader = container.querySelector("#computerMainInfosHeader")
+        const renderedDeviceHeaderButton = container.querySelector(".MuiButtonBase-root")
 
         fireEvent.mouseOver(screen.getByLabelText(testDevice.operatingSystem))
 
@@ -49,11 +53,11 @@ describe("Device main Infos unit test suite", () => {
         )
 
         // Acts
-        const renderResult = render(<ComputerMainInfos
+        const { container } = render(<ComputerMainInfos
             computer={testDevice}
-        />).container
-        const renderedDeviceHeader = renderResult.querySelector("#computerMainInfosHeader")
-        const renderedDeviceHeaderButton = renderResult.querySelector(".MuiButtonBase-root")
+        />)
+        const renderedDeviceHeader = container.querySelector("#computerMainInfosHeader")
+        const renderedDeviceHeaderButton = container.querySelector(".MuiButtonBase-root")
 
         fireEvent.mouseOver(screen.getByLabelText(testDevice.operatingSystem))
 

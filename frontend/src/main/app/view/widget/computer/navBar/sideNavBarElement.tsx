@@ -53,7 +53,11 @@ interface SideNavBarElementProps {
 export default function SideNavBarElement (props: SideNavBarElementProps): React.JSX.Element {
     const classNames = props.id === props.selectedElement ? "sidebarNavElement selected" : "sidebarNavElement";
     return (
-        <div className={classNames}>
+        <div
+            className={classNames}
+            id={`sideNavBarElement${props.id}`}
+            onClick={()=>{props.updateSelectedNumber(props.id)}}
+        >
             <Link
                 to={{
                     pathname: props.componentPath

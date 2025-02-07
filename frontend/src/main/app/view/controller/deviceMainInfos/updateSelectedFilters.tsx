@@ -29,7 +29,6 @@ class UpdateDeviceMainInfosFilter implements ControllerAction {
 
     performAction (inputs: string): void {
         const selectedIDS = JSON.parse(inputs) as number[];
-        filterManager.updateSelectedIDS(selectedIDS);
 
         const callbackmethod = this.getObservable('deviceMainInfosFooter');
         callbackmethod(JSON.stringify(selectedIDS));

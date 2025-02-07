@@ -8,7 +8,7 @@ class AppDataManager {
     /**
      * Map containing whole persistant data
      */
-    private data: Map<string, string>;
+    private readonly data: Map<string, string>;
 
     /**
      * Class constructor
@@ -23,7 +23,7 @@ class AppDataManager {
      * @param {object} data new data to store
      * @throws {AlreadyAddedWarning} Warning when another data with the same key already set in the map
      */
-    public addElement (elementKey: string, data: object) {
+    public addElement (elementKey: string, data: object): void {
         if (this.data.has(elementKey)) {
             throw new AlreadyAddedWarning(`The key ${elementKey} has already been added inside the app data manager!`)
         }
@@ -37,7 +37,7 @@ class AppDataManager {
      * @throws {NotFoundError} No object found the function passed key.
      */
     public getElement (dataElementKey: string): string {
-        if (!this.data.has(dataElementKey)) {
+        if (!this.data.has(dataElementKey) || this.data.get(dataElementKey) === undefined) {
             throw new NotFoundError(`The key ${dataElementKey} hasn't been set inside the app data manager!`)
         }
         return this.data.get(dataElementKey)!
@@ -48,7 +48,7 @@ class AppDataManager {
      * @param {string} dataElementKey key of the element inside the map
      * @throws {NotFoundError} No object found the function passed key.
      */
-    public removeDataElement (dataElementKey: string) {
+    public removeDataElement (dataElementKey: string): void {
         if (!this.data.has(dataElementKey)) {
             throw new NotFoundError(`The key ${dataElementKey} hasn't been set inside the app data manager!`)
         }
@@ -62,6 +62,11 @@ class AppDataManager {
      */
     public dataElementContained (dataElementKey: string): boolean {
         return this.data.has(dataElementKey)
+    }
+
+    
+    public removeAllData(): void{
+        this.data.clear()
     }
 }
 

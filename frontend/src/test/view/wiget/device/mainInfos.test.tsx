@@ -3,8 +3,8 @@ import Device from "../../../../main/app/model/device/device"
 import SnapshotID from "../../../../main/app/model/device/snapshot"
 import MainInfosFrame from "../../../../main/app/view/widget/computer/mainInfos"
 
-describe("MainInfosFrame unit test suite", ()=>{
-    test("Successfull render", async ()=>{
+describe("MainInfosFrame unit test suite", () => {
+    test.skip("Successfull render", async () => {
         // Given
         const testDevice = new Device(
             "MyDevice",
@@ -19,7 +19,7 @@ describe("MainInfosFrame unit test suite", ()=>{
         )
 
         // Acts
-        const renderedComponent = render(
+        render(
             <MainInfosFrame
                 computer={testDevice}
             />

@@ -16,46 +16,46 @@ interface FieldValueProps {
     /**
      * Filter Field condition current value in the input field
      */
-    value: string;
+    value: string
 
     /**
      * If the user hasn't typed a value yet in the input field (``true``) or not (``false``)
      */
-    firstTime: boolean;
+    firstTime: boolean
 
     /**
      * Name of the field for the filter to be applied on
      */
-    fieldName: string;
+    fieldName: string
 
     /**
      * Filter value input type (e.g. ``text`` or ``number``)
      */
-    getfieldNameType: string;
+    getfieldNameType: string
 
     /**
      * Tell the software the user has already typed something (used for validation)
      * @param {boolean} newStatus New status
      */
-    updateFirstTime: (newStatus: boolean) => void;
+    updateFirstTime: (newStatus: boolean) => void
 
     /**
      * Updates the value from the input field into the form data for the filter appending operation
-     * @param {string} newValue 
+     * @param {string} newValue
      */
-    updateValue: (newValue: string) => void;
+    updateValue: (newValue: string) => void
 
     /**
      * Link the input reference to the form for the focus switch with the ``TAB`` key
      * @param {number} input Div input element for the focus
      * @param {never} i Input index in the form
      */
-    initInputRef: (input: never, i: number) => void;
+    initInputRef: (input: never, i: number) => void
 
     /**
      * Form input index used for the focus
      */
-    index: number;
+    index: number
 }
 
 /**
@@ -65,17 +65,17 @@ interface FieldValueProps {
  */
 export default function FieldValue (props: FieldValueProps): React.JSX.Element {
     if (props.getfieldNameType !== "date") {
-        const helperText = props.value.length == 0 && !props.firstTime && "You must enter a value here!";
+        const helperText = props.value.length === 0 && !props.firstTime && "You must enter a value here!";
         return (
             <TextField
                 id="computerMainInfosFilterValueField"
                 label="Field value"
                 variant="standard"
                 type={props.getfieldNameType}
-                error={props.value.length == 0 && !props.firstTime}
+                error={props.value.length === 0 && !props.firstTime}
                 helperText={helperText}
                 onChange={(newValue:
-                    React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
                     if (props.firstTime) {
                         props.updateFirstTime(false);
                     }
@@ -84,7 +84,7 @@ export default function FieldValue (props: FieldValueProps): React.JSX.Element {
                     )
                 }}
                 autoFocus
-                inputRef={(input: never) => props.initInputRef(input, props.index)}
+                inputRef={(input: never) => { props.initInputRef(input, props.index); }}
             />
         )
     } else {
@@ -102,14 +102,14 @@ export default function FieldValue (props: FieldValueProps): React.JSX.Element {
                 <div id="datePicker">
                     <DatePicker
                         label="Field value"
-                        onAccept={(pickedDateEvent: any) => updateFieldValue(pickedDateEvent)}
-                        onChange={(typedDateEvent) => updateFieldValue(typedDateEvent)}
+                        onAccept={(pickedDateEvent: any) => { updateFieldValue(pickedDateEvent); }}
+                        onChange={(typedDateEvent) => { updateFieldValue(typedDateEvent); }}
                         defaultValue={
                             dayjs(new Date())
                         }
                         maxDate={dayjs(new Date())}
                         autoFocus
-                        inputRef={(input: never) => props.initInputRef(input, props.index)}
+                        inputRef={(input: never) => { props.initInputRef(input, props.index); }}
                         slotProps={{
                             textField: {
                                 variant: "standard",

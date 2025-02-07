@@ -33,7 +33,7 @@ interface MainInfosFrameState {
  * Main informations frame view component
  * @param {MainInfosFrameProps} props Selected device passed from the {ComputerElement} view page.
  * @returns {React.JSX.Element} View component
-*/
+ */
 export default class MainInfosFrame extends React.Component<MainInfosFrameProps, MainInfosFrameState> {
     state: Readonly<MainInfosFrameState> = {
         packageType: ''
@@ -43,7 +43,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
      * Update the type of package
      * @param {string} newPackageType New package type
      */
-    setPackageType = (newPackageType: string) => {
+    setPackageType = (newPackageType: string): void => {
         this.setState({
             packageType: newPackageType
         })

@@ -113,7 +113,7 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
             rows: []
         }
 
-        this.tableManager = createRef();
+        this.tableManager = createRef() as React.RefObject<GridApiCommunity>;
 
         addFilter.addObservable("mainDeviceInfosFilterTable", this.updateRows)
         removeDeviceMainInfosFilter.addObservable("mainDeviceInfosFilterTable", this.updateRows)
@@ -156,7 +156,7 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
 
     /**
      * Update rows method callback
-     * @param {unknown[]} newRows Updated rows list for the datagrid
+     * @param {string} newRows Updated rows list for the datagrid
      */
     updateRows = (newRows: string): void => {
         console.log(`New rows : ${newRows}`)

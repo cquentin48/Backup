@@ -6,7 +6,7 @@ import NotFoundError from "../../../model/exception/errors/notFoundError";
 import snapshotData from "../../../../res/queries/snapshot.graphql";
 import gqlClient from "../../../model/queries/client";
 import { snapshotGQLData } from "../../../model/queries/computer/snapshotGQLData";
-import { SnapshotData } from "../../../model/snapshot/snapshotData";
+import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 import { dataManager } from "../../../model/AppDataManager";
 
 /**
@@ -49,10 +49,10 @@ class LoadSnapshot implements ControllerAction {
             {
                 snapshotID: selectedSnapshotID
             }
-        ).then((result:SnapshotData)=>{
+        ).then((result: SnapshotData) => {
             dataManager.addElement("snapshot", result);
             const callBackMethod = this.getObservable("mainDeviceInfosSoftwareInfosPieChart");
-    
+
             callBackMethod(JSON.stringify(filterManager.getFilters()));
         }).catch((error) => {
             console.error(error)

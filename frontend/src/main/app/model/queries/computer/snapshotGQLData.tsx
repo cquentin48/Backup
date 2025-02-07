@@ -3,8 +3,6 @@ import type gqlClient from "../client";
 import type BasicQueryParameters from "../basicQueryParameters";
 import { SnapshotData } from "../../snapshot/snapshotData";
 
-import { dataManager } from '../../AppDataManager';
-
 class SnapshotGQLData implements QueryPattern {
     async compute_query (client: typeof gqlClient, query: string, parameters: BasicQueryParameters): Promise<SnapshotData> {
         const rawSnapshotData = (await client.execute_query(query, parameters)).data.snapshotInfos;

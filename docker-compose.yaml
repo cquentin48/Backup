@@ -9,6 +9,7 @@ services:
       - backend
     environment:
       - PUBLIC_URL=127.0.0.1
+      - JEST_CONFIG=./config/jest.config.js react-scripts test
     volumes:
       - static:/static
     command: sh -c "cp -r /home/build/static/* /static ; nginx -g 'daemon off;'"
@@ -27,6 +28,7 @@ services:
     image: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      
     env_file:
       - .env
     ports:

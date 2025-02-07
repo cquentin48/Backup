@@ -30,7 +30,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "webpack --mode production",
-    "test": "react-scripts test --detectOpenHandles --forceExit --coverage",
+    "test": "jest --watchAll --coverage --detectOpenHandles --config=./jest/jest.config.js",
     "eject": "react-scripts eject",
     "lint": "eslint src/main src/test",
     "lint_fix": "eslint src/main src/test --fix",
@@ -42,6 +42,9 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "jest":{
+    "coverageDirectory":"<rootDir>/coverage"
   },
   "browserslist": {
     "production": [
@@ -64,6 +67,8 @@
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "css-loader": "^7.1.2",
     "eslint": "^8.34.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -78,7 +83,10 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "graphql-tag": "^2.12.6",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-environment-jsdom": "^29.7.0",
     "react-scripts": "^5.0.1",
+    "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.1",
     "typescript": "^4.9.5",
     "webpack-cli": "^6.0.1"

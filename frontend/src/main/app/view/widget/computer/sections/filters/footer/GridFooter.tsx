@@ -42,7 +42,7 @@ NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
 
     /**
      * Handles the footer based off the selected element in datagrid
-     * @param {unknown[]} ids Selected filter ids
+     * @param {string} ids Selected filter ids
      */
     handleUpdatedSelectedRows = (ids: string): void => {
         this.setState({
@@ -65,7 +65,7 @@ NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
                 </Box>
             )
         } else {
-            return <div></div>
+            return <div id="GridFooter"></div>
         }
     }
 }

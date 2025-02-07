@@ -1,3 +1,4 @@
+import NotFoundError from "../../../model/exception/errors/notFoundError";
 import ValidationError from "../../../model/exception/errors/validationError";
 
 /**
@@ -7,12 +8,12 @@ interface FilterInputDetails {
     /**
      * Type of the input (e.g. ``date``, ``text``)
      */
-    inputType: string;
+    inputType: string
 
     /**
      * Allowed comparaison function|operators
      */
-    comparisonOperators: string[];
+    comparisonOperators: string[]
 }
 
 /**
@@ -112,7 +113,7 @@ export default class Filter {
     /**
      * Input Types data
      */
-    private static filterTypes: Map<string, Map<String, FilterInputDetails>> = new Map<string, Map<String, FilterInputDetails>>(
+    private static readonly filterTypes: Map<string, Map<string, FilterInputDetails>> = new Map<string, Map<string, FilterInputDetails>>(
         [
             ["File", new Map<string, FilterInputDetails>(
                 [
@@ -151,7 +152,7 @@ export default class Filter {
                             inputType: 'text',
                             comparisonOperators: Filter.authorizedComparisonOperations
                         }
-                    ],
+                    ]
                 ]
             )],
             ["Library", new Map<string, FilterInputDetails>(
@@ -191,7 +192,7 @@ export default class Filter {
                             inputType: 'text',
                             comparisonOperators: Filter.authorizedComparisonOperations
                         }
-                    ],
+                    ]
                 ]
             )],
             ["Other", new Map<string, FilterInputDetails>(
@@ -201,9 +202,9 @@ export default class Filter {
                             inputType: 'text',
                             comparisonOperators: ['-']
                         }
-                    ],
+                    ]
                 ]
-            )],
+            )]
         ]
     )
 
@@ -214,6 +215,14 @@ export default class Filter {
      * @returns {string} Filter DOM input type
      */
     public static getFieldNameType = (inputType: string, inputName: string): string => {
-        return Filter.filterTypes.get(inputType)!.get(inputName)!.inputType
+        const filterInputType = Filter.filterTypes.get(inputType)
+        if(filterInputType === undefined){
+            throw new NotFoundError(`No input ${inputType} found`)
+        }
+        const filterInputTypeName = filterInputType.get(inputName)
+        if(filterInputTypeName === undefined){
+            throw new NotFoundError(`No input ${inputType} and field name ${filterInputTypeName} found`)
+        }
+        return filterInputTypeName.inputType
     }
 }

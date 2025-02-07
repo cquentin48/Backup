@@ -20,8 +20,7 @@ class FilterManager {
     /**
      * Filters set in the filter main device informations
      */
-    private readonly filters: [Filter?] = [];
-    private selectedFilters: number[] = [];
+    private readonly filters: Filter[] = [];
 
     /**
      * Adds a new filter inside the table
@@ -37,19 +36,19 @@ class FilterManager {
         value: object
     ): void {
         const newFilter = new Filter(elementType, fieldName, comparisonType, value);
-        if (this.filters.includes(newFilter)) {
+        if (this.filters.filter((filter) => {
+            if (filter !== undefined) {
+                const elementTypeCheck = filter?.elementType === elementType;
+                const fieldNameCheck = filter?.fieldName === fieldName;
+                const comparisonTypeCheck = filter?.opType === comparisonType;
+                const valueCheck = filter?.filterValue === value;
+                return elementTypeCheck && fieldNameCheck && comparisonTypeCheck && valueCheck
+            }
+        }).length > 0) {
             throw new AlreadyAddedWarning("The filter is already set! It will be ignored!")
         } else {
             this.filters.push(newFilter);
         }
-    }
-
-    /**
-     * Update the selected ids in the device main infos filter
-     * @param {number[]} selectedIDS selected filters
-     */
-    updateSelectedIDS (selectedIDS: number[]): void {
-        this.selectedFilters = selectedIDS;
     }
 
     /**
@@ -84,7 +83,7 @@ class FilterManager {
      * @throws {NotFoundError} Id set by the user outside of the range of the array indexes
      */
     public getFilter (id: number): Filter | undefined {
-        if (id >= this.filters.length) {
+        if (!(id in this.filters)) {
             throw new NotFoundError(`The index ${id} set is not in the array list!`);
         }
         return this.filters[id];

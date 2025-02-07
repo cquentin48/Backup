@@ -1,7 +1,7 @@
 import Device from "../../../main/app/model/device/device"
 
-describe("Device data model unit tests", ()=>{
-    test('Gets device formatted bytes number', ()=>{
+describe("Device data model unit tests", () => {
+    test('Gets device formatted bytes number', () => {
         // Given
         const newDevice = new Device(
             "MyDevice",
@@ -11,12 +11,12 @@ describe("Device data model unit tests", ()=>{
             "My OS",
             []
         )
-    
-        //Acts
+
+        // Acts
         const opResult = newDevice.formatBytes(newDevice.memory)
         const expectedResult = "4 GB"
-    
-        //Assert
+
+        // Assert
         expect(opResult).toBe(expectedResult)
     })
 })

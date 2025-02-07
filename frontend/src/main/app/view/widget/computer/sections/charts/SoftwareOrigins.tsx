@@ -8,14 +8,14 @@ import { PieChart } from "@mui/x-charts";
 
 import '../../../../../../res/css/ComputerMainInfos.css';
 import { dataManager } from "../../../../../model/AppDataManager";
-import { SnapshotData } from "../../../../../model/snapshot/snapshotData";
+import { type SnapshotData } from "../../../../../model/snapshot/snapshotData";
 import { loadSnapshot } from "../../../../controller/deviceMainInfos/loadSnapshot";
 
 interface SoftwareOriginsState {
     /**
      * Pie chart series data for the chart display
      */
-    data: PieChartData[];
+    data: PieChartData[]
 }
 
 /**
@@ -25,22 +25,23 @@ interface PieChartData {
     /**
      * Data index key
      */
-    id: number;
+    id: number
 
     /**
      * Data value
      */
-    value: number;
+    value: number
 
     /**
      * Data label
      */
-    label: string;
+    label: string
 }
 
 /**
  *  Sofware Origins pie charts view component
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export default class SoftwareOrigins extends React.Component<{}, SoftwareOriginsState> {
     state: Readonly<SoftwareOriginsState> = {
         data: []
@@ -52,7 +53,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
 
     /**
      * Update pie chart series data
-     * @param {unknown[]} data Updated pie chart series
+     * @param {string} data Updated pie chart series
      */
     updatePieChartData = (data: string): void => {
         const snapshot = (
@@ -64,7 +65,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
             if (!rawSeries.has(softwareInstallType)) {
                 rawSeries.set(softwareInstallType, 1)
             } else {
-                const previousValue = rawSeries.get(softwareInstallType)!
+                const previousValue = rawSeries.get(softwareInstallType) ?? 0
                 rawSeries.set(softwareInstallType, previousValue + 1)
             }
         });
@@ -80,7 +81,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
                     label: "Other"
                 }
             })
-            const filteredArray = series.filter((series)=>{
+            const filteredArray = series.filter((series) => {
                 return series.id < 5
             })
             filteredArray.push(other)
@@ -122,7 +123,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
                                 })
                             }
                         ]}
-                        loading={state.data.length == 0}
+                        loading={state.data.length === 0}
                         width={550}
                         height={200}
                         className="DisplayedPieChart"

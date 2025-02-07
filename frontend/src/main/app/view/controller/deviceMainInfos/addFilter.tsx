@@ -38,9 +38,9 @@ class AddDeviceMainInfosFilter implements ControllerAction {
      */
     performAction (inputs: string): void {
         inputs = JSON.parse(inputs)
-        const name = inputs[0] as string;
-        const fieldName = inputs[1] as string;
-        const comparison = inputs[2] as string;
+        const name = inputs[0];
+        const fieldName = inputs[1];
+        const comparison = inputs[2];
         const value = inputs[3] as unknown as object;
 
         Filter.inputTypeAuthorizedList(name);

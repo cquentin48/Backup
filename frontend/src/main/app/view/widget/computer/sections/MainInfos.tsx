@@ -21,7 +21,7 @@ interface AccordionMainInfosProps {
  * @param {AccordionMainInfosProps} props computer linked to the widget
  * @returns {React.JSX.Element} Accordion with the device main informations
  */
-export default function SpecsMainInfos (props: AccordionMainInfosProps): JSX.Element {
+export default function SpecsMainInfos (props: AccordionMainInfosProps): React.JSX.Element {
     const computer = props.computer;
 
     return (
