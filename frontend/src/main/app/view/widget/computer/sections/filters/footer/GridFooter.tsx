@@ -5,6 +5,8 @@ import { Box } from "@mui/material";
 import { updateDeviceMainInfosFilter } from "../../../../../controller/deviceMainInfos/updateSelectedFilters";
 import GridFooterDelete from "./GridFooterDel";
 
+import '../../../../../../../res/css/Filters.css'
+
 /**
  * Device main informations footer web component state
  */
@@ -19,7 +21,7 @@ interface DeviceMainInfosGridFooterState {
  * Device main infos datagrid footer
  */
 export default class DeviceMainInfosGridFooter extends React.Component<
-NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
+    NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
 > {
     /**
      * Device main infos grid footer web component initialisation
@@ -56,16 +58,20 @@ NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
      */
     render (): JSX.Element {
         const ids = this.state.idsList
+        const formatedFiltersCount = ids.length + "filtre" + (ids.length > 1) && "s" +
+            " sélectionné" + (ids.length > 1) && "s"
         if (ids.length > 0) {
             return (
-                <Box sx={{ p: 1, display: 'flex' }}>
-                    <p>{`${ids.length}`} filtre{(ids.length > 1) && "s "}
-                        sélectionné{(ids.length > 1) && "s"}!</p>
+                <Box
+                    sx={{ p: 1, display: 'flex' }}
+                    id="GridFooterContent"
+                >
+                    <p>{formatedFiltersCount}!</p>
                     <GridFooterDelete selectedIds={ids} />
                 </Box>
             )
         } else {
-            return <div id="GridFooter"></div>
+            return <div id="GridFooterNoContent"></div>
         }
     }
 }

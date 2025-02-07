@@ -1,17 +1,11 @@
 import React from "react";
 
-import FilterTable from "./filterTable";
+import FilterTable from "./table";
 
 /**
  * Interface declaring the elements passed from the device main informations page
  */
 interface FilterTableProps {
-    /**
-     * Function to add a new filter
-     * @param newFilter newly created filter
-     */
-    addNewFilter: (newFilter: string) => void
-
     /**
      * Remove filter function
      * @param elementIndexes index of every filter removed
@@ -21,7 +15,7 @@ interface FilterTableProps {
     /**
      * Filters set by the user
      */
-    filters: [string?]
+    filters: string[]
 }
 
 /**
@@ -29,17 +23,13 @@ interface FilterTableProps {
  * @param {FilterTableProps} props Elements passed from the device main informations page
  * @returns {React.JSX.Element} Filter view component
  */
-export default function Filters (props: FilterTableProps): React.JSX.Element {
-    const declaredFilters = ['a'];
-    const table = declaredFilters.length > 0
-        ? <FilterTable
-            filters={props.filters}
-            removeSelectedIndexes={props.removeFilters}
-        />
-        : <div>No filter has been added yet</div>;
+export default function FiltersSection (props: FilterTableProps): React.JSX.Element {
     return (
         <div id="computerMainInfosFilterTable">
-            {table}
+            <FilterTable
+                filters={props.filters}
+                removeSelectedIndexes={props.removeFilters}
+            />
         </div>
     )
 }

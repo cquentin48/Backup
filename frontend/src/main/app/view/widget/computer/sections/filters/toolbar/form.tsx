@@ -9,6 +9,7 @@ import AlreadyAddedWarning from "../../../../../../model/exception/warning/alrea
 import '../../../../../../../res/css/Filters.css';
 import FilterToolbar from "./selectFilter";
 import FieldValue from "./fieldValue";
+import DeviceMainInfosFilterCreationButton from "./createFilterButton";
 
 /**
  * State of the new filter form dialog
@@ -91,9 +92,13 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             value
         ]
         try {
-            addFilter.performAction(
-                JSON.stringify(inputs)
-            )
+            if (value.length > 0) {
+                addFilter.performAction(
+                    JSON.stringify(inputs)
+                );
+            } else {
+                console.log("You must enter a value!")
+            }
             props.closesDialog(false);
         } catch (error) {
             if (error instanceof AlreadyAddedWarning) {
@@ -150,20 +155,11 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
                 updateValue={updateValue}
                 value={value}
             />
-            <Tooltip title="Adds new filter">
-                <IconButton
-                    aria-label="add"
-                    onClick={() => {
-                        if (value.length > 0) {
-                            addsNewFilter();
-                        } else {
-                            console.log("You must enter a value!")
-                        }
-                    }}
-                >
-                    <Add />
-                </IconButton>
-            </Tooltip>
+            <DeviceMainInfosFilterCreationButton
+                addNewFilter={
+                    addsNewFilter
+                }
+            />
         </div>
     )
 }

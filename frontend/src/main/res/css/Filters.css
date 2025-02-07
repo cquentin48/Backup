@@ -44,3 +44,8 @@
         margin-left: 16px;
     }
 }
+
+#GridFooterContent{
+    padding: 1;
+    display: 'flex';
+}

@@ -11,7 +11,7 @@ import NewFilterPaperDialog from "./paperDialog";
 export default function GridToolbarAdd (): React.JSX.Element {
     const [openedDialog, setOpenedDialog] = React.useState(false);
     return (
-        <div>
+        <div id="NewDeviceFilterButton">
             <Tooltip title={"Add new filter"}>
                 <Button startIcon={<Add />} className="newFilterButton" onClick={() => {
                     setOpenedDialog(!openedDialog)

@@ -20,7 +20,7 @@ interface FilterTableProps {
     /**
      * Filters set by the user
      */
-    filters: [string?]
+    filters: string[]
 
     /**
      * Function set to remove indexes selected by the user

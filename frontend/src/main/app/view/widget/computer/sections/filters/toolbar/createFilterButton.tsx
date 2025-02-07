@@ -20,13 +20,6 @@ interface DeviceMainInfosFilterCreationButtonProps {
  */
 export default function DeviceMainInfosFilterCreationButton
 (props: DeviceMainInfosFilterCreationButtonProps): React.JSX.Element {
-    useEffect(() => {
-        window.addEventListener('keydown', (event: KeyboardEvent) => {
-            if (event.key === "Enter") {
-                props.addNewFilter()
-            }
-        })
-    })
     return (
         <Tooltip title="Adds new filter">
             <IconButton

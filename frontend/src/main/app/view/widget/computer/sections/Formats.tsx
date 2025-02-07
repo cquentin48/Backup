@@ -6,7 +6,7 @@ import { Grid2 } from "@mui/material";
 import '../../../../../res/css/ComputerMainInfos.css';
 import SoftwareOrigins from "./charts/SoftwareOrigins";
 import FilesTypes from "./charts/FilesTypes";
-import Filters from "./filters/filters";
+import FiltersSection from "./filters/section";
 
 /**
  * Page current state
@@ -15,7 +15,7 @@ interface AccordionFormatsState {
     /**
      * Filters set by the user
      */
-    filters: [string?]
+    filters: string[]
 }
 
 /**
@@ -83,10 +83,9 @@ export default class Formats extends React.Component<{}, AccordionFormatsState> 
 
         return (
             <div className="DeviceMainInfos">
-                <Filters
+                <FiltersSection
                     filters={state.filters}
                     removeFilters={this.removeFilters}
-                    addNewFilter={this.addNewFilter}
                 />
                 <Grid2 container spacing={2} id="pieCharts">
                     <Grid2 size={6}>
