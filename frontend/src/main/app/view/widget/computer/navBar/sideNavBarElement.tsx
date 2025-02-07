@@ -56,7 +56,7 @@ export default function SideNavBarElement (props: SideNavBarElementProps): React
         <div
             className={classNames}
             id={`sideNavBarElement${props.id}`}
-            onClick={()=>{props.updateSelectedNumber(props.id)}}
+            onClick={() => { props.updateSelectedNumber(props.id) }}
         >
             <Link
                 to={{

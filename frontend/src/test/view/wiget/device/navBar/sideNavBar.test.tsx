@@ -45,7 +45,7 @@ describe("Device main infos side nav bar unit test suite", () => {
                     updateSelectedID={updateSelectedId}
                 />
             </BrowserRouter>)
-        
+
         const textElements = [
             "Main informations",
             "Libraries",
@@ -54,31 +54,31 @@ describe("Device main infos side nav bar unit test suite", () => {
         ]
 
         // Asserts
-        textElements.forEach(async (textElement, index)=>{
+        textElements.forEach((textElement, index) => {
             const navBarElement = document.querySelector(`#sideNavBarElement${index}`)
-            if(!navBarElement){
+            if (navBarElement == null) {
                 throw new Error(`Unit test error : nav bar element #${index} not found!`)
             }
-            await fireEvent.mouseOver(navBarElement)
+            fireEvent.mouseOver(navBarElement)
             expect(container).toHaveTextContent(textElement)
         })
     })
 
-    test("Detect update element click event", async () => {
+    test("Detect update element click event", () => {
         // Given
         const updateSelectedId: (newID: number) => void = (newID: number) => {
             console.log(newID)
         }
 
         // Acts
-        const { container } = render(
+        render(
             <BrowserRouter>
                 <ComputeSideNavBar
                     selectedID={0}
                     updateSelectedID={updateSelectedId}
                 />
             </BrowserRouter>)
-        
+
         const textElements = [
             "Main informations",
             "Libraries",
@@ -87,12 +87,12 @@ describe("Device main infos side nav bar unit test suite", () => {
         ]
 
         // Asserts
-        textElements.forEach(async (textElement, index)=>{
+        textElements.forEach((textElement, index) => {
             const navBarElement = document.querySelector(`#sideNavBarElement${index}`)
-            if(!navBarElement){
+            if (navBarElement == null) {
                 throw new Error(`Unit test error : nav bar element #${index} not found!`)
             }
-            await fireEvent.click(navBarElement)
+            fireEvent.click(navBarElement)
             expect(console.log).toHaveBeenCalled()
         })
     })

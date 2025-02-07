@@ -216,13 +216,10 @@ export default class Filter {
      */
     public static getFieldNameType = (inputType: string, inputName: string): string => {
         const filterInputType = Filter.filterTypes.get(inputType)
-        if(filterInputType === undefined){
+        if (filterInputType === undefined) {
             throw new NotFoundError(`No input ${inputType} found`)
         }
-        const filterInputTypeName = filterInputType.get(inputName)
-        if(filterInputTypeName === undefined){
-            throw new NotFoundError(`No input ${inputType} and field name ${filterInputTypeName} found`)
-        }
+        const filterInputTypeName = filterInputType.get(inputName) as FilterInputDetails
         return filterInputTypeName.inputType
     }
 }

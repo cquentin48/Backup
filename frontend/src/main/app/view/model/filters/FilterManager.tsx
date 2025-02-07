@@ -44,6 +44,7 @@ class FilterManager {
                 const valueCheck = filter?.filterValue === value;
                 return elementTypeCheck && fieldNameCheck && comparisonTypeCheck && valueCheck
             }
+            return false
         }).length > 0) {
             throw new AlreadyAddedWarning("The filter is already set! It will be ignored!")
         } else {

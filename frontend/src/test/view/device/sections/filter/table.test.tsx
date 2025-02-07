@@ -1,3 +1,5 @@
+import React from "react"
+
 import { fireEvent, render, screen } from "@testing-library/react"
 import FilterTable from "../../../../../main/app/view/widget/computer/sections/filters/table"
 
@@ -6,12 +8,12 @@ import { addFilter } from "../../../../../main/app/view/controller/deviceMainInf
 import FiltersSection from "../../../../../main/app/view/widget/computer/sections/filters/section"
 
 describe("Device main infos Filter table render (no filter)", () => {
-    test("Section render", ()=>{
+    test("Section render", () => {
         // Acts
         render(
             <FiltersSection
                 filters={[]}
-                removeFilters={()=>{}}
+                removeFilters={() => { }}
             />
         )
     })
@@ -21,11 +23,11 @@ describe("Device main infos Filter table render (no filter)", () => {
         const { container } = render(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
-        //Asserts
+        // Asserts
         const footer = container.querySelector("#GridFooterNoContent")
         expect(footer).toBeInTheDocument()
     })
@@ -40,7 +42,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const { rerender } = render(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
         addFilter.performAction(
@@ -56,7 +58,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         rerender(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
@@ -81,27 +83,27 @@ describe("Device main infos Filter table render (no filter)", () => {
         const { rerender } = render(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
         // Acts
-        const newFilterButton = await screen.getByRole('button', {name:/New filter/i})
-        if(newFilterButton === null){
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i })
+        if (newFilterButton === null) {
             throw new Error("Test fail : no new filter button found!")
         }
-        await fireEvent.click(newFilterButton)
+        fireEvent.click(newFilterButton)
         rerender(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
         // Asserts
         const selectedElement = screen.getByText("File")
-        var newFilterDialogRootNode = selectedElement?.parentElement
-        while(newFilterDialogRootNode!== null && newFilterDialogRootNode.className !== "newElementDialog"){
+        let newFilterDialogRootNode = selectedElement?.parentElement
+        while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
             newFilterDialogRootNode = newFilterDialogRootNode.parentElement
         }
         expect(newFilterDialogRootNode).toBeInTheDocument()
@@ -112,34 +114,34 @@ describe("Device main infos Filter table render (no filter)", () => {
         const { rerender } = render(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
         // Acts
-        const newFilterButton = await screen.getByRole('button', {name:/New filter/i})
-        if(newFilterButton === null){
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i })
+        if (newFilterButton === null) {
             throw new Error("Test fail : no new filter button found!")
         }
-        await fireEvent.click(newFilterButton)
+        fireEvent.click(newFilterButton)
         rerender(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
         const selectedElement = screen.getByText("File")
-        var newFilterDialogRootNode = selectedElement?.parentElement
-        while(newFilterDialogRootNode!== null && newFilterDialogRootNode.className !== "newElementDialog"){
+        let newFilterDialogRootNode = selectedElement?.parentElement
+        while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
             newFilterDialogRootNode = newFilterDialogRootNode.parentElement
         }
 
-        const inputTypeSelect = newFilterDialogRootNode?.childNodes.item(0)!.childNodes.item(1)!.childNodes.item(1)!
+        const inputTypeSelect = (newFilterDialogRootNode as HTMLElement).childNodes.item(0).childNodes.item(1).childNodes.item(1)
 
-        fireEvent.change(inputTypeSelect, {target:{value:"Library"}})
-        const fieldNameSelect = newFilterDialogRootNode?.childNodes.item(1)!.childNodes.item(1)!.childNodes.item(1)!
-        fireEvent.change(fieldNameSelect, {target:{value:"firstUploadDate"}})
+        fireEvent.change(inputTypeSelect, { target: { value: "Library" } })
+        const fieldNameSelect = (newFilterDialogRootNode as HTMLElement).childNodes.item(1).childNodes.item(1).childNodes.item(1)
+        fireEvent.change(fieldNameSelect, { target: { value: "firstUploadDate" } })
 
         // Asserts
         expect(screen.getByText("firstUploadDate")).toBeInTheDocument()
@@ -151,32 +153,31 @@ describe("Device main infos Filter table render (no filter)", () => {
         const { rerender } = render(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
         // Acts
-        const newFilterButton = await screen.getByRole('button', {name:/New filter/i})
-        if(newFilterButton === null){
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i })
+        if (newFilterButton === null) {
             throw new Error("Test fail : no new filter button found!")
         }
-        await fireEvent.click(newFilterButton)
+        fireEvent.click(newFilterButton)
         rerender(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
         const selectedElement = screen.getByText("File")
-        var newFilterDialogRootNode = selectedElement?.parentElement
-        while(newFilterDialogRootNode!== null && newFilterDialogRootNode.className !== "newElementDialog"){
+        let newFilterDialogRootNode = selectedElement?.parentElement
+        while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
             newFilterDialogRootNode = newFilterDialogRootNode.parentElement
         }
 
-        const addFilterButton = newFilterDialogRootNode?.childNodes.item(4)!
-
-        fireEvent.click(addFilterButton)
+        const addFilterButton = newFilterDialogRootNode?.childNodes.item(4)
+        fireEvent.click(addFilterButton as ChildNode)
 
         // Asserts
         expect(console.log).toBeCalled()
@@ -188,34 +189,34 @@ describe("Device main infos Filter table render (no filter)", () => {
         const { rerender } = render(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
         // Acts
-        const newFilterButton = await screen.getByRole('button', {name:/New filter/i})
-        if(newFilterButton === null){
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i })
+        if (newFilterButton === undefined) {
             throw new Error("Test fail : no new filter button found!")
         }
-        await fireEvent.click(newFilterButton)
+        fireEvent.click(newFilterButton)
         rerender(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
         const selectedElement = screen.getByText("File")
-        var newFilterDialogRootNode = selectedElement?.parentElement
-        while(newFilterDialogRootNode!== null && newFilterDialogRootNode.className !== "newElementDialog"){
+        let newFilterDialogRootNode = selectedElement?.parentElement
+        while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
             newFilterDialogRootNode = newFilterDialogRootNode.parentElement
         }
 
-        const addFilterButton = newFilterDialogRootNode?.childNodes.item(4)!
-        
-        fireEvent.keyDown(addFilterButton, {
-            key:"Enter",
-            code:"Enter",
+        const addFilterButton = newFilterDialogRootNode?.childNodes.item(4)
+
+        fireEvent.keyDown(addFilterButton as ChildNode, {
+            key: "Enter",
+            code: "Enter"
         })
 
         // Asserts
@@ -228,35 +229,38 @@ describe("Device main infos Filter table render (no filter)", () => {
         const { rerender } = render(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
         // Acts
-        const newFilterButton = await screen.getByRole('button', {name:/New filter/i})
-        if(newFilterButton === null){
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i })
+        if (newFilterButton === null) {
             throw new Error("Test fail : no new filter button found!")
         }
-        await fireEvent.click(newFilterButton)
+        fireEvent.click(newFilterButton)
         rerender(
             <FilterTable
                 filters={[]}
-                removeSelectedIndexes={(number) => { number }}
+                removeSelectedIndexes={(number) => { console.log(number) }}
             />
         )
 
         const selectedElement = screen.getByText("File")
-        var newFilterDialogRootNode = selectedElement?.parentElement
-        while(newFilterDialogRootNode!== null && newFilterDialogRootNode.className !== "newElementDialog"){
+        let newFilterDialogRootNode = selectedElement?.parentElement
+        while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
             newFilterDialogRootNode = newFilterDialogRootNode.parentElement
         }
 
-        const fieldValueInput = newFilterDialogRootNode?.childNodes.item(3).childNodes.item(1).childNodes.item(0)!
-        
+        const fieldValueInput = newFilterDialogRootNode?.childNodes.item(3).childNodes.item(1).childNodes.item(0)
+
+        if (fieldValueInput == null) {
+            throw new Error("Unkown ")
+        }
 
         fireEvent.keyDown(fieldValueInput, {
-            key:"Tab",
-            code:"Tab",
+            key: "Tab",
+            code: "Tab"
         })
 
         // Asserts

@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 
-import { IconButton, Tooltip } from "@mui/material";
 import Filter from "../../../../../model/filters/Filter";
-import { Add } from "@mui/icons-material";
 import { addFilter } from "../../../../../controller/deviceMainInfos/addFilter";
 import AlreadyAddedWarning from "../../../../../../model/exception/warning/alreadyAdded";
 

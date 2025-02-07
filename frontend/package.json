@@ -43,8 +43,8 @@
       "react-app/jest"
     ]
   },
-  "jest":{
-    "coverageDirectory":"<rootDir>/coverage"
+  "jest": {
+    "coverageDirectory": "<rootDir>/coverage"
   },
   "browserslist": {
     "production": [
@@ -60,6 +60,8 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@graphql-tools/jest-transform": "^2.0.0",
+    "@graphql-tools/webpack-loader": "^7.0.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/react": "^19.0.8",
@@ -69,6 +71,7 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "cross-fetch": "^4.1.0",
     "css-loader": "^7.1.2",
     "eslint": "^8.34.0",
     "eslint-config-airbnb": "^19.0.4",

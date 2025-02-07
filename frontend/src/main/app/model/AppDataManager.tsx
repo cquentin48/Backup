@@ -37,10 +37,10 @@ class AppDataManager {
      * @throws {NotFoundError} No object found the function passed key.
      */
     public getElement (dataElementKey: string): string {
-        if (!this.data.has(dataElementKey) || this.data.get(dataElementKey) === undefined) {
+        if (!this.data.has(dataElementKey)) {
             throw new NotFoundError(`The key ${dataElementKey} hasn't been set inside the app data manager!`)
         }
-        return this.data.get(dataElementKey)!
+        return this.data.get(dataElementKey) as string
     }
 
     /**
@@ -64,8 +64,7 @@ class AppDataManager {
         return this.data.has(dataElementKey)
     }
 
-    
-    public removeAllData(): void{
+    public removeAllData (): void {
         this.data.clear()
     }
 }

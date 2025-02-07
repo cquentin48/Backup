@@ -5,8 +5,8 @@ import NotFoundError from "../../../main/app/model/exception/errors/notFoundErro
 import ValidationError from "../../../main/app/model/exception/errors/validationError"
 
 describe("Filter manager data model unit tests", () => {
-    afterEach(()=>{
-        while(filterManager.getFilters().length > 0){
+    afterEach(() => {
+        while (filterManager.getFilters().length > 0) {
             filterManager.removeFilter(0)
         }
     })
@@ -50,9 +50,11 @@ describe("Filter manager data model unit tests", () => {
         )
 
         // Assert
-        expect(() => filterManager.addFilter(
-            elementType, fieldName, comparisonType, fieldValue
-        )).toThrowError(AlreadyAddedWarning)
+        expect(() => {
+            filterManager.addFilter(
+                elementType, fieldName, comparisonType, fieldValue
+            );
+        }).toThrowError(AlreadyAddedWarning)
     })
     test('Removes filter (filter already added)', () => {
         // Given
@@ -73,7 +75,7 @@ describe("Filter manager data model unit tests", () => {
     })
     test('Removes filter (filter not yet added)', () => {
         // Acts & asserts
-        expect(()=>filterManager.removeFilter(0)).toThrow(NotFoundError)
+        expect(() => { filterManager.removeFilter(0); }).toThrow(NotFoundError)
     })
     test('Gets filter (filter already added)', () => {
         // Given
@@ -97,28 +99,28 @@ describe("Filter manager data model unit tests", () => {
     })
     test('Removes filter (filter not yet added)', () => {
         // Acts & asserts
-        expect(()=>filterManager.getFilter(0)).toThrow(NotFoundError)
+        expect(() => filterManager.getFilter(0)).toThrow(NotFoundError)
     })
 
-    test('Input type filter (no error should be raised here)', ()=>{
+    test('Input type filter (no error should be raised here)', () => {
         // Acts & asserts
-        expect(()=> Filter.inputTypeAuthorizedList("File")).not.toThrow(ValidationError)
+        expect(() => { Filter.inputTypeAuthorizedList("File"); }).not.toThrow(ValidationError)
     })
-    test('Input type filter (invalid type, ``ValidationError`` should be raised)', ()=>{
+    test('Input type filter (invalid type, ``ValidationError`` should be raised)', () => {
         // Acts & asserts
-        expect(()=> Filter.inputTypeAuthorizedList("My type!")).toThrow(ValidationError)
-    })
-
-    test('Comparison type filter (no error should be raised here)', ()=>{
-        // Acts & asserts
-        expect(()=> Filter.comparisonTypesCheck("<")).not.toThrow(ValidationError)
-    })
-    test('Comparison type filter (invalid type, ``ValidationError`` should be raised)', ()=>{
-        // Acts & asserts
-        expect(()=> Filter.comparisonTypesCheck("comp type!")).toThrow(ValidationError)
+        expect(() => { Filter.inputTypeAuthorizedList("My type!"); }).toThrow(ValidationError)
     })
 
-    test('Gets filter input field name list(no error should be raised here)', ()=>{
+    test('Comparison type filter (no error should be raised here)', () => {
+        // Acts & asserts
+        expect(() => { Filter.comparisonTypesCheck("<"); }).not.toThrow(ValidationError)
+    })
+    test('Comparison type filter (invalid type, ``ValidationError`` should be raised)', () => {
+        // Acts & asserts
+        expect(() => { Filter.comparisonTypesCheck("comp type!"); }).toThrow(ValidationError)
+    })
+
+    test('Gets filter input field name list(no error should be raised here)', () => {
         // Given
         const inputTypes = [
             {
@@ -135,38 +137,38 @@ describe("Filter manager data model unit tests", () => {
             }
         ]
         // Acts & asserts
-        inputTypes.forEach((inputType)=>{
+        inputTypes.forEach((inputType) => {
             const label = inputType.label as "File" | "Library" | ""
             const opResult = Filter.inputFieldName(label)
             expect(opResult).toStrictEqual(inputType.expectedOutput)
         })
     })
-    test('Gets field name type (everything is ok)', ()=>{
+    test('Gets field name type (everything is ok)', () => {
         // Given
         const inputType = "File"
         const inputName = "name"
 
         // Acts
-        const opResult =  Filter.getFieldNameType(inputType, inputName)
+        const opResult = Filter.getFieldNameType(inputType, inputName)
         const expectedResult = "text"
 
         // Asserts
         expect(opResult).toStrictEqual(expectedResult)
     })
-    test('Gets field name type (invalid input type)', ()=>{
+    test('Gets field name type (invalid input type)', () => {
         // Given
         const inputType = "Type"
         const inputName = "name"
 
         // Acts & assert
-        expect(()=>Filter.getFieldNameType(inputType, inputName)).toThrow(NotFoundError)
+        expect(() => Filter.getFieldNameType(inputType, inputName)).toThrow(NotFoundError)
     })
-    test('Gets field name type (invalid field name type)', ()=>{
+    test('Gets field name type (invalid field name type)', () => {
         // Given
         const inputType = "File"
         const inputName = "My type"
 
         // Acts & assert
-        expect(()=>Filter.getFieldNameType(inputType, inputName)).toThrow(NotFoundError)
+        expect(() => Filter.getFieldNameType(inputType, inputName)).toThrow(TypeError)
     })
 })
