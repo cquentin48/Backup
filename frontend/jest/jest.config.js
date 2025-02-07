@@ -6,16 +6,20 @@ const config = {
     'html',
     'text-summary'
   ],
-  testMatch:[
+  testMatch: [
     "**/*.test.tsx"
   ],
-  rootDir:"../",
-  testEnvironment: "jsdom",
-  moduleNameMapper:{
-    "\\.(s?css|less)$": "identity-obj-proxy",
-    "\\.(gql|graphql)$": "identity-obj-proxy"
+  transform:{
+    "\\.(gql|graphql)$": "@graphql-tools/jest-transform",
+    "^.+\\.tsx?$": 'ts-jest',
   },
-  testPathIgnorePatterns:[
+  rootDir: "../",
+  testEnvironment: "jsdom",
+  moduleNameMapper: {
+    "\\.(s?css|less)$": "identity-obj-proxy",
+  },
+  moduleFileExtensions: ['js', 'ts', 'jsx', 'tsx', 'gql', 'graphql'],
+  testPathIgnorePatterns: [
     "/node_modules/"
   ],
   collectCoverage: true,

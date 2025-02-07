@@ -21,7 +21,7 @@ interface DeviceMainInfosGridFooterState {
  * Device main infos datagrid footer
  */
 export default class DeviceMainInfosGridFooter extends React.Component<
-    NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
+NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
 > {
     /**
      * Device main infos grid footer web component initialisation
@@ -58,8 +58,12 @@ export default class DeviceMainInfosGridFooter extends React.Component<
      */
     render (): JSX.Element {
         const ids = this.state.idsList
-        const formatedFiltersCount = ids.length + "filtre" + (ids.length > 1) && "s" +
-            " sélectionné" + (ids.length > 1) && "s"
+        let formatedFiltersCount = `${ids.length} filtre`
+        if (ids.length > 1) {
+            formatedFiltersCount = `${formatedFiltersCount}s sélectionnés`
+        } else {
+            formatedFiltersCount = `${formatedFiltersCount} sélectionné`
+        }
         if (ids.length > 0) {
             return (
                 <Box

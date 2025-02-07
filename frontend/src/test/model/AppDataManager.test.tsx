@@ -2,7 +2,7 @@ import { dataManager } from "../../main/app/model/AppDataManager"
 import AlreadyAddedWarning from "../../main/app/model/exception/warning/alreadyAdded"
 
 describe("Application data manager unit tests", () => {
-    afterEach(()=>{
+    afterEach(() => {
         dataManager.removeAllData()
     })
     test('Adds new element + retrieves it (element not yet added)', () => {
@@ -12,7 +12,7 @@ describe("Application data manager unit tests", () => {
 
         // Acts
         dataManager.addElement(elementKey, (newElement as unknown as object))
-        const opResult = JSON.parse(dataManager.getElement(elementKey) as string)
+        const opResult = JSON.parse(dataManager.getElement(elementKey))
 
         // Asserts
         expect(opResult).toBe(newElement)
@@ -27,7 +27,7 @@ describe("Application data manager unit tests", () => {
 
         // Asserts
         expect(
-            ()=>dataManager.addElement(elementKey, (newElement as unknown as object))
+            () => { dataManager.addElement(elementKey, (newElement as unknown as object)); }
         ).toThrow(AlreadyAddedWarning)
     })
 })

@@ -1,3 +1,5 @@
+import React from "react"
+
 import { render } from "@testing-library/react"
 import Device from "../../../../main/app/model/device/device"
 import SnapshotID from "../../../../main/app/model/device/snapshot"

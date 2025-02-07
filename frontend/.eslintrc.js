@@ -20,15 +20,14 @@ module.exports = {
         "src/test/**/*.tsx"
       ],
       parserOptions: {
-        project: null,
+        project: ["tsconfig.json"],
       },
     },
   ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ["tsconfig.json"],
-    tsconfigRootDir: __dirname,
+    project: ["tsconfig.json"]
   },
   plugins: [
     'react',
