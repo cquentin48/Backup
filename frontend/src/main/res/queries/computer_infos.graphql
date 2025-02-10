@@ -1,0 +1,13 @@
+query getDeviceInfos($deviceID:String!){
+  deviceInfos(deviceId:$deviceID){
+    cores,
+    memory,
+    name,
+    operatingSystem,
+    processor,
+    snapshots{
+      snapshotId,
+      snapshotDate
+    }
+  }
+}

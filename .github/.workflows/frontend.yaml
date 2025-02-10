@@ -1,0 +1,22 @@
+name: Backup frontend continuous integration
+run-name: frontend_ci
+
+on: [push]
+jobs:
+  docker:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Build and start docker containers
+      run: docker-compose up -d --build
+    - name: Run the lint check (check for code errors)
+      run: docker exec -it frontend npm run lint
+    - name: Run the unit test (alongside the coverage generation)
+      run: docker exec -it frontend npm run test
+    - name: Stop the containers
+      run: docker compose down --volumes
+    - name: End of continuous integration
+      run: echo "Job done with status ${{job.status}}!"

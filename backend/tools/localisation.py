@@ -10,7 +10,7 @@ class Localisation:
         Args:
             language (str): _description_
         """
-        self._locale_prefix_file_path = "res/locale_"
+        self._locale_prefix_file_path = "res/locale/locale_"
         self.locale_dict = self.open_locale_file(language=language)
 
     def open_locale_file(self, language: str):

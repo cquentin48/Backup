@@ -1,6 +1,6 @@
 # .coveragerc to control coverage.py
 [run]
-omit = */migrations/*,manage.py,*/settings.py*,*/apps_tests/*,*__init__.py
+omit = */migrations/*,manage.py,*/settings.py*,*/apps_tests/*,*__init__.py, server/asgi.py, */routing.py, */urls.py
 branch = True
 
 [report]
