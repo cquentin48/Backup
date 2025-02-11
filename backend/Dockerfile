@@ -7,6 +7,9 @@ COPY Makefile ./
 RUN make install
 COPY ./ /backup/
 
+# Installing for pylint for the linter
+RUN pip install pylint pylint-django
+
 # Generatic static html page file (js, css, ...)
 RUN make generate_static_auto
 

@@ -1,11 +1,10 @@
 from typing import Literal
 
-from django.utils import timezone
-
 import json
 
 from channels.generic.websocket import WebsocketConsumer
 
+from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Device, Package, ChosenVersion, Snapshot, Repository

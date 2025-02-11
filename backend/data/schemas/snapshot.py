@@ -3,16 +3,17 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from ..models import Snapshot
 
+
 class RepositoryData(graphene.ObjectType):
     """
     GraphQL representation sub-class for the query ``fetch_snapshot``.
     """
     sources_lines = graphene.String(
-        description = "Repository instructions to add it to the device."
+        description="Repository instructions to add it to the device."
     )
 
     name = graphene.String(
-        description = "Name of the repository source."
+        description="Name of the repository source."
     )
 
     class Meta:
@@ -20,6 +21,7 @@ class RepositoryData(graphene.ObjectType):
         Meta subclass for the device repository data
         """
         description = "Device software source (e.g. repository)."
+
 
 class DeviceSoftwareVersion(graphene.ObjectType):
     """
@@ -42,7 +44,7 @@ class DeviceSoftwareVersion(graphene.ObjectType):
     """
 
     software_install_type = graphene.String(
-        description="Software installation type (e.g. marketplace install, "+
+        description="Software installation type (e.g. marketplace install, " +
         "Package managment install, ...)"
     )
     """
@@ -54,6 +56,7 @@ class DeviceSoftwareVersion(graphene.ObjectType):
         Meta subclass for the device versions software
         """
         description = "Device installed software data."
+
 
 class SnapshotData(graphene.ObjectType):
     """
@@ -67,7 +70,7 @@ class SnapshotData(graphene.ObjectType):
     """
     Every software version installed on the device
     """
-    
+
     repositories = graphene.List(
         RepositoryData,
         description="Every repositories linked to the snapshot"
@@ -107,5 +110,5 @@ class SnapshotQuery(graphene.ObjectType):
                 versions=versions,
                 repositories=[]
             )
-        except ObjectDoesNotExist as e:
+        except ObjectDoesNotExist as _:
             return None

@@ -1,11 +1,13 @@
 from graphene_django.utils.testing import GraphQLTestCase
 
-from data.models import Device, Package, Snapshot, ChosenVersion
+from data.models import Snapshot
 from apps_tests.test_data.utils import (
     create_test_chosen_version,
     create_test_device,
     create_test_package
 )
+
+from .utils import tear_down_objects
 
 
 class DeviceSchemaQueryTest(GraphQLTestCase):
@@ -19,10 +21,7 @@ class DeviceSchemaQueryTest(GraphQLTestCase):
         """After each test function
         which flush database
         """
-        Snapshot.objects.all().delete()
-        ChosenVersion.objects.all().delete()
-        Package.objects.all().delete()
-        Device.objects.all().delete()
+        tear_down_objects()
 
     def test_resolve_device_infos(self):
         """
@@ -97,7 +96,8 @@ class DeviceSchemaQueryTest(GraphQLTestCase):
 
     def test_resolve_device_infos_unkown_device(self):
         """
-        Check if the GRAPHQL query "DeviceInfos" can be resolved in unusual conditions : the device is not set
+        Check if the GRAPHQL query "DeviceInfos" can be resolved in unusual conditions :
+        the device is not set
         """
         # Given
 

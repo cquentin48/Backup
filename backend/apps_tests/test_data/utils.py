@@ -18,6 +18,7 @@ def create_test_package(name: str, package_type: str, pre_install_lines: str) ->
         name=name, type=package_type, pre_install_lines=pre_install_lines
     )
 
+
 def create_test_chosen_version(package: Package, chosen_version: str) -> ChosenVersion:
     """ Creates a package chosen version for later unit test
 
@@ -35,7 +36,6 @@ def create_test_chosen_version(package: Package, chosen_version: str) -> ChosenV
     )
 
 
-
 def create_test_device(name: str) -> Device:
     """ Creates a new device. It will be used for unit test
 
@@ -44,4 +44,10 @@ def create_test_device(name: str) -> Device:
 
     :rtype: Device
     """
-    return Device.objects.create(name=name, cores=6, memory=32, operating_system="My OS!", processor="My processor!")
+    return Device.objects.create(
+        name=name,
+        cores=6,
+        memory=32,
+        operating_system="My OS!",
+        processor="My processor!"
+    )

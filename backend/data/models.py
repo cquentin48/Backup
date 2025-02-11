@@ -164,8 +164,10 @@ class Shell(models.Model):
 
     def __str__(self):
         # How many lines are there in the history and configuration lines
-        history_lines_count = CommandHistory.objects.filter(related_shell=self).count()
-        configuration_lines_count = Command.objects.filter(related_shell=self).count()
+        history_lines_count = CommandHistory.objects.filter(
+            related_shell=self).count()
+        configuration_lines_count = Command.objects.filter(
+            related_shell=self).count()
 
         # Format the counts
         history_lines_format = f"{history_lines_count}" +\
@@ -197,7 +199,7 @@ class Command(models.Model):
     """
     Arguments of the command (e.g ``-ltr`` for ``ls -ltr``)
     """
-    
+
     related_shell = models.ForeignKey(
         to=Shell,
         on_delete=models.PROTECT,
@@ -234,7 +236,7 @@ class CommandHistory(models.Model):
     """
     Timestamp of the command
     """
-    
+
     related_shell = models.ForeignKey(
         to=Shell,
         on_delete=models.PROTECT,

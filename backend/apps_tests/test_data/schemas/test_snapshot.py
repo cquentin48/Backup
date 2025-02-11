@@ -1,11 +1,13 @@
 from graphene_django.utils.testing import GraphQLTestCase
 
-from data.models import Device, Package, Snapshot, ChosenVersion
+from data.models import Snapshot
 from apps_tests.test_data.utils import (
     create_test_chosen_version,
     create_test_device,
     create_test_package
 )
+
+from .utils import tear_down_objects
 
 
 class SnapshotSchemaQueryTest(GraphQLTestCase):
@@ -19,36 +21,28 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
         """After each test function
         which flush database
         """
-        Snapshot.objects.all().delete()
-        ChosenVersion.objects.all().delete()
-        Package.objects.all().delete()
-        Device.objects.all().delete()
+        tear_down_objects()
 
     def test_resolve_snapshot_infos(self):
         """
         Check if the GRAPHQL query "snapshotInfos" can be resolved in normal conditions
         """
         # Given
-        device_name = "Mon objet!"
-        test_device = create_test_device(name=device_name)
+        test_device = create_test_device(name="Mon objet!")
 
-        package_name = "My package!"
-        package_type = "package type"
-        pre_install_lines = ""
-        
         chosen_versions_numbers = [
             {
-                "chosen_version":"1.0"
+                "chosen_version": "1.0"
             },
             {
-                "chosen_version":"1.0"
+                "chosen_version": "1.0"
             }
         ]
 
         test_package = create_test_package(
-            package_type=package_type,
-            name=package_name,
-            pre_install_lines=pre_install_lines
+            package_type="package type",
+            name="My package!",
+            pre_install_lines=""
         )
 
         save_date = "2020-01-01"
@@ -57,7 +51,7 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
             save_date=save_date
         )
 
-        for raw_chosen_version in chosen_versions_numbers :
+        for raw_chosen_version in chosen_versions_numbers:
             new_version = create_test_chosen_version(
                 chosen_version=raw_chosen_version['chosen_version'],
                 package=test_package
@@ -91,14 +85,16 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
         # Asserts
         self.assertEqual(len(op_result['versions']), 2)
         for index, version in enumerate(op_result['versions']):
-            self.assertEqual(version['softwareVersion'], chosen_versions_numbers[index]['chosen_version'])
+            self.assertEqual(
+                version['softwareVersion'], chosen_versions_numbers[index]['chosen_version'])
             self.assertEqual(version['name'], 'My package!')
             self.assertEqual(version['softwareInstallType'], 'package type')
         self.assertEqual(len(op_result['repositories']), 0)
 
     def test_resolve_snapshot_infos_unkown_snapshot(self):
         """
-        Check if the GRAPHQL query "DeviceInfos" can be resolved in unusual conditions : the snapshot is not set
+        Check if the GRAPHQL query "DeviceInfos" can be resolved in unusual conditions :
+        the snapshot is not set
         """
         # Given
 
