@@ -1,5 +1,7 @@
 import React from "react"
 
+import '@testing-library/jest-dom'
+
 import { fireEvent, render, screen } from "@testing-library/react"
 import Device from "../../../../main/app/model/device/device"
 import SnapshotID from "../../../../main/app/model/device/snapshot"
@@ -10,6 +12,7 @@ describe("MainInfosFrame unit test suite", () => {
     afterEach(()=>{
         dataManager.removeAllData()
     })
+
     test("Successful render", async () => {
         // Given
         const testDevice = new Device(
@@ -55,22 +58,16 @@ describe("MainInfosFrame unit test suite", () => {
         )
 
         // Acts
-        const {container} = render(
+        const {container, getByText} = render(
             <MainInfosFrame
                 computer={testDevice}
             />
         )
 
-        const snapshotSelect = screen.getByTestId("dataType-select")
-        fireEvent.mouseDown(snapshotSelect)
-        const newSnapshot = await container.querySelector(
-           '#MuiMenuItem-root'
-        ) as Element
-        fireEvent.click(newSnapshot)
+        const snapshotSelect = container.querySelector(".MuiSelect-nativeInput") as Element
+        fireEvent.change(snapshotSelect, {target: {value: testDevice.snapshots[1].id}})
 
         // Asserts
-        expect(snapshotSelect).toHaveTextContent(
-            (testDevice.snapshots.at(1) as SnapshotID).localizedDate()
-        )
+        expect(getByText(testDevice.snapshots[1].localizedDate())).toBeInTheDocument()
     })
 })

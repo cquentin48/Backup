@@ -1,30 +1,32 @@
 import React from "react"
 
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import FilterTable from "../../../../../main/app/view/widget/computer/sections/filters/table"
 
 import '@testing-library/jest-dom'
 import { addFilter } from "../../../../../main/app/view/controller/deviceMainInfos/addFilter"
 import FiltersSection from "../../../../../main/app/view/widget/computer/sections/filters/section"
+import { filterManager } from "../../../../../main/app/view/model/filters/FilterManager"
 
 describe("Device main infos Filter table render (no filter)", () => {
+    afterEach(()=>{
+        const filtersCount = filterManager.getFilters().length
+        for(let index = filtersCount-1 ; index >= 0; index--){
+            filterManager.removeFilter(index)
+        }
+    })
+
     test("Section render", () => {
         // Acts
         render(
-            <FiltersSection
-                filters={[]}
-                removeFilters={() => { }}
-            />
+            <FiltersSection/>
         )
     })
 
     test("Initial render", () => {
         // Acts
         const { container } = render(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         // Asserts
@@ -40,10 +42,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const value = "3"
 
         const { rerender } = render(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
         addFilter.performAction(
             JSON.stringify(
@@ -56,10 +55,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             )
         )
         rerender(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         // Acts
@@ -81,23 +77,14 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
 
         const { rerender } = render(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         // Acts
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i })
-        if (newFilterButton === null) {
-            throw new Error("Test fail : no new filter button found!")
-        }
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         // Asserts
@@ -112,23 +99,14 @@ describe("Device main infos Filter table render (no filter)", () => {
     test("When the user changes the type of filter, the input type should be updated", async () => {
         // Given
         const { rerender } = render(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         // Acts
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i })
-        if (newFilterButton === null) {
-            throw new Error("Test fail : no new filter button found!")
-        }
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         const selectedElement = screen.getByText("File")
@@ -151,23 +129,14 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
 
         const { rerender } = render(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         // Acts
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i })
-        if (newFilterButton === null) {
-            throw new Error("Test fail : no new filter button found!")
-        }
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         const selectedElement = screen.getByText("File")
@@ -180,30 +149,21 @@ describe("Device main infos Filter table render (no filter)", () => {
         fireEvent.click(addFilterButton as ChildNode)
 
         // Asserts
-        expect(console.log).toBeCalled()
+        expect(console.error).toBeCalled()
     })
 
-    test("Trying to add new filter without setting value should launch console.log (enter key pressed)", async () => {
+    test("Trying to add new filter without setting value should launch console.log", async () => {
         // Given
 
         const { rerender } = render(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         // Acts
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i })
-        if (newFilterButton === undefined) {
-            throw new Error("Test fail : no new filter button found!")
-        }
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         const selectedElement = screen.getByText("File")
@@ -220,30 +180,21 @@ describe("Device main infos Filter table render (no filter)", () => {
         })
 
         // Asserts
-        expect(console.log).toBeCalled()
+        expect(console.error).toBeCalled()
     })
 
     test("Pressing tab key should focus other element", async () => {
         // Given
 
         const { rerender } = render(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         // Acts
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i })
-        if (newFilterButton === null) {
-            throw new Error("Test fail : no new filter button found!")
-        }
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable
-                filters={[]}
-                removeSelectedIndexes={(number) => { console.log(number) }}
-            />
+            <FilterTable/>
         )
 
         const selectedElement = screen.getByText("File")
@@ -252,11 +203,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             newFilterDialogRootNode = newFilterDialogRootNode.parentElement
         }
 
-        const fieldValueInput = newFilterDialogRootNode?.childNodes.item(3).childNodes.item(1).childNodes.item(0)
-
-        if (fieldValueInput == null) {
-            throw new Error("Unkown ")
-        }
+        const fieldValueInput = newFilterDialogRootNode?.childNodes.item(3).childNodes.item(1).childNodes.item(0) as HTMLElement
 
         fireEvent.keyDown(fieldValueInput, {
             key: "Tab",
@@ -265,5 +212,69 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         // Asserts
         expect(fieldValueInput).toHaveFocus()
+    })
+
+    test("Adding element (no filter yet added!) and pressing enter key", async () => {
+        // Given
+
+        const { rerender } = render(
+            <FilterTable/>
+        )
+
+        // Acts
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+        fireEvent.click(newFilterButton)
+        rerender(
+            <FilterTable/>
+        )
+
+        const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
+
+        fireEvent.change(fieldValueInput, {target: {value: "Test value"}})
+
+        fireEvent.keyDown(fieldValueInput, {
+            key: "Enter",
+            code: "Enter"
+        })
+
+        // Asserts
+        expect(filterManager.getFilters().length).toBe(1)
+        await waitFor(()=>{
+            expect(screen.getByText("Test value")).toBeInTheDocument()
+        },{timeout: 2500})
+        expect(fieldValueInput).not.toBeInTheDocument()
+    })
+
+    test("Adding element (same filter already added) and pressing enter key", async () => {
+        // Given
+        filterManager.addFilter(
+            "File",
+            "name",
+            "<",
+            "Test value" as any as object
+        )
+        const { rerender } = render(
+            <FilterTable/>
+        )
+
+        // Acts
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+        fireEvent.click(newFilterButton)
+        rerender(
+            <FilterTable/>
+        )
+
+        const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
+
+        fireEvent.change(fieldValueInput, {target: {value: "Test value"}})
+
+        fireEvent.keyDown(fieldValueInput, {
+            key: "Enter",
+            code: "Enter"
+        })
+
+        // Asserts
+        expect(filterManager.getFilters().length).toBe(1)
+        expect(console.warn).toBeCalled()
     })
 })

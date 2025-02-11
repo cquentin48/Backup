@@ -8,6 +8,7 @@ import '../../../../../../../res/css/Filters.css';
 import FilterToolbar from "./selectFilter";
 import FieldValue from "./fieldValue";
 import DeviceMainInfosFilterCreationButton from "./createFilterButton";
+import ValidationError from "../../../../../../model/exception/errors/validationError";
 
 /**
  * State of the new filter form dialog
@@ -95,12 +96,15 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
                     JSON.stringify(inputs)
                 );
             } else {
-                console.log("You must enter a value!")
+                throw new ValidationError("You must enter a value!")
             }
             props.closesDialog(false);
         } catch (error) {
             if (error instanceof AlreadyAddedWarning) {
                 console.warn(error.message);
+            }
+            else if(error instanceof ValidationError){
+                console.error(error.message)
             }
         }
     }

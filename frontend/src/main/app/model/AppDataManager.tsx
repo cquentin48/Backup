@@ -64,8 +64,19 @@ class AppDataManager {
         return this.data.has(dataElementKey)
     }
 
+    /**
+     * Purge the data manager : removes any existing element
+     */
     public removeAllData (): void {
         this.data.clear()
+    }
+
+    /**
+     * Get the amount of objects stored in the map
+     * @returns {number} Amount of stored elements
+     */
+    public size(){
+        return this.data.size
     }
 }
 

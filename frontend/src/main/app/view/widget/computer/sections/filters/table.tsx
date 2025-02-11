@@ -14,22 +14,6 @@ import { updateDeviceMainInfosFilter } from "../../../../controller/deviceMainIn
 import { removeDeviceMainInfosFilter } from "../../../../controller/deviceMainInfos/removeFilters";
 
 /**
- * Elements passed from the filter component to this one
- */
-interface FilterTableProps {
-    /**
-     * Filters set by the user
-     */
-    filters: string[]
-
-    /**
-     * Function set to remove indexes selected by the user
-     * @param indexes Indexes ticked by the user
-     */
-    removeSelectedIndexes: (indexes: [number]) => void
-}
-
-/**
  * Columns set for the filter table below
  */
 const filterTableColumns: GridColDef[] = [
@@ -97,7 +81,7 @@ interface FilterTableState {
  * in the device main informations page.
  * @implements {React.Component<FilterTableProps, FilterTableState>}
  */
-export default class FilterTable extends React.Component<FilterTableProps, FilterTableState> {
+export default class FilterTable extends React.Component<{}, FilterTableState> {
     /**
      * Datagrid row table manager
      */
@@ -107,7 +91,7 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
      * Filter table web component constructor
      * @param {FilterTableProps} props elements passed from the filter web component
      */
-    constructor (props: FilterTableProps) {
+    constructor (props: {}) {
         super(props);
         this.state = {
             rows: []

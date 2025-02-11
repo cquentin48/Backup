@@ -9,6 +9,7 @@ import deviceDataQuery from "../../../../main/res/queries/computer_infos.graphql
 
 import '@testing-library/jest-dom'
 import { BrowserRouter } from "react-router-dom"
+import { ApolloError } from "@apollo/client"
 
 const oldQueryMethod = gqlClient.get_query_client().query
 
@@ -65,24 +66,50 @@ describe("Device page", () => {
         dataManager.removeAllData()
         gqlClient.get_query_client().query = oldQueryMethod
     })
-    beforeEach(() => {
-        gqlClient.get_query_client().query = graphqlMockQueryOutput
-    })
 
     test("Initial render (before data loaded)", () => {
         // Given
-        render(<ComputerPage />)
+        gqlClient.get_query_client().query = graphqlMockQueryOutput
+
+        // Acts
+        const { container } = render(<ComputerPage />)
+
+        // Asserts
+        expect(container).toBeInTheDocument()
     })
 
     test("Initial render (after loaded data)", async () => {
+        // Given
+        gqlClient.get_query_client().query = graphqlMockQueryOutput
+
+        // Acts
         const { container } = render(
             <BrowserRouter>
                 <ComputerPage />
             </BrowserRouter>
         )
 
+        // Asserts
         await waitFor(() => {
             expect(container.querySelector("#ComputerMainInfosPage")).toBeInTheDocument()
         }, { timeout: 2500 })
+    }, 3000)
+
+    test("Initial render (data error)", async () => {
+        // Given
+        const graphqlMockQueryOutput = jest.fn().mockImplementation(({ query }) => {
+            throw new ApolloError({ errorMessage: "Invalid data!" })
+        })
+        gqlClient.get_query_client().query = graphqlMockQueryOutput
+
+        // Acts
+        render(
+            <BrowserRouter>
+                <ComputerPage />
+            </BrowserRouter>
+        )
+
+        // Asserts
+        expect(console.error).toBeCalled()
     }, 3000)
 })
