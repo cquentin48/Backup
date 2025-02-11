@@ -31,7 +31,6 @@ export class SnapshotData {
             softwareName,
             softwareInstallType
         )
-        console.log(`Name : ${softwareName}`)
         if (this.softwares.filter((software) => {
             const seekedSoftware = software as SnapshotSoftware
             const sameInstallType = seekedSoftware.softwareInstallType === softwareInstallType

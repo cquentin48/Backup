@@ -62,6 +62,8 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
             this.setPackageType(event.target.value);
         };
 
+        console.log(JSON.stringify(this.props.computer.snapshots))
+
         const state = this.state;
         const props = this.props;
 
@@ -73,6 +75,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
                         <InputLabel id="dataType">Save date</InputLabel>
                         <Select
                             labelId="dataType-label"
+                            data-testid="dataType-select"
                             id="dataType-select"
                             value={state.packageType}
                             onChange={handleChange}

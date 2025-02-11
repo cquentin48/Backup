@@ -32,7 +32,7 @@ class Device {
     /**
      * Computer save snapshots
      */
-    snapshots: [SnapshotID?];
+    snapshots: SnapshotID[];
 
     /**
      * Constructor method
@@ -41,11 +41,11 @@ class Device {
      * @param { number } cores computer cores
      * @param { number } memory computer volatile memory
      * @param { string } operatingSystem computer operating system name
-     * @param { [SnapshotID?] } snapshots header of every save uploaded from the device
+     * @param { SnapshotID[] } snapshots header of every save uploaded from the device
      */
     constructor (
         name: string, processor: string, cores: number, memory: number,
-        operatingSystem: string, snapshots: [SnapshotID?]) {
+        operatingSystem: string, snapshots: SnapshotID[]) {
         this.name = name;
         this.processor = processor;
         this.cores = cores;
