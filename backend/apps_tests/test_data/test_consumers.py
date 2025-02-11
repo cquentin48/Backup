@@ -318,7 +318,7 @@ class TestConsumers(SimpleTestCase):
     @pytest.mark.asyncio
     async def test_transmit_data_repository(self):
         """
-        Check if the transmission of a simple data is successfull
+        Check if the transmission of a simple data is successful
         """
         # Given
         sample_data = {
