@@ -6,7 +6,7 @@ import SnapshotID from "../../../../main/app/model/device/snapshot"
 import MainInfosFrame from "../../../../main/app/view/widget/computer/mainInfos"
 
 describe("MainInfosFrame unit test suite", () => {
-    test.skip("Successfull render", async () => {
+    test("Successful render", async () => {
         // Given
         const testDevice = new Device(
             "MyDevice",

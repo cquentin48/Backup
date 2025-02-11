@@ -9,7 +9,7 @@ import SnapshotID from '../../../../main/app/model/device/snapshot';
 import '@testing-library/jest-dom'
 
 describe("Device main Infos unit test suite", () => {
-    test("Successfull render (non Ubuntu OS)", async () => {
+    test("Successful render (non Ubuntu OS)", async () => {
         // Given
         const testDevice = new Device(
             "MyDevice",
@@ -38,7 +38,7 @@ describe("Device main Infos unit test suite", () => {
         expect(renderedDeviceHeaderButton).toHaveTextContent("Delete device")
     })
 
-    test("Successfull render Ubuntu OS", async () => {
+    test("Successful render Ubuntu OS", async () => {
         // Given
         const testDevice = new Device(
             "MyDevice",

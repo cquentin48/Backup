@@ -8,7 +8,7 @@ import SnapshotID from "../../../../main/app/model/device/snapshot"
 import '@testing-library/jest-dom'
 
 describe("Device main infos test suite", () => {
-    test("Successfull render with custom data", async () => {
+    test("Successful render with custom data", async () => {
         // Given
         const testDevice = new Device(
             "MyDevice",

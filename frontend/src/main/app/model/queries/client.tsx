@@ -1,4 +1,8 @@
-import { ApolloClient, type ApolloQueryResult, InMemoryCache, type NormalizedCacheObject, gql } from '@apollo/client';
+import {
+    ApolloClient, type ApolloQueryResult,
+    type DocumentNode, HttpLink, InMemoryCache,
+    type NormalizedCacheObject, gql } from '@apollo/client';
+import fetch from 'cross-fetch';
 
 import { Config } from '../../config/backupConfig';
 import type BasicQueryParameters from './basicQueryParameters';
@@ -12,7 +16,8 @@ class BackupQueryClient {
     constructor () {
         this.query_client = new ApolloClient({
             uri: Config.GQL_BACKENDURI,
-            cache: new InMemoryCache()
+            cache: new InMemoryCache(),
+            link: new HttpLink({ uri: Config.GQL_BACKENDURI, fetch })
         });
     }
 
@@ -26,21 +31,21 @@ class BackupQueryClient {
 
     /**
      * Execute a graphQL query and returns the results
-     * @param { string } queryPath GraphQL query path
+     * @param { string } query GraphQL query
      * @param { BasicQueryParameters } variables query variables
      * @returns { Promise<ApolloQueryResult<any>> } Result of the query
      */
-    async execute_query (queryPath: string, variables: BasicQueryParameters | undefined): Promise<ApolloQueryResult<any>> {
+    async execute_query (query: DocumentNode, variables: BasicQueryParameters | undefined): Promise<ApolloQueryResult<any>> {
         if (variables !== undefined) {
             const data = await this.query_client.query({
-                query: gql`${queryPath}`,
+                query: query,
                 variables
             })
             return data
         }
         try {
             const data = await this.query_client.query({
-                query: gql`${queryPath}`
+                query: gql`${query}`
             })
             return data
         } catch (e) {

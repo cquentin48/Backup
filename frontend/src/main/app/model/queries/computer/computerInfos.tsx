@@ -3,9 +3,10 @@ import type gqlClient from "../client";
 import Device from "../../device/device";
 import type BasicQueryParameters from "../basicQueryParameters";
 import SnapshotID from "../../device/snapshot";
+import { type DocumentNode } from "@apollo/client";
 
 export default class ComputerInfos implements QueryPattern {
-    async compute_query (client: typeof gqlClient, query: string, parameters: BasicQueryParameters): Promise<Device> {
+    async compute_query (client: typeof gqlClient, query: DocumentNode, parameters: BasicQueryParameters): Promise<Device> {
         const result = (await client.execute_query(query, parameters)).data.deviceInfos;
         const rawSnapshots = result.snapshots;
         const snapshots: [SnapshotID?] = []

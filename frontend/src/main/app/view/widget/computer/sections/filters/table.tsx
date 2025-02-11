@@ -159,7 +159,6 @@ export default class FilterTable extends React.Component<FilterTableProps, Filte
      * @param {string} newRows Updated rows list for the datagrid
      */
     updateRows = (newRows: string): void => {
-        console.log(`New rows : ${newRows}`)
         const tableManager = this.tableManager;
         if (tableManager.current != null) {
             const updatedElements = this.getDiffElements(this.state.rows, JSON.parse(newRows) as FilterRow[]);

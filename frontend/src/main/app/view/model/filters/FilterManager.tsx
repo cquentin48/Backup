@@ -37,14 +37,12 @@ class FilterManager {
     ): void {
         const newFilter = new Filter(elementType, fieldName, comparisonType, value);
         if (this.filters.filter((filter) => {
-            if (filter !== undefined) {
-                const elementTypeCheck = filter?.elementType === elementType;
-                const fieldNameCheck = filter?.fieldName === fieldName;
-                const comparisonTypeCheck = filter?.opType === comparisonType;
-                const valueCheck = filter?.filterValue === value;
+            const comparedFilter = filter as Filter
+                const elementTypeCheck = comparedFilter.elementType === elementType;
+                const fieldNameCheck = comparedFilter.fieldName === fieldName;
+                const comparisonTypeCheck = comparedFilter.opType === comparisonType;
+                const valueCheck = comparedFilter.filterValue === value;
                 return elementTypeCheck && fieldNameCheck && comparisonTypeCheck && valueCheck
-            }
-            return false
         }).length > 0) {
             throw new AlreadyAddedWarning("The filter is already set! It will be ignored!")
         } else {

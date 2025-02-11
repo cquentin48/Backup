@@ -31,13 +31,15 @@ export class SnapshotData {
             softwareName,
             softwareInstallType
         )
+        console.log(`Name : ${softwareName}`)
         if (this.softwares.filter((software) => {
-            const sameInstallType = software.softwareInstallType === softwareInstallType
-            const sameName = software.softwareName === softwareName
-            const sameVersion = software.softwareVersion === softwareVersion
+            const seekedSoftware = software as SnapshotSoftware
+            const sameInstallType = seekedSoftware.softwareInstallType === softwareInstallType
+            const sameName = seekedSoftware.softwareName === softwareName
+            const sameVersion = seekedSoftware.softwareVersion === softwareVersion
             return sameInstallType && sameName && sameVersion
         }).length > 0) {
-            throw new AlreadyAddedWarning("The snapshot has already been added! Thus the operation is ignored!")
+            throw new AlreadyAddedWarning(`The snapshot with the name ${softwareName} has already been added! Thus the operation is ignored!`)
         }
         this.softwares.push(newSoftware)
     }

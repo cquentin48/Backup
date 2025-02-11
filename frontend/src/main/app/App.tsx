@@ -30,7 +30,7 @@ function App (): React.JSX.Element {
                         } />
                         <Route path="/test" element={<p>Element de test!</p>} />
                         <Route path="/computer/:id"
-                            element={<ComputerPage graphqlQueryOperationManager={gqlClient} />} />
+                            element={<ComputerPage/>} />
                     </Routes>
                 </BrowserRouter>
             </ApolloProvider>
