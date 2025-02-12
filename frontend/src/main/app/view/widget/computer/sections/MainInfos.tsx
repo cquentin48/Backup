@@ -8,6 +8,7 @@ import { Avatar, Card, CardContent, CardHeader, Grid2 } from "@mui/material";
 
 import type Device from "../../../../model/device/device";
 import '../../../../../res/css/ComputerMainInfos.css';
+import SnapshotID from "../../../../model/device/snapshot";
 
 /**
  * Device selected for the main informations display
@@ -23,6 +24,7 @@ interface AccordionMainInfosProps {
  */
 export default function SpecsMainInfos (props: AccordionMainInfosProps): React.JSX.Element {
     const computer = props.computer;
+    const snapshot = computer.snapshots[0] as SnapshotID
 
     return (
         <div id="deviceMainInfos">
@@ -96,7 +98,7 @@ export default function SpecsMainInfos (props: AccordionMainInfosProps): React.J
                         />
                         <CardContent>
                             {
-                                computer.snapshots[0]?.uploadDate.toLocaleDateString(window.navigator.language, {
+                                snapshot.uploadDate.toLocaleDateString(window.navigator.language, {
                                     weekday: "long",
                                     year: "numeric",
                                     month: "long",
@@ -121,7 +123,7 @@ export default function SpecsMainInfos (props: AccordionMainInfosProps): React.J
                         />
                         <CardContent>
                             {
-                                computer.snapshots[0]?.uploadDate.toLocaleDateString(window.navigator.language, {
+                                snapshot.uploadDate.toLocaleDateString(window.navigator.language, {
                                     weekday: "long",
                                     year: "numeric",
                                     month: "long",

@@ -9,12 +9,10 @@ import SoftwareOrigins from "../../../../../../main/app/view/widget/computer/sec
 import { loadSnapshot } from "../../../../../../main/app/view/controller/deviceMainInfos/loadSnapshot"
 import { dataManager } from "../../../../../../main/app/model/AppDataManager"
 
-const oldQueryMethod = gqlClient.get_query_client().query
-
 describe("Type of softwares origin chart unit test suite", () => {
     afterEach(() => {
         dataManager.removeAllData()
-        gqlClient.get_query_client().query = oldQueryMethod
+        jest.resetAllMocks()
     })
 
     test("Successful render (single software)", async () => {
@@ -133,7 +131,7 @@ describe("Type of softwares origin chart unit test suite", () => {
         gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
 
         // Acts
-        const { getByText } = render(
+        render(
             <SoftwareOrigins />
         )
         loadSnapshot.performAction("1")
@@ -141,5 +139,20 @@ describe("Type of softwares origin chart unit test suite", () => {
         await waitFor(() => {
             expect(document.querySelectorAll(".MuiChartsLegend-series").length).toBe(1)
         }, { timeout: 2000 })
+    })
+
+    test("Error in render (Multiple softwares, same type)", async () => {
+        // Given
+        gqlClient.get_query_client().query = jest.fn().mockImplementation(()=>{
+            throw new Error("Error in implementation!")
+        })
+
+        // Acts
+        render(
+            <SoftwareOrigins />
+        )
+        loadSnapshot.performAction("1")
+
+        expect((console.error as any).mock.calls).toBe(1)
     })
 })

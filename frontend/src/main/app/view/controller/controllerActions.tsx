@@ -1,31 +1,50 @@
+import NotFoundError from "../../model/exception/errors/notFoundError";
+import NotImplementedError from "../../model/exception/errors/notImplementedError";
+
 /**
  * Controller action blueprint
  */
-export default interface ControllerAction {
+export default class ControllerAction {
     /**
      * List of every observable linked to the controller
      */
-    observable: Observable
+    protected observable: Observable = {};
+
+    public constructor(){}
 
     /**
      * Controller action set
      * @param {string} inputs Inputs set for the action
      */
-    performAction: (inputs: string) => void
+    public performAction (inputs: string): void {
+        throw new NotImplementedError("The method is virtual. Please inherit this class.")
+    }
+
+    addObservable (name: string, callback: (updatedData: string) => void): void {
+        this.observable[name] = callback
+    }
+
+    removeObservable (name: string): void {
+        if (!(name in this.observable)) {
+            throw new NotFoundError(`The observable with the key name ${name} has not been set!`)
+        }
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete this.observable[name];
+    }
 
     /**
-     * Adds a new observable for later notification
-     * @param {string} name Name of the observable
-     * @param {(updatedData: string) => void} callback Callback function used for the
-     * notification
+     * Fetch the observable based off its name.
+     * @param {string} name Observable name
+     * @returns {Observable} observable used for later callback
      */
-    addObservable: (name: string, callback: (updatedData: string) => void) => void
-
-    /**
-     * Removes an observable
-     * @param {string} name Name of the observer
-     */
-    removeObservable: (name: string) => void
+    getObservable (name: string): CallbackMethod {
+        if (!(name in this.observable)) {
+            throw new NotFoundError(`The related view component ${name}` +
+                " hasn't been mounted yet!")
+        }
+        const tableViewObservable = this.observable[name]
+        return tableViewObservable;
+    }
 }
 
 export type CallbackMethod = (updatedData: string) => void;

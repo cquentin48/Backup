@@ -115,7 +115,7 @@ export default class FilterTable extends React.Component<{}, FilterTableState> {
         // Fetch the deleted rows
         currentRows.forEach((currentRow: FilterRow, index: number) => {
             const hasRowBeenDeleted = newRows.find(
-                (newRow: FilterRow) => { return newRow === currentRow }) !== undefined
+                (newRow: FilterRow) => { return newRow === currentRow }) as FilterRow
             if (!hasRowBeenDeleted) {
                 updatedRows.push({ id: index, _action: 'delete' })
             }
@@ -124,7 +124,7 @@ export default class FilterTable extends React.Component<{}, FilterTableState> {
         // Fetch the created rows
         newRows.forEach((newRow: FilterRow, index: number) => {
             const hasRowBeenCreated = currentRows.find(
-                (currentRow: FilterRow) => { return newRow === currentRow }) !== undefined;
+                (currentRow: FilterRow) => { return newRow === currentRow }) as FilterRow;
             if (!hasRowBeenCreated) {
                 updatedRows.push({
                     id: index,
@@ -147,7 +147,7 @@ export default class FilterTable extends React.Component<{}, FilterTableState> {
         if (tableManager.current != null) {
             const updatedElements = this.getDiffElements(this.state.rows, JSON.parse(newRows) as FilterRow[]);
             updatedElements.forEach((element: UpdateRow) => {
-                tableManager.current?.updateRows(
+                tableManager.current.updateRows(
                     [element]
                 )
             })

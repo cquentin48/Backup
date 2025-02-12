@@ -65,7 +65,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
             if (!rawSeries.has(softwareInstallType)) {
                 rawSeries.set(softwareInstallType, 1)
             } else {
-                const previousValue = rawSeries.get(softwareInstallType) ?? 0
+                const previousValue = rawSeries.get(softwareInstallType) as number
                 rawSeries.set(softwareInstallType, previousValue + 1)
             }
         });

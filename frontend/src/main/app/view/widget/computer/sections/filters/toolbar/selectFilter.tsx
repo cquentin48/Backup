@@ -20,7 +20,7 @@ interface FilterToolbarProps {
 export default function FilterToolbar (props: FilterToolbarProps): React.JSX.Element {
     return (
         <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id={`${props.selectID}Label`}>Input type</InputLabel>
+            <InputLabel id={`${props.selectID}Label`}>{props.selectLabel}</InputLabel>
             <Select
                 id={props.selectID}
                 labelId={`${props.selectID}Label`}

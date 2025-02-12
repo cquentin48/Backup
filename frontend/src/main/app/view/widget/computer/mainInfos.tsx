@@ -86,7 +86,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
                                 props.computer.snapshots.map((snapshot, index) => {
                                     return (
                                         <MenuItem key={index} value={(snapshot as SnapshotID).id}>
-                                            {snapshot?.localizedDate()}
+                                            {(snapshot as SnapshotID).localizedDate()}
                                         </MenuItem>
                                     )
                                 })
