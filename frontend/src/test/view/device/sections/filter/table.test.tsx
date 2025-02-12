@@ -5,7 +5,6 @@ import FilterTable from "../../../../../main/app/view/widget/computer/sections/f
 
 import '@testing-library/jest-dom'
 import { addFilter } from "../../../../../main/app/view/controller/deviceMainInfos/addFilter"
-import FiltersSection from "../../../../../main/app/view/widget/computer/sections/filters/section"
 import { filterManager } from "../../../../../main/app/view/model/filters/FilterManager"
 import userEvent from "@testing-library/user-event"
 
@@ -17,17 +16,10 @@ describe("Device main infos Filter table render (no filter)", () => {
         }
     })
 
-    test("Section render", () => {
-        // Acts
-        render(
-            <FiltersSection />
-        )
-    })
-
     test("Initial render", () => {
         // Acts
         const { container } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={false}/>
         )
 
         // Asserts
@@ -43,7 +35,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const value = "3"
 
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
         addFilter.performAction(
             JSON.stringify(
@@ -56,7 +48,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             )
         )
         rerender(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
@@ -78,14 +70,14 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
 
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Asserts
@@ -100,14 +92,14 @@ describe("Device main infos Filter table render (no filter)", () => {
     test("When the user changes the type of filter, the input type should be updated", async () => {
         // Given
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         const selectedElement = screen.getByText("File")
@@ -130,14 +122,14 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
 
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         const selectedElement = screen.getByText("File")
@@ -157,14 +149,14 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
 
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         const selectedElement = screen.getByText("File")
@@ -188,14 +180,14 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
 
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         const selectedElement = screen.getByText("File")
@@ -218,14 +210,14 @@ describe("Device main infos Filter table render (no filter)", () => {
     test("Adding element (no filter yet added!) and pressing enter key", async () => {
         // Given
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
@@ -248,14 +240,14 @@ describe("Device main infos Filter table render (no filter)", () => {
     test("Entering value and emptying it should display helper text", async () => {
         // Given
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
@@ -273,7 +265,7 @@ describe("Device main infos Filter table render (no filter)", () => {
     test("Adding two identic filter and pressing enter key", async () => {
         // Given
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
@@ -282,7 +274,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
             fireEvent.click(newFilterButton)
             rerender(
-                <FilterTable />
+                <FilterTable deviceLoaded={true}/>
             )
             fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
 
@@ -308,7 +300,7 @@ describe("Device main infos Filter table render (no filter)", () => {
     test("Adding two filters and pressing enter key", async () => {
         // Given
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
@@ -317,7 +309,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
             fireEvent.click(newFilterButton)
             rerender(
-                <FilterTable />
+                <FilterTable deviceLoaded={true}/>
             )
             fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
 
@@ -341,7 +333,7 @@ describe("Device main infos Filter table render (no filter)", () => {
     test("Selecting two added filters", async () => {
         // Given
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
@@ -350,7 +342,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
             fireEvent.click(newFilterButton)
             rerender(
-                <FilterTable />
+                <FilterTable deviceLoaded={true}/>
             )
             fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
 
@@ -374,7 +366,7 @@ describe("Device main infos Filter table render (no filter)", () => {
     test("Delete one filter from three previously added", async () => {
         // Given
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
@@ -383,7 +375,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
             fireEvent.click(newFilterButton)
             rerender(
-                <FilterTable />
+                <FilterTable deviceLoaded={true}/>
             )
             fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
 
@@ -415,14 +407,14 @@ describe("Device main infos Filter table render (no filter)", () => {
             </div>
         })
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
         const fieldNameInput = (screen.getAllByText("Field name")[0].parentElement as HTMLElement).querySelector("input") as HTMLInputElement
 
@@ -453,14 +445,14 @@ describe("Device main infos Filter table render (no filter)", () => {
             </div>
         })
         const { rerender } = render(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
         rerender(
-            <FilterTable />
+            <FilterTable deviceLoaded={true}/>
         )
         const fieldNameInput = (screen.getAllByText("Field name")[0].parentElement as HTMLElement).querySelector("input") as HTMLInputElement
         fireEvent.change(fieldNameInput, { target: { value: "creationDate" } })

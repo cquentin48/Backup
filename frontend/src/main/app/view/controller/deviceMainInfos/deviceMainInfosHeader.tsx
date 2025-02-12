@@ -4,6 +4,8 @@ import { Delete } from "@mui/icons-material";
 import { Tooltip, Typography, Button, Skeleton } from "@mui/material";
 import React from "react";
 
+import "../../../../res/css/ComputerMainInfos.css";
+
 /**
  * Device name and operating system passed from the device main page header
  */
@@ -56,18 +58,19 @@ export default function DeviceMainInfosHeader (props: DeviceMainInfosHeaderProps
                 variant="contained"
                 color="error"
                 startIcon={<Delete />}
-                sx={{
-                    marginLeft: "auto",
-                    paddingRight: "-160px",
-                    marginRight: "16px"
-                }}
+                id="deleteDeviceButton"
             >
                 Delete device
             </Button>
     } else {
         icon = <Skeleton variant="circular" width={40} height={40} />
         name = <Skeleton variant="rounded" width={228} height={42} />
-        deleteButton = <Skeleton variant="rounded" width={172} height={51} />
+        deleteButton = <Skeleton
+            variant="rounded"
+            width={172}
+            height={51}
+            id="deleteDeviceButton"
+        />
     }
 
     return (

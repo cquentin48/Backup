@@ -103,7 +103,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
                 <CardHeader
                     avatar={
                         <Avatar
-                            sx={{ bgcolor: "#c2c2c2" }}
+                            className="PieChartIcon"
                             arial-labels="recipe">
                             <Icon path={mdiBookOutline} size={1} />
                         </Avatar>

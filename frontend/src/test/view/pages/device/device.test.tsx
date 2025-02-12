@@ -91,7 +91,7 @@ describe("Device page", () => {
 
         // Asserts
         await waitFor(() => {
-            expect(container.querySelector("#ComputerMainInfosPage")).toBeInTheDocument()
+            expect(container.querySelector("#DeviceMainInfosPage")).toBeInTheDocument()
         }, { timeout: 2500 })
     }, 3000)
 

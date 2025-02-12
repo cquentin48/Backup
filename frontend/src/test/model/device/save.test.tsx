@@ -5,7 +5,8 @@ describe("Snapshot data model unit tests", () => {
         // Given
         const snapshotID = new SnapshotID(
             "1",
-            "2020-01-01"
+            "2020-01-01",
+            "My OS!"
         )
 
         // Acts

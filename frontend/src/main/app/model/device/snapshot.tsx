@@ -5,13 +5,14 @@
 export default class SnapshotID {
     id: string;
     uploadDate: Date;
+    operatingSystem: string;
 
     /**
      * Construction method
      * @param { string } id snapshot database id
      * @param { string } uploadDate snapshot date upload (Must be of format ``YYYY``-``MM``-``DD``)
      */
-    constructor (id: string, uploadDate: string) {
+    constructor (id: string, uploadDate: string, operatingSystem: string) {
         this.id = id;
         const uploadDateArray = uploadDate.split('-');
         this.uploadDate = new Date(
@@ -19,6 +20,7 @@ export default class SnapshotID {
             parseInt(uploadDateArray[1]),
             parseInt(uploadDateArray[2])
         );
+        this.operatingSystem = operatingSystem;
     }
 
     /**

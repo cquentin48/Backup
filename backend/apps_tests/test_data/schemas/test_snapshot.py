@@ -64,9 +64,9 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
             query getSaveInfos($snapshotID:String!){
                 snapshotInfos(snapshotId: $snapshotID) {
                     versions{
-                        softwareVersion,
+                        chosenVersion,
                         name,
-                        softwareInstallType
+                        installType
                     },
                     repositories{
                         sourcesLines,
@@ -86,9 +86,9 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
         self.assertEqual(len(op_result['versions']), 2)
         for index, version in enumerate(op_result['versions']):
             self.assertEqual(
-                version['softwareVersion'], chosen_versions_numbers[index]['chosen_version'])
+                version['chosenVersion'], chosen_versions_numbers[index]['chosen_version'])
             self.assertEqual(version['name'], 'My package!')
-            self.assertEqual(version['softwareInstallType'], 'package type')
+            self.assertEqual(version['installType'], 'package type')
         self.assertEqual(len(op_result['repositories']), 0)
 
     def test_resolve_snapshot_infos_unkown_snapshot(self):
@@ -106,9 +106,9 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
             query getSaveInfos($snapshotID:String!){
                 snapshotInfos(snapshotId: $snapshotID) {
                     versions{
-                        softwareVersion,
+                        chosenVersion,
                         name,
-                        softwareInstallType
+                        installType
                     },
                     repositories{
                         sourcesLines,

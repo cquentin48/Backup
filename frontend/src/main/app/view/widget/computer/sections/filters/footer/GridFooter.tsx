@@ -67,7 +67,6 @@ NonNullable<GridSlotsComponentsProps['footer']>, DeviceMainInfosGridFooterState
         if (ids.length > 0) {
             return (
                 <Box
-                    sx={{ p: 1, display: 'flex' }}
                     id="GridFooterContent"
                 >
                     <p>{formatedFiltersCount}!</p>

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 
-import ComputerMainInfos from '../../../../main/app/view/pages/computer/mainInfos';
+import DeviceMainInfos from '../../../../main/app/view/pages/computer/mainInfos';
 import Device from '../../../../main/app/model/device/device';
 import SnapshotID from '../../../../main/app/model/device/snapshot';
 
@@ -19,13 +19,14 @@ describe("Device main Infos unit test suite", () => {
             "My OS",
             [new SnapshotID(
                 "1",
-                "2020-01-01"
+                "2020-01-01",
+                "My OS!"
             )]
         )
 
         // Acts
-        const { container } = render(<ComputerMainInfos
-            computer={testDevice}
+        const { container } = render(<DeviceMainInfos
+            device={testDevice}
         />)
         const renderedDeviceHeader = container.querySelector("#deviceMainInfosHeader")
         const renderedDeviceHeaderButton = container.querySelector(".MuiButtonBase-root")
@@ -48,13 +49,14 @@ describe("Device main Infos unit test suite", () => {
             "Ubuntu",
             [new SnapshotID(
                 "1",
-                "2020-01-01"
+                "2020-01-01",
+                "My OS!"
             )]
         )
 
         // Acts
-        const { container } = render(<ComputerMainInfos
-            computer={testDevice}
+        const { container } = render(<DeviceMainInfos
+            device={testDevice}
         />)
         const renderedDeviceHeader = container.querySelector("#deviceMainInfosHeader")
         const renderedDeviceHeaderButton = container.querySelector(".MuiButtonBase-root")

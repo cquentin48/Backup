@@ -69,11 +69,10 @@ class DeviceSchemaQueryTest(GraphQLTestCase):
                     cores,
                     memory,
                     name,
-                    operatingSystem,
                     processor,
                     snapshots{
-                        snapshotId,
-                        snapshotDate
+                        key,
+                        date
                     }
                 }
             }
@@ -88,11 +87,10 @@ class DeviceSchemaQueryTest(GraphQLTestCase):
         # Asserts
         self.assertEqual(op_result['cores'], 6)
         self.assertEqual(op_result['memory'], 32)
-        self.assertEqual(op_result['operatingSystem'], "My OS!")
         self.assertEqual(op_result['processor'], "My processor!")
         self.assertEqual(len(op_result['snapshots']), 1)
-        self.assertEqual(op_result['snapshots'][0]['snapshotId'], '1')
-        self.assertEqual(op_result['snapshots'][0]['snapshotDate'], '2020-01-01')
+        self.assertEqual(op_result['snapshots'][0]['key'], '1')
+        self.assertEqual(op_result['snapshots'][0]['date'], '2020-01-01')
 
     def test_resolve_device_infos_unkown_device(self):
         """
@@ -111,11 +109,10 @@ class DeviceSchemaQueryTest(GraphQLTestCase):
                     cores,
                     memory,
                     name,
-                    operatingSystem,
                     processor,
                     snapshots{
-                        snapshotId,
-                        snapshotDate
+                        key,
+                        date
                     }
                 }
             }

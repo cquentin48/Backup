@@ -9,12 +9,15 @@ class SnapshotHeader(graphene.ObjectType):
     Graphql query output sub-class for query ``fetch_device_info``.
     Fetch save key : snapshot ID and snapshot update date
     """
-    snapshot_id = graphene.String(
+    key = graphene.String(
         description="ID of the snapshot stored in the database."
     )
 
-    snapshot_date = graphene.String(
+    date = graphene.String(
         description="Snapshot update date stored in the database"
+    )
+    operating_system = graphene.String(
+        description="Operating system of the device at the time the snapshot was created"
     )
 
     class Meta:
@@ -29,13 +32,13 @@ class DeviceSoftwareVersion(graphene.ObjectType):
     Sub-graphql query output class for query ``fetch_device_info``
     Only software version informations here.
     """
-    software_version = graphene.String(
+    chosen_version = graphene.String(
         description="Version of the package chosen in the device"
     )
     name = graphene.String(
         description="Name of the package"
     )
-    software_install_type = graphene.String(
+    install_type = graphene.String(
         description="Software installation type (e.g. DVD media install, APT install, ...)"
     )
 
@@ -58,9 +61,6 @@ class DeviceInfos(graphene.ObjectType):
     )
     name = graphene.String(
         description="Device device name"
-    )
-    operating_system = graphene.String(
-        description="Device operating system"
     )
     processor = graphene.String(
         description="Device processor name"
@@ -101,27 +101,27 @@ class DeviceInfoType(graphene.ObjectType):
             raw_snapshots = list(Snapshot.objects.filter(related_device=device))
             snapshots = [
                 SnapshotHeader(
-                    snapshot_id=save.id,
-                    snapshot_date=save.save_date.strftime("%Y-%m-%d")
+                    key=snapshot.id,
+                    date=snapshot.save_date.strftime("%Y-%m-%d"),
+                    operating_system=snapshot.operating_system
                 )
-                for save in list(Snapshot.objects.filter(related_device=device))
+                for snapshot in list(Snapshot.objects.filter(related_device=device))
             ]
 
             versions_data = []
             for snapshot in raw_snapshots:
-                for version in list(snapshot.versions.all()):
+                for found_version in list(snapshot.versions.all()):
                     versions_data.append(
                         DeviceSoftwareVersion(
-                            software_version=version.chosen_version,
-                            name=version.package.name,
-                            software_install_type=version.package.type
+                            chosen_version=found_version.chosen_version,
+                            name=found_version.package.name,
+                            install_type=found_version.package.type
                         ))
 
             return DeviceInfos(
                 cores=device.cores,
                 memory=device.memory,
                 name=device.name,
-                operating_system=device.operating_system,
                 processor=device.processor,
                 snapshots=snapshots
             )

@@ -56,14 +56,12 @@ class TestDevice(SimpleTestCase):
         """
         # Given
         name = "Mon objet!"
-        operating_system = "Test OS"
         test_object = create_test_device(
             name=name
         )
-        test_object.operating_system = operating_system
 
         # Acts
-        expected_result = f"{name} ({operating_system})"
+        expected_result = f"{name}"
         op_result = str(test_object)
 
         # Asserts

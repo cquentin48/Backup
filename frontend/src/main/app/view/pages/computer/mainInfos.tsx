@@ -9,22 +9,28 @@ import DeviceMainInfosHeader from "../../controller/deviceMainInfos/deviceMainIn
  * Props interface for the computer main information display component class
  */
 interface ComputerMainInfosProps {
-    computer: Device
+    device: Device | undefined
 }
 
 /**
  * Computer main informations display component class
  */
-export default class ComputerMainInfos extends React.Component<ComputerMainInfosProps> {
+export default class DeviceMainInfos extends React.Component<ComputerMainInfosProps> {
     render (): React.ReactNode {
-        const computer = this.props.computer;
+        const emptyData = {
+            name: "",
+            snapshots: [{
+                operatingSystem: "My OS"
+            }]
+        }
+        const device = this.props.device;
         return (
             <div id="computerMainInfos">
-                <SpecsMainInfos computer={computer} />
+                <SpecsMainInfos device={device} />
                 <DeviceMainInfosHeader
-                    isDeviceLoaded={computer !== undefined}
-                    name={computer.name}
-                    operatingSystem={computer.operatingSystem}
+                    isDeviceLoaded={device !== undefined}
+                    name={(device ?? emptyData).name}
+                    operatingSystem={(device ?? emptyData).snapshots[(device ?? emptyData).snapshots.length-1].operatingSystem}
                 />
                 <br />
             </div>

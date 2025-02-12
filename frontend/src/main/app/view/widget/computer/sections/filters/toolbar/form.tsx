@@ -110,6 +110,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
                 variant = "error"
                 message = error.message;
             }
+            console.error(error)
             enqueueSnackbar(message, { variant })
         }
     }

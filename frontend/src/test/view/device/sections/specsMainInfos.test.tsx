@@ -18,12 +18,13 @@ describe("Device main infos test suite", () => {
             "My OS",
             [new SnapshotID(
                 "1",
-                "2020-01-01"
+                "2020-01-01",
+                "My OS!"
             )]
         )
 
         // Acts
-        const { container } = render(<SpecsMainInfos computer={testDevice} />)
+        const { container } = render(<SpecsMainInfos device={testDevice} />)
         const opResult = container.querySelector("#deviceMainInfos")
 
         // Assert
@@ -31,7 +32,7 @@ describe("Device main infos test suite", () => {
         expect(opResult).toHaveTextContent("1")
         expect(opResult).toHaveTextContent("4 GB RAM in total")
         expect(opResult).toHaveTextContent(
-            (testDevice.snapshots[0] ?? new SnapshotID("", "0000-00-00")).localizedDate()
+            (testDevice.snapshots[0] as SnapshotID).localizedDate()
         )
         expect(opResult).toHaveTextContent(
             "Amount of storage here used in the backup server"

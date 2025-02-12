@@ -2,7 +2,7 @@ import React, { createRef } from "react";
 
 import { type JSX } from "react";
 
-import { Paper } from "@mui/material";
+import { Paper, Skeleton } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 import { type GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
@@ -77,12 +77,22 @@ interface FilterTableState {
 }
 
 /**
+ * Device loaded boolean passed from the Formats components
+ */
+interface FilterTableProps {
+    /**
+     * If the device has been loaded
+     */
+    deviceLoaded: boolean
+}
+
+/**
  * Table displaying the filters used to displays selected informations
  * in the device main informations page.
  * @implements {React.Component<{}, FilterTableState>}
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export default class FilterTable extends React.Component<{}, FilterTableState> {
+export default class FilterTable extends React.Component<FilterTableProps, FilterTableState> {
     /**
      * Datagrid row table manager
      */
@@ -93,7 +103,7 @@ export default class FilterTable extends React.Component<{}, FilterTableState> {
      * @param {{}} props elements passed from the filter web component
      */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    constructor (props: {}) {
+    constructor (props: FilterTableProps) {
         super(props);
         this.state = {
             rows: []
@@ -173,23 +183,30 @@ export default class FilterTable extends React.Component<{}, FilterTableState> {
      * @returns {JSX.Element} Web component
      */
     render (): JSX.Element {
-        const state = this.state;
-        return (
-            <Paper className="FilterTable">
-                <DataGrid
-                    columns={filterTableColumns}
-                    rows={state.rows}
-                    checkboxSelection
-                    slots={{
-                        toolbar: FilterGridToolbar,
-                        footer: DeviceMainInfosGridFooter
-                    }}
-                    onRowSelectionModelChange={(event) => {
-                        updateDeviceMainInfosFilter.performAction(JSON.stringify(event))
-                    }}
-                    apiRef={this.tableManager}
-                />
-            </Paper>
-        )
+        const { deviceLoaded } = this.props
+        if (deviceLoaded) {
+            const state = this.state;
+            return (
+                <Paper className="FilterTable">
+                    <DataGrid
+                        columns={filterTableColumns}
+                        rows={state.rows}
+                        checkboxSelection
+                        slots={{
+                            toolbar: FilterGridToolbar,
+                            footer: DeviceMainInfosGridFooter
+                        }}
+                        onRowSelectionModelChange={(event) => {
+                            updateDeviceMainInfosFilter.performAction(JSON.stringify(event))
+                        }}
+                        apiRef={this.tableManager}
+                    />
+                </Paper>
+            )
+        } else {
+            return (
+                <Skeleton variant="rounded" width={"100%"} height={203} />
+            )
+        }
     }
 }

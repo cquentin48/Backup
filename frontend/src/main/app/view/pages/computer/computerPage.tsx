@@ -2,10 +2,10 @@ import React from 'react';
 
 import gqlClient from '../../../model/queries/client';
 import getDeviceInfos from '../../../../res/queries/computer_infos.graphql';
-import ComputerMainInfos from './mainInfos';
+import DeviceMainInfos from './mainInfos';
 import ComputerInfos from '../../../model/queries/computer/computerInfos';
 import type Device from '../../../model/device/device';
-import ComputerElements from './computerElements';
+import DeviceElements from './computerElements';
 import { useParams } from 'react-router-dom';
 import { enqueueSnackbar } from 'notistack';
 
@@ -16,7 +16,7 @@ import { enqueueSnackbar } from 'notistack';
 export default function ComputerPage (): React.JSX.Element {
     const { id } = useParams()
     const dataRetriever = new ComputerInfos();
-    const [device, setDevice] = React.useState<Device | null>(null);
+    const [device, setDevice] = React.useState<Device | undefined>(undefined);
     if (getDeviceInfos.loc !== null) {
         const query = getDeviceInfos;
         React.useEffect(() => {
@@ -31,21 +31,16 @@ export default function ComputerPage (): React.JSX.Element {
                 setDevice(deviceInfos)
             })().catch(
                 error => {
+                    console.error(error)
                     enqueueSnackbar(error, { variant: "error" })
                 }
             );
         }, []);
     }
-    if (device === null) {
-        return (
-            <p>Loading device informations...</p>
-        )
-    } else {
-        return (
-            <div id="ComputerMainInfosPage">
-                <ComputerMainInfos computer={device} />
-                <ComputerElements computer={device} />
-            </div>
-        )
-    }
+    return (
+        <div id="DeviceMainInfosPage">
+            <DeviceMainInfos device={device} />
+            <DeviceElements device={device} />
+        </div>
+    )
 }

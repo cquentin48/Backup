@@ -1,13 +1,14 @@
 query getSaveInfos($snapshotID:String!){
   snapshotInfos(snapshotId: $snapshotID) {
     versions{
-      softwareVersion,
-      name,
-      softwareInstallType
-    },
+      chosenVersion
+      name
+      installType
+    }
     repositories{
-      sourcesLines,
+      sourcesLines
       name
     }
+    operatingSystem
   }
 }

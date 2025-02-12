@@ -24,7 +24,8 @@ describe("MainInfosFrame unit test suite", () => {
             [
                 new SnapshotID(
                     "1",
-                    "2020-01-01"
+                    "2020-01-01",
+                    "My OS!"
                 )
             ]
         )
@@ -32,7 +33,7 @@ describe("MainInfosFrame unit test suite", () => {
         // Acts
         render(
             <MainInfosFrame
-                computer={testDevice}
+                device={testDevice}
             />
         )
     })
@@ -48,11 +49,13 @@ describe("MainInfosFrame unit test suite", () => {
             [
                 new SnapshotID(
                     "1",
-                    "2020-01-01"
+                    "2020-01-01",
+                    "My OS!"
                 ),
                 new SnapshotID(
                     "2",
-                    "2020-01-02"
+                    "2020-01-02",
+                    "My OS!"
                 )
             ]
         )
@@ -60,7 +63,7 @@ describe("MainInfosFrame unit test suite", () => {
         // Acts
         const { container, getByText } = render(
             <MainInfosFrame
-                computer={testDevice}
+                device={testDevice}
             />
         )
 

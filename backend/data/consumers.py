@@ -147,8 +147,7 @@ class BackupImportConsumer(WebsocketConsumer):
                 'name': device_data['hostname'],
                 'cores': device_data['specs']['cores'],
                 'memory': device_data['specs']['virtual_memory'],
-                'processor': device_data['specs']['processor'],
-                'operating_system': device_data['os']
+                'processor': device_data['specs']['processor']
             }
             device = Device.objects.get(**device_infos)
             self.send_message(status='info',
@@ -166,12 +165,13 @@ class BackupImportConsumer(WebsocketConsumer):
                 library = device_data['libraries'][library_type[1]]
                 versions = self.append_libraries_chosen_version(
                     library, library_type[1])
-                new_save = Snapshot.objects.create(
-                    related_device=device,
-                    save_date=timezone.now()
-                )
-                for lib_version in versions:
-                    new_save.versions.add(lib_version)
+            new_save = Snapshot.objects.create(
+                related_device=device,
+                save_date=timezone.now(),
+                operating_system=device_data['os']
+            )
+            for lib_version in versions:
+                new_save.versions.add(lib_version)
             try:
                 self.send_message(status='info',
                                   type='message',

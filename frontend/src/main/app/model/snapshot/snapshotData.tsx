@@ -25,7 +25,7 @@ export class SnapshotData {
      * @param {string} softwareInstallType Software installation type (e.g. ``apt``, ``snap``)
      * @throws {AlreadyAddedWarning} Already added sofware in the array
      */
-    addSoftware (softwareVersion: string, softwareName: string, softwareInstallType: string): void {
+    addSoftware (softwareVersion: string, softwareName: string, softwareInstallType: string,): void {
         const newSoftware = new SnapshotSoftware(
             softwareVersion,
             softwareName,

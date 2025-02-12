@@ -42,16 +42,8 @@ class Device(models.Model):
     RAM size
     """
 
-    operating_system = models.CharField(
-        verbose_name=LOCALE.load_localised_text("DEVICE_OPERATING_SYSTEM"),
-        max_length=64
-    )
-    """
-    OS name
-    """
-
     def __str__(self) -> str:
-        return f"{self.name} ({self.operating_system})"
+        return f"{self.name}"
 
 
 class Package(models.Model):
@@ -295,6 +287,16 @@ class Snapshot(models.Model):
     )
     """
     Repositories within the save
+    """
+
+    operating_system = models.CharField(
+        verbose_name=LOCALE.load_localised_text("DEVICE_OPERATING_SYSTEM"),
+        max_length=64,
+        null=False,
+        default=""
+    )
+    """
+    OS name
     """
 
     repositories_list = models.TextField(

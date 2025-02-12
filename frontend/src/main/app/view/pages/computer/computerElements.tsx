@@ -10,7 +10,7 @@ interface ComputerElementProps {
     /**
      * Selected device
      */
-    computer: Device
+    device: Device | undefined
 }
 
 /**
@@ -18,7 +18,7 @@ interface ComputerElementProps {
  * @param {ComputerElementProps} props Selected device for the display of informations
  * @returns {React.JSX.Element} Page web component
  */
-export default function ComputerElements (props: ComputerElementProps): React.JSX.Element {
+export default function DeviceElements (props: ComputerElementProps): React.JSX.Element {
     const [selectedID, updateSelectedID] = React.useState(0);
 
     return (
@@ -27,7 +27,7 @@ export default function ComputerElements (props: ComputerElementProps): React.JS
                 selectedID={selectedID}
                 updateSelectedID={updateSelectedID}
             />
-            <MainInfosFrame computer={props.computer} />
+            <MainInfosFrame device={props.device} />
         </div>
     )
 }

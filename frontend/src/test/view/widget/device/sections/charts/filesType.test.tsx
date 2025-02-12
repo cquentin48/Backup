@@ -9,7 +9,7 @@ describe("Type of files chart unit test suite", () => {
     test("Successful render", async () => {
         // Acts
         const { container } = render(
-            <FilesTypes/>
+            <FilesTypes deviceLoaded={true}/>
         )
 
         // Acts

@@ -2,6 +2,8 @@ import React from "react";
 
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
+import "../../../../../../../res/css/ComputerMainInfos.css";
+
 interface FilterToolbarProps {
     selectedValue: string
     updateSelectedValue: (input: any) => void
@@ -19,7 +21,9 @@ interface FilterToolbarProps {
  */
 export default function FilterToolbar (props: FilterToolbarProps): React.JSX.Element {
     return (
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+        <FormControl
+            variant="standard"
+            id="FilterToolbar">
             <InputLabel id={`${props.selectID}Label`}>{props.selectLabel}</InputLabel>
             <Select
                 id={props.selectID}

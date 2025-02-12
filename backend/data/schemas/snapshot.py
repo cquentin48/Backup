@@ -29,7 +29,7 @@ class DeviceSoftwareVersion(graphene.ObjectType):
     Only software version informations here.
     """
 
-    software_version = graphene.String(
+    chosen_version = graphene.String(
         description="Version of the software chosen in the device"
     )
     """
@@ -43,7 +43,7 @@ class DeviceSoftwareVersion(graphene.ObjectType):
     Software name
     """
 
-    software_install_type = graphene.String(
+    install_type = graphene.String(
         description="Software installation type (e.g. marketplace install, " +
         "Package managment install, ...)"
     )
@@ -75,6 +75,10 @@ class SnapshotData(graphene.ObjectType):
         RepositoryData,
         description="Every repositories linked to the snapshot"
     )
+    
+    operating_system = graphene.String(
+        description="Operating system of the device at the time where the snapshot was created"
+    )
 
 
 class SnapshotQuery(graphene.ObjectType):
@@ -99,16 +103,17 @@ class SnapshotQuery(graphene.ObjectType):
         try:
             snapshot = Snapshot.objects.get(id=snapshot_id)
             versions = []
-            for version in list(snapshot.versions.all()):
+            for found_version in list(snapshot.versions.all()):
                 versions.append(
                     DeviceSoftwareVersion(
-                        software_version=version.chosen_version,
-                        name=version.package.name,
-                        software_install_type=version.package.type
+                        chosen_version=found_version.chosen_version,
+                        name=found_version.package.name,
+                        install_type=found_version.package.type
                     ))
             return SnapshotData(
                 versions=versions,
-                repositories=[]
+                repositories=[],
+                operating_system=snapshot.operating_system
             )
         except ObjectDoesNotExist as _:
             return None
