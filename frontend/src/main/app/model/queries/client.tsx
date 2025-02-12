@@ -1,7 +1,7 @@
 import {
     ApolloClient, type ApolloQueryResult,
     type DocumentNode, HttpLink, InMemoryCache,
-    type NormalizedCacheObject, gql
+    type NormalizedCacheObject
 } from '@apollo/client';
 import fetch from 'cross-fetch';
 
@@ -38,7 +38,7 @@ class BackupQueryClient {
      */
     async execute_query (query: DocumentNode, variables: BasicQueryParameters | undefined): Promise<ApolloQueryResult<any>> {
         const data = await this.query_client.query({
-            query: query,
+            query,
             variables
         })
         return data

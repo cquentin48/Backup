@@ -7,6 +7,7 @@ import ComputerInfos from '../../../model/queries/computer/computerInfos';
 import type Device from '../../../model/device/device';
 import ComputerElements from './computerElements';
 import { useParams } from 'react-router-dom';
+import { enqueueSnackbar } from 'notistack';
 
 /**
  * Computer page view model
@@ -30,7 +31,7 @@ export default function ComputerPage (): React.JSX.Element {
                 setDevice(deviceInfos)
             })().catch(
                 error => {
-                    console.error(error)
+                    enqueueSnackbar(error, { variant: "error" })
                 }
             );
         }, []);

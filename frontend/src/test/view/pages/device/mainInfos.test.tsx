@@ -27,7 +27,7 @@ describe("Device main Infos unit test suite", () => {
         const { container } = render(<ComputerMainInfos
             computer={testDevice}
         />)
-        const renderedDeviceHeader = container.querySelector("#computerMainInfosHeader")
+        const renderedDeviceHeader = container.querySelector("#deviceMainInfosHeader")
         const renderedDeviceHeaderButton = container.querySelector(".MuiButtonBase-root")
 
         fireEvent.mouseOver(screen.getByLabelText(testDevice.operatingSystem))
@@ -56,7 +56,7 @@ describe("Device main Infos unit test suite", () => {
         const { container } = render(<ComputerMainInfos
             computer={testDevice}
         />)
-        const renderedDeviceHeader = container.querySelector("#computerMainInfosHeader")
+        const renderedDeviceHeader = container.querySelector("#deviceMainInfosHeader")
         const renderedDeviceHeaderButton = container.querySelector(".MuiButtonBase-root")
 
         fireEvent.mouseOver(screen.getByLabelText(testDevice.operatingSystem))

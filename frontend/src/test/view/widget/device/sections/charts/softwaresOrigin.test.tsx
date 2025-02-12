@@ -87,7 +87,7 @@ describe("Type of softwares origin chart unit test suite", () => {
                             name: "My seventh software",
                             softwareInstallType: "type7",
                             softwareVersion: "1.0"
-                        },
+                        }
                     ],
                     repositories: []
                 }
@@ -122,7 +122,7 @@ describe("Type of softwares origin chart unit test suite", () => {
                             name: "My second software",
                             softwareInstallType: "type",
                             softwareVersion: "1.0"
-                        },
+                        }
                     ],
                     repositories: []
                 }
@@ -143,7 +143,7 @@ describe("Type of softwares origin chart unit test suite", () => {
 
     test("Error in render (Multiple softwares, same type)", async () => {
         // Given
-        gqlClient.get_query_client().query = jest.fn().mockImplementation(()=>{
+        gqlClient.get_query_client().query = jest.fn().mockImplementation(() => {
             throw new Error("Error in implementation!")
         })
 

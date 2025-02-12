@@ -277,7 +277,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         )
 
         // Acts
-        var fieldValueInput;
+        let fieldValueInput;
         for (let i = 0; i <= 1; i++) {
             const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
             fireEvent.click(newFilterButton)
@@ -312,7 +312,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         )
 
         // Acts
-        var fieldValueInput;
+        let fieldValueInput;
         for (let i = 0; i <= 1; i++) {
             const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
             fireEvent.click(newFilterButton)
@@ -345,7 +345,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         )
 
         // Acts
-        var fieldValueInput;
+        let fieldValueInput;
         for (let i = 0; i <= 1; i++) {
             const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
             fireEvent.click(newFilterButton)
@@ -366,9 +366,9 @@ describe("Device main infos Filter table render (no filter)", () => {
         fireEvent.click(checkbox)
 
         // Asserts
-        await waitFor(()=>{
+        await waitFor(() => {
             expect((screen.getByText("2 filtres sélectionnés!").parentNode as ParentNode).querySelector("p")).toBeInTheDocument()
-        }, {timeout: 2500})
+        }, { timeout: 2500 })
     })
 
     test("Delete one filter from three previously added", async () => {
@@ -378,7 +378,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         )
 
         // Acts
-        var fieldValueInput;
+        let fieldValueInput;
         for (let i = 0; i <= 2; i++) {
             const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
             fireEvent.click(newFilterButton)
@@ -395,11 +395,11 @@ describe("Device main infos Filter table render (no filter)", () => {
             })
         }
 
-        for(let i = 0; i<=1; i++){
+        for (let i = 0; i <= 1; i++) {
             const rowCheckbox = (screen.getByText(`Test value${i}`).parentNode as ParentNode).querySelector("input") as HTMLInputElement
             fireEvent.click(rowCheckbox)
         }
-        const filterDeleteButton = screen.getByText("Delete filters") as HTMLInputElement
+        const filterDeleteButton = screen.getByText("Delete filters")
         fireEvent.click(filterDeleteButton)
 
         // Asserts
@@ -430,15 +430,15 @@ describe("Device main infos Filter table render (no filter)", () => {
         const fieldValue = screen.getByText("Field value").parentElement as HTMLElement
         const inputField = fieldValue.querySelector("input") as HTMLInputElement
         const fieldValueType = fieldValue.querySelector("button") as HTMLInputElement
-        
+
         fireEvent.click(fieldValueType)
-        const selectedDate = screen.getByText("11") as HTMLInputElement
+        const selectedDate = screen.getByText("11")
         fireEvent.click(selectedDate)
         const updatedDate = inputField.value
 
         // Asserts
         expect(inputField.getAttribute("placeholder")).toBe("MM/DD/YYYY")
-        await waitFor(()=>{
+        await waitFor(() => {
             expect(selectedDate).not.toBeInTheDocument()
         })
         expect(updatedDate).toBe("01/11/2020")

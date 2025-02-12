@@ -75,7 +75,7 @@ class AppDataManager {
      * Get the amount of objects stored in the map
      * @returns {number} Amount of stored elements
      */
-    public size(){
+    public size (): number {
         return this.data.size
     }
 }

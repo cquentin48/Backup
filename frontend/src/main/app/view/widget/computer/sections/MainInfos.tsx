@@ -4,11 +4,11 @@ import Icon from "@mdi/react";
 import { mdiCpu64Bit, mdiCalendarPlusOutline, mdiCalendarSync } from "@mdi/js";
 
 import { Memory, Storage } from "@mui/icons-material";
-import { Avatar, Card, CardContent, CardHeader, Grid2 } from "@mui/material";
+import { Grid2 } from "@mui/material";
 
 import type Device from "../../../../model/device/device";
 import '../../../../../res/css/ComputerMainInfos.css';
-import SnapshotID from "../../../../model/device/snapshot";
+import DeviceStat from "./header/computerStat";
 
 /**
  * Device selected for the main informations display
@@ -24,132 +24,76 @@ interface AccordionMainInfosProps {
  */
 export default function SpecsMainInfos (props: AccordionMainInfosProps): React.JSX.Element {
     const computer = props.computer;
-    const snapshot = computer.snapshots[0] as SnapshotID
+    const firstSnapshot = computer.snapshots[0]
+    const lastSnapshot = computer.snapshots[computer.snapshots.length - 1]
 
     return (
         <div id="deviceMainInfos">
             <Grid2 container spacing={2} sx={{ padding: "0em 1em 0em 1em" }}>
-                <Grid2 size={{ md: 2 }}>
-                    <Card sx={{
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column"
-                    }}>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <Icon path={mdiCpu64Bit} size={1} />
-                            </Avatar>
-                        }
-                        title="Processor"
-                        />
-                        <CardContent>
-                            {computer.processor}
-                        </CardContent>
-                    </Card>
-                </Grid2>
-                <Grid2 size={{ md: 2 }}>
-                    <Card sx={{
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column"
-                    }}>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <Memory />
-                            </Avatar>
-                        }
-                        title="Computer cores"
-                        />
-                        <CardContent>
-                            {computer.cores}
-                        </CardContent>
-                    </Card>
-                </Grid2>
-                <Grid2 size={{ md: 2 }}>
-                    <Card sx={{
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column"
-                    }}>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <Storage />
-                            </Avatar>
-                        }
-                        title="RAM"
-                        />
-                        <CardContent>
-                            {computer.formatBytes(computer.memory)} RAM in total
-                        </CardContent>
-                    </Card>
-                </Grid2>
-                <Grid2 size={{ md: 2 }}>
-                    <Card sx={{
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column"
-                    }}>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <Icon path={mdiCalendarPlusOutline} size={1} />
-                            </Avatar>
-                        }
-                        title="Device added on"
-                        />
-                        <CardContent>
-                            {
-                                snapshot.uploadDate.toLocaleDateString(window.navigator.language, {
-                                    weekday: "long",
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric"
-                                })
-                            }
-                        </CardContent>
-                    </Card>
-                </Grid2>
-                <Grid2 size={{ md: 2 }}>
-                    <Card sx={{
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column"
-                    }}>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <Icon path={mdiCalendarSync} size={1} />
-                            </Avatar>
-                        }
-                        title="Last Update"
-                        />
-                        <CardContent>
-                            {
-                                snapshot.uploadDate.toLocaleDateString(window.navigator.language, {
-                                    weekday: "long",
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric"
-                                })}
-                        </CardContent>
-                    </Card>
-                </Grid2>
-                <Grid2 size={{ md: 2 }}>
-                    <Card sx={{
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column"
-                    }}>
-                        <CardHeader avatar={
-                            <Avatar>
-                                <Storage />
-                            </Avatar>
-                        }
-                        title="Storage"
-                        />
-                        <CardContent>
-                            {"Amount of storage here"} used in the backup server {/* Replace it */}
-                        </CardContent>
-                    </Card>
-                </Grid2>
+                <DeviceStat
+                    deviceLoaded={props.computer !== undefined}
+                    avatar={
+                        <Icon path={mdiCpu64Bit} size={1} />
+                    }
+                    label="Processor"
+                    value={computer.processor}
+                />
+
+                <DeviceStat
+                    deviceLoaded={props.computer !== undefined}
+                    avatar={
+                        <Memory />
+                    }
+                    label="Computer cores"
+                    value={(computer.cores.toString())}
+                />
+
+                <DeviceStat
+                    deviceLoaded={props.computer !== undefined}
+                    avatar={
+                        <Storage />
+                    }
+                    label="RAM"
+                    value={computer.memory.toString()}
+                />
+                <DeviceStat
+                    deviceLoaded={props.computer !== undefined}
+                    avatar={
+                        <Icon path={mdiCalendarPlusOutline} size={1} />
+                    }
+                    label="Device added on"
+                    value={
+                        firstSnapshot.uploadDate.toLocaleDateString(window.navigator.language, {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                        })
+                    }
+                />
+                <DeviceStat
+                    deviceLoaded={props.computer !== undefined}
+                    avatar={
+                        <Icon path={mdiCalendarSync} size={1} />
+                    }
+                    label="Last update"
+                    value={
+                        lastSnapshot.uploadDate.toLocaleDateString(window.navigator.language, {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                        })
+                    }
+                />
+                <DeviceStat
+                    deviceLoaded={props.computer !== undefined}
+                    avatar={
+                        <Storage />
+                    }
+                    label="Storage"
+                    value="Amount of storage here used in the backup server"
+                />
             </Grid2>
         </div>
     )

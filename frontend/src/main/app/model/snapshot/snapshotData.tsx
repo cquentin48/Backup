@@ -32,7 +32,7 @@ export class SnapshotData {
             softwareInstallType
         )
         if (this.softwares.filter((software) => {
-            const seekedSoftware = software as SnapshotSoftware
+            const seekedSoftware = software
             const sameInstallType = seekedSoftware.softwareInstallType === softwareInstallType
             const sameName = seekedSoftware.softwareName === softwareName
             const sameVersion = seekedSoftware.softwareVersion === softwareVersion

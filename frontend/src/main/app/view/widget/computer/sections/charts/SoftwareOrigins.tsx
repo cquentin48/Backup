@@ -69,7 +69,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
                 rawSeries.set(softwareInstallType, previousValue + 1)
             }
         });
-        var series = Array.from(
+        let series = Array.from(
             new Map([...rawSeries.entries()].sort((a, b) => a[1] - b[1])),
             ([label, value], index) => ({ label, value, id: index })
         )

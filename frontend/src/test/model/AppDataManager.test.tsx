@@ -7,7 +7,6 @@ describe("Application data manager unit tests", () => {
         dataManager.removeAllData()
     })
 
-
     test('Adds new element + retrieves it (element not yet added)', () => {
         // Given
         const newElement = "element"

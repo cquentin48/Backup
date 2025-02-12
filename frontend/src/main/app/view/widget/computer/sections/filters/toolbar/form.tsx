@@ -9,6 +9,7 @@ import FilterToolbar from "./selectFilter";
 import FieldValue from "./fieldValue";
 import DeviceMainInfosFilterCreationButton from "./createFilterButton";
 import ValidationError from "../../../../../../model/exception/errors/validationError";
+import { enqueueSnackbar } from "notistack";
 
 /**
  * State of the new filter form dialog
@@ -96,16 +97,20 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
                     JSON.stringify(inputs)
                 );
             } else {
-                throw new ValidationError("You must enter a value!")
+                throw new ValidationError("You must enter a value for the filter to create it!")
             }
             props.closesDialog(false);
         } catch (error) {
+            let variant: "warning" | "error" | "default" | "success" | "info" | undefined;
+            let message;
             if (error instanceof AlreadyAddedWarning) {
-                console.warn(error.message);
+                variant = "warning"
+                message = error.message;
+            } else if (error instanceof ValidationError) {
+                variant = "error"
+                message = error.message;
             }
-            else if(error instanceof ValidationError){
-                console.error(error.message)
-            }
+            enqueueSnackbar(message, { variant })
         }
     }
 

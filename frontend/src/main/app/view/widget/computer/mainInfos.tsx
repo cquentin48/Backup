@@ -8,7 +8,6 @@ import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, Pape
 import Formats from "./sections/Formats";
 import '../../../../res/css/ComputerMainInfos.css';
 import { loadSnapshot } from "../../controller/deviceMainInfos/loadSnapshot";
-import SnapshotID from "../../../model/device/snapshot";
 
 /**
  * Main informations frame props interface
@@ -85,8 +84,8 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
                             {
                                 props.computer.snapshots.map((snapshot, index) => {
                                     return (
-                                        <MenuItem key={index} value={(snapshot as SnapshotID).id}>
-                                            {(snapshot as SnapshotID).localizedDate()}
+                                        <MenuItem key={index} value={(snapshot).id}>
+                                            {(snapshot).localizedDate()}
                                         </MenuItem>
                                     )
                                 })

@@ -79,8 +79,9 @@ interface FilterTableState {
 /**
  * Table displaying the filters used to displays selected informations
  * in the device main informations page.
- * @implements {React.Component<FilterTableProps, FilterTableState>}
+ * @implements {React.Component<{}, FilterTableState>}
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export default class FilterTable extends React.Component<{}, FilterTableState> {
     /**
      * Datagrid row table manager
@@ -88,9 +89,10 @@ export default class FilterTable extends React.Component<{}, FilterTableState> {
     tableManager: React.RefObject<GridApiCommunity>;
 
     /**
-     * Filter table web component constructor
-     * @param {FilterTableProps} props elements passed from the filter web component
+     * Component constructor class
+     * @param {{}} props elements passed from the filter web component
      */
+    // eslint-disable-next-line @typescript-eslint/ban-types
     constructor (props: {}) {
         super(props);
         this.state = {
@@ -115,8 +117,8 @@ export default class FilterTable extends React.Component<{}, FilterTableState> {
         // Fetch the deleted rows
         currentRows.forEach((currentRow: FilterRow, index: number) => {
             const hasRowBeenDeleted = newRows.find(
-                (newRow: FilterRow) => { return newRow === currentRow }) as FilterRow
-            if (!hasRowBeenDeleted) {
+                (newRow: FilterRow) => { return newRow === currentRow })
+            if ((hasRowBeenDeleted == null) === undefined) {
                 updatedRows.push({ id: index, _action: 'delete' })
             }
         })
@@ -124,8 +126,8 @@ export default class FilterTable extends React.Component<{}, FilterTableState> {
         // Fetch the created rows
         newRows.forEach((newRow: FilterRow, index: number) => {
             const hasRowBeenCreated = currentRows.find(
-                (currentRow: FilterRow) => { return newRow === currentRow }) as FilterRow;
-            if (!hasRowBeenCreated) {
+                (currentRow: FilterRow) => { return newRow === currentRow });
+            if (hasRowBeenCreated === undefined) {
                 updatedRows.push({
                     id: index,
                     comparisonType: newRow.comparisonType,

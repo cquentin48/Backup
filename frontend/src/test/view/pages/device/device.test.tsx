@@ -49,13 +49,13 @@ const snapshotQueryOutput = {
         }
     }
 }
-const graphqlMockQueryOutput = jest.fn().mockImplementation(({ query }) => {
+const graphqlMockQueryOutput = jest.fn().mockImplementation(async ({ query }) => {
     if (query === snapshotDataQuery) {
-        return Promise.resolve(
+        return await Promise.resolve(
             snapshotQueryOutput
         )
     } else if (query === deviceDataQuery) {
-        return Promise.resolve(
+        return await Promise.resolve(
             deviceQueryOutput
         )
     }

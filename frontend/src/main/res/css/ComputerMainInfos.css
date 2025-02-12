@@ -19,7 +19,7 @@
     overflow: hidden;
 }
 
-#computerMainInfosHeader{
+#deviceMainInfosHeader{
     display: flex;
     margin-top: 8px;
 }

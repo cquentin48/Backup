@@ -10,8 +10,6 @@ export default class ControllerAction {
      */
     protected observable: Observable = {};
 
-    public constructor(){}
-
     /**
      * Controller action set
      * @param {string} inputs Inputs set for the action
