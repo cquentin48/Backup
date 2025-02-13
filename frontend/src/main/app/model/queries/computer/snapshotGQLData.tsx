@@ -10,11 +10,11 @@ class SnapshotGQLData implements QueryPattern {
         const rawSoftwares = rawSnapshotData.versions;
         const snapshot = new SnapshotData();
         rawSoftwares.forEach((softwareRaw: any) => {
-            const version = softwareRaw.softwareVersion;
+            const chosenVersion = softwareRaw.chosenVersion;
             const name = softwareRaw.name;
-            const installType = softwareRaw.softwareInstallType;
+            const installType = softwareRaw.installType;
             snapshot.addSoftware(
-                version,
+                chosenVersion,
                 name,
                 installType
             );

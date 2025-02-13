@@ -29,7 +29,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "webpack serve --config ./webpack.config.js --mode=development",
     "build": "webpack --mode production",
     "test": "jest --watchAll --coverage --detectOpenHandles --config=./jest/jest.config.js",
     "eject": "react-scripts eject",

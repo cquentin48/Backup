@@ -11,6 +11,7 @@ export default class SnapshotID {
      * Construction method
      * @param { string } id snapshot database id
      * @param { string } uploadDate snapshot date upload (Must be of format ``YYYY``-``MM``-``DD``)
+     * @param { string } operatingSystem related device snapshot operating system
      */
     constructor (id: string, uploadDate: string, operatingSystem: string) {
         this.id = id;

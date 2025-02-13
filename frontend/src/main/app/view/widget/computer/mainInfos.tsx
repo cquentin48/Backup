@@ -8,18 +8,8 @@ import { FormControl, InputLabel, Select, MenuItem, Paper, Skeleton } from "@mui
 import Formats from "./sections/Formats";
 import '../../../../res/css/ComputerMainInfos.css';
 import { loadSnapshot } from "../../controller/deviceMainInfos/loadSnapshot";
-import { SnapshotData } from "../../../model/snapshot/snapshotData";
-import SnapshotID from "../../../model/device/snapshot";
-
-/**
- * Main informations frame props interface
- */
-interface MainInfosFrameProps {
-    /**
-     * Device selected for its main information to be displayed in the web component
-     */
-    device: Device | undefined
-}
+import { type SnapshotData } from "../../../model/snapshot/snapshotData";
+import { dataManager } from "../../../model/AppDataManager";
 
 /**
  * State of the main information frame
@@ -28,9 +18,13 @@ interface MainInfosFrameState {
     /**
      * Type of package
      */
-    snapshots: SnapshotData[];
-    selectedSnapshot: string;
-    snapshotList: any[]
+    snapshots: SnapshotData[]
+
+    /**
+     * Currently selected package
+     */
+    selectedSnapshot: string
+    
 }
 
 /**
@@ -38,54 +32,74 @@ interface MainInfosFrameState {
  * @param {MainInfosFrameProps} props Selected device passed from the {ComputerElement} view page.
  * @returns {React.JSX.Element} View component
  */
-export default class MainInfosFrame extends React.Component<MainInfosFrameProps, MainInfosFrameState> {
+export default class MainInfosFrame extends React.Component<{}, MainInfosFrameState> {
     state: Readonly<MainInfosFrameState> = {
         snapshots: [],
-        selectedSnapshot: "",
-        snapshotList: []
+        selectedSnapshot: ""
     }
 
-    formatSnapshots () {
-        const snapshots: any = {}
-        this.props.device?.snapshots.forEach((snapshot: SnapshotID) => {
-            const operatingSystem = snapshot.operatingSystem
-            const date = snapshot.uploadDate
-            const id = snapshot.id
-            if (!snapshots.includes(operatingSystem)) {
-                snapshots.operatingSystem = []
-            }
-            snapshots.operatingSystem.push({
-                uploadDate: date,
-                id: id
-            })
-        });
+    componentDidMount (): void {
+        const device = JSON.parse(dataManager.getElement("device")) as Device
+        loadSnapshot.addObservable("MainInfosFrame", this.snapshotsLoaded)
+        loadSnapshot.performAction(device.snapshots[0].id)
+    }
+
+    /**
+     * Update the selected snapshot
+     * @param {string} snapshotID ID of the snapshot selected
+     */
+    selectSnapshot = (snapshotID: string): void => {
         this.setState({
-            snapshotList: snapshots
+            selectedSnapshot: snapshotID
+        })
+        loadSnapshot.performAction(JSON.stringify(this.state.selectedSnapshot))
+    }
+
+    /**
+     * Method triggered when the snapshots are loaded
+     * @param {string} data Stringified JSON data passed from a GRAPHQL query in the backend
+     */
+    snapshotsLoaded (data: string): void {
+        const snapshots = JSON.parse(data)
+        const currentlySelectedSnapshotID = (JSON.parse(dataManager.getElement("device")) as Device).snapshots[0].id
+        this.setState({
+            snapshots: snapshots as SnapshotData[],
+            selectedSnapshot: currentlySelectedSnapshotID
         })
     }
 
     /**
-     * Update the type of package
-     * @param {string} newPackageType New package type
+     * Build the Select snapshot Menu items
+     * @param {Device} device Currently selected device
+     * @returns {React.JSX.Element[]} Rendered menu items
      */
-    selectSnapshot = (newPackageType: string): void => {
-        this.setState({
-            selectedSnapshot: newPackageType
+    buildMenuItems (device: Device): React.JSX.Element[] {
+        const snapshotLists: Map<string, Map<string, React.JSX.Element>> =
+            new Map<string, Map<string, React.JSX.Element>>();
+        device.snapshots.forEach(snapshot => {
+            if (!snapshotLists.has(snapshot.operatingSystem)) {
+                snapshotLists.set(snapshot.operatingSystem, new Map())
+            }
+            const snapshotEntry = snapshotLists.get(snapshot.operatingSystem) as Map<string, React.JSX.Element>;
+            snapshotEntry.set(
+                snapshot.id,
+                <MenuItem key={snapshot.id} value={(snapshot).id}>
+                    {(snapshot).localizedDate()}
+                </MenuItem>
+            )
         })
-    }
-
-    componentDidMount (): void {
-        loadSnapshot.addObservable("MainInfosFrame", this.snapshotsLoaded)
-        loadSnapshot.performAction(JSON.stringify("1"))
-    }
-
-    snapshotsLoaded (data: string): void {
-        const snapshots = JSON.parse(data) as SnapshotData[]
-        const currentlySelectedSnapshotID = (this.props.device as Device).snapshots[0].id
-        this.setState({
-            snapshots: snapshots,
-            selectedSnapshot: currentlySelectedSnapshotID
+        const menuEntries: React.JSX.Element[] = [];
+        snapshotLists.forEach((snapshotList: Map<string, React.JSX.Element>, operatingSystem: string) => {
+            menuEntries.push(
+                <MenuItem disabled>
+                    {operatingSystem}
+                </MenuItem>
+            )
+            snapshotList.forEach((snapshotMenuItem: React.JSX.Element) => {
+                menuEntries.push(snapshotMenuItem)
+            })
         })
+        return menuEntries
     }
 
     /**
@@ -93,8 +107,8 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
      * @returns {React.JSX.Element} View component
      */
     render (): React.JSX.Element {
-        const { device } = this.props;
-        const { selectedSnapshot, snapshotList: snapshotLists } = this.state;
+        const device = JSON.parse(dataManager.getElement("device")) as Device;
+        const { selectedSnapshot } = this.state;
         let icon;
         let snapshots;
         if (device === undefined) {
@@ -107,6 +121,8 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
             snapshots = <Skeleton variant="rounded" width={256} height={56} />
         } else {
             icon = <Icon path={mdiClockOutline} size={1} />;
+            const snapshotList = this.buildMenuItems(device);
+            console.log(snapshotList)
             snapshots =
                 <FormControl id="mainInfosSelectForm">
                     <InputLabel id="dataType">Snapshot list</InputLabel>
@@ -119,36 +135,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
                         autoWidth
                     >
                         {
-                            snapshotLists.map((snapshot, index) => {
-                                return (
-                                    <div>
-                                        <MenuItem value={index} disabled>
-                                            {index}
-                                        </MenuItem>
-                                        {
-                                            snapshot.map((singleSave:any, index:number) => {
-                                                return (
-                                                    <MenuItem key={index} value={(snapshot).id}>
-                                                        {(singleSave).localizedDate()}
-                                                    </MenuItem>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                )
-                            })
-                        }
-                        <MenuItem value={10} disabled>
-                            Saves
-                        </MenuItem>
-                        {
-                            device.snapshots.map((snapshot, index) => {
-                                return (
-                                    <MenuItem key={index} value={(snapshot).id}>
-                                        {(snapshot).localizedDate()}
-                                    </MenuItem>
-                                )
-                            })
+                            snapshotList
                         }
                     </Select>
                 </FormControl>
@@ -158,7 +145,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
             <div id="mainInfosTable">
                 <div id="mainInfosTableSelectHeader">
                     {icon}
-                    {snapshotLists}
+                    {snapshots}
                 </div>
                 <Paper elevation={2} id="detailsContainer">
                     <Formats deviceLoaded={device !== undefined} />

@@ -9,68 +9,44 @@ import { Grid2 } from "@mui/material";
 import type Device from "../../../../model/device/device";
 import '../../../../../res/css/ComputerMainInfos.css';
 import DeviceStat from "./header/computerStat";
-import SnapshotID from "../../../../model/device/snapshot";
-
-/**
- * Device selected for the main informations display
- */
-interface AccordionMainInfosProps {
-    device: Device | undefined
-}
+import SnapshotID from "../../../../model/device/snapshotId";
+import { dataManager } from "../../../../model/AppDataManager";
 
 /**
  * Accordion containing the device main informations
- * @param {AccordionMainInfosProps} props computer linked to the widget
  * @returns {React.JSX.Element} Accordion with the device main informations
  */
-export default function SpecsMainInfos (props: AccordionMainInfosProps): React.JSX.Element {
-    const emptyData = {
-        snapshots: [
-            new SnapshotID(
-                "1",
-                "2020-01-01",
-                "My OS!"
-            )
-        ],
-        processor: "",
-        cores: -1,
-        memory: -1,
-        formatBytes: ((value:number) => "No value")
-    }
-    const computer = props.device ?? emptyData;
-    const firstSnapshot = computer.snapshots[0]
-    const lastSnapshot = computer.snapshots[computer.snapshots.length - 1]
+export default function SpecsMainInfos (): React.JSX.Element {
+    const device = JSON.parse(dataManager.getElement("device")) as Device
+    const firstSnapshot = device.snapshots[0]
+    const lastSnapshot = device.snapshots[device.snapshots.length - 1]
 
     return (
         <Grid2 container spacing={2} id="deviceMainInfosSpecs">
             <DeviceStat
-                deviceLoaded={props.device !== undefined}
                 avatar={
                     <Icon path={mdiCpu64Bit} size={1} />
                 }
                 label="Processor"
-                value={computer.processor}
+                value={device.processor}
             />
 
             <DeviceStat
-                deviceLoaded={props.device !== undefined}
                 avatar={
                     <Memory />
                 }
                 label="Computer cores"
-                value={(computer.cores.toString())}
+                value={(device.cores.toString())}
             />
 
             <DeviceStat
-                deviceLoaded={props.device !== undefined}
                 avatar={
                     <Storage />
                 }
                 label="RAM"
-                value={computer.formatBytes(computer.memory)}
+                value={device.formatBytes(device.memory)}
             />
             <DeviceStat
-                deviceLoaded={props.device !== undefined}
                 avatar={
                     <Icon path={mdiCalendarPlusOutline} size={1} />
                 }
@@ -85,7 +61,6 @@ export default function SpecsMainInfos (props: AccordionMainInfosProps): React.J
                 }
             />
             <DeviceStat
-                deviceLoaded={props.device !== undefined}
                 avatar={
                     <Icon path={mdiCalendarSync} size={1} />
                 }
@@ -100,7 +75,6 @@ export default function SpecsMainInfos (props: AccordionMainInfosProps): React.J
                 }
             />
             <DeviceStat
-                deviceLoaded={props.device !== undefined}
                 avatar={
                     <Storage />
                 }

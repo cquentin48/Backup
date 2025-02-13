@@ -3,16 +3,12 @@ import React from "react";
 import { Grid2, Card, CardHeader, Avatar, CardContent, Skeleton } from "@mui/material";
 
 import "../../../../../../res/css/ComputerMainInfos.css";
+import { dataManager } from "../../../../../model/AppDataManager";
 
 /**
  * Elements passed from the device main infos header
  */
 interface DeviceStatProps {
-    /**
-     * If the device has been loaded
-     */
-    deviceLoaded: boolean
-
     /**
      * Card icon
      */
@@ -38,7 +34,8 @@ export default function DeviceStat (props: DeviceStatProps): React.JSX.Element {
     let avatar;
     let value;
     let label;
-    if (!props.deviceLoaded) {
+    const deviceLoaded = dataManager.isdataElementContained("device")
+    if (deviceLoaded) {
         avatar = <Skeleton variant="circular" width={40} height={40} />
         value = <Skeleton variant="rounded" width={"100%"} height={50} />
         label = <Skeleton variant="rounded" width={"100%"} height={40} />
@@ -55,7 +52,7 @@ export default function DeviceStat (props: DeviceStatProps): React.JSX.Element {
                         {avatar}
                     </Avatar>
                 }
-                    title={label}
+                title={label}
                 />
                 <CardContent>
                     {value}

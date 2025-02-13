@@ -71,7 +71,7 @@ describe("Application data manager unit tests", () => {
         const elementKey = "myKey"
 
         // Acts & assert
-        expect(dataManager.dataElementContained(elementKey)).toBe(false)
+        expect(dataManager.isdataElementContained(elementKey)).toBe(false)
     })
     test('Removes existing element (element not added)', () => {
         // Given
@@ -80,7 +80,7 @@ describe("Application data manager unit tests", () => {
         dataManager.addElement(elementKey, (newElement as unknown as object))
 
         // Acts
-        const containedElement = dataManager.dataElementContained(elementKey)
+        const containedElement = dataManager.isdataElementContained(elementKey)
 
         // Assert
         expect(containedElement).toBe(true)

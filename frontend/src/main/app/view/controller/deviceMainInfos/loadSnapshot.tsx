@@ -1,4 +1,4 @@
-import ControllerAction from "../controllerActions";
+import ControllerAction, { CallbackMethod } from "../controllerActions";
 
 import { filterManager } from "../../model/filters/FilterManager";
 import snapshotData from "../../../../res/queries/snapshot.graphql";
@@ -28,10 +28,15 @@ class LoadSnapshot extends ControllerAction {
             }
         ).then((result: SnapshotData) => {
             dataManager.addElement("snapshot", result);
-            const callBackMethod = this.getObservable("mainDeviceInfosSoftwareInfosPieChart");
-
-            callBackMethod(JSON.stringify(filterManager.getFilters()));
+            const callBackMethods = [
+                this.getObservable("mainDeviceInfosSoftwareInfosPieChart"),
+                this.getObservable("MainInfosFrame")
+            ]
+            for(let i = 0;i<callBackMethods.length;i++){
+                callBackMethods[i](JSON.stringify(filterManager.getFilters()))
+            }
         }).catch((error) => {
+            console.log(error)
             enqueueSnackbar(error, { variant: "error" })
         })
     }

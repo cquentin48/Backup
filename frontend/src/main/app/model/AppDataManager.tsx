@@ -60,7 +60,7 @@ class AppDataManager {
      * @param {string} dataElementKey Key of the data supposedly stored in the map
      * @returns {boolean} ``true`` yes, ``false`` no
      */
-    public dataElementContained (dataElementKey: string): boolean {
+    public isdataElementContained (dataElementKey: string): boolean {
         return this.data.has(dataElementKey)
     }
 

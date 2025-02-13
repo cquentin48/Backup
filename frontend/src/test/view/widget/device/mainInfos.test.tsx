@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 
 import { fireEvent, render } from "@testing-library/react"
 import Device from "../../../../main/app/model/device/device"
-import SnapshotID from "../../../../main/app/model/device/snapshot"
+import SnapshotID from "../../../../main/app/model/device/snapshotId"
 import MainInfosFrame from "../../../../main/app/view/widget/computer/mainInfos"
 import { dataManager } from "../../../../main/app/model/AppDataManager"
 
@@ -20,7 +20,6 @@ describe("MainInfosFrame unit test suite", () => {
             "My processor",
             1,
             4e+9,
-            "My OS",
             [
                 new SnapshotID(
                     "1",
@@ -29,12 +28,11 @@ describe("MainInfosFrame unit test suite", () => {
                 )
             ]
         )
+        dataManager.addElement("device",testDevice)
 
         // Acts
         render(
-            <MainInfosFrame
-                device={testDevice}
-            />
+            <MainInfosFrame/>
         )
     })
 
@@ -45,7 +43,6 @@ describe("MainInfosFrame unit test suite", () => {
             "My processor",
             1,
             4e+9,
-            "My OS",
             [
                 new SnapshotID(
                     "1",
@@ -59,12 +56,11 @@ describe("MainInfosFrame unit test suite", () => {
                 )
             ]
         )
+        dataManager.addElement("device",testDevice)
 
         // Acts
         const { container, getByText } = render(
-            <MainInfosFrame
-                device={testDevice}
-            />
+            <MainInfosFrame/>
         )
 
         const snapshotSelect = container.querySelector(".MuiSelect-nativeInput") as Element

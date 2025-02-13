@@ -1,22 +1,59 @@
 import React from 'react';
 
-import gqlClient from '../../../model/queries/client';
-import getDeviceInfos from '../../../../res/queries/computer_infos.graphql';
 import DeviceMainInfos from './mainInfos';
-import ComputerInfos from '../../../model/queries/computer/computerInfos';
-import type Device from '../../../model/device/device';
 import DeviceElements from './computerElements';
 import { useParams } from 'react-router-dom';
-import { enqueueSnackbar } from 'notistack';
+import { loadDevice } from '../../controller/deviceMainInfos/loadDevice';
+import { Box, CircularProgress, Modal } from '@mui/material';
+
 
 /**
  * Computer page view model
  * @returns {React.JSX.Element} Page component in the web application
  */
 export default function ComputerPage (): React.JSX.Element {
+    const [loadedDevice, setLoadedDevice] = React.useState<boolean>(false);
+
+    /**
+     * Device load operation result method
+     * @param {string} resultData Operating result data (none here)
+     */
+    const loadedDeviceOpResult = (resultData: string) => {
+        console.log("Loaded device!")
+        setLoadedDevice(true)
+    }
+    loadDevice.addObservable("computerPage", loadedDeviceOpResult)
+
+    const { id } = useParams()
+    loadDevice.performAction(id as string)
+
+    if (loadedDevice) {
+        return (
+            <div id="DeviceMainInfosPage">
+                <DeviceMainInfos />
+                <DeviceElements />
+            </div>
+        )
+    }
+    return (
+        <div id="DeviceMainInfosPage">
+            <Modal open={!loadedDevice}>
+                <Box>
+                    <CircularProgress size={260}/>
+                    Loading device
+                </Box>
+            </Modal>
+        </div>
+    )
+}
+
+/**
+ * Computer page view model
+ * @returns {React.JSX.Element} Page component in the web application
+ */
+/*export default function ComputerPage (): React.JSX.Element {
     const { id } = useParams()
     const dataRetriever = new ComputerInfos();
-    const [device, setDevice] = React.useState<Device | undefined>(undefined);
     if (getDeviceInfos.loc !== null) {
         const query = getDeviceInfos;
         React.useEffect(() => {
@@ -28,7 +65,7 @@ export default function ComputerPage (): React.JSX.Element {
                         deviceID: id as string
                     }
                 )
-                setDevice(deviceInfos)
+                dataManager.addElement("selectedDevice", deviceInfos)
             })().catch(
                 error => {
                     console.error(error)
@@ -39,8 +76,8 @@ export default function ComputerPage (): React.JSX.Element {
     }
     return (
         <div id="DeviceMainInfosPage">
-            <DeviceMainInfos device={device} />
-            <DeviceElements device={device} />
+            <DeviceMainInfos />
+            <DeviceElements />
         </div>
     )
-}
+}*/

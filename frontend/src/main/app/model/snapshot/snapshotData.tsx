@@ -22,23 +22,22 @@ export class SnapshotData {
      *
      * @param {string} softwareVersion Version of the software
      * @param {string} softwareName Software name
-     * @param {string} softwareInstallType Software installation type (e.g. ``apt``, ``snap``)
+     * @param {string} softwareInstallType Software source type (e.g. ``apt``, ``snap``)
      * @throws {AlreadyAddedWarning} Already added sofware in the array
      */
-    addSoftware (softwareVersion: string, softwareName: string, softwareInstallType: string,): void {
+    addSoftware (softwareVersion: string, softwareName: string, softwareInstallType: string): void {
         const newSoftware = new SnapshotSoftware(
             softwareVersion,
             softwareName,
             softwareInstallType
         )
         if (this.softwares.filter((software) => {
-            const seekedSoftware = software
-            const sameInstallType = seekedSoftware.softwareInstallType === softwareInstallType
-            const sameName = seekedSoftware.softwareName === softwareName
-            const sameVersion = seekedSoftware.softwareVersion === softwareVersion
+            const sameInstallType = software.softwareInstallType === softwareInstallType
+            const sameName = software.softwareName === softwareName
+            const sameVersion = software.softwareVersion === softwareVersion
             return sameInstallType && sameName && sameVersion
         }).length > 0) {
-            throw new AlreadyAddedWarning(`The snapshot with the name ${softwareName} has already been added! Thus the operation is ignored!`)
+            throw new AlreadyAddedWarning(`The software with the name ${softwareName} has already been added! Thus the operation is ignored!`)
         }
         this.softwares.push(newSoftware)
     }

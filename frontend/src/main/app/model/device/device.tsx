@@ -1,4 +1,4 @@
-import type SnapshotID from "./snapshot";
+import type SnapshotID from "./snapshotId";
 
 /**
  * Device Data class
@@ -25,11 +25,6 @@ class Device {
     memory: number;
 
     /**
-     * Computer operating system name
-     */
-    operatingSystem: string;
-
-    /**
      * Computer save snapshots
      */
     snapshots: SnapshotID[];
@@ -40,17 +35,15 @@ class Device {
      * @param { string } processor computer processor model
      * @param { number } cores computer cores
      * @param { number } memory computer volatile memory
-     * @param { string } operatingSystem computer operating system name
      * @param { SnapshotID[] } snapshots header of every save uploaded from the device
      */
     constructor (
         name: string, processor: string, cores: number, memory: number,
-        operatingSystem: string, snapshots: SnapshotID[]) {
+        snapshots: SnapshotID[]) {
         this.name = name;
         this.processor = processor;
         this.cores = cores;
         this.memory = memory;
-        this.operatingSystem = operatingSystem;
         this.snapshots = snapshots;
     }
 

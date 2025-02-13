@@ -3,9 +3,10 @@ import React from "react";
 import { render } from "@testing-library/react"
 import Device from "../../../../main/app/model/device/device"
 import SpecsMainInfos from "../../../../main/app/view/widget/computer/sections/MainInfos"
-import SnapshotID from "../../../../main/app/model/device/snapshot"
+import SnapshotID from "../../../../main/app/model/device/snapshotId"
 
 import '@testing-library/jest-dom'
+import { dataManager } from "../../../../main/app/model/AppDataManager";
 
 describe("Device main infos test suite", () => {
     test("Successful render with custom data", async () => {
@@ -15,16 +16,16 @@ describe("Device main infos test suite", () => {
             "My processor",
             1,
             4e+9,
-            "My OS",
             [new SnapshotID(
                 "1",
                 "2020-01-01",
                 "My OS!"
             )]
         )
+        dataManager.addElement("device",testDevice)
 
         // Acts
-        const { container } = render(<SpecsMainInfos device={testDevice} />)
+        const { container } = render(<SpecsMainInfos/>)
         const opResult = container.querySelector("#deviceMainInfos")
 
         // Assert

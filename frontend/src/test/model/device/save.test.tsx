@@ -1,4 +1,4 @@
-import SnapshotID from "../../../main/app/model/device/snapshot"
+import SnapshotID from "../../../main/app/model/device/snapshotId"
 
 describe("Snapshot data model unit tests", () => {
     test('Gets snapshot localized date', () => {

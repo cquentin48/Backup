@@ -5,30 +5,14 @@ import { Tooltip, Typography, Button, Skeleton } from "@mui/material";
 import React from "react";
 
 import "../../../../res/css/ComputerMainInfos.css";
-
-/**
- * Device name and operating system passed from the device main page header
- */
-interface DeviceMainInfosHeaderProps {
-    /**
-     * Device operating system name
-     */
-    operatingSystem: string | undefined
-
-    /**
-     * Device name
-     */
-    name: string | undefined
-
-    isDeviceLoaded: boolean
-}
+import { dataManager } from "../../../model/AppDataManager";
+import Device from "../../../model/device/device";
 
 /**
  * Device header containing OS icon, computer name and delete button
- * @param {DeviceMainInfosHeaderProps} props components passed from the device main page header
  * @returns {React.JSX.Element} rendered component
  */
-export default function DeviceMainInfosHeader (props: DeviceMainInfosHeaderProps): React.JSX.Element {
+export default function DeviceMainInfosHeader (): React.JSX.Element {
     /**
      * Fetch the correct icon from the mdi labs
      * @param {string} os Device operating system
@@ -41,18 +25,26 @@ export default function DeviceMainInfosHeader (props: DeviceMainInfosHeaderProps
             return mdiMicrosoftWindows;
         }
     }
-
+    const deviceLoaded = dataManager.isdataElementContained("device")
     let icon;
     let name;
     let deleteButton;
 
-    if (props.isDeviceLoaded) {
+    if (deviceLoaded) {
+        const device = JSON.parse(dataManager.getElement("device")) as Device
         icon =
-            <Icon
-                id="DeviceMainInfosOSIcon"
-                path={getOSIcon(props.operatingSystem as string)} size={2}
-            />
-        name = props.name as string
+            <Tooltip title={device.snapshots[0].operatingSystem} placement='top'>
+                <div id="OSIcon">
+                    <Icon
+                        id="DeviceMainInfosOSIcon"
+                        path={getOSIcon(device.snapshots[0].operatingSystem as string)} size={2}
+                    />
+                </div>
+            </Tooltip>
+        name =
+            <Typography variant="h4">
+                {device.name as string}
+            </Typography>
         deleteButton =
             <Button
                 variant="contained"
@@ -76,11 +68,7 @@ export default function DeviceMainInfosHeader (props: DeviceMainInfosHeaderProps
     return (
         <div id="deviceMainInfosHeader">
             <div id="computerName">
-                <Tooltip title={props.operatingSystem} placement='top'>
-                    <div id="OSIcon">
-                        {icon}
-                    </div>
-                </Tooltip>
+                {icon}
                 <Typography variant="h4">
                     {name}
                 </Typography>
