@@ -13,7 +13,7 @@ describe("Application data manager unit tests", () => {
         const elementKey = "myKey"
 
         // Acts
-        dataManager.addElement(elementKey, (newElement as unknown as object))
+        dataManager.setElement(elementKey, (newElement as unknown as object))
         const opResult = JSON.parse(dataManager.getElement(elementKey))
 
         // Asserts
@@ -25,11 +25,11 @@ describe("Application data manager unit tests", () => {
         const elementKey = "myKey"
 
         // Acts
-        dataManager.addElement(elementKey, (newElement as unknown as object))
+        dataManager.setElement(elementKey, (newElement as unknown as object))
 
         // Asserts
         expect(
-            () => { dataManager.addElement(elementKey, (newElement as unknown as object)); }
+            () => { dataManager.setElement(elementKey, (newElement as unknown as object)); }
         ).toThrow(AlreadyAddedWarning)
     })
 
@@ -45,7 +45,7 @@ describe("Application data manager unit tests", () => {
         // Given
         const newElement = "element"
         const elementKey = "myKey"
-        dataManager.addElement(elementKey, (newElement as unknown as object))
+        dataManager.setElement(elementKey, (newElement as unknown as object))
         const objectsCountBeforeOperation = dataManager.size()
 
         // Acts
@@ -77,7 +77,7 @@ describe("Application data manager unit tests", () => {
         // Given
         const newElement = "element"
         const elementKey = "myKey"
-        dataManager.addElement(elementKey, (newElement as unknown as object))
+        dataManager.setElement(elementKey, (newElement as unknown as object))
 
         // Acts
         const containedElement = dataManager.isdataElementContained(elementKey)

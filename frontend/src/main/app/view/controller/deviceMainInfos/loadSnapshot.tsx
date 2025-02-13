@@ -3,7 +3,7 @@ import ControllerAction, { CallbackMethod } from "../controllerActions";
 import { filterManager } from "../../model/filters/FilterManager";
 import snapshotData from "../../../../res/queries/snapshot.graphql";
 import gqlClient from "../../../model/queries/client";
-import { snapshotGQLData } from "../../../model/queries/computer/snapshotGQLData";
+import { snapshotGQLData } from "../../../model/queries/computer/loadSnapshot";
 import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 import { dataManager } from "../../../model/AppDataManager";
 import { enqueueSnackbar } from "notistack";
@@ -27,7 +27,7 @@ class LoadSnapshot extends ControllerAction {
                 snapshotID: selectedSnapshotID
             }
         ).then((result: SnapshotData) => {
-            dataManager.addElement("snapshot", result);
+            dataManager.setElement("snapshot", result);
             const callBackMethods = [
                 this.getObservable("mainDeviceInfosSoftwareInfosPieChart"),
                 this.getObservable("MainInfosFrame")

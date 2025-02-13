@@ -26,7 +26,7 @@ describe("Device main Infos unit test suite", () => {
                 "My OS!"
             )]
         )
-        dataManager.addElement("device",testDevice)
+        dataManager.setElement("device",testDevice)
 
         // Acts
         const { container } = render(<DeviceMainInfos/>)
@@ -54,7 +54,7 @@ describe("Device main Infos unit test suite", () => {
                 "Ubuntu"
             )]
         )
-        dataManager.addElement("device", testDevice)
+        dataManager.setElement("device", testDevice)
 
         // Acts
         const { container } = render(<DeviceMainInfos/>)

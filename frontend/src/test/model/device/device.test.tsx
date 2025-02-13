@@ -15,7 +15,7 @@ describe("Device data model unit tests", () => {
             4e+9,
             []
         )
-        dataManager.addElement("device", newDevice)
+        dataManager.setElement("device", newDevice)
 
         // Acts
         const opResult = newDevice.formatBytes(newDevice.memory)

@@ -23,10 +23,7 @@ class AppDataManager {
      * @param {object} data new data to store
      * @throws {AlreadyAddedWarning} Warning when another data with the same key already set in the map
      */
-    public addElement (elementKey: string, data: object): void {
-        if (this.data.has(elementKey)) {
-            throw new AlreadyAddedWarning(`The key ${elementKey} has already been added inside the app data manager!`)
-        }
+    public setElement (elementKey: string, data: object): void {
         this.data.set(elementKey, JSON.stringify(data))
     }
 

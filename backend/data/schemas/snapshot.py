@@ -86,7 +86,7 @@ class SnapshotQuery(graphene.ObjectType):
     Graphql query managment class for the query "snapshotInfo".
     """
 
-    snapshot_id = graphene.String(
+    snapshot_id = graphene.BigInt(
         description="Save key in the database"
     )
     """

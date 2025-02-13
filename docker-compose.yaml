@@ -39,7 +39,7 @@ services:
     command: sh -c "make migrate ; make run"
     volumes:
       - static:/backend/static/
-      - ./backend:/backup
+      - ./backend:/backend
     ports:
       - "8000:8000"
     depends_on:

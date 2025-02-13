@@ -1,13 +1,16 @@
+from uuid import uuid4
+
 from django.db import models
 from server.settings import LOCALE
-
 
 class Device(models.Model):
     """
     Device containing list of libraries
     """
 
-    id = models.AutoField(primary_key=True)
+    id = models.AutoField(
+        primary_key=True
+    )
     """
     Database Device ID
     """

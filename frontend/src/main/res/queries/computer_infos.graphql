@@ -1,4 +1,4 @@
-query getDeviceInfos($deviceID:String!){
+query getDeviceInfos($deviceID:BigInt!){
   deviceInfos(deviceId:$deviceID){
     cores
     memory

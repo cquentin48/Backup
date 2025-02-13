@@ -6,7 +6,7 @@ import gqlClient from "../../../model/queries/client";
 import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 import { dataManager } from "../../../model/AppDataManager";
 import { enqueueSnackbar } from "notistack";
-import ComputerInfos from "../../../model/queries/computer/computerInfos";
+import FetchComputerInfosGQL from "../../../model/queries/computer/computerInfos";
 import Device from "../../../model/device/device";
 
 /**
@@ -19,19 +19,25 @@ class LoadDevice extends ControllerAction {
      * @param { string } inputs Device ID stored in database.
      */
     performAction (inputs: string): void {
-        const selectedSnapshotID = JSON.parse(inputs);
+        const selectedDeviceID = JSON.parse(inputs) as number;
         const query = getDeviceInfos;
-        const gqlRetriever = new ComputerInfos()
+        const gqlRetriever = new FetchComputerInfosGQL()
         gqlRetriever.compute_query(
             gqlClient,
             query,
             {
-                snapshotID: selectedSnapshotID
+                deviceID: selectedDeviceID
             }
         ).then((device: Device) => {
-            dataManager.addElement("device", device);
-            const callBackMethod = this.getObservable("computerPage")
-            callBackMethod(JSON.stringify(""))
+            dataManager.setElement("device", device);
+            const callBackMethods = [
+                this.getObservable("SpecsMainInfos"),
+                this.getObservable("computerPage")
+            ]
+            //const callBackMethod = this.getObservable("computerPage")
+            for(let i = 0;i<callBackMethods.length;i++){
+                callBackMethods[i](JSON.stringify(""))
+            }
         }).catch((error) => {
             console.log(error)
             enqueueSnackbar(error, { variant: "error" })

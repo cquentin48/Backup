@@ -22,7 +22,7 @@ describe("Device main infos test suite", () => {
                 "My OS!"
             )]
         )
-        dataManager.addElement("device",testDevice)
+        dataManager.setElement("device",testDevice)
 
         // Acts
         const { container } = render(<SpecsMainInfos/>)

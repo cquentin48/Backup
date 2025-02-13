@@ -1,5 +1,5 @@
 import React from "react";
-import type Device from "../../../model/device/device";
+import Device from "../../../model/device/device";
 
 import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';
@@ -33,9 +33,12 @@ interface MainInfosFrameState {
  * @returns {React.JSX.Element} View component
  */
 export default class MainInfosFrame extends React.Component<{}, MainInfosFrameState> {
-    state: Readonly<MainInfosFrameState> = {
-        snapshots: [],
-        selectedSnapshot: ""
+    constructor(props: {}){
+        super(props);
+        this.state = {
+            snapshots: [],
+            selectedSnapshot: ""
+        }
     }
 
     componentDidMount (): void {
@@ -59,9 +62,12 @@ export default class MainInfosFrame extends React.Component<{}, MainInfosFrameSt
      * Method triggered when the snapshots are loaded
      * @param {string} data Stringified JSON data passed from a GRAPHQL query in the backend
      */
-    snapshotsLoaded (data: string): void {
+    snapshotsLoaded = (data: string): void => {
         const snapshots = JSON.parse(data)
-        const currentlySelectedSnapshotID = (JSON.parse(dataManager.getElement("device")) as Device).snapshots[0].id
+        const currentlySelectedSnapshotID = Device.fromJSON(dataManager.getElement("device")).snapshots[0].id
+        console.log(`Snapshots : ${snapshots}`)
+        console.log(`Currently selected data : ${currentlySelectedSnapshotID}`)
+        console.log(`This component : ${this}`)
         this.setState({
             snapshots: snapshots as SnapshotData[],
             selectedSnapshot: currentlySelectedSnapshotID
@@ -107,7 +113,7 @@ export default class MainInfosFrame extends React.Component<{}, MainInfosFrameSt
      * @returns {React.JSX.Element} View component
      */
     render (): React.JSX.Element {
-        const device = JSON.parse(dataManager.getElement("device")) as Device;
+        const device = Device.fromJSON(dataManager.getElement("device"));
         const { selectedSnapshot } = this.state;
         let icon;
         let snapshots;
@@ -122,7 +128,6 @@ export default class MainInfosFrame extends React.Component<{}, MainInfosFrameSt
         } else {
             icon = <Icon path={mdiClockOutline} size={1} />;
             const snapshotList = this.buildMenuItems(device);
-            console.log(snapshotList)
             snapshots =
                 <FormControl id="mainInfosSelectForm">
                     <InputLabel id="dataType">Snapshot list</InputLabel>

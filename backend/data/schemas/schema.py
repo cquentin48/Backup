@@ -10,7 +10,7 @@ class Query(graphene.ObjectType):
 
     device_infos = graphene.Field(
         DeviceInfos,
-        device_id=graphene.String(
+        device_id=graphene.BigInt(
             description="ID of the device stored in the database."
         ),
         description="Fetch device informations alongside a list of every saves. "+
@@ -22,7 +22,7 @@ class Query(graphene.ObjectType):
 
     snapshot_infos = graphene.Field(
         SnapshotData,
-        snapshot_id=graphene.String(
+        snapshot_id=graphene.BigInt(
             description="ID of the snapshot stored in the database."
         ),
         description="Fetch specific device snapshot from the database."
@@ -41,7 +41,7 @@ class Query(graphene.ObjectType):
         """
         return DeviceInfoType.resolve_device_infos(self, info, device_id)
 
-    def resolve_snapshot_infos(self, info, snapshot_id:str) -> SnapshotData:
+    def resolve_snapshot_infos(self, info, snapshot_id) -> SnapshotData:
         """ From a snapshot index in the database, retrieve every used libraries 
         alongside the repositories.
     

@@ -1,4 +1,4 @@
-query getSaveInfos($snapshotID:String!){
+query getSaveInfos($snapshotID:BigInt!){
   snapshotInfos(snapshotId: $snapshotID) {
     versions{
       chosenVersion

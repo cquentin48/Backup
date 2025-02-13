@@ -19,13 +19,12 @@ export default function ComputerPage (): React.JSX.Element {
      * @param {string} resultData Operating result data (none here)
      */
     const loadedDeviceOpResult = (resultData: string) => {
-        console.log("Loaded device!")
         setLoadedDevice(true)
     }
     loadDevice.addObservable("computerPage", loadedDeviceOpResult)
 
     const { id } = useParams()
-    loadDevice.performAction(id as string)
+    loadDevice.performAction(JSON.stringify(parseInt(id as string)))
 
     if (loadedDevice) {
         return (

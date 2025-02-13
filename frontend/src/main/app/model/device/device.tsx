@@ -1,4 +1,4 @@
-import type SnapshotID from "./snapshotId";
+import SnapshotID from "./snapshotId";
 
 /**
  * Device Data class
@@ -45,6 +45,34 @@ class Device {
         this.cores = cores;
         this.memory = memory;
         this.snapshots = snapshots;
+    }
+
+    /**
+     * From JSON string result, creates a ``Device`` object alongside the related snapshots
+     * @param {string} parsedData Device parsed data
+     * @returns {Device} Device object
+     */
+    static fromJSON (parsedData: string): Device {
+        const rawDeviceData = JSON.parse(parsedData) as Device
+        const rawSnapshots = rawDeviceData.snapshots as SnapshotID[]
+        const snapshots: SnapshotID[] = []
+        rawSnapshots.forEach((rawSnapshot)=>{
+            const rawDate = new Date(rawSnapshot.uploadDate)
+            snapshots.push(
+                new SnapshotID(
+                    rawSnapshot.id,
+                    `${rawDate.getFullYear()}-${rawDate.getMonth()}-${rawDate.getDay()}`,
+                    rawSnapshot.operatingSystem
+                )
+            )
+        })
+        return new Device(
+            rawDeviceData.name,
+            rawDeviceData.processor,
+            rawDeviceData.cores,
+            rawDeviceData.memory,
+            snapshots
+        )
     }
 
     /**

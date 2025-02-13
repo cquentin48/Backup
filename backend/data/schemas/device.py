@@ -82,7 +82,7 @@ class DeviceInfoType(graphene.ObjectType):
     """
     Query object representing the query asking for the device informations
     """
-    device_id = graphene.String(
+    device_id = graphene.BigInt(
         description="ID of the device object stored in the database."
     )
 

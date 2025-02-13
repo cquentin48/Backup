@@ -28,7 +28,7 @@ describe("MainInfosFrame unit test suite", () => {
                 )
             ]
         )
-        dataManager.addElement("device",testDevice)
+        dataManager.setElement("device",testDevice)
 
         // Acts
         render(
@@ -56,7 +56,7 @@ describe("MainInfosFrame unit test suite", () => {
                 )
             ]
         )
-        dataManager.addElement("device",testDevice)
+        dataManager.setElement("device",testDevice)
 
         // Acts
         const { container, getByText } = render(

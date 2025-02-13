@@ -1,11 +1,11 @@
 FROM python:3.10
 
 # Installing the requirements
-WORKDIR /backup
+WORKDIR /backend
 COPY requirements.txt ./
 COPY Makefile ./
 RUN make install
-COPY ./ /backup/
+COPY ./ /backend/
 
 # Installing for pylint for the linter
 RUN pip install pylint pylint-django
