@@ -38,8 +38,8 @@ class Device {
      * @param { SnapshotID[] } snapshots header of every save uploaded from the device
      */
     constructor (
-        name: string, processor: string, cores: number, memory: number,
-        snapshots: SnapshotID[]) {
+        name: string = "", processor: string = "", cores: number = -1, memory: number = -1,
+        snapshots: SnapshotID[] = [new SnapshotID()]) {
         this.name = name;
         this.processor = processor;
         this.cores = cores;

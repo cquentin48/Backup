@@ -10,6 +10,7 @@ import '../../../../res/css/ComputerMainInfos.css';
 import { loadSnapshot } from "../../controller/deviceMainInfos/loadSnapshot";
 import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 import { dataManager } from "../../../model/AppDataManager";
+import { loadDevice } from "../../controller/deviceMainInfos/loadDevice";
 
 /**
  * State of the main information frame
@@ -27,13 +28,17 @@ interface MainInfosFrameState {
     
 }
 
+interface MainInfosFrameProps{
+    device: Device | null;
+}
+
 /**
  * Main informations frame view component
  * @param {MainInfosFrameProps} props Selected device passed from the {ComputerElement} view page.
  * @returns {React.JSX.Element} View component
  */
-export default class MainInfosFrame extends React.Component<{}, MainInfosFrameState> {
-    constructor(props: {}){
+export default class MainInfosFrame extends React.Component<MainInfosFrameProps, MainInfosFrameState> {
+    constructor(props: MainInfosFrameProps){
         super(props);
         this.state = {
             snapshots: [],
@@ -43,8 +48,12 @@ export default class MainInfosFrame extends React.Component<{}, MainInfosFrameSt
 
     componentDidMount (): void {
         const device = JSON.parse(dataManager.getElement("device")) as Device
+        loadDevice.addObservable("MainInfosFrame", this.deviceLoaded)
         loadSnapshot.addObservable("MainInfosFrame", this.snapshotsLoaded)
-        loadSnapshot.performAction(device.snapshots[0].id)
+    }
+
+    deviceLoaded(output:string){
+        loadSnapshot.performAction((this.props.device as Device).snapshots[0].id)
     }
 
     /**
@@ -64,10 +73,7 @@ export default class MainInfosFrame extends React.Component<{}, MainInfosFrameSt
      */
     snapshotsLoaded = (data: string): void => {
         const snapshots = JSON.parse(data)
-        const currentlySelectedSnapshotID = Device.fromJSON(dataManager.getElement("device")).snapshots[0].id
-        console.log(`Snapshots : ${snapshots}`)
-        console.log(`Currently selected data : ${currentlySelectedSnapshotID}`)
-        console.log(`This component : ${this}`)
+        const currentlySelectedSnapshotID = (this.props.device as Device).snapshots[0].id
         this.setState({
             snapshots: snapshots as SnapshotData[],
             selectedSnapshot: currentlySelectedSnapshotID
@@ -113,7 +119,7 @@ export default class MainInfosFrame extends React.Component<{}, MainInfosFrameSt
      * @returns {React.JSX.Element} View component
      */
     render (): React.JSX.Element {
-        const device = Device.fromJSON(dataManager.getElement("device"));
+        const device = this.props.device;
         const { selectedSnapshot } = this.state;
         let icon;
         let snapshots;
@@ -126,6 +132,7 @@ export default class MainInfosFrame extends React.Component<{}, MainInfosFrameSt
             />
             snapshots = <Skeleton variant="rounded" width={256} height={56} />
         } else {
+            const device = this.props.device as Device
             icon = <Icon path={mdiClockOutline} size={1} />;
             const snapshotList = this.buildMenuItems(device);
             snapshots =

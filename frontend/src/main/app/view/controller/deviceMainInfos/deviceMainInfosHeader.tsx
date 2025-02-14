@@ -5,14 +5,17 @@ import { Tooltip, Typography, Button, Skeleton } from "@mui/material";
 import React from "react";
 
 import "../../../../res/css/ComputerMainInfos.css";
-import { dataManager } from "../../../model/AppDataManager";
 import Device from "../../../model/device/device";
+
+interface DeviceMainInfosProps {
+    device: Device | null;
+}
 
 /**
  * Device header containing OS icon, computer name and delete button
  * @returns {React.JSX.Element} rendered component
  */
-export default function DeviceMainInfosHeader (): React.JSX.Element {
+export default function DeviceMainInfosHeader (props: DeviceMainInfosProps): React.JSX.Element {
     /**
      * Fetch the correct icon from the mdi labs
      * @param {string} os Device operating system
@@ -25,13 +28,13 @@ export default function DeviceMainInfosHeader (): React.JSX.Element {
             return mdiMicrosoftWindows;
         }
     }
-    const deviceLoaded = dataManager.isdataElementContained("device")
+    const deviceLoaded = props.device !== null
     let icon;
     let name;
     let deleteButton;
 
     if (deviceLoaded) {
-        const device = JSON.parse(dataManager.getElement("device")) as Device
+        const device = props.device as Device
         icon =
             <Tooltip title={device.snapshots[0].operatingSystem} placement='top'>
                 <div id="OSIcon">

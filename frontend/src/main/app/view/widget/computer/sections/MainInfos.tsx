@@ -9,29 +9,24 @@ import { Grid2 } from "@mui/material";
 import Device from "../../../../model/device/device";
 import '../../../../../res/css/ComputerMainInfos.css';
 import DeviceStat from "./header/computerStat";
-import { dataManager } from "../../../../model/AppDataManager";
 import SnapshotID from "../../../../model/device/snapshotId";
-import { loadDevice } from "../../../controller/deviceMainInfos/loadDevice";
+
+interface SpecsMainInfosProps{
+    device: Device | null;
+}
 
 /**
  * Accordion containing the device main informations
  * @returns {React.JSX.Element} Accordion with the device main informations
  */
-export default function SpecsMainInfos (): React.JSX.Element {
-    const [device, setDevice] = React.useState<Device>(new Device(
-        "","",-1,-1,[]
-    ))
-    const defaultSnapshot = new SnapshotID("-1","2000-01-01","")
-    var [firstSnapshot, setFirstSnapshot] = React.useState<SnapshotID>(defaultSnapshot);
-    var [lastSnapshot, setLastSnapshot] = React.useState<SnapshotID>(defaultSnapshot);
-    useEffect(()=>{
-        const loadedData = (resultData:string) => {
-            const deviceRawData = dataManager.getElement("device")
-            setDevice(Device.fromJSON(deviceRawData))
-            setFirstSnapshot((device as Device).snapshots[0])
-            setLastSnapshot((device as Device).snapshots[(device as Device).snapshots.length - 1])
-        }
-    })
+export default function SpecsMainInfos (props: SpecsMainInfosProps): React.JSX.Element {
+    var device = props.device
+    if(device === null){
+        device = new Device()
+    }
+    var firstSnapshot = device.snapshots[0]
+    var lastSnapshot = device.snapshots[device.snapshots.length-1]
+    console.log(device)
 
     return (
         <Grid2 container spacing={2} id="deviceMainInfosSpecs">

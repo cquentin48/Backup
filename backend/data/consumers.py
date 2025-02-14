@@ -161,17 +161,17 @@ class BackupImportConsumer(WebsocketConsumer):
         finally:
             self.send_message(status='info', type='message',
                               message='Appending libraries to the database!')
-            for library_type in enumerate(device_data['libraries']):
-                library = device_data['libraries'][library_type[1]]
-                versions = self.append_libraries_chosen_version(
-                    library, library_type[1])
             new_save = Snapshot.objects.create(
                 related_device=device,
                 save_date=timezone.now(),
                 operating_system=device_data['os']
             )
-            for lib_version in versions:
-                new_save.versions.add(lib_version)
+            for library_type in enumerate(device_data['libraries']):
+                library = device_data['libraries'][library_type[1]]
+                versions = self.append_libraries_chosen_version(
+                    library, library_type[1])
+                for lib_version in versions:
+                    new_save.versions.add(lib_version)
             try:
                 self.send_message(status='info',
                                   type='message',

@@ -13,7 +13,7 @@ export default class SnapshotID {
      * @param { string } uploadDate snapshot date upload (Must be of format ``YYYY``-``MM``-``DD``)
      * @param { string } operatingSystem related device snapshot operating system
      */
-    constructor (id: string, uploadDate: string, operatingSystem: string) {
+    constructor (id: string = "-1", uploadDate: string = "2000-01-01", operatingSystem: string = "") {
         this.id = id;
         const uploadDateArray = uploadDate.split('-');
         this.uploadDate = new Date(

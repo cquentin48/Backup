@@ -8,6 +8,7 @@ import { dataManager } from "../../../model/AppDataManager";
 import { enqueueSnackbar } from "notistack";
 import FetchComputerInfosGQL from "../../../model/queries/computer/computerInfos";
 import Device from "../../../model/device/device";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Load device controller action set in the device main information page.
@@ -31,16 +32,14 @@ class LoadDevice extends ControllerAction {
         ).then((device: Device) => {
             dataManager.setElement("device", device);
             const callBackMethods = [
-                this.getObservable("SpecsMainInfos"),
-                this.getObservable("computerPage")
+                this.getObservable("computerPage"),
+                this.getObservable("MainInfosFrame")
             ]
-            //const callBackMethod = this.getObservable("computerPage")
-            for(let i = 0;i<callBackMethods.length;i++){
+            for(let i = 0; i<callBackMethods.length; i++){
                 callBackMethods[i](JSON.stringify(""))
             }
         }).catch((error) => {
-            console.log(error)
-            enqueueSnackbar(error, { variant: "error" })
+            enqueueSnackbar("Error while fetching the device!", { variant: "error" })
         })
     }
 }

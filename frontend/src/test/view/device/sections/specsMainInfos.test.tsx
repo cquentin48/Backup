@@ -25,7 +25,7 @@ describe("Device main infos test suite", () => {
         dataManager.setElement("device",testDevice)
 
         // Acts
-        const { container } = render(<SpecsMainInfos/>)
+        const { container } = render(<SpecsMainInfos device={testDevice}/>)
         const opResult = container.querySelector("#deviceMainInfos")
 
         // Assert

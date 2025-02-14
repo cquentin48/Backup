@@ -2,9 +2,12 @@ import React from 'react';
 
 import DeviceMainInfos from './mainInfos';
 import DeviceElements from './computerElements';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { loadDevice } from '../../controller/deviceMainInfos/loadDevice';
-import { Box, CircularProgress, Modal } from '@mui/material';
+import Device from '../../../model/device/device';
+import { dataManager } from '../../../model/AppDataManager';
+import { Modal, Box, CircularProgress, Typography } from '@mui/material';
+import { enqueueSnackbar } from 'notistack';
 
 
 /**
@@ -25,58 +28,46 @@ export default function ComputerPage (): React.JSX.Element {
 
     const { id } = useParams()
     loadDevice.performAction(JSON.stringify(parseInt(id as string)))
-
+    let device: Device | null;
     if (loadedDevice) {
-        return (
-            <div id="DeviceMainInfosPage">
-                <DeviceMainInfos />
-                <DeviceElements />
-            </div>
-        )
+        device = Device.fromJSON(dataManager.getElement("device"))
+    } else {
+        device = null
     }
     return (
         <div id="DeviceMainInfosPage">
-            <Modal open={!loadedDevice}>
-                <Box>
-                    <CircularProgress size={260}/>
-                    Loading device
+            <Modal
+                open={device === null}>
+                <Box sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%"
+                }}>
+                    <Box sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        backgroundColor: "#c2c2c2",
+                        minWidth: "150px",
+                        minHeight: "150px",
+                        borderRadius: "22.5px",
+                        padding: "16px",
+                        alignItems: "center"
+                    }}>
+                        <CircularProgress size={120} />
+                        <Typography variant="h4"
+                            sx={{
+                                marginTop: "16px"
+                            }}
+                        >
+                            Loading device
+                        </Typography>
+                    </Box>
                 </Box>
             </Modal>
+            <DeviceMainInfos device={device} />
+            <DeviceElements device={device} />
         </div>
     )
 }
-
-/**
- * Computer page view model
- * @returns {React.JSX.Element} Page component in the web application
- */
-/*export default function ComputerPage (): React.JSX.Element {
-    const { id } = useParams()
-    const dataRetriever = new ComputerInfos();
-    if (getDeviceInfos.loc !== null) {
-        const query = getDeviceInfos;
-        React.useEffect(() => {
-            (async () => {
-                const deviceInfos = await dataRetriever.compute_query(
-                    gqlClient,
-                    query,
-                    {
-                        deviceID: id as string
-                    }
-                )
-                dataManager.addElement("selectedDevice", deviceInfos)
-            })().catch(
-                error => {
-                    console.error(error)
-                    enqueueSnackbar(error, { variant: "error" })
-                }
-            );
-        }, []);
-    }
-    return (
-        <div id="DeviceMainInfosPage">
-            <DeviceMainInfos />
-            <DeviceElements />
-        </div>
-    )
-}*/

@@ -5,14 +5,18 @@ import '../../../../res/css/ComputerMainInfos.css';
 import SpecsMainInfos from "../../widget/computer/sections/MainInfos";
 import DeviceMainInfosHeader from "../../controller/deviceMainInfos/deviceMainInfosHeader";
 
+interface DeviceMainInfosProps{
+    device: Device | null;
+}
+
 /**
  * Computer main informations display component class
  */
-export default function DeviceMainInfos():React.JSX.Element {
+export default function DeviceMainInfos(props: DeviceMainInfosProps):React.JSX.Element {
         return (
             <div id="computerMainInfos">
-                <SpecsMainInfos/>
-                <DeviceMainInfosHeader/>
+                <SpecsMainInfos device={props.device}/>
+                <DeviceMainInfosHeader device={props.device}/>
                 <br />
             </div>
         )
