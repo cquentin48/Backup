@@ -4,7 +4,7 @@ import ComputeSideNavBar from "../../widget/computer/navBar/computerSideNavBar";
 import Device from "../../../model/device/device";
 
 interface DeviceElementsProps{
-    device: Device| null;
+    device: Device;
 }
 
 /**

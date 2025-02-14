@@ -6,7 +6,7 @@ import SpecsMainInfos from "../../widget/computer/sections/MainInfos";
 import DeviceMainInfosHeader from "../../controller/deviceMainInfos/deviceMainInfosHeader";
 
 interface DeviceMainInfosProps{
-    device: Device | null;
+    device: Device;
 }
 
 /**

@@ -12,7 +12,7 @@ import DeviceStat from "./header/computerStat";
 import SnapshotID from "../../../../model/device/snapshotId";
 
 interface SpecsMainInfosProps{
-    device: Device | null;
+    device: Device;
 }
 
 /**
@@ -21,12 +21,8 @@ interface SpecsMainInfosProps{
  */
 export default function SpecsMainInfos (props: SpecsMainInfosProps): React.JSX.Element {
     var device = props.device
-    if(device === null){
-        device = new Device()
-    }
     var firstSnapshot = device.snapshots[0]
     var lastSnapshot = device.snapshots[device.snapshots.length-1]
-    console.log(device)
 
     return (
         <Grid2 container spacing={2} id="deviceMainInfosSpecs">

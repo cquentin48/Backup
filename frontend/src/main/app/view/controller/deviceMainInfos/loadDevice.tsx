@@ -39,6 +39,7 @@ class LoadDevice extends ControllerAction {
                 callBackMethods[i](JSON.stringify(""))
             }
         }).catch((error) => {
+            console.error(error)
             enqueueSnackbar("Error while fetching the device!", { variant: "error" })
         })
     }

@@ -28,16 +28,16 @@ export default function ComputerPage (): React.JSX.Element {
 
     const { id } = useParams()
     loadDevice.performAction(JSON.stringify(parseInt(id as string)))
-    let device: Device | null;
+    let device: Device;
     if (loadedDevice) {
         device = Device.fromJSON(dataManager.getElement("device"))
     } else {
-        device = null
+        device = new Device()
     }
     return (
         <div id="DeviceMainInfosPage">
             <Modal
-                open={device === null}>
+                open={device.isUndefined()}>
                 <Box sx={{
                     display: "flex",
                     flexDirection: "column",

@@ -8,7 +8,7 @@ import "../../../../res/css/ComputerMainInfos.css";
 import Device from "../../../model/device/device";
 
 interface DeviceMainInfosProps {
-    device: Device | null;
+    device: Device;
 }
 
 /**

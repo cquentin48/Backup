@@ -13,14 +13,9 @@ export default class SnapshotID {
      * @param { string } uploadDate snapshot date upload (Must be of format ``YYYY``-``MM``-``DD``)
      * @param { string } operatingSystem related device snapshot operating system
      */
-    constructor (id: string = "-1", uploadDate: string = "2000-01-01", operatingSystem: string = "") {
+    constructor (id: string = "", uploadDate: string = "2000-01-01", operatingSystem: string = "") {
         this.id = id;
-        const uploadDateArray = uploadDate.split('-');
-        this.uploadDate = new Date(
-            parseInt(uploadDateArray[0]),
-            parseInt(uploadDateArray[1]),
-            parseInt(uploadDateArray[2])
-        );
+        this.uploadDate = new Date(uploadDate);
         this.operatingSystem = operatingSystem;
     }
 
@@ -36,5 +31,22 @@ export default class SnapshotID {
             day: "numeric"
         }
         )
+    }
+
+    /**
+     * Check if the snapshot ID is undefined or not
+     * @returns {boolean} ``true`` yes | ``false`` no
+     */
+    isUndefined ():boolean {
+        const idCondition = this.id === "";
+        const uploadDate = this.uploadDate;
+        const year = uploadDate.getFullYear().toString()
+        const month = (uploadDate.getMonth()+1) < 10 ? `0${uploadDate.getMonth()+1}` : (uploadDate.getMonth()+1).toString()
+        const day = (uploadDate.getDate()) < 10 ? `0${uploadDate.getDate()}` : uploadDate.getDate().toString()
+        const parsedDate = `${year}-${month}-${day}`
+        const uploadDateCondition = parsedDate === "2000-01-01"
+        const operatingSystemCondition = this.operatingSystem === ""
+
+        return idCondition && uploadDateCondition && operatingSystemCondition
     }
 }

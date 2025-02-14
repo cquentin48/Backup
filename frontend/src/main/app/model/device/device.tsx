@@ -91,6 +91,20 @@ class Device {
         formattedMemory = Math.round(formattedMemory * 100) / 100
         return `${formattedMemory} ${units[unitIndex]}`
     }
+
+    /**
+     * Check if the current device object is undefined or not
+     * @returns {boolean} ``true`` yes | ``false`` no
+     */
+    isUndefined (): boolean {
+        const nameCondition = this.name === ""
+        const processorCondition = this.processor === ""
+        const coresCondition = this.cores === -1
+        const memoryCondition = this.memory === -1
+        const snapshotConditions = this.snapshots.length === 1 && this.snapshots[0].isUndefined()
+
+        return nameCondition && processorCondition && coresCondition && memoryCondition && snapshotConditions
+    }
 }
 
 export default Device;

@@ -9,7 +9,6 @@ import Formats from "./sections/Formats";
 import '../../../../res/css/ComputerMainInfos.css';
 import { loadSnapshot } from "../../controller/deviceMainInfos/loadSnapshot";
 import { type SnapshotData } from "../../../model/snapshot/snapshotData";
-import { dataManager } from "../../../model/AppDataManager";
 import { loadDevice } from "../../controller/deviceMainInfos/loadDevice";
 
 /**
@@ -29,7 +28,7 @@ interface MainInfosFrameState {
 }
 
 interface MainInfosFrameProps{
-    device: Device | null;
+    device: Device;
 }
 
 /**
@@ -47,13 +46,12 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
     }
 
     componentDidMount (): void {
-        const device = JSON.parse(dataManager.getElement("device")) as Device
         loadDevice.addObservable("MainInfosFrame", this.deviceLoaded)
         loadSnapshot.addObservable("MainInfosFrame", this.snapshotsLoaded)
     }
 
-    deviceLoaded(output:string){
-        loadSnapshot.performAction((this.props.device as Device).snapshots[0].id)
+    deviceLoaded = (output:string) => {
+        loadSnapshot.performAction(JSON.stringify((this.props.device as Device).snapshots[0].id))
     }
 
     /**
@@ -123,7 +121,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
         const { selectedSnapshot } = this.state;
         let icon;
         let snapshots;
-        if (device === undefined) {
+        if (device.isUndefined()) {
             icon = <Skeleton
                 variant="circular"
                 width={40}
@@ -132,7 +130,6 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
             />
             snapshots = <Skeleton variant="rounded" width={256} height={56} />
         } else {
-            const device = this.props.device as Device
             icon = <Icon path={mdiClockOutline} size={1} />;
             const snapshotList = this.buildMenuItems(device);
             snapshots =
