@@ -6,15 +6,17 @@ import Icon from "@mdi/react";
 import { Avatar, Card, CardContent, CardHeader, IconButton } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 
-import '../../../../../../res/css/ComputerMainInfos.css';
 import { dataManager } from "../../../../../model/AppDataManager";
 import NotImplementedError from "../../../../../model/exception/errors/notImplementedError";
 import { SnapshotData } from "../../../../../model/snapshot/snapshotData";
 import { SnapshotSoftware } from "../../../../../model/snapshot/snapshotLibrary";
 import { addFilter } from "../../../../controller/deviceMainInfos/addFilter";
 import { loadSnapshot } from "../../../../controller/deviceMainInfos/loadSnapshot";
-import { FilterComparisonType } from "../../../../model/filters/Filter";
+import Filter, { FilterComparisonType } from "../../../../model/filters/Filter";
 import { filterManager } from "../../../../model/filters/FilterManager";
+
+import '../../../../../../res/css/ComputerMainInfos.css';
+import { removeDeviceMainInfosFilter as removeFilter } from "../../../../controller/deviceMainInfos/removeFilters";
 
 interface SoftwareOriginsState {
     /**
@@ -57,16 +59,19 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
 
     componentDidMount (): void {
         loadSnapshot.addObservable("softwareInfosPieChart", this.initPieChartData)
-        addFilter.addObservable("softwareInfosPieChart", this.initPieChartData)
+        addFilter.addObservable("softwareInfosPieChart", this.updatePieChartData)
+        removeFilter.addObservable("softwareInfosPieChart", this.updatePieChartData)
     }
 
     applyFilterOn = (softwares: SnapshotSoftware[], value: object, operator: FilterComparisonType, fieldName: string): SnapshotSoftware[] => {
+        console.log(operator)
         switch (operator) {
             case "!=":
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] != value)
                 })
             case "<":
+                console.log("ok")
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] < value)
                 })
@@ -95,13 +100,11 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
     }
 
     updatePieChartData = (filterData: string): void => {
-        const filters = filterManager.softwareFilters()
+        const filters = JSON.parse(filterData) as Filter[]
         var softwares = (JSON.parse(dataManager.getElement("snapshot")) as SnapshotData).softwares
         filters.forEach((filter) => {
-            switch (filter.elementType) {
+            switch (filter.fieldName) {
                 case "name":
-                    softwares = this.applyFilterOn(softwares, filter.filterValue, filter.opType, filter.fieldName)
-                    break;
                 case "version":
                     softwares = this.applyFilterOn(softwares, filter.filterValue, filter.opType, filter.fieldName)
                     break;
@@ -110,6 +113,8 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
                 case "repository":
                 case "size":
                     throw new NotImplementedError("Not implemented yet!")
+                default :
+                    throw new NotImplementedError("Unknown operation type!")
             }
         })
         this.setState({
@@ -196,7 +201,6 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
                                 })
                             }
                         ]}
-                        loading={state.data.length === 0}
                         width={550}
                         height={200}
                         className="DisplayedPieChart"
