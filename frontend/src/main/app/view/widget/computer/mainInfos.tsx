@@ -8,8 +8,7 @@ import { FormControl, InputLabel, Select, MenuItem, Paper, Skeleton } from "@mui
 import Formats from "./sections/Formats";
 import '../../../../res/css/ComputerMainInfos.css';
 import { loadSnapshot } from "../../controller/deviceMainInfos/loadSnapshot";
-import { type SnapshotData } from "../../../model/snapshot/snapshotData";
-import { loadDevice } from "../../controller/deviceMainInfos/loadDevice";
+import { SnapshotData } from "../../../model/snapshot/snapshotData";
 
 /**
  * State of the main information frame
@@ -21,13 +20,18 @@ interface MainInfosFrameState {
     snapshots: SnapshotData[]
 
     /**
-     * Currently selected package
+     * Currently selected snapshot
      */
     selectedSnapshot: string
-    
+
+    /**
+     * Current snapshot
+     */
+    snapshot: SnapshotData | undefined;
+
 }
 
-interface MainInfosFrameProps{
+interface MainInfosFrameProps {
     device: Device;
 }
 
@@ -37,20 +41,22 @@ interface MainInfosFrameProps{
  * @returns {React.JSX.Element} View component
  */
 export default class MainInfosFrame extends React.Component<MainInfosFrameProps, MainInfosFrameState> {
-    constructor(props: MainInfosFrameProps){
+    constructor (props: MainInfosFrameProps) {
         super(props);
         this.state = {
             snapshots: [],
-            selectedSnapshot: ""
+            selectedSnapshot: "",
+            snapshot: undefined
         }
     }
 
     componentDidMount (): void {
-        loadDevice.addObservable("MainInfosFrame", this.deviceLoaded)
-        loadSnapshot.addObservable("MainInfosFrame", this.snapshotsLoaded)
-    }
-
-    deviceLoaded = (output:string) => {
+        const props = this.props;
+        console.log(props.device.snapshots[0].id)
+        this.setState({
+            selectedSnapshot: props.device.snapshots[0].id,
+        })
+        loadSnapshot.addObservable("MainInfosFrame", this.updateSnapshotViewData)
         loadSnapshot.performAction(JSON.stringify((this.props.device as Device).snapshots[0].id))
     }
 
@@ -58,7 +64,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
      * Update the selected snapshot
      * @param {string} snapshotID ID of the snapshot selected
      */
-    selectSnapshot = (snapshotID: string): void => {
+    updateSelectedSnapshot = (snapshotID: string): void => {
         this.setState({
             selectedSnapshot: snapshotID
         })
@@ -69,7 +75,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
      * Method triggered when the snapshots are loaded
      * @param {string} data Stringified JSON data passed from a GRAPHQL query in the backend
      */
-    snapshotsLoaded = (data: string): void => {
+    updateSnapshotViewData = (data: string): void => {
         const snapshots = JSON.parse(data)
         const currentlySelectedSnapshotID = (this.props.device as Device).snapshots[0].id
         this.setState({
@@ -112,6 +118,8 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
         return menuEntries
     }
 
+
+
     /**
      * Render frame
      * @returns {React.JSX.Element} View component
@@ -119,45 +127,32 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
     render (): React.JSX.Element {
         const device = this.props.device;
         const { selectedSnapshot } = this.state;
-        let icon;
-        let snapshots;
-        if (device.isUndefined()) {
-            icon = <Skeleton
-                variant="circular"
-                width={40}
-                height={40}
-                className="avatarIcon"
-            />
-            snapshots = <Skeleton variant="rounded" width={256} height={56} />
-        } else {
-            icon = <Icon path={mdiClockOutline} size={1} />;
-            const snapshotList = this.buildMenuItems(device);
-            snapshots =
-                <FormControl id="mainInfosSelectForm">
-                    <InputLabel id="dataType">Snapshot list</InputLabel>
-                    <Select
-                        labelId="dataType-label"
-                        data-testid="dataType-select"
-                        id="dataType-select"
-                        value={selectedSnapshot}
-                        onChange={(e) => { this.selectSnapshot(e.target.value); }}
-                        autoWidth
-                    >
-                        {
-                            snapshotList
-                        }
-                    </Select>
-                </FormControl>
-        }
+        const snapshotList = this.buildMenuItems(device);
+        const snapshots =
+            <FormControl id="mainInfosSelectForm">
+                <InputLabel id="dataType">Snapshot list</InputLabel>
+                <Select
+                    labelId="dataType-label"
+                    data-testid="dataType-select"
+                    id="dataType-select"
+                    value={selectedSnapshot}
+                    onChange={(e) => { this.updateSelectedSnapshot(e.target.value); }}
+                    autoWidth
+                >
+                    {
+                        snapshotList
+                    }
+                </Select>
+            </FormControl>
 
         return (
             <div id="mainInfosTable">
                 <div id="mainInfosTableSelectHeader">
-                    {icon}
+                    <Icon path={mdiClockOutline} size={1} />
                     {snapshots}
                 </div>
                 <Paper elevation={2} id="detailsContainer">
-                    <Formats device={device} />
+                    <Formats device={device}/>
                 </Paper>
             </div>
         );

@@ -48,7 +48,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
     };
 
     componentDidMount (): void {
-        loadSnapshot.addObservable("mainDeviceInfosSoftwareInfosPieChart", this.updatePieChartData)
+        loadSnapshot.addObservable("softwareInfosPieChart", this.updatePieChartData)
     }
 
     /**
