@@ -157,10 +157,9 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
                     {snapshots}
                 </div>
                 <Paper elevation={2} id="detailsContainer">
-                    <Formats deviceLoaded={device !== undefined} />
+                    <Formats device={device} />
                 </Paper>
             </div>
         );
     }
-
 }

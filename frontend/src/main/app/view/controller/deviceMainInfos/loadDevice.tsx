@@ -31,13 +31,8 @@ class LoadDevice extends ControllerAction {
             }
         ).then((device: Device) => {
             dataManager.setElement("device", device);
-            const callBackMethods = [
-                this.getObservable("computerPage"),
-                this.getObservable("MainInfosFrame")
-            ]
-            for(let i = 0; i<callBackMethods.length; i++){
-                callBackMethods[i](JSON.stringify(""))
-            }
+            const callBackMethod = this.getObservable("computerPage")
+            callBackMethod(JSON.stringify(device))
         }).catch((error) => {
             console.error(error)
             enqueueSnackbar("Error while fetching the device!", { variant: "error" })

@@ -28,27 +28,24 @@ export default function DeviceMainInfosHeader (props: DeviceMainInfosProps): Rea
             return mdiMicrosoftWindows;
         }
     }
-    const deviceLoaded = props.device !== null
-    let icon;
-    let name;
-    let deleteButton;
 
-    if (deviceLoaded) {
-        const device = props.device as Device
-        icon =
-            <Tooltip title={device.snapshots[0].operatingSystem} placement='top'>
-                <div id="OSIcon">
-                    <Icon
-                        id="DeviceMainInfosOSIcon"
-                        path={getOSIcon(device.snapshots[0].operatingSystem as string)} size={2}
-                    />
-                </div>
-            </Tooltip>
-        name =
-            <Typography variant="h4">
-                {device.name as string}
-            </Typography>
-        deleteButton =
+    const device = props.device
+
+    return (
+        <div id="deviceMainInfosHeader">
+            <div id="computerName">
+                <Tooltip title={device.snapshots[0].operatingSystem} placement='top'>
+                    <div id="OSIcon">
+                        <Icon
+                            id="DeviceMainInfosOSIcon"
+                            path={getOSIcon(device.snapshots[0].operatingSystem as string)} size={2}
+                        />
+                    </div>
+                </Tooltip>
+                <Typography variant="h4">
+                    {device.name as string}
+                </Typography>
+            </div>
             <Button
                 variant="contained"
                 color="error"
@@ -57,26 +54,6 @@ export default function DeviceMainInfosHeader (props: DeviceMainInfosProps): Rea
             >
                 Delete device
             </Button>
-    } else {
-        icon = <Skeleton variant="circular" width={40} height={40} />
-        name = <Skeleton variant="rounded" width={228} height={42} />
-        deleteButton = <Skeleton
-            variant="rounded"
-            width={172}
-            height={51}
-            id="deleteDeviceButton"
-        />
-    }
-
-    return (
-        <div id="deviceMainInfosHeader">
-            <div id="computerName">
-                {icon}
-                <Typography variant="h4">
-                    {name}
-                </Typography>
-            </div>
-            {deleteButton}
         </div>
     )
 }

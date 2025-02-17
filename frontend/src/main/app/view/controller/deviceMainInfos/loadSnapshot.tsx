@@ -28,13 +28,8 @@ class LoadSnapshot extends ControllerAction {
             }
         ).then((result: SnapshotData) => {
             dataManager.setElement("snapshot", result);
-            const callBackMethods = [
-                this.getObservable("mainDeviceInfosSoftwareInfosPieChart"),
-                this.getObservable("MainInfosFrame")
-            ]
-            for(let i = 0;i<callBackMethods.length;i++){
-                callBackMethods[i](JSON.stringify(filterManager.getFilters()))
-            }
+            const callBackMethod = this.getObservable("MainInfosFrame")
+            callBackMethod(JSON.stringify(filterManager.getFilters()))
         }).catch((error) => {
             console.log(error)
             enqueueSnackbar(error, { variant: "error" })

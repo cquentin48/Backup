@@ -2,12 +2,12 @@ import React from 'react';
 
 import DeviceMainInfos from './mainInfos';
 import DeviceElements from './computerElements';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { loadDevice } from '../../controller/deviceMainInfos/loadDevice';
 import Device from '../../../model/device/device';
-import { dataManager } from '../../../model/AppDataManager';
-import { Modal, Box, CircularProgress, Typography } from '@mui/material';
-import { enqueueSnackbar } from 'notistack';
+import DeviceMainInfosSkeleton from './skeleton/DeviceMainInfos';
+import MainInfosFrameSkeleton from './skeleton/DeviceMainInfosFrame';
+import DeviceModal from './skeleton/DeviceModal';
 
 
 /**
@@ -15,59 +15,39 @@ import { enqueueSnackbar } from 'notistack';
  * @returns {React.JSX.Element} Page component in the web application
  */
 export default function ComputerPage (): React.JSX.Element {
-    const [loadedDevice, setLoadedDevice] = React.useState<boolean>(false);
+    const [device, setDevice] = React.useState<Device>();
 
     /**
      * Device load operation result method
      * @param {string} resultData Operating result data (none here)
      */
     const loadedDeviceOpResult = (resultData: string) => {
-        setLoadedDevice(true)
+        const device = Device.fromJSON(resultData)
+        setDevice(device)
     }
     loadDevice.addObservable("computerPage", loadedDeviceOpResult)
 
     const { id } = useParams()
     loadDevice.performAction(JSON.stringify(parseInt(id as string)))
-    let device: Device;
-    if (loadedDevice) {
-        device = Device.fromJSON(dataManager.getElement("device"))
+    if (device) {
+        return (
+            <div id="DeviceMainInfosPage">
+                <DeviceMainInfos device={device} />
+                <DeviceElements device={device} />
+            </div>
+        )
     } else {
-        device = new Device()
+        return (
+            <div id="DeviceMainInfosPage">
+                <DeviceModal/>
+                <MainInfosFrameSkeleton/>
+            </div>
+        )
+        /*return (
+            <div id="DeviceMainInfosPage">
+                <DeviceModal/>
+                <DeviceMainInfosSkeleton />
+            </div>
+        )*/
     }
-    return (
-        <div id="DeviceMainInfosPage">
-            <Modal
-                open={device.isUndefined()}>
-                <Box sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%"
-                }}>
-                    <Box sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        backgroundColor: "#c2c2c2",
-                        minWidth: "150px",
-                        minHeight: "150px",
-                        borderRadius: "22.5px",
-                        padding: "16px",
-                        alignItems: "center"
-                    }}>
-                        <CircularProgress size={120} />
-                        <Typography variant="h4"
-                            sx={{
-                                marginTop: "16px"
-                            }}
-                        >
-                            Loading device
-                        </Typography>
-                    </Box>
-                </Box>
-            </Modal>
-            <DeviceMainInfos device={device} />
-            <DeviceElements device={device} />
-        </div>
-    )
 }

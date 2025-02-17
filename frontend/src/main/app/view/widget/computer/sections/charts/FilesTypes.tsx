@@ -8,6 +8,7 @@ import { PieChart, type PieSeriesType, type PieValueType } from "@mui/x-charts";
 
 import '../../../../../../res/css/ComputerMainInfos.css';
 import { type MakeOptional } from "@mui/x-charts/internals";
+import Device from "../../../../../model/device/device";
 
 /**
  * Types of files passed from the chart
@@ -16,7 +17,7 @@ interface FilesTypesProps {
     /**
      * If the device has been loaded
      */
-    deviceLoaded: boolean
+    device: Device
 }
 
 /**
@@ -51,7 +52,7 @@ export default function FilesTypes (props: FilesTypesProps): React.JSX.Element {
             />
             <CardContent>
                 <PieChart
-                    loading={props.deviceLoaded === undefined}
+                    loading={props.device === undefined}
                     series={series}
                     width={550}
                     height={200}
