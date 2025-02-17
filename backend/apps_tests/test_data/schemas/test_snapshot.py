@@ -29,15 +29,10 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
         """
         # Given
         test_device = create_test_device(name="Mon objet!")
+        
+        operating_system = "My OS!"
 
-        chosen_versions_numbers = [
-            {
-                "chosen_version": "1.0"
-            },
-            {
-                "chosen_version": "1.0"
-            }
-        ]
+        chosen_version= "1.0"
 
         test_package = create_test_package(
             package_type="package type",
@@ -48,12 +43,13 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
         save_date = "2020-01-01"
         test_save = Snapshot.objects.create(
             related_device=test_device,
-            save_date=save_date
+            save_date=save_date,
+            operating_system=operating_system
         )
 
-        for raw_chosen_version in chosen_versions_numbers:
+        for _ in range(0,2):
             new_version = create_test_chosen_version(
-                chosen_version=raw_chosen_version['chosen_version'],
+                chosen_version=chosen_version,
                 package=test_package
             )
             test_save.versions.add(new_version)
@@ -61,17 +57,18 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
         # Acts
         response = self.query(
             '''
-            query getSaveInfos($snapshotID:String!){
+            query getSaveInfos($snapshotID:BigInt!){
                 snapshotInfos(snapshotId: $snapshotID) {
                     versions{
-                        chosenVersion,
                         name,
-                        installType
+                        installType,
+                        chosenVersion
                     },
                     repositories{
                         sourcesLines,
                         name
-                    }
+                    },
+                    operatingSystem
                 }
             }
             ''',
@@ -84,14 +81,14 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
 
         # Asserts
         self.assertEqual(len(op_result['versions']), 2)
-        for index, version in enumerate(op_result['versions']):
+        for _, version in enumerate(op_result['versions']):
             self.assertEqual(
-                version['chosenVersion'], chosen_versions_numbers[index]['chosen_version'])
+                version['chosenVersion'], "1.0")
             self.assertEqual(version['name'], 'My package!')
             self.assertEqual(version['installType'], 'package type')
         self.assertEqual(len(op_result['repositories']), 0)
 
-    def test_resolve_snapshot_infos_unkown_snapshot(self):
+    def test_resolve_snapshot_infos_unknown_snapshot(self):
         """
         Check if the GRAPHQL query "DeviceInfos" can be resolved in unusual conditions :
         the snapshot is not set
@@ -103,22 +100,22 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
         # Acts
         response = self.query(
             '''
-            query getSaveInfos($snapshotID:String!){
+            query getSaveInfos($snapshotID:BigInt!){
                 snapshotInfos(snapshotId: $snapshotID) {
                     versions{
-                        chosenVersion,
                         name,
                         installType
                     },
                     repositories{
                         sourcesLines,
                         name
-                    }
+                    },
+                    operatingSystem
                 }
             }
             ''',
             variables={
-                'snapshotID': str(snapshot_id)
+                'snapshotID': snapshot_id
             }
         )
 

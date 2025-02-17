@@ -64,6 +64,8 @@ INSTALLED_APPS = [
     'graphene_django'
 ]
 
+VERBOSE = True
+
 GRAPHQL_URL = "http://0.0.0.0:8000/api/v1/data/graphql/"
 
 MIDDLEWARE = [

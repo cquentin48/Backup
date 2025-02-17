@@ -11,7 +11,6 @@ import pytest
 from data.consumers import BackupImportConsumer
 from data.models import Device, Package, ChosenVersion, Repository, Snapshot
 
-
 class TestConsumers(SimpleTestCase):
     """
     Websocket unit test class
@@ -50,14 +49,12 @@ class TestConsumers(SimpleTestCase):
         processor = "My processor"
         cores = 8
         memory = 32
-        operating_system = "Test OS"
 
         device_infos = {
             'name': name,
             'processor': processor,
             'cores': cores,
-            'memory': memory,
-            'operating_system': operating_system
+            'memory': memory
         }
 
         test_object = BackupImportConsumer()
@@ -344,6 +341,80 @@ class TestConsumers(SimpleTestCase):
                     'lines': ''
                 }
             ]
+        }
+
+        _, communicator = await self.init_ws_communication()
+
+        # Acts
+        await communicator.send_to(text_data=json.dumps(sample_data))
+
+        responses = []
+        response = await communicator.receive_from()
+        while isinstance(response, str) or response['type'] != 'end':
+            responses.append(response)
+            response = json.loads(await communicator.receive_from())
+        responses.append(response)
+
+        # Assert
+        self.assertEqual(responses[0], 'Connected!')
+
+        stringified_msgs = []
+
+        for msg in responses[1:]:
+            stringified_msgs.append(json.dumps(msg))
+            self.assertTrue(isinstance(msg, dict))
+
+        self.assertTrue(stringified_msgs[0],
+                        '{"status": "info", "message": "Fetching the device...", '+
+                        '"type": "message"}')
+        self.assertTrue(stringified_msgs[1],
+                        '{"status": "info", "type": "message", "message": ' +
+                        '"No device found! Adding a new one!"}')
+        self.assertTrue(stringified_msgs[2],
+                        '{"status": "info", "type": "message", ' +
+                        '"message": "Appending libraries to the database!"}'
+                        )
+        self.assertTrue(stringified_msgs[3],
+                        '{"status": "info", "type": "progress_bar", "infos": ' +
+                        '"{\"state\": \"init\", \"total\": 1, \"desc\": ' +
+                        '\"first_type packages import\"}"}')
+        self.assertTrue(stringified_msgs[4],
+                        '{"status": "info", "type": "progress_bar", ' +
+                        '"infos": "{\"state\": \"update\", \"index\": \"0\"}"}'
+                        )
+        self.assertTrue(stringified_msgs[5],
+                        '{"status": "info", "type": "message", ' +
+                        '"message": "No repository found! Skipping the operation"}')
+        self.assertTrue(stringified_msgs[6],
+                        '{"status": "info", "type": "end", "message": "End of data added!"}'
+                        )
+
+        await communicator.disconnect()
+
+    @pytest.mark.django_db(transaction=True)
+    @pytest.mark.asyncio
+    async def test_transmit_data_no_repository(self):
+        """
+        Check if the transmission of a simple data is successful (no repository set)
+        """
+        # Given
+        sample_data = {
+            "hostname": "my-computer",
+            "specs": {
+                "cores": 1,
+                "virtual_memory": 16,
+                "processor": "My processor"
+            },
+            "os": "My OS",
+            "libraries": {
+                "first_type": {
+                    "0": {
+                        "Package": "my_package",
+                        "Version": "1.0",
+                        "Repository": "my_repo"
+                    }
+                }
+            }
         }
 
         _, communicator = await self.init_ws_communication()

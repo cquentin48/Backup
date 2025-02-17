@@ -64,7 +64,7 @@ class DeviceSchemaQueryTest(GraphQLTestCase):
         # Acts
         response = self.query(
             '''
-            query getDeviceInfos($deviceID:String!){
+            query getDeviceInfos($deviceID:BigInt!){
                 deviceInfos(deviceId:$deviceID){
                     cores,
                     memory,
@@ -104,7 +104,7 @@ class DeviceSchemaQueryTest(GraphQLTestCase):
         # Acts
         response = self.query(
             '''
-            query getDeviceInfos($deviceID:String!){
+            query getDeviceInfos($deviceID:BigInt!){
                 deviceInfos(deviceId:$deviceID){
                     cores,
                     memory,

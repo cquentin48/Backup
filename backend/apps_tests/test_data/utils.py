@@ -48,6 +48,5 @@ def create_test_device(name: str) -> Device:
         name=name,
         cores=6,
         memory=32,
-        operating_system="My OS!",
         processor="My processor!"
     )

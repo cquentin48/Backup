@@ -7,6 +7,8 @@ from channels.generic.websocket import WebsocketConsumer
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 
+from server.settings import VERBOSE
+
 from .models import Device, Package, ChosenVersion, Snapshot, Repository
 
 
@@ -50,7 +52,7 @@ class BackupImportConsumer(WebsocketConsumer):
     def append_libraries_chosen_version(self, packages: dict, library_name: str):
         """ Append every libraries chosen version to the database
         :type packages: dict
-        :param packages: 
+        :param packages:
 
         :type library_name: str
         :param library_name: Name of the library
@@ -63,8 +65,10 @@ class BackupImportConsumer(WebsocketConsumer):
             'total': len(packages),
             'desc': f'{library_name} packages import'
         }
+
         self.send_message(status='info', type='progress_bar',
                           infos=json.dumps(infos))
+
         versions = []
         for package_index in packages:
             data = packages[package_index]
@@ -72,12 +76,14 @@ class BackupImportConsumer(WebsocketConsumer):
                 self.append_library(
                     data['Package'], data['Version'], library_name)
             )
+
             self.send_message(
                 status='info',
                 type='progress_bar',
                 infos=json.dumps(
                     {'state': 'update', 'index': package_index})
             )
+
         return versions
 
     def append_library(self, package_name: str, version: str, package_type: str):
@@ -127,14 +133,14 @@ class BackupImportConsumer(WebsocketConsumer):
                 sources_lines=repository['lines']
             )
 
-    def receive(self, text_data=None, bytes_data=None):
-        """ Receive data function from the client socket
+    def init_device(self, device_data: str) -> Device:
+        """ Finds the device linked to the snapshot currently being created.
+        If set, returns it. Otherwise, creates a new one and returns it
 
-        :type text_data: str
-        :param text_data: JSON data sent by the client
+        :type snapshot_raw_data: str
+        :param snapshot_raw_data: Snapshot raw data send by the user (in JSON format)
 
-        :type bytes_data: bytes
-        :param bytes_data: Unused here
+        :rtype: Device
         """
         try:
             self.send_message(
@@ -142,7 +148,6 @@ class BackupImportConsumer(WebsocketConsumer):
                 message='Fetching the device...',
                 type='message'
             )
-            device_data = json.loads(text_data)
             device_infos = {
                 'name': device_data['hostname'],
                 'cores': device_data['specs']['cores'],
@@ -159,32 +164,72 @@ class BackupImportConsumer(WebsocketConsumer):
                               type='message',
                               message='No device found! Adding a new one!')
         finally:
-            self.send_message(status='info', type='message',
-                              message='Appending libraries to the database!')
-            new_save = Snapshot.objects.create(
-                related_device=device,
-                save_date=timezone.now(),
-                operating_system=device_data['os']
+            return device
+
+    def init_snapshot(self, snapshot_data: str, device: Device) -> Snapshot:
+        """ Creates a new snapshot object alongside the softwares
+
+        :type device_data: str
+        :param device_data: Raw snapshot data sent by the user
+
+        :type device: Device
+        :param device: Related device object
+
+        :returns: Snapshot
+        """
+        snapshot = Snapshot.objects.create(
+            related_device=device,
+            save_date=timezone.now(),
+            operating_system=snapshot_data['os']
+        )
+        print(snapshot_data['libraries'])
+        for library_type in enumerate(snapshot_data['libraries']):
+            library = snapshot_data['libraries'][library_type[1]]
+            versions = self.append_libraries_chosen_version(
+                library, library_type[1])
+            for lib_version in versions:
+                snapshot.versions.add(lib_version)
+            snapshot.save()
+        return snapshot
+
+    def set_repositories(self, snapshot_data: str, snapshot: Snapshot):
+        """ Add install types to the snapshot if set in the device raw data
+
+        :type device_data: str
+        :param device_data: Raw device snapshot data sent by the user
+
+        :type snapshot: Snapshot
+        :param snapshot: Created snapshot object in previous operation
+        """
+        try:
+            self.send_message(status='info',
+                              type='message',
+                              message=f"Found {len(snapshot_data['repositories'])}")
+            for _, repository in enumerate(snapshot_data['repositories']):
+                repository = self.add_repository(repository)
+                snapshot.repositories.add(repository)
+        except KeyError as _:
+            self.send_message(
+                status='info',
+                type='message',
+                message='No repository found! Skipping the operation'
             )
-            for library_type in enumerate(device_data['libraries']):
-                library = device_data['libraries'][library_type[1]]
-                versions = self.append_libraries_chosen_version(
-                    library, library_type[1])
-                for lib_version in versions:
-                    new_save.versions.add(lib_version)
-            try:
-                self.send_message(status='info',
-                                  type='message',
-                                  message=f"Found {len(device_data['repositories'])}")
-                for _, repository in enumerate(device_data['repositories']):
-                    repository = self.add_repository(repository)
-                    new_save.repositories.add(repository)
-            except KeyError as _:
-                self.send_message(
-                    status='info',
-                    type='message',
-                    message='No repository found! Skipping the operation'
-                )
-            self.send_message(status='info', type='end',
-                              message='End of data added!')
-            self.close(4004)
+
+    def receive(self, text_data=None, bytes_data=None):
+        """ Receive data function from the client socket
+
+        :type text_data: str
+        :param text_data: JSON data sent by the client
+
+        :type bytes_data: bytes
+        :param bytes_data: Bytes sent by the client (Unused here)
+        """
+        snapshot_data = json.loads(text_data)
+        device = self.init_device(snapshot_data)
+        self.send_message(status='info', type='message',
+                          message='Appending libraries to the database!')
+        snapshot = self.init_snapshot(snapshot_data, device)
+        self.set_repositories(snapshot_data, snapshot)
+        self.send_message(status='info', type='end',
+                          message='End of data added!')
+        self.close(4004)
