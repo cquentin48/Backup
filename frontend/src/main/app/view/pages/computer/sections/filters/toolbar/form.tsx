@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
+import { enqueueSnackbar } from "notistack";
+
+import "../../../../../../../res/css/Filters.css";
 
 import Filter from "../../../../../model/filters/Filter";
-import { addFilter } from "../../../../../controller/deviceMainInfos/addFilter";
-import AlreadyAddedWarning from "../../../../../../model/exception/warning/alreadyAdded";
-
-import '../../../../../../../res/css/Filters.css';
-import FilterToolbar from "./selectFilter";
-import FieldValue from "./fieldValue";
-import DeviceMainInfosFilterCreationButton from "./createFilterButton";
 import ValidationError from "../../../../../../model/exception/errors/validationError";
-import { enqueueSnackbar } from "notistack";
+import AlreadyAddedWarning from "../../../../../../model/exception/warning/alreadyAdded";
+import { addFilter } from "../../../../../controller/deviceMainInfos/addFilter";
+import DeviceMainInfosFilterCreationButton from "./createFilterButton";
+import FieldValue from "./fieldValue";
+import FilterToolbar from "./selectFilter";
 
 /**
  * State of the new filter form dialog

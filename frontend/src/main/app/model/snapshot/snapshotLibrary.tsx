@@ -1,12 +1,12 @@
 
 export class SnapshotSoftware {
-    softwareVersion: string;
-    softwareName: string;
-    softwareInstallType: string;
+    version: string;
+    name: string;
+    installType: string;
 
     constructor (softwareVersion: string, softwareName: string, softwareInstallType: string) {
-        this.softwareVersion = softwareVersion;
-        this.softwareName = softwareName;
-        this.softwareInstallType = softwareInstallType;
+        this.version = softwareVersion;
+        this.name = softwareName;
+        this.installType = softwareInstallType;
     }
 }

@@ -3,12 +3,13 @@ import Device from "../../../model/device/device";
 
 import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';
-import { FormControl, InputLabel, Select, MenuItem, Paper, Skeleton } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, Paper } from "@mui/material";
 
-import Formats from "./sections/Formats";
-import '../../../../res/css/ComputerMainInfos.css';
+import FormatsPieCharts from "./sections/Formats";
 import { loadSnapshot } from "../../controller/deviceMainInfos/loadSnapshot";
 import { SnapshotData } from "../../../model/snapshot/snapshotData";
+
+import '../../../../res/css/ComputerMainInfos.css';
 
 /**
  * State of the main information frame
@@ -52,7 +53,6 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
 
     componentDidMount (): void {
         const props = this.props;
-        console.log(props.device.snapshots[0].id)
         this.setState({
             selectedSnapshot: props.device.snapshots[0].id,
         })
@@ -152,7 +152,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
                     {snapshots}
                 </div>
                 <Paper elevation={2} id="detailsContainer">
-                    <Formats device={device}/>
+                    <FormatsPieCharts device={device}/>
                 </Paper>
             </div>
         );

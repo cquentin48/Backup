@@ -1,9 +1,8 @@
 import React from "react";
 
-import { Grid2, Card, CardHeader, Avatar, CardContent, Skeleton } from "@mui/material";
+import { Grid2, Card, CardHeader, Avatar, CardContent } from "@mui/material";
 
-import "../../../../../../res/css/ComputerMainInfos.css";
-import { dataManager } from "../../../../../model/AppDataManager";
+import "../../../../../res/css/ComputerMainInfos.css";
 
 /**
  * Elements passed from the device main infos header

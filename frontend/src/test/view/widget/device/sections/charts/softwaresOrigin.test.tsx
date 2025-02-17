@@ -5,7 +5,7 @@ import { render, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
 
 import gqlClient from "../../../../../../main/app/model/queries/client"
-import SoftwareOrigins from "../../../../../../main/app/view/widget/computer/sections/charts/SoftwareOrigins"
+import SoftwareOrigins from "../../../../../../main/app/view/pages/computer/sections/charts/SoftwareOrigins"
 import { loadSnapshot } from "../../../../../../main/app/view/controller/deviceMainInfos/loadSnapshot"
 import { dataManager } from "../../../../../../main/app/model/AppDataManager"
 

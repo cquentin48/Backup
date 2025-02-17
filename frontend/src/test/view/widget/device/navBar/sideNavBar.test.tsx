@@ -4,7 +4,7 @@ import { fireEvent, render } from "@testing-library/react"
 
 import '@testing-library/jest-dom'
 
-import ComputeSideNavBar from "../../../../../main/app/view/widget/computer/navBar/computerSideNavBar"
+import ComputeSideNavBar from "../../../../../main/app/view/pages/computer/navBar/computerSideNavBar";
 import { BrowserRouter } from "react-router-dom"
 
 describe("Device main infos side nav bar unit test suite", () => {

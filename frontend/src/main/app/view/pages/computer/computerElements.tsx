@@ -1,6 +1,6 @@
 import React from "react";
-import MainInfosFrame from "../../widget/computer/mainInfos";
-import ComputeSideNavBar from "../../widget/computer/navBar/computerSideNavBar";
+import MainInfosFrame from "./mainInfosFrame";
+import ComputeSideNavBar from "./navBar/computerSideNavBar";
 import Device from "../../../model/device/device";
 
 interface DeviceElementsProps{

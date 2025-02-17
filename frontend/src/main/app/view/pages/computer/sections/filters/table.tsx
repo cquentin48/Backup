@@ -4,15 +4,14 @@ import { type JSX } from "react";
 
 import { Paper, Skeleton } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
-import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 import { type GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
-
-import { type FilterRow } from "../../../../model/filters/FilterManager";
-import { addFilter } from "../../../../controller/deviceMainInfos/addFilter";
-import DeviceMainInfosGridFooter from './footer/GridFooter';
-import { updateDeviceMainInfosFilter } from "../../../../controller/deviceMainInfos/updateSelectedFilters";
-import { removeDeviceMainInfosFilter } from "../../../../controller/deviceMainInfos/removeFilters";
+import DeviceMainInfosGridFooter from "./footer/GridFooter";
 import Device from "../../../../../model/device/device";
+import { addFilter } from "../../../../controller/deviceMainInfos/addFilter";
+import { removeDeviceMainInfosFilter } from "../../../../controller/deviceMainInfos/removeFilters";
+import { updateDeviceMainInfosFilter } from "../../../../controller/deviceMainInfos/updateSelectedFilters";
+import { FilterRow } from "../../../../model/filters/FilterManager";
+import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 
 /**
  * Columns set for the filter table below

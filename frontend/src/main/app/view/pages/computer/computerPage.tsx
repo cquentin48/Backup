@@ -5,6 +5,7 @@ import DeviceElements from './computerElements';
 import { useParams } from 'react-router-dom';
 import { loadDevice } from '../../controller/deviceMainInfos/loadDevice';
 import Device from '../../../model/device/device';
+
 import DeviceMainInfosSkeleton from './skeleton/DeviceMainInfos';
 import MainInfosFrameSkeleton from './skeleton/DeviceMainInfosFrame';
 import DeviceModal from './skeleton/DeviceModal';
@@ -40,14 +41,9 @@ export default function ComputerPage (): React.JSX.Element {
         return (
             <div id="DeviceMainInfosPage">
                 <DeviceModal/>
+                <DeviceMainInfosSkeleton />
                 <MainInfosFrameSkeleton/>
             </div>
         )
-        /*return (
-            <div id="DeviceMainInfosPage">
-                <DeviceModal/>
-                <DeviceMainInfosSkeleton />
-            </div>
-        )*/
     }
 }

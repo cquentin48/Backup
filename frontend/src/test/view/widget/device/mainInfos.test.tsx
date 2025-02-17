@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'
 import { fireEvent, render } from "@testing-library/react"
 import Device from "../../../../main/app/model/device/device"
 import SnapshotID from "../../../../main/app/model/device/snapshotId"
-import MainInfosFrame from "../../../../main/app/view/widget/computer/mainInfos"
+import MainInfosFrame from "../../../../main/app/view/pages/computer/mainInfosFrame"
 import { dataManager } from "../../../../main/app/model/AppDataManager"
 
 describe("MainInfosFrame unit test suite", () => {

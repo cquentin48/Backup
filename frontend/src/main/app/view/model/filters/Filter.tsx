@@ -16,6 +16,10 @@ interface FilterInputDetails {
     comparisonOperators: string[]
 }
 
+export type FilterElementType = "File" | "Library"
+export type FilterComparisonType = "<" | "<=" | ">" | ">=" | "!=" | "==" | "includes"
+export type FilterSoftwareFieldName = "name" | "firstUploadDate" | "lastUploadDate" | "size" | "repository" | "version"
+
 /**
  * Filter object used in the device main informations pie charts
  */
@@ -33,7 +37,7 @@ export default class Filter {
     /**
      * Filter operation type (e.g. ``<`` or ``>``)
      */
-    opType: string;
+    opType: FilterComparisonType;
 
     /**
      * Value including or not elements with the filter on
@@ -50,7 +54,7 @@ export default class Filter {
     constructor (
         elementType: "File" | "Library",
         fieldName: string,
-        opType: '<' | '>' | '!=' | '==',
+        opType: '<' | '>' | '!=' | '==' | "includes",
         filterValue: object) {
         this.elementType = elementType;
         this.fieldName = fieldName;
@@ -96,6 +100,11 @@ export default class Filter {
     public static authorizedComparisonOperations = ["<", "<=", ">", ">=", "!=", "==", "includes"];
 
     /**
+     * Authorized comparison operations : ``<``, ``<=``, ``>``, ``>=``, ``!=`` or ``==``.
+     */
+    public static authorizedComparisonOperationsDate = ["<", "<=", ">", ">=", "!=", "=="];
+
+    /**
      * Based of the ``inputType``, fetch every single field name
      * @param {"File" | "Library"} inputType Input type
      * @returns {string[]} Input field name list
@@ -126,13 +135,13 @@ export default class Filter {
                     [
                         "creationDate", {
                             inputType: 'date',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsDate
                         }
                     ],
                     [
                         "lastUpdateDate", {
                             inputType: 'date',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsDate
                         }
                     ],
                     [
@@ -166,13 +175,13 @@ export default class Filter {
                     [
                         "firstUploadDate", {
                             inputType: 'date',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsDate
                         }
                     ],
                     [
                         "lastUploadDate", {
                             inputType: 'date',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsDate
                         }
                     ],
                     [

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import Icon from "@mdi/react";
 import { mdiCpu64Bit, mdiCalendarPlusOutline, mdiCalendarSync } from "@mdi/js";
@@ -6,10 +6,11 @@ import { mdiCpu64Bit, mdiCalendarPlusOutline, mdiCalendarSync } from "@mdi/js";
 import { Memory, Storage } from "@mui/icons-material";
 import { Grid2 } from "@mui/material";
 
-import Device from "../../../../model/device/device";
+
 import '../../../../../res/css/ComputerMainInfos.css';
-import DeviceStat from "./header/computerStat";
+import Device from "../../../../model/device/device";
 import SnapshotID from "../../../../model/device/snapshotId";
+import DeviceStat from "./computerStat";
 
 interface SpecsMainInfosProps{
     device: Device;

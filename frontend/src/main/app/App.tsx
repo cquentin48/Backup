@@ -5,7 +5,7 @@ import gqlClient from "./model/queries/client";
 
 import "../res/css/App.css";
 import ComputerPage from "./view/pages/computer/computerPage";
-import TopBar from "./view/widget/topbar";
+import TopBar from "./view/pages/computer/topbar";
 import { SnackbarProvider } from "notistack";
 
 /**

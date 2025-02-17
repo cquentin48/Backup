@@ -8,14 +8,21 @@ import { PieChart } from "@mui/x-charts";
 
 import '../../../../../../res/css/ComputerMainInfos.css';
 import { dataManager } from "../../../../../model/AppDataManager";
-import { type SnapshotData } from "../../../../../model/snapshot/snapshotData";
+import NotImplementedError from "../../../../../model/exception/errors/notImplementedError";
+import { SnapshotData } from "../../../../../model/snapshot/snapshotData";
+import { SnapshotSoftware } from "../../../../../model/snapshot/snapshotLibrary";
+import { addFilter } from "../../../../controller/deviceMainInfos/addFilter";
 import { loadSnapshot } from "../../../../controller/deviceMainInfos/loadSnapshot";
+import { FilterComparisonType } from "../../../../model/filters/Filter";
+import { filterManager } from "../../../../model/filters/FilterManager";
 
 interface SoftwareOriginsState {
     /**
      * Pie chart series data for the chart display
      */
     data: PieChartData[]
+
+    filteredSoftwares: SnapshotSoftware[] | undefined
 }
 
 /**
@@ -44,24 +51,89 @@ interface PieChartData {
 // eslint-disable-next-line @typescript-eslint/ban-types
 export default class SoftwareOrigins extends React.Component<{}, SoftwareOriginsState> {
     state: Readonly<SoftwareOriginsState> = {
-        data: []
+        data: [],
+        filteredSoftwares: undefined
     };
 
     componentDidMount (): void {
-        loadSnapshot.addObservable("softwareInfosPieChart", this.updatePieChartData)
+        loadSnapshot.addObservable("softwareInfosPieChart", this.initPieChartData)
+        addFilter.addObservable("softwareInfosPieChart", this.initPieChartData)
+    }
+
+    applyFilterOn = (softwares: SnapshotSoftware[], value: object, operator: FilterComparisonType, fieldName: string): SnapshotSoftware[] => {
+        switch (operator) {
+            case "!=":
+                return softwares.filter((software) => {
+                    return ((software as any)[fieldName] != value)
+                })
+            case "<":
+                return softwares.filter((software) => {
+                    return ((software as any)[fieldName] < value)
+                })
+
+            case "<=":
+                return softwares.filter((software) => {
+                    return ((software as any)[fieldName] <= value)
+                })
+            case ">":
+                return softwares.filter((software) => {
+                    return ((software as any)[fieldName] > value)
+                })
+            case ">=":
+                return softwares.filter((software) => {
+                    return ((software as any)[fieldName] >= value)
+                })
+            case "==":
+                return softwares.filter((software) => {
+                    return ((software as any)[fieldName] === value)
+                })
+            case "includes":
+                return softwares.filter((software) => {
+                    return (((software as any)[fieldName] as string).includes(value as unknown as string))
+                })
+        }
+    }
+
+    updatePieChartData = (filterData: string): void => {
+        const filters = filterManager.softwareFilters()
+        var softwares = (JSON.parse(dataManager.getElement("snapshot")) as SnapshotData).softwares
+        filters.forEach((filter) => {
+            switch (filter.elementType) {
+                case "name":
+                    softwares = this.applyFilterOn(softwares, filter.filterValue, filter.opType, filter.fieldName)
+                    break;
+                case "version":
+                    softwares = this.applyFilterOn(softwares, filter.filterValue, filter.opType, filter.fieldName)
+                    break;
+                case "firstUploadDate":
+                case "lastUploadDate":
+                case "repository":
+                case "size":
+                    throw new NotImplementedError("Not implemented yet!")
+            }
+        })
+        this.setState({
+            filteredSoftwares: softwares
+        })
+        this.initPieChartData()
     }
 
     /**
      * Update pie chart series data
-     * @param {string} data Updated pie chart series
+     * @param {string} softwareData Pie chart series data (first-time load)
      */
-    updatePieChartData = (data: string): void => {
-        const snapshot = (
-            JSON.parse(dataManager.getElement("snapshot")) as SnapshotData
-        ).softwares
+    initPieChartData = (softwareData: string = ""): void => {
+        let softwares;
+        if(this.state.filteredSoftwares === undefined){
+            softwares = (
+                JSON.parse(dataManager.getElement("snapshot")) as SnapshotData
+            ).softwares
+        }else{
+            softwares = this.state.filteredSoftwares
+        }
         const rawSeries = new Map<string, number>();
-        snapshot.forEach((singleVersion) => {
-            const softwareInstallType = singleVersion.softwareInstallType
+        softwares.forEach((singleVersion) => {
+            const softwareInstallType = singleVersion.installType
             if (!rawSeries.has(softwareInstallType)) {
                 rawSeries.set(softwareInstallType, 1)
             } else {

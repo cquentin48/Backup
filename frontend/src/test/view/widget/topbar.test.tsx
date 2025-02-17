@@ -1,7 +1,7 @@
 import React from "react";
 
 import { render } from "@testing-library/react"
-import TopBar from "../../../main/app/view/widget/topbar"
+import TopBar from "../../../main/app/view/pages/computer/topbar";
 
 import '@testing-library/jest-dom'
 

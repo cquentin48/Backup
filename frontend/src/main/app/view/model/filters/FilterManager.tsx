@@ -75,6 +75,10 @@ class FilterManager {
         return input;
     }
 
+    public softwareFilters(): Filter[]{
+        return this.filters.filter((filter)=> filter.elementType === "Library")
+    }
+
     /**
      * Fetched a filter based off its id in the array
      * @param {number} id id of the supposed stored filter

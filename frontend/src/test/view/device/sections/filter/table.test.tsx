@@ -1,7 +1,7 @@
 import React from "react"
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
-import FilterTable from "../../../../../main/app/view/widget/computer/sections/filters/table"
+import FilterTable from "../../../../../main/app/view/pages/computer/sections/filters/table"
 
 import '@testing-library/jest-dom'
 import { addFilter } from "../../../../../main/app/view/controller/deviceMainInfos/addFilter"

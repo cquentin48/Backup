@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import { updateDeviceMainInfosFilter } from "../../../../../controller/deviceMainInfos/updateSelectedFilters";
 import GridFooterDelete from "./GridFooterDel";
 
-import '../../../../../../../res/css/Filters.css'
+import "../../../../../../../res/css/Filters.css";
 
 /**
  * Device main informations footer web component state

@@ -2,11 +2,11 @@ import React from "react";
 
 import { render } from "@testing-library/react"
 import Device from "../../../../main/app/model/device/device"
-import SpecsMainInfos from "../../../../main/app/view/widget/computer/sections/MainInfos"
 import SnapshotID from "../../../../main/app/model/device/snapshotId"
 
 import '@testing-library/jest-dom'
 import { dataManager } from "../../../../main/app/model/AppDataManager";
+import SpecsMainInfos from "../../../../main/app/view/pages/computer/sections/MainInfos";
 
 describe("Device main infos test suite", () => {
     test("Successful render with custom data", async () => {

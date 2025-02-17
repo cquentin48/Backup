@@ -32,9 +32,9 @@ export class SnapshotData {
             softwareInstallType
         )
         if (this.softwares.filter((software) => {
-            const sameInstallType = software.softwareInstallType === softwareInstallType
-            const sameName = software.softwareName === softwareName
-            const sameVersion = software.softwareVersion === softwareVersion
+            const sameInstallType = software.installType === softwareInstallType
+            const sameName = software.name === softwareName
+            const sameVersion = software.version === softwareVersion
             return sameInstallType && sameName && sameVersion
         }).length > 0) {
             throw new AlreadyAddedWarning(`The software with the name ${softwareName} has already been added! Thus the operation is ignored!`)

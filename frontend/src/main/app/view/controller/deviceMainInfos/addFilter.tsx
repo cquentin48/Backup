@@ -28,9 +28,13 @@ class AddDeviceMainInfosFilter extends ControllerAction {
             comparison as "<" | ">" | "!=" | "==",
             value
         )
-        const callBackMethod = this.getObservable("mainDeviceInfosFilterTable");
+        const tableViewCallBackMethod = this.getObservable("mainDeviceInfosFilterTable");
 
-        callBackMethod(JSON.stringify(filterManager.getFilters()))
+        tableViewCallBackMethod(JSON.stringify(filterManager.getFilters()))
+
+        const librariesFilters = filterManager.getFilters().filter((filter)=>{return filter.elementType === "Library"})
+        const libraryViewCallBackMethod = this.getObservable("softwareInfosPieChart")
+        libraryViewCallBackMethod(JSON.stringify(librariesFilters))
     }
 }
 
