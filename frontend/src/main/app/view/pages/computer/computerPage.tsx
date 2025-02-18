@@ -9,7 +9,7 @@ import Device from '../../../model/device/device';
 import DeviceMainInfosSkeleton from './skeleton/DeviceMainInfos';
 import MainInfosFrameSkeleton from './skeleton/DeviceMainInfosFrame';
 import LoadingDeviceModal from './skeleton/DeviceModal';
-import { enqueueSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { Box, Typography } from '@mui/material';
 
 /**
@@ -35,6 +35,7 @@ export default function ComputerPage (): React.JSX.Element {
             }
         } catch (e) {
             if ((e as Error).name !== 'NotFoundError') {
+                const { enqueueSnackbar } = useSnackbar()
                 enqueueSnackbar(JSON.stringify(e), { variant: "error" })
             }
             document.title = "Backup - unknown device"
@@ -77,7 +78,7 @@ export default function ComputerPage (): React.JSX.Element {
                     <Typography variant='h4'>
                         The device you are looking for is unavailable right now.
                         Please check if the device ID you passed is correct.
-                        <br/>
+                        <br />
                         If you think the device ID you entered is correct, please contact your
                         administrator quickly.
                     </Typography>

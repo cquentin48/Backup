@@ -11,8 +11,8 @@
 }
 
 #FilterToolbar{
-    margin: 1;
-    min-width: 120;
+    margin: 1px 0px;
+    min-width: 120px;
 }
 
 .DeviceSpecsCard{

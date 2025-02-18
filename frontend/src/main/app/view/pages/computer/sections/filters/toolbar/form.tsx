@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
-import { enqueueSnackbar } from "notistack";
+import { useSnackbar } from "notistack";
 
 import "../../../../../../../res/css/Filters.css";
 
@@ -111,6 +111,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
                 message = error.message;
             }
             console.error(error)
+            const { enqueueSnackbar } = useSnackbar()
             enqueueSnackbar(message, { variant })
         }
     }

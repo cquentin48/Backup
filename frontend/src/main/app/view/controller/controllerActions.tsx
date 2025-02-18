@@ -24,7 +24,8 @@ export default class ControllerAction {
 
     removeObservable (name: string): void {
         if (!(name in this.observable)) {
-            throw new NotFoundError(`The observable with the key name ${name} has not been set!`)
+            throw new NotFoundError(`The observable with the key name ${name} for the controller ` +
+                `${this.constructor.name} has not been set!`)
         }
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete this.observable[name];
@@ -38,7 +39,7 @@ export default class ControllerAction {
     getObservable (name: string): CallbackMethod {
         if (!(name in this.observable)) {
             throw new NotFoundError(`The related view component ${name}` +
-                " hasn't been mounted yet!")
+                ` hasn't been mounted yet for the controller ${this.constructor.name}!`)
         }
         const tableViewObservable = this.observable[name]
         return tableViewObservable;
