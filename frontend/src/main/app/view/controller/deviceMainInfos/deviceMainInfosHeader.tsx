@@ -1,18 +1,19 @@
 import { mdiUbuntu, mdiMicrosoftWindows } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Delete } from "@mui/icons-material";
-import { Tooltip, Typography, Button, Skeleton } from "@mui/material";
+import { Tooltip, Typography, Button } from "@mui/material";
 import React from "react";
 
 import "../../../../res/css/ComputerMainInfos.css";
-import Device from "../../../model/device/device";
+import type Device from "../../../model/device/device";
 
 interface DeviceMainInfosProps {
-    device: Device;
+    device: Device
 }
 
 /**
  * Device header containing OS icon, computer name and delete button
+ * @param {DeviceMainInfosProps} props loaded device from the device page component
  * @returns {React.JSX.Element} rendered component
  */
 export default function DeviceMainInfosHeader (props: DeviceMainInfosProps): React.JSX.Element {
@@ -38,12 +39,12 @@ export default function DeviceMainInfosHeader (props: DeviceMainInfosProps): Rea
                     <div id="OSIcon">
                         <Icon
                             id="DeviceMainInfosOSIcon"
-                            path={getOSIcon(device.snapshots[0].operatingSystem as string)} size={2}
+                            path={getOSIcon(device.snapshots[0].operatingSystem)} size={2}
                         />
                     </div>
                 </Tooltip>
                 <Typography variant="h4">
-                    {device.name as string}
+                    {device.name }
                 </Typography>
             </div>
             <Button

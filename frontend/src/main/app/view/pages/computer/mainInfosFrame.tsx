@@ -1,5 +1,5 @@
 import React from "react";
-import Device from "../../../model/device/device";
+import type Device from "../../../model/device/device";
 
 import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';
@@ -7,7 +7,7 @@ import { FormControl, InputLabel, Select, MenuItem, Paper } from "@mui/material"
 
 import FormatsPieCharts from "./sections/Formats";
 import { loadSnapshot } from "../../controller/deviceMainInfos/loadSnapshot";
-import { SnapshotData } from "../../../model/snapshot/snapshotData";
+import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 
 import '../../../../res/css/ComputerMainInfos.css';
 
@@ -28,12 +28,12 @@ interface MainInfosFrameState {
     /**
      * Current snapshot
      */
-    snapshot: SnapshotData | undefined;
+    snapshot: SnapshotData | undefined
 
 }
 
 interface MainInfosFrameProps {
-    device: Device;
+    device: Device
 }
 
 /**
@@ -54,10 +54,10 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
     componentDidMount (): void {
         const props = this.props;
         this.setState({
-            selectedSnapshot: props.device.snapshots[0].id,
+            selectedSnapshot: props.device.snapshots[0].id
         })
         loadSnapshot.addObservable("MainInfosFrame", this.updateSnapshotViewData)
-        loadSnapshot.performAction(JSON.stringify((this.props.device as Device).snapshots[0].id))
+        loadSnapshot.performAction(JSON.stringify((this.props.device).snapshots[0].id))
     }
 
     /**
@@ -77,7 +77,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
      */
     updateSnapshotViewData = (data: string): void => {
         const snapshots = JSON.parse(data)
-        const currentlySelectedSnapshotID = (this.props.device as Device).snapshots[0].id
+        const currentlySelectedSnapshotID = (this.props.device).snapshots[0].id
         this.setState({
             snapshots: snapshots as SnapshotData[],
             selectedSnapshot: currentlySelectedSnapshotID
@@ -117,8 +117,6 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
         })
         return menuEntries
     }
-
-
 
     /**
      * Render frame

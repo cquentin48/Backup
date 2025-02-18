@@ -1,6 +1,12 @@
+import React from "react";
+
 import { Skeleton, Typography } from "@mui/material";
 
-export default function DeviceNameHeaderSkeleton () {
+/**
+ * Device name header alongside the delete button before device data is loaded.
+ * @returns {React.JSX.Element} rendered web component
+ */
+export default function DeviceNameHeaderSkeleton (): React.JSX.Element {
     return (
         <div id="deviceMainInfosHeader">
             <div id="computerName">

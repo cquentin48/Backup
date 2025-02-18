@@ -29,10 +29,10 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
         """
         # Given
         test_device = create_test_device(name="Mon objet!")
-        
+
         operating_system = "My OS!"
 
-        chosen_version= "1.0"
+        chosen_version = "1.0"
 
         test_package = create_test_package(
             package_type="package type",
@@ -47,7 +47,7 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
             operating_system=operating_system
         )
 
-        for _ in range(0,2):
+        for _ in range(0, 2):
             new_version = create_test_chosen_version(
                 chosen_version=chosen_version,
                 package=test_package

@@ -54,9 +54,9 @@ class Device {
      */
     static fromJSON (parsedData: string): Device {
         const rawDeviceData = JSON.parse(parsedData) as Device
-        const rawSnapshots = rawDeviceData.snapshots as SnapshotID[]
+        const rawSnapshots = rawDeviceData.snapshots
         const snapshots: SnapshotID[] = []
-        rawSnapshots.forEach((rawSnapshot)=>{
+        rawSnapshots.forEach((rawSnapshot) => {
             const rawDate = new Date(rawSnapshot.uploadDate)
             snapshots.push(
                 new SnapshotID(

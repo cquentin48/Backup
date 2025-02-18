@@ -1,7 +1,13 @@
+import React from "react";
+
 import { Skeleton, Paper } from "@mui/material";
 import FormatsSkeleton from "./Formats";
 
-export default function MainInfosFrameSkeleton () {
+/**
+ * Main information frame skeleton component. Rendered before device data is loaded
+ * @returns {React.JSX.Element} rendered web component
+ */
+export default function MainInfosFrameSkeleton (): React.JSX.Element {
     return (
         <div id="mainInfosTable">
             <div id="mainInfosTableSelectHeader">

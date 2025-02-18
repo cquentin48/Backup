@@ -1,14 +1,10 @@
-import ControllerAction, { CallbackMethod } from "../controllerActions";
+import ControllerAction from "../controllerActions";
 
-import { filterManager } from "../../model/filters/FilterManager";
 import getDeviceInfos from '../../../../res/queries/computer_infos.graphql';
 import gqlClient from "../../../model/queries/client";
-import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 import { dataManager } from "../../../model/AppDataManager";
-import { enqueueSnackbar } from "notistack";
 import FetchComputerInfosGQL from "../../../model/queries/computer/computerInfos";
-import Device from "../../../model/device/device";
-import { useNavigate } from "react-router-dom";
+import type Device from "../../../model/device/device";
 
 /**
  * Load device controller action set in the device main information page.

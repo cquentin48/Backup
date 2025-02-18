@@ -1,5 +1,7 @@
+import React from "react";
+
 import { Grid2 } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 
 /**
  * Columns set for the filter table below
@@ -37,7 +39,11 @@ const filterTableColumns: GridColDef[] = [
     }
 ];
 
-export default function FormatsSkeleton () {
+/**
+ * Skeleton web components representing the formats section (filter datagrid + pie charts)
+ * @returns {React.JSX.Element} rendered web component
+ */
+export default function FormatsSkeleton (): React.JSX.Element {
     return (
 
         <div className="DeviceMainInfos">

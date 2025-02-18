@@ -6,7 +6,7 @@ import Icon from "@mdi/react";
 import { Avatar, Card, CardContent, CardHeader } from "@mui/material";
 import { PieChart, type PieSeriesType, type PieValueType } from "@mui/x-charts";
 import { type MakeOptional } from "@mui/x-charts/internals";
-import Device from "../../../../../model/device/device";
+import type Device from "../../../../../model/device/device";
 
 import '../../../../../../res/css/ComputerMainInfos.css';
 

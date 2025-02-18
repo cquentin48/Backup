@@ -75,8 +75,8 @@ class FilterManager {
         return input;
     }
 
-    public softwareFilters(): Filter[]{
-        return this.filters.filter((filter)=> filter.elementType === "Library")
+    public softwareFilters (): Filter[] {
+        return this.filters.filter((filter) => filter.elementType === "Library")
     }
 
     /**

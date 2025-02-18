@@ -8,11 +8,9 @@ import Device from '../../../model/device/device';
 
 import DeviceMainInfosSkeleton from './skeleton/DeviceMainInfos';
 import MainInfosFrameSkeleton from './skeleton/DeviceMainInfosFrame';
-import DeviceModal from './skeleton/DeviceModal';
-import NotFoundError from '../../../model/exception/errors/notFoundError';
+import LoadingDeviceModal from './skeleton/DeviceModal';
 import { enqueueSnackbar } from 'notistack';
 import { Box, Typography } from '@mui/material';
-
 
 /**
  * Computer page view model
@@ -26,7 +24,7 @@ export default function ComputerPage (): React.JSX.Element {
      * Device load operation result method
      * @param {string} resultData Operating result data (none here)
      */
-    const loadedDeviceOpResult = (resultData: string) => {
+    const loadedDeviceOpResult = (resultData: string): void => {
         try {
             try {
                 const device = Device.fromJSON(resultData)
@@ -36,7 +34,7 @@ export default function ComputerPage (): React.JSX.Element {
                 throw JSON.parse(resultData)
             }
         } catch (e) {
-            if ((e as Error).name != 'NotFoundError') {
+            if ((e as Error).name !== 'NotFoundError') {
                 enqueueSnackbar(JSON.stringify(e), { variant: "error" })
             }
             document.title = "Backup - unknown device"
@@ -48,7 +46,7 @@ export default function ComputerPage (): React.JSX.Element {
 
     const { id } = useParams()
     loadDevice.performAction(JSON.stringify(parseInt(id as string)))
-    if (device) {
+    if (device != null) {
         return (
             <div id="DeviceMainInfosPage">
                 <DeviceMainInfos device={device} />
@@ -89,7 +87,7 @@ export default function ComputerPage (): React.JSX.Element {
     } else {
         return (
             <div id="DeviceMainInfosPage">
-                <DeviceModal />
+                <LoadingDeviceModal />
                 <DeviceMainInfosSkeleton />
                 <MainInfosFrameSkeleton />
             </div>

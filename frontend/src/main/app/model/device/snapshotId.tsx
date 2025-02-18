@@ -37,11 +37,11 @@ export default class SnapshotID {
      * Check if the snapshot ID is undefined or not
      * @returns {boolean} ``true`` yes | ``false`` no
      */
-    isUndefined ():boolean {
+    isUndefined (): boolean {
         const idCondition = this.id === "";
         const uploadDate = this.uploadDate;
         const year = uploadDate.getFullYear().toString()
-        const month = (uploadDate.getMonth()+1) < 10 ? `0${uploadDate.getMonth()+1}` : (uploadDate.getMonth()+1).toString()
+        const month = (uploadDate.getMonth() + 1) < 10 ? `0${uploadDate.getMonth() + 1}` : (uploadDate.getMonth() + 1).toString()
         const day = (uploadDate.getDate()) < 10 ? `0${uploadDate.getDate()}` : uploadDate.getDate().toString()
         const parsedDate = `${year}-${month}-${day}`
         const uploadDateCondition = parsedDate === "2000-01-01"

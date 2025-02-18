@@ -1,14 +1,15 @@
 import React from "react";
 import MainInfosFrame from "./mainInfosFrame";
 import ComputeSideNavBar from "./navBar/computerSideNavBar";
-import Device from "../../../model/device/device";
+import type Device from "../../../model/device/device";
 
-interface DeviceElementsProps{
-    device: Device;
+interface DeviceElementsProps {
+    device: Device
 }
 
 /**
  * Device informations display page
+ * @param {DeviceElementsProps} props Loaded device from the computer page
  * @returns {React.JSX.Element} Page web component
  */
 export default function DeviceElements (props: DeviceElementsProps): React.JSX.Element {

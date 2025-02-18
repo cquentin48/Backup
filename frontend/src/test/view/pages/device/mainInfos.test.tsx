@@ -10,7 +10,7 @@ import '@testing-library/jest-dom'
 import { dataManager } from '../../../../main/app/model/AppDataManager';
 
 describe("Device main Infos unit test suite", () => {
-    afterEach(()=>{
+    afterEach(() => {
         dataManager.removeAllData()
     })
     test("Successful render (non Ubuntu OS)", async () => {
@@ -26,7 +26,7 @@ describe("Device main Infos unit test suite", () => {
                 "My OS!"
             )]
         )
-        dataManager.setElement("device",testDevice)
+        dataManager.setElement("device", testDevice)
 
         // Acts
         const { container } = render(<DeviceMainInfos device={testDevice}/>)

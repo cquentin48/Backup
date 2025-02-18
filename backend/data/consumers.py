@@ -1,8 +1,6 @@
-import traceback
+import json
 
 from typing import Literal
-
-import json
 
 from channels.generic.websocket import WebsocketConsumer
 
@@ -158,12 +156,12 @@ class BackupImportConsumer(WebsocketConsumer):
             self.send_message(status='info',
                               type='message',
                               message='Device found!')
+            return device
         except ObjectDoesNotExist as _:
             device = self.append_new_device(device_infos)
             self.send_message(status='info',
                               type='message',
                               message='No device found! Adding a new one!')
-        finally:
             return device
 
     def init_snapshot(self, snapshot_data: str, device: Device) -> Snapshot:
@@ -223,20 +221,12 @@ class BackupImportConsumer(WebsocketConsumer):
         :type bytes_data: bytes
         :param bytes_data: Bytes sent by the client (Unused here)
         """
-        try:
-            snapshot_data = json.loads(text_data)
-            device = self.init_device(snapshot_data)
-            self.send_message(status='info', type='message',
-                            message='Appending libraries to the database!')
-            snapshot = self.init_snapshot(snapshot_data, device)
-            self.set_repositories(snapshot_data, snapshot)
-            self.send_message(status='info', type='end',
-                            message='End of data added!')
-            self.close(4004)
-        except Exception as _:
-            self.send_message(
-                status='error',
-                type='message',
-                message=str(traceback.format_exc())
-            )
-            self.close(4004)
+        snapshot_data = json.loads(text_data)
+        device = self.init_device(snapshot_data)
+        self.send_message(status='info', type='message',
+                          message='Appending libraries to the database!')
+        snapshot = self.init_snapshot(snapshot_data, device)
+        self.set_repositories(snapshot_data, snapshot)
+        self.send_message(status='info', type='end',
+                          message='End of data added!')
+        self.close(4004)

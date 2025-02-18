@@ -75,7 +75,7 @@ class SnapshotData(graphene.ObjectType):
         RepositoryData,
         description="Every repositories linked to the snapshot"
     )
-    
+
     operating_system = graphene.String(
         description="Operating system of the device at the time where the snapshot was created"
     )

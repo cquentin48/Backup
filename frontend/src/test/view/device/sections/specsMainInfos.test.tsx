@@ -22,7 +22,7 @@ describe("Device main infos test suite", () => {
                 "My OS!"
             )]
         )
-        dataManager.setElement("device",testDevice)
+        dataManager.setElement("device", testDevice)
 
         // Acts
         const { container } = render(<SpecsMainInfos device={testDevice}/>)
@@ -33,7 +33,7 @@ describe("Device main infos test suite", () => {
         expect(opResult).toHaveTextContent("1")
         expect(opResult).toHaveTextContent("4 GB RAM in total")
         expect(opResult).toHaveTextContent(
-            (testDevice.snapshots[0] as SnapshotID).localizedDate()
+            (testDevice.snapshots[0]).localizedDate()
         )
         expect(opResult).toHaveTextContent(
             "Amount of storage here used in the backup server"

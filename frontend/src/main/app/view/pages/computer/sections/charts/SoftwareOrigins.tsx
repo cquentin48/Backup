@@ -8,12 +8,12 @@ import { PieChart } from "@mui/x-charts";
 
 import { dataManager } from "../../../../../model/AppDataManager";
 import NotImplementedError from "../../../../../model/exception/errors/notImplementedError";
-import { SnapshotData } from "../../../../../model/snapshot/snapshotData";
-import { SnapshotSoftware } from "../../../../../model/snapshot/snapshotLibrary";
+import { type SnapshotData } from "../../../../../model/snapshot/snapshotData";
+import { type SnapshotSoftware } from "../../../../../model/snapshot/snapshotLibrary";
 import { addFilter } from "../../../../controller/deviceMainInfos/addFilter";
 import { loadSnapshot } from "../../../../controller/deviceMainInfos/loadSnapshot";
-import Filter, { FilterComparisonType } from "../../../../model/filters/Filter";
-import { filterManager } from "../../../../model/filters/FilterManager";
+import { type FilterComparisonType } from "../../../../model/filters/Filter";
+import type Filter from "../../../../model/filters/Filter";
 
 import '../../../../../../res/css/ComputerMainInfos.css';
 import { removeDeviceMainInfosFilter as removeFilter } from "../../../../controller/deviceMainInfos/removeFilters";
@@ -91,7 +91,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
         switch (operator) {
             case "!=":
                 return softwares.filter((software) => {
-                    return ((software as any)[fieldName] != value)
+                    return ((software as any)[fieldName] !== value)
                 })
             case "<":
                 return softwares.filter((software) => {
@@ -121,10 +121,9 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
         }
     }
 
-
     updatePieChartData = (filterData: string): void => {
         const filters = JSON.parse(filterData) as Filter[]
-        var softwares = (
+        let softwares = (
             JSON.parse(dataManager.getElement("snapshot")) as SnapshotData
         ).softwares
         filters.forEach((filter) => {
@@ -154,7 +153,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
      * @param {string} softwareData Pie chart series data (first-time load)
      */
     initPieChartData = (softwareData: string = ""): void => {
-        let softwares = this.getSoftwares()
+        const softwares = this.getSoftwares()
         const rawSeries = new Map<string, number>();
         softwares.forEach((singleVersion) => {
             const softwareInstallType = singleVersion.installType

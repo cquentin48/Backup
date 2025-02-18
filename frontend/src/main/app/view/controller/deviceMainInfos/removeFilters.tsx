@@ -28,7 +28,7 @@ class RemoveDeviceMainInfosFilter extends ControllerAction {
             this.getObservable("mainDeviceInfosFilterTable"),
             this.getObservable("softwareInfosPieChart")
         ]
-        for(let i = 0;i<2;i++){
+        for (let i = 0; i < 2; i++) {
             callBackMethods[i](JSON.stringify(filterManager.getFilters()))
         }
     }

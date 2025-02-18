@@ -1,6 +1,12 @@
+import React from "react";
+
 import { Modal, Box, CircularProgress, Typography } from "@mui/material";
 
-export default function DeviceModal () {
+/**
+ * Loading device modal (before data is loaded)
+ * @returns {React.JSX.Element} rendered web component
+ */
+export default function LoadingDeviceModal (): React.JSX.Element {
     return (
         <Modal
             open={true}>

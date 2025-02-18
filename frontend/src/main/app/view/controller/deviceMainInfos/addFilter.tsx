@@ -29,7 +29,7 @@ class AddDeviceMainInfosFilter extends ControllerAction {
             value
         )
 
-        const librariesFilters = filterManager.getFilters().filter((filter)=>{return filter.elementType === "Library"})
+        const librariesFilters = filterManager.getFilters().filter((filter) => { return filter.elementType === "Library" })
         const libraryViewCallBackMethod = this.getObservable("softwareInfosPieChart")
         libraryViewCallBackMethod(JSON.stringify(librariesFilters))
 
