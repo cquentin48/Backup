@@ -33,7 +33,6 @@ class LoadSnapshot extends ControllerAction {
                 callBackMethod[i](JSON.stringify(filterManager.getFilters()))
             }
         }).catch((error) => {
-            console.log(error)
             enqueueSnackbar(error, { variant: "error" })
         })
     }

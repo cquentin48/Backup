@@ -1,3 +1,5 @@
+import traceback
+
 from typing import Literal
 
 import json
@@ -6,8 +8,6 @@ from channels.generic.websocket import WebsocketConsumer
 
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
-
-from server.settings import VERBOSE
 
 from .models import Device, Package, ChosenVersion, Snapshot, Repository
 
@@ -113,7 +113,7 @@ class BackupImportConsumer(WebsocketConsumer):
         except ObjectDoesNotExist as _:
             version = ChosenVersion.objects.create(
                 package=package, chosen_version=version)
-        return version
+            return version
 
     def add_repository(self, repository: dict) -> Repository:
         """
@@ -182,7 +182,6 @@ class BackupImportConsumer(WebsocketConsumer):
             save_date=timezone.now(),
             operating_system=snapshot_data['os']
         )
-        print(snapshot_data['libraries'])
         for library_type in enumerate(snapshot_data['libraries']):
             library = snapshot_data['libraries'][library_type[1]]
             versions = self.append_libraries_chosen_version(
@@ -224,12 +223,20 @@ class BackupImportConsumer(WebsocketConsumer):
         :type bytes_data: bytes
         :param bytes_data: Bytes sent by the client (Unused here)
         """
-        snapshot_data = json.loads(text_data)
-        device = self.init_device(snapshot_data)
-        self.send_message(status='info', type='message',
-                          message='Appending libraries to the database!')
-        snapshot = self.init_snapshot(snapshot_data, device)
-        self.set_repositories(snapshot_data, snapshot)
-        self.send_message(status='info', type='end',
-                          message='End of data added!')
-        self.close(4004)
+        try:
+            snapshot_data = json.loads(text_data)
+            device = self.init_device(snapshot_data)
+            self.send_message(status='info', type='message',
+                            message='Appending libraries to the database!')
+            snapshot = self.init_snapshot(snapshot_data, device)
+            self.set_repositories(snapshot_data, snapshot)
+            self.send_message(status='info', type='end',
+                            message='End of data added!')
+            self.close(4004)
+        except Exception as _:
+            self.send_message(
+                status='error',
+                type='message',
+                message=str(traceback.format_exc())
+            )
+            self.close(4004)

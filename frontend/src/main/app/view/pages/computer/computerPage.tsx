@@ -9,6 +9,9 @@ import Device from '../../../model/device/device';
 import DeviceMainInfosSkeleton from './skeleton/DeviceMainInfos';
 import MainInfosFrameSkeleton from './skeleton/DeviceMainInfosFrame';
 import DeviceModal from './skeleton/DeviceModal';
+import NotFoundError from '../../../model/exception/errors/notFoundError';
+import { enqueueSnackbar } from 'notistack';
+import { Box, Typography } from '@mui/material';
 
 
 /**
@@ -17,14 +20,29 @@ import DeviceModal from './skeleton/DeviceModal';
  */
 export default function ComputerPage (): React.JSX.Element {
     const [device, setDevice] = React.useState<Device>();
+    const [loaded, setLoaded] = React.useState<boolean>(false);
 
     /**
      * Device load operation result method
      * @param {string} resultData Operating result data (none here)
      */
     const loadedDeviceOpResult = (resultData: string) => {
-        const device = Device.fromJSON(resultData)
-        setDevice(device)
+        try {
+            try {
+                const device = Device.fromJSON(resultData)
+                setDevice(device)
+                document.title = `Backup - device ${device.name}`
+            } catch (e) {
+                throw JSON.parse(resultData)
+            }
+        } catch (e) {
+            if ((e as Error).name != 'NotFoundError') {
+                enqueueSnackbar(JSON.stringify(e), { variant: "error" })
+            }
+            document.title = "Backup - unknown device"
+        } finally {
+            setLoaded(true)
+        }
     }
     loadDevice.addObservable("computerPage", loadedDeviceOpResult)
 
@@ -37,12 +55,43 @@ export default function ComputerPage (): React.JSX.Element {
                 <DeviceElements device={device} />
             </div>
         )
+    } else if (loaded && device === undefined) {
+        return (
+            <div id="DeviceMainInfosPage">
+                <Typography variant='h1'>
+                    404 - Device not found
+                </Typography>
+
+                <Box sx={{
+                    bgcolor: "#ff7c60",
+                    width: "fit-content",
+                    alignItems: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    position: "absolute",
+                    top: "25%",
+                    left: "50%",
+                    transform: "translate(-50%, -25%)",
+                    padding: "12px",
+                    borderRadius: "16px"
+                }}>
+                    <Typography variant='h4'>
+                        The device you are looking for is unavailable right now.
+                        Please check if the device ID you passed is correct.
+                        <br/>
+                        If you think the device ID you entered is correct, please contact your
+                        administrator quickly.
+                    </Typography>
+                </Box>
+            </div>
+        )
     } else {
         return (
             <div id="DeviceMainInfosPage">
-                <DeviceModal/>
+                <DeviceModal />
                 <DeviceMainInfosSkeleton />
-                <MainInfosFrameSkeleton/>
+                <MainInfosFrameSkeleton />
             </div>
         )
     }

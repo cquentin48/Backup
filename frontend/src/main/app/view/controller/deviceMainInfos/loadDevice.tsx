@@ -34,8 +34,8 @@ class LoadDevice extends ControllerAction {
             const callBackMethod = this.getObservable("computerPage")
             callBackMethod(JSON.stringify(device))
         }).catch((error) => {
-            console.error(error)
-            enqueueSnackbar("Error while fetching the device!", { variant: "error" })
+            const callBackMethod = this.getObservable("computerPage")
+            callBackMethod(JSON.stringify(error))
         })
     }
 }

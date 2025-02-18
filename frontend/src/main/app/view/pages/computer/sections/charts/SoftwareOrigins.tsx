@@ -63,15 +63,37 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
         removeFilter.addObservable("softwareInfosPieChart", this.updatePieChartData)
     }
 
+    /**
+     * Fetch the filtered software from the state
+     * @returns {SnapshotSoftware[]} Filtered | all softwares
+     */
+    getSoftwares = (): SnapshotSoftware[] => {
+        let softwares;
+        if (this.state.filteredSoftwares === undefined) {
+            softwares = (
+                JSON.parse(dataManager.getElement("snapshot")) as SnapshotData
+            ).softwares
+        } else {
+            softwares = this.state.filteredSoftwares
+        }
+        return softwares
+    }
+
+    /**
+     * Apply filter on the software list
+     * @param {SnapshotSoftware[]} softwares Software list where they will filtered with the conditions set
+     * @param {object} value Value for the filter to be applied on
+     * @param {FilterComparisonType} operator Type of condition (e.g. ``<`` or ``!=``)
+     * @param {string} fieldName Name of the field for the condition (e.g. ``name``)
+     * @returns {SnapshotSoftware[]} Software with the condition applied on
+     */
     applyFilterOn = (softwares: SnapshotSoftware[], value: object, operator: FilterComparisonType, fieldName: string): SnapshotSoftware[] => {
-        console.log(operator)
         switch (operator) {
             case "!=":
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] != value)
                 })
             case "<":
-                console.log("ok")
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] < value)
                 })
@@ -99,9 +121,12 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
         }
     }
 
+
     updatePieChartData = (filterData: string): void => {
         const filters = JSON.parse(filterData) as Filter[]
-        var softwares = (JSON.parse(dataManager.getElement("snapshot")) as SnapshotData).softwares
+        var softwares = (
+            JSON.parse(dataManager.getElement("snapshot")) as SnapshotData
+        ).softwares
         filters.forEach((filter) => {
             switch (filter.fieldName) {
                 case "name":
@@ -113,14 +138,15 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
                 case "repository":
                 case "size":
                     throw new NotImplementedError("Not implemented yet!")
-                default :
+                default:
                     throw new NotImplementedError("Unknown operation type!")
             }
         })
         this.setState({
             filteredSoftwares: softwares
+        }, () => {
+            this.initPieChartData()
         })
-        this.initPieChartData()
     }
 
     /**
@@ -128,14 +154,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
      * @param {string} softwareData Pie chart series data (first-time load)
      */
     initPieChartData = (softwareData: string = ""): void => {
-        let softwares;
-        if(this.state.filteredSoftwares === undefined){
-            softwares = (
-                JSON.parse(dataManager.getElement("snapshot")) as SnapshotData
-            ).softwares
-        }else{
-            softwares = this.state.filteredSoftwares
-        }
+        let softwares = this.getSoftwares()
         const rawSeries = new Map<string, number>();
         softwares.forEach((singleVersion) => {
             const softwareInstallType = singleVersion.installType

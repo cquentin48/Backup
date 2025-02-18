@@ -81,10 +81,10 @@ export default class Filter {
      * @see {@link} Authorized comparison operators
      */
     public static comparisonTypesCheck (comparaison: string): void {
-        const authorizedList = ["<", ">", "!=", "=="];
+        const authorizedList = ["<", "<=", ">", ">=", "!=", "==", "includes"];
         if (!authorizedList.includes(comparaison)) {
             throw new ValidationError(`The comparison ${comparaison} set is not valid. "+
-                "The only ones accepted are : "<", ">", "!=" or "==".`)
+                "The only ones accepted are : "<", "<=", ">", ">=", "!=", "==" or "includes".`)
         }
     }
 
