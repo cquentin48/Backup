@@ -51,12 +51,20 @@ interface SideNavBarElementProps {
  * @returns {React.JSX.Element} View component rendered in the browser.
  */
 export default function SideNavBarElement (props: SideNavBarElementProps): React.JSX.Element {
-    const classNames = props.id === props.selectedElement ? "sidebarNavElement selected" : "sidebarNavElement";
+    let classNames;
+    if(props.id === props.selectedElement){
+        classNames = "sidebarNavElement selected"
+    }else{
+        classNames = "sidebarNavElement"
+    }
+
     return (
         <div
             className={classNames}
             id={`sideNavBarElement${props.id}`}
-            onClick={() => { props.updateSelectedNumber(props.id) }}
+            onClick={() => 
+                props.updateSelectedNumber(props.id)
+            }
         >
             <Link
                 to={{
@@ -73,9 +81,7 @@ export default function SideNavBarElement (props: SideNavBarElementProps): React
                     {props.image}
                 </div>
                 <span className="navBarLabel">
-                    <div>
                         {props.navBarLabel}
-                    </div>
                 </span>
             </Link>
         </div>

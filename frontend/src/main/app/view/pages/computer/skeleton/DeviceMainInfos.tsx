@@ -10,8 +10,8 @@ import DeviceNameHeaderSkeleton from "./DeviceName";
 export default function DeviceMainInfosSkeleton (): React.JSX.Element {
     return (
         <div id="computerMainInfos">
-            <DeviceMainInfosHeaderSkeleton/>
             <DeviceSpecsMainInfosSkeleton/>
+            <DeviceMainInfosHeaderSkeleton/>
             <DeviceNameHeaderSkeleton/>
             <br />
         </div>

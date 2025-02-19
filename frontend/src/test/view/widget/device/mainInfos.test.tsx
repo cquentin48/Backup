@@ -8,7 +8,64 @@ import SnapshotID from "../../../../main/app/model/device/snapshotId"
 import MainInfosFrame from "../../../../main/app/view/pages/computer/mainInfosFrame"
 import { dataManager } from "../../../../main/app/model/AppDataManager"
 
+import snapshotDataQuery from "../../../../main/res/queries/snapshot.graphql"
+import deviceDataQuery from "../../../../main/res/queries/computer_infos.graphql"
+import gqlClient from "../../../../main/app/model/queries/client"
+
 describe("MainInfosFrame unit test suite", () => {
+    beforeEach(() => {
+        gqlClient.get_query_client().query = initGraphQLMock()
+    })
+
+    /**
+     * Init graphql query mock for the unit tests
+     * @returns {jest.Mock} Mocked graphql query function
+     */
+    const initGraphQLMock = (): jest.Mock =>{
+        const deviceQueryOutput = {
+            data: {
+                deviceInfos: {
+                    cores: 4,
+                    memory: 16,
+                    name: "My PC!",
+                    operatingSystem: "OS",
+                    processor: "My processor name",
+                    snapshots: [
+                        {
+                            snapshotId: "1",
+                            snapshotDate: "2020-01-01"
+                        }
+                    ]
+                }
+            }
+        }
+        const snapshotQueryOutput = {
+            data: {
+                snapshotInfos: {
+                    versions: [
+                        {
+                            name: "My software",
+                            chosenVersion: "type",
+                            installType: "1.0"
+                        }
+                    ],
+                    repositories: []
+                }
+            }
+        }
+        return jest.fn().mockImplementation(async ({ query }) => {
+            if (query === snapshotDataQuery) {
+                return await Promise.resolve(
+                    snapshotQueryOutput
+                )
+            } else if (query === deviceDataQuery) {
+                return await Promise.resolve(
+                    deviceQueryOutput
+                )
+            }
+        })
+    }
+
     afterEach(() => {
         dataManager.removeAllData()
     })
@@ -32,7 +89,7 @@ describe("MainInfosFrame unit test suite", () => {
 
         // Acts
         render(
-            <MainInfosFrame device={testDevice}/>
+            <MainInfosFrame device={testDevice} />
         )
     })
 
@@ -60,7 +117,7 @@ describe("MainInfosFrame unit test suite", () => {
 
         // Acts
         const { container, getByText } = render(
-            <MainInfosFrame device={testDevice}/>
+            <MainInfosFrame device={testDevice} />
         )
 
         const snapshotSelect = container.querySelector(".MuiSelect-nativeInput") as Element

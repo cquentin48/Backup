@@ -10,66 +10,91 @@ import deviceDataQuery from "../../../../main/res/queries/computer_infos.graphql
 import '@testing-library/jest-dom'
 import { BrowserRouter } from "react-router-dom"
 import { ApolloError } from "@apollo/client"
-
-const oldQueryMethod = gqlClient.get_query_client().query
+import { useSnackbar } from "notistack"
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(() => ({ id: '1' }))
 }));
 
-const deviceQueryOutput = {
-    data: {
-        deviceInfos: {
-            cores: 4,
-            memory: 16,
-            name: "My PC!",
-            operatingSystem: "OS",
-            processor: "My processor name",
-            snapshots: [
-                {
-                    snapshotId: "1",
-                    snapshotDate: "2020-01-01"
-                }
-            ]
-        }
-    }
-}
-const snapshotQueryOutput = {
-    data: {
-        snapshotInfos: {
-            versions: [
-                {
-                    name: "My software",
-                    softwareInstallType: "type",
-                    softwareVersion: "1.0"
-                }
-            ],
-            repositories: []
-        }
-    }
-}
-const graphqlMockQueryOutput = jest.fn().mockImplementation(async ({ query }) => {
-    if (query === snapshotDataQuery) {
-        return await Promise.resolve(
-            snapshotQueryOutput
-        )
-    } else if (query === deviceDataQuery) {
-        return await Promise.resolve(
-            deviceQueryOutput
-        )
-    }
-})
+jest.mock("notistack", () => ({
+    ...jest.requireActual("notistack"),
+    useSnackbar: jest.fn()
+}));
 
 describe("Device page", () => {
     afterEach(() => {
         dataManager.removeAllData()
-        gqlClient.get_query_client().query = oldQueryMethod
+    })
+    afterAll(() => {
+        jest.restoreAllMocks()
     })
 
-    test("Initial render (before data loaded)", () => {
-        // Given
-        gqlClient.get_query_client().query = graphqlMockQueryOutput
+    /**
+     * Init jest mock for the method ``enqueueSnackbar`` from the library ``notistack``
+     * @returns {jest.Mock} mocked method
+     */
+    const initEnqueueSnackbarHook = (): jest.Mock =>{
+        const mockEnqueueSnackbar = jest.fn();
+        (useSnackbar as jest.Mock).mockReturnValue({
+            enqueueSnackbar: mockEnqueueSnackbar,
+        });
+        return mockEnqueueSnackbar
+    }
+
+    /**
+     * Mock the graphql client ``query`` method for the unit tests
+     * @returns {jest.Mock} Mocked graphql query method
+     */
+    const mockGraphQLQueryMethod = (): jest.Mock => {
+        const deviceQueryOutput = {
+            data: {
+                deviceInfos: {
+                    cores: 4,
+                    memory: 16,
+                    name: "My PC!",
+                    operatingSystem: "OS",
+                    processor: "My processor name",
+                    snapshots: [
+                        {
+                            snapshotId: "1",
+                            snapshotDate: "2020-01-01"
+                        }
+                    ]
+                }
+            }
+        }
+        const snapshotQueryOutput = {
+            data: {
+                snapshotInfos: {
+                    versions: [
+                        {
+                            name: "My software",
+                            chosenVersion: "type",
+                            installType: "1.0"
+                        }
+                    ],
+                    repositories: []
+                }
+            }
+        }
+        return jest.fn().mockImplementation(async ({ query }) => {
+            if (query === snapshotDataQuery) {
+                return await Promise.resolve(
+                    snapshotQueryOutput
+                )
+            } else if (query === deviceDataQuery) {
+                return await Promise.resolve(
+                    deviceQueryOutput
+                )
+            }
+        })
+    }
+
+    test("Initial render (before data loaded)", async () => {
+        // Before
+        initEnqueueSnackbarHook()
+        gqlClient.get_query_client().query = mockGraphQLQueryMethod()
 
         // Acts
         const { container } = render(<ComputerPage />)
@@ -79,8 +104,9 @@ describe("Device page", () => {
     })
 
     test("Initial render (after loaded data)", async () => {
-        // Given
-        gqlClient.get_query_client().query = graphqlMockQueryOutput
+        // Before
+        initEnqueueSnackbarHook()
+        gqlClient.get_query_client().query = mockGraphQLQueryMethod()
 
         // Acts
         const { container } = render(
@@ -95,8 +121,10 @@ describe("Device page", () => {
         }, { timeout: 2500 })
     }, 3000)
 
-    test.skip("Initial render (data error)", async () => {
-        // Given
+    test("Initial render (data error)", async () => {
+
+        // Before
+        const enqueueMock = initEnqueueSnackbarHook()
         const graphqlMockQueryOutput = jest.fn().mockImplementation(({ query }) => {
             throw new ApolloError({ errorMessage: "Invalid data!" })
         })
@@ -110,6 +138,6 @@ describe("Device page", () => {
         )
 
         // Asserts
-        expect(console.error).toBeCalled()
+        expect(document.title).toBe("Backup - unknown device")
     }, 3000)
 })

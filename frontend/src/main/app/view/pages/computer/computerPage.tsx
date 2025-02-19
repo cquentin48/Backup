@@ -19,6 +19,7 @@ import { Box, Typography } from '@mui/material';
 export default function ComputerPage (): React.JSX.Element {
     const [device, setDevice] = React.useState<Device>();
     const [loaded, setLoaded] = React.useState<boolean>(false);
+    const { enqueueSnackbar } = useSnackbar()
 
     /**
      * Device load operation result method
@@ -26,16 +27,15 @@ export default function ComputerPage (): React.JSX.Element {
      */
     const loadedDeviceOpResult = (resultData: string): void => {
         try {
-            try {
-                const device = Device.fromJSON(resultData)
-                setDevice(device)
-                document.title = `Backup - device ${device.name}`
-            } catch (e) {
-                throw JSON.parse(resultData)
+            if(Object.hasOwn(JSON.parse(resultData), "errorType")){
+                const errorData = (JSON.parse(resultData) as any)['data']
+                throw errorData
             }
+            const device = Device.fromJSON(resultData)
+            setDevice(device)
+            document.title = `Backup - device ${device.name}`
         } catch (e) {
             if ((e as Error).name !== 'NotFoundError') {
-                const { enqueueSnackbar } = useSnackbar()
                 enqueueSnackbar(JSON.stringify(e), { variant: "error" })
             }
             document.title = "Backup - unknown device"
@@ -43,6 +43,7 @@ export default function ComputerPage (): React.JSX.Element {
             setLoaded(true)
         }
     }
+
     loadDevice.addObservable("computerPage", loadedDeviceOpResult)
 
     const { id } = useParams()

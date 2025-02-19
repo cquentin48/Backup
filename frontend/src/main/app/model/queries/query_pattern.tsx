@@ -10,5 +10,5 @@ export default interface QueryPattern {
      * @param parameters GraphQL parameters
      * @returns query result
      */
-    compute_query: (client: typeof gqlClient, query: DocumentNode, parameters: BasicQueryParameters) => unknown | [unknown]
+    computeQuery: (client: typeof gqlClient, query: DocumentNode, parameters: BasicQueryParameters) => unknown | [unknown]
 }

@@ -19,7 +19,7 @@ class LoadSnapshot extends ControllerAction {
     performAction (inputs: string): void {
         const selectedSnapshotID = JSON.parse(inputs);
         const query = snapshotData;
-        snapshotGQLData.compute_query(
+        snapshotGQLData.computeQuery(
             gqlClient,
             query,
             {

@@ -1,16 +1,28 @@
 import React from "react";
-import { BrowserRouter, LinkProps } from "react-router-dom"
+import { BrowserRouter, LinkProps, MemoryRouter } from "react-router-dom"
 
-import { fireEvent, render } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 
 import '@testing-library/jest-dom'
 
 import ComputeSideNavBar from "../../../../../main/app/view/pages/computer/navBar/computerSideNavBar";
+import SideNavBarElement from "../../../../../main/app/view/pages/computer/navBar/sideNavBarElement";
 
-jest.mock("react-router-dom", () => ({
-    ...jest.requireActual("react-router-dom"),
-    Link: (props: LinkProps) => <span>{props.children}</span>
-}))
+jest.mock("react-router-dom", () => {
+    const actual = jest.requireActual("react-router-dom")
+
+    return {
+        ...actual,
+        Link: ({ to, children, ...props }: LinkProps) =>
+            <a href={typeof to === "string" ? to : "#"} {...props}>
+                {children}
+            </a>,
+        useLocation: () => ({
+            pathname: '#'
+        }),
+        useNavigate: () => jest.fn()
+    }
+})
 
 describe("Device main infos side nav bar unit test suite", () => {
     test("Check rendering", async () => {
@@ -71,38 +83,57 @@ describe("Device main infos side nav bar unit test suite", () => {
 
     test("Detect update element click event", () => {
         // Given
-        let mockState = 0;
-        const setStateMock = jest.fn((newState) => (mockState = newState));
-
-        jest.spyOn(React, "useState").mockImplementation(() => [mockState, setStateMock]);
-
-        // Acts
-        render(
-            <BrowserRouter>
-                <ComputeSideNavBar
-                    selectedID={0}
-                    updateSelectedID={setStateMock}
+        const updateMock = jest.fn()
+        const { getByText, rerender } = render(
+            <MemoryRouter>
+                <SideNavBarElement
+                    componentPath="/"
+                    navBarLabel="Main informations"
+                    classId="mainInformations"
+                    image={
+                        <div></div>
+                    }
+                    id={1}
+                    updateSelectedNumber={updateMock}
+                    selectedElement={0}
                 />
-            </BrowserRouter>
+            </MemoryRouter>
         )
 
-        const textElements = [
-            "Main informations",
-            "Libraries",
-            "Software configurations",
-            "Folder storage"
-        ]
+        const textElement = "Main informations"
+        var navBarObject = ((getByText(textElement) as Element).parentElement as ParentNode).parentElement as HTMLElement
+
+        // Acts
+        fireEvent.mouseOver(navBarObject)
+        const classesBeforeSelectItem: string[] = []
+        navBarObject.classList.forEach((divClass)=>
+            classesBeforeSelectItem.push(divClass)
+        )
+
+        fireEvent.click(navBarObject)
+        
+        rerender(
+            <MemoryRouter>
+                <SideNavBarElement
+                    componentPath="/"
+                    navBarLabel="Main informations"
+                    classId="mainInformations"
+                    image={
+                        <div></div>
+                    }
+                    id={1}
+                    updateSelectedNumber={updateMock}
+                    selectedElement={1}
+                />
+            </MemoryRouter>
+        )
+        navBarObject = ((screen.getByText(textElement) as Element).parentElement as ParentNode).parentElement as HTMLElement
 
         // Asserts
-        textElements.forEach((textElement, index) => {
-            const navBarElement = document.querySelector(`#sideNavBarElement${index}`)
-            console.log(navBarElement?.querySelector("a"))
-            if (navBarElement == null) {
-                throw new Error(`Unit test error : nav bar element #${index} not found!`)
-            }
-            fireEvent.mouseOver(navBarElement)
-            fireEvent.click(navBarElement)
-            expect(setStateMock).toBeCalled()
-        })
+        expect(classesBeforeSelectItem).not.toContain('selected')
+        expect(classesBeforeSelectItem).toContain('sidebarNavElement')
+        expect(updateMock).toHaveBeenCalledTimes(1)
+        expect(navBarObject).toHaveClass('selected')
+
     })
 })
