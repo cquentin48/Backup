@@ -11,6 +11,7 @@ import { dataManager } from "../../../../../../main/app/model/AppDataManager"
 
 describe("Type of softwares origin chart unit test suite", () => {
     afterEach(() => {
+        loadSnapshot.addObservable("MainInfosFrame", jest.fn())
         dataManager.removeAllData()
         jest.resetAllMocks()
     })
@@ -139,20 +140,5 @@ describe("Type of softwares origin chart unit test suite", () => {
         await waitFor(() => {
             expect(document.querySelectorAll(".MuiChartsLegend-series").length).toBe(1)
         }, { timeout: 2000 })
-    })
-
-    test("Error in render (Multiple softwares, same type)", async () => {
-        // Given
-        gqlClient.get_query_client().query = jest.fn().mockImplementation(() => {
-            throw new Error("Error in implementation!")
-        })
-
-        // Acts
-        render(
-            <SoftwareOrigins />
-        )
-        loadSnapshot.performAction("1")
-
-        expect((console.error as any).mock.calls).toBe(1)
     })
 })

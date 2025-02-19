@@ -6,7 +6,6 @@ import gqlClient from "../../../model/queries/client";
 import { snapshotGQLData } from "../../../model/queries/computer/loadSnapshot";
 import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 import { dataManager } from "../../../model/AppDataManager";
-import { useSnackbar } from "notistack";
 
 /**
  * "Adds new filter" controller action set in the device main information page.
@@ -32,9 +31,10 @@ class LoadSnapshot extends ControllerAction {
             for (let i = 0; i < callBackMethod.length; i++) {
                 callBackMethod[i](JSON.stringify(filterManager.getFilters()))
             }
-        }).catch((error) => {
-            const { enqueueSnackbar } = useSnackbar()
-            enqueueSnackbar(error, { variant: "error" })
+        }).catch(e=>{
+            const error = e as Error
+            const stack = (error.stack as string)
+            console.log(stack)
         })
     }
 }

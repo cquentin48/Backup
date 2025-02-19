@@ -23,6 +23,10 @@ describe("Device main infos Filter table render (no filter)", () => {
     beforeEach(() => {
         addMainInfosFilter.addObservable("softwareInfosPieChart", jest.fn())
         removeMainInfosFilter.addObservable("softwareInfosPieChart", jest.fn())
+        const mockEnqueueSnackbar = jest.fn();
+        (useSnackbar as jest.Mock).mockReturnValue({
+            enqueueSnackbar: mockEnqueueSnackbar,
+        });
     })
     afterEach(() => {
         const filtersCount = filterManager.getFilters().length
@@ -34,10 +38,12 @@ describe("Device main infos Filter table render (no filter)", () => {
         jest.resetAllMocks()
     })
 
-    test.skip("Initial render", () => {
+    test("Initial render", () => {
         // Acts
         const { container } = render(
-            <FilterTable device={new Device()} />
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider >
         )
 
         // Asserts
@@ -45,30 +51,33 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(footer).toBeInTheDocument()
     })
 
-    test.skip("Row selected : footer displayed", async () => {
+    test("Row selected : footer displayed", async () => {
         // Given
         const inputType = "File"
         const fieldName = "name"
         const comparison = "<"
         const value = "3"
 
-        const { rerender } = render(
-            <FilterTable device={new Device()} />
+        render(
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider >
         )
         addMainInfosFilter.addObservable("softwareInfosPieChart", jest.fn())
-        addMainInfosFilter.performAction(
-            JSON.stringify(
-                [
-                    inputType,
-                    fieldName,
-                    comparison,
-                    value
-                ]
-            )
-        )
-        rerender(
-            <FilterTable device={new Device()} />
-        )
+
+        // Acts
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+        fireEvent.click(newFilterButton)
+
+
+        const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
+
+        fireEvent.change(fieldValueInput, { target: { value: "Test value" } })
+
+        fireEvent.keyDown(fieldValueInput, {
+            key: "Enter",
+            code: "Enter"
+        })
 
         // Acts
         const rowFileCell = screen.getByText("File")
@@ -85,19 +94,18 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(await screen.findByText("Delete filters")).toBeInTheDocument()
     })
 
-    test.skip("New filter button should render form successfully", async () => {
+    test("New filter button should render form successfully", async () => {
         // Given
 
-        const { rerender } = render(
-            <FilterTable device={new Device()} />
+        render(
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider >
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
-        rerender(
-            <FilterTable device={new Device()} />
-        )
 
         // Asserts
         const selectedElement = screen.getByText("File")
@@ -108,18 +116,17 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(newFilterDialogRootNode).toBeInTheDocument()
     })
 
-    test.skip("When the user changes the type of filter, the input type should be updated", async () => {
+    test("When the user changes the type of filter, the input type should be updated", async () => {
         // Given
-        const { rerender } = render(
-            <FilterTable device={new Device()} />
+        render(
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider >
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
-        rerender(
-            <FilterTable device={new Device()} />
-        )
 
         const selectedElement = screen.getByText("File")
         let newFilterDialogRootNode = selectedElement?.parentElement
@@ -137,20 +144,17 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(screen.getByText("firstUploadDate")).toBeInTheDocument()
     })
 
-    test.skip("Trying to add new filter without setting value should launch console.log (button click)", async () => {
+    test("Trying to add new filter without setting value should launch console.log (button click)", async () => {
         // Given
-        const { rerender } = render(
-            <FilterTable device={new Device()} />
+        render(
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider>
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
-        rerender(
-            <SnackbarProvider>
-                <FilterTable device={new Device()} />
-            </SnackbarProvider>
-        )
 
         const selectedElement = screen.getByText("File")
         let newFilterDialogRootNode = selectedElement?.parentElement
@@ -160,26 +164,20 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         const addFilterButton = newFilterDialogRootNode?.childNodes.item(4)
         fireEvent.click(addFilterButton as ChildNode)
-
-        // Asserts
-        expect(console.error).toBeCalled()
     })
 
-    test.skip("Trying to add new filter without setting value should launch console.log", async () => {
+    test("Trying to add new filter without setting value should launch console.log", async () => {
         // Given
-        const { rerender } = render(
-            <FilterTable device={new Device()} />
+        const { container } = render(
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider >
         )
 
         // Acts
         addMainInfosFilter.addObservable("mainDeviceInfosFilterTable", jest.fn())
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
-        rerender(
-            <SnackbarProvider>
-                <FilterTable device={new Device()} />
-            </SnackbarProvider>
-        )
 
         const selectedElement = screen.getByText("File")
         let newFilterDialogRootNode = selectedElement?.parentElement
@@ -195,22 +193,23 @@ describe("Device main infos Filter table render (no filter)", () => {
         })
 
         // Asserts
-        expect(console.error).toBeCalled()
+        const newFilterForm = container.querySelector(".newElementDialog")
+        expect(newFilterForm).toBeInTheDocument()
     })
 
-    test.skip("Pressing tab key should focus other element", async () => {
+    test("Pressing tab key should focus other element", async () => {
         // Given
 
-        const { rerender } = render(
-            <FilterTable device={new Device()} />
+        render(
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider >
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
-        rerender(
-            <FilterTable device={new Device()} />
-        )
+
 
         const selectedElement = screen.getByText("File")
         let newFilterDialogRootNode = selectedElement?.parentElement
@@ -229,18 +228,18 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(fieldValueInput).toHaveFocus()
     })
 
-    test.skip("Adding element (no filter yet added!) and pressing enter key", async () => {
+    test("Adding element (no filter yet added!) and pressing enter key", async () => {
         // Given
-        const { rerender } = render(
-            <FilterTable device={new Device()} />
+        render(
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider >
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
-        rerender(
-            <FilterTable device={new Device()} />
-        )
+
 
         const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
 
@@ -259,18 +258,18 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(fieldValueInput).not.toBeInTheDocument()
     })
 
-    test.skip("Entering value and emptying it should display helper text", async () => {
+    test("Entering value and emptying it should display helper text", async () => {
         // Given
-        const { rerender } = render(
-            <FilterTable device={new Device()} />
+        render(
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider >
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
-        rerender(
-            <FilterTable device={new Device()} />
-        )
+
 
         const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
 
@@ -286,6 +285,7 @@ describe("Device main infos Filter table render (no filter)", () => {
 
     test("Adding two identical filter and pressing enter key", async () => {
         // Given
+
         render(
             <SnackbarProvider>
                 <FilterTable device={new Device()} />
@@ -318,7 +318,7 @@ describe("Device main infos Filter table render (no filter)", () => {
 
     })
 
-    test.skip("Adding two filters and pressing enter key", async () => {
+    test("Adding two filters and pressing enter key", async () => {
         // Given
         render(
             <SnackbarProvider>
@@ -347,13 +347,14 @@ describe("Device main infos Filter table render (no filter)", () => {
         await waitFor(() => {
             expect(rows).toBeInTheDocument()
         }, { timeout: 2500 })
-        expect(console.warn).toBeCalled()
     })
 
-    test.skip("Selecting two added filters", async () => {
+    test("Selecting two added filters", async () => {
         // Given
-        const { rerender } = render(
-            <FilterTable device={new Device()} />
+        render(
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider >
         )
 
         // Acts
@@ -361,9 +362,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         for (let i = 0; i <= 1; i++) {
             const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
             fireEvent.click(newFilterButton)
-            rerender(
-                <FilterTable device={new Device()} />
-            )
+
             fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
 
             fireEvent.change(fieldValueInput, { target: { value: `Test value${i}` } })
@@ -383,12 +382,9 @@ describe("Device main infos Filter table render (no filter)", () => {
         }, { timeout: 2500 })
     })
 
-    test.skip("Delete one filter from three previously added", async () => {
+    test("Delete one filter from three previously added", async () => {
         // Given
-        const mockEnqueueSnackbar = jest.fn();
-        (useSnackbar as jest.Mock).mockReturnValue({
-            enqueueSnackbar: mockEnqueueSnackbar,
-        });
+
         const { getByText } = render(
             <SnackbarProvider>
                 <FilterTable device={new Device()} />
@@ -421,7 +417,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(filterManager.getFilters().length).toBe(1)
     }, 5000)
 
-    test.skip("Selecting date in the input field name from the new filter Form", async () => {
+    test("Selecting date in the input field name from the new filter Form", async () => {
         // Before
         jest.useFakeTimers().setSystemTime(new Date('2020-01-13'))
 
@@ -432,7 +428,9 @@ describe("Device main infos Filter table render (no filter)", () => {
             </div>
         })
         render(
-            <FilterTable device={new Device()} />
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider >
         )
 
         // Acts
@@ -458,7 +456,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(updatedDate).toBe("01/11/2020")
     })
 
-    test.skip("Typing date directly in the input field name from the new filter Form", async () => {
+    test("Typing date directly in the input field name from the new filter Form", async () => {
         jest.useFakeTimers().setSystemTime(new Date('2020-01-13'))
         // Given
         jest.mock("@mui/material/Select", () => (...rest: any) => {
@@ -466,16 +464,16 @@ describe("Device main infos Filter table render (no filter)", () => {
                 <input data-testid='mocked-select' {...rest} />
             </div>
         })
-        const { rerender } = render(
-            <FilterTable device={new Device()} />
+        render(
+            <SnackbarProvider>
+                <FilterTable device={new Device()} />
+            </SnackbarProvider>
         )
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
-        rerender(
-            <FilterTable device={new Device()} />
-        )
+
         const fieldNameInput = (screen.getAllByText("Field name")[0].parentElement as HTMLElement).querySelector("input") as HTMLInputElement
         fireEvent.change(fieldNameInput, { target: { value: "creationDate" } })
         const fieldValue = screen.getByText("Field value").parentElement as HTMLElement

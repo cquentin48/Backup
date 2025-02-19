@@ -99,8 +99,8 @@ class Device {
     isUndefined (): boolean {
         const nameCondition = this.name === ""
         const processorCondition = this.processor === ""
-        const coresCondition = this.cores === -1
-        const memoryCondition = this.memory === -1
+        const coresCondition = this.cores <= 0
+        const memoryCondition = this.memory <= 0
         const snapshotConditions = this.snapshots.length === 1 && this.snapshots[0].isUndefined()
 
         return nameCondition && processorCondition && coresCondition && memoryCondition && snapshotConditions

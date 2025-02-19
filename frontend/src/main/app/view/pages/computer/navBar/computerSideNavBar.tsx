@@ -32,7 +32,7 @@ export default function ComputeSideNavBar (props: ComputerSideNavProps): React.J
     return (
         <div id="computerSideNav">
             <SideNavBarElement
-                componentPath=""
+                componentPath="/"
                 navBarLabel="Main informations"
                 classId="mainInformations"
                 image={
@@ -47,7 +47,7 @@ export default function ComputeSideNavBar (props: ComputerSideNavProps): React.J
                 selectedElement={props.selectedID}
             />
             <SideNavBarElement
-                componentPath=""
+                componentPath="/"
                 navBarLabel="Libraries"
                 classId="libraries"
                 image={
@@ -65,7 +65,7 @@ export default function ComputeSideNavBar (props: ComputerSideNavProps): React.J
                 updateSelectedNumber={() => { props.updateSelectedID(1) }}
                 selectedElement={props.selectedID} />
             <SideNavBarElement
-                componentPath=""
+                componentPath="/"
                 navBarLabel="Software configurations"
                 classId="softwareConfigurations"
                 image={
@@ -81,7 +81,7 @@ export default function ComputeSideNavBar (props: ComputerSideNavProps): React.J
                 updateSelectedNumber={() => { props.updateSelectedID(2) }}
                 selectedElement={props.selectedID} />
             <SideNavBarElement
-                componentPath=""
+                componentPath="/"
                 navBarLabel="Folder storage"
                 classId="folderStorage"
                 image={

@@ -1,6 +1,7 @@
 import React from "react";
 import DeviceMainInfosHeaderSkeleton from "./DeviceMainInfosHeader";
 import DeviceSpecsMainInfosSkeleton from "./DeviceSpecsMainInfos";
+import DeviceNameHeaderSkeleton from "./DeviceName";
 
 /**
  * Device main informations skeleton component. Rendered before device data is loaded
@@ -11,6 +12,7 @@ export default function DeviceMainInfosSkeleton (): React.JSX.Element {
         <div id="computerMainInfos">
             <DeviceMainInfosHeaderSkeleton/>
             <DeviceSpecsMainInfosSkeleton/>
+            <DeviceNameHeaderSkeleton/>
             <br />
         </div>
     )

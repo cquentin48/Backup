@@ -23,14 +23,14 @@ describe("Application data manager unit tests", () => {
         // Given
         const newElement = "element"
         const elementKey = "myKey"
-
-        // Acts
         dataManager.setElement(elementKey, (newElement as unknown as object))
 
+        // Acts
+        const newValue = "newValue"
+        dataManager.setElement(elementKey, (newValue as unknown as object))
+
         // Asserts
-        expect(
-            () => { dataManager.setElement(elementKey, (newElement as unknown as object)); }
-        ).toThrow(AlreadyAddedWarning)
+        expect(JSON.parse(dataManager.getElement(elementKey))).toBe(newValue)
     })
 
     test('Retrieves element (element not yet added)', () => {

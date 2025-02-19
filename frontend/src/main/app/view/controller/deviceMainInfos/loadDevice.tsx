@@ -29,9 +29,6 @@ class LoadDevice extends ControllerAction {
             dataManager.setElement("device", device);
             const callBackMethod = this.getObservable("computerPage")
             callBackMethod(JSON.stringify(device))
-        }).catch((error) => {
-            const callBackMethod = this.getObservable("computerPage")
-            callBackMethod(JSON.stringify(error))
         })
     }
 }

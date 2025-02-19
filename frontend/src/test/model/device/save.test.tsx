@@ -13,7 +13,7 @@ describe("Snapshot data model unit tests", () => {
         const opResult = snapshotID.localizedDate()
 
         // Asserts
-        const expectedResult = "Saturday, February 1, 2020"
+        const expectedResult = "Wednesday, January 1, 2020"
         expect(opResult).toBe(expectedResult)
     })
 })

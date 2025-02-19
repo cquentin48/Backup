@@ -10,6 +10,7 @@ import { loadSnapshot } from "../../controller/deviceMainInfos/loadSnapshot";
 import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 
 import '../../../../res/css/ComputerMainInfos.css';
+import { useSnackbar } from "notistack";
 
 /**
  * State of the main information frame
@@ -57,7 +58,13 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
             selectedSnapshot: props.device.snapshots[0].id
         })
         loadSnapshot.addObservable("MainInfosFrame", this.updateSnapshotViewData)
-        loadSnapshot.performAction(JSON.stringify((this.props.device).snapshots[0].id))
+        try {
+            loadSnapshot.performAction(JSON.stringify((this.props.device).snapshots[0].id))
+        } catch (error) {
+            const { enqueueSnackbar } = useSnackbar()
+            enqueueSnackbar(JSON.stringify(error), { variant: "error" })
+        }
+
     }
 
     /**
@@ -150,7 +157,7 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
                     {snapshots}
                 </div>
                 <Paper elevation={2} id="detailsContainer">
-                    <FormatsPieCharts device={device}/>
+                    <FormatsPieCharts device={device} />
                 </Paper>
             </div>
         );

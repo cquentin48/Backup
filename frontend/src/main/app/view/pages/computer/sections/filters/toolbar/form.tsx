@@ -10,6 +10,7 @@ import { addFilter } from "../../../../../controller/deviceMainInfos/addFilter";
 import DeviceMainInfosFilterCreationButton from "./createFilterButton";
 import FieldValue from "./fieldValue";
 import FilterToolbar from "./selectFilter";
+import NotFoundError from "../../../../../../model/exception/errors/notFoundError";
 
 /**
  * State of the new filter form dialog
@@ -66,20 +67,6 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
     const inputRefs = useRef<Array<() => undefined>>([]);
     const [firstTime, updateFirstTime] = React.useState(true);
 
-    /**
-     * Key pressed handling method
-     * @param {KeyboardEvent} pressedKey pressed event
-     */
-    const handlePressedKey = (pressedKey: KeyboardEvent): void => {
-        if (pressedKey.key === "Tab") {
-            pressedKey.preventDefault();
-            updateFocusedInput((focusedInput + 1) % 4);
-            (inputRefs.current[focusedInput] as any).focus();
-        }
-        if (pressedKey.key === "Enter") {
-            addsNewFilter();
-        }
-    }
 
     /**
      * Adds a new filter to the main device informations filter list
@@ -91,38 +78,62 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             comparison,
             value
         ]
-        try {
-            if (value.length > 0) {
+        if (value.length > 0) {
+            try {
                 addFilter.performAction(
                     JSON.stringify(inputs)
                 );
-            } else {
-                throw new ValidationError("You must enter a value for the filter to create it!")
+            } catch (error) {
+                throw error
             }
-            props.closesDialog(false);
-        } catch (error) {
-            let variant: "warning" | "error" | "default" | "success" | "info" | undefined;
-            let message;
-            if (error instanceof AlreadyAddedWarning) {
-                variant = "warning"
-                message = error.message;
-            } else if (error instanceof ValidationError) {
-                variant = "error"
-                message = error.message;
-            }
-            console.error(error)
-            const { enqueueSnackbar } = useSnackbar()
-            enqueueSnackbar(message, { variant })
+        } else {
+            throw new ValidationError("You must enter a value for the filter to create it!")
         }
+        props.closesDialog(false);
     }
 
     useEffect(() => {
+        /**
+         * Key pressed handling method
+         * @param {KeyboardEvent} pressedKey pressed event
+         */
+        const handlePressedKey = (pressedKey: KeyboardEvent): void => {
+            if (pressedKey.key === "Tab") {
+                pressedKey.preventDefault();
+                updateFocusedInput((focusedInput + 1) % 4);
+                (inputRefs.current[focusedInput] as any).focus();
+            }
+            if (pressedKey.key === "Enter") {
+                try {
+                    addsNewFilter();
+                } catch (error) {
+                    error = initError(error as Error)
+                    const { enqueueSnackbar } = useSnackbar()
+                    enqueueSnackbar((error as any).message, { variant: (error as any).variant })
+                }
+            }
+        }
+
         document.addEventListener("keydown", handlePressedKey)
+
         return () => { document.removeEventListener("keydown", handlePressedKey); }
     })
 
     const initInputRef = (input: never, i: number): void => {
         inputRefs.current[i] = input;
+    }
+
+    const initError = (error: Error) => {
+        let variant: "warning" | "error" | "default" | "success" | "info" | undefined;
+        let message;
+        if (error instanceof AlreadyAddedWarning) {
+            variant = "warning"
+            message = error.message;
+        } else if (error instanceof ValidationError) {
+            variant = "error"
+            message = error.message;
+        }
+        return { variant: variant, message: message }
     }
 
     return (
@@ -165,9 +176,9 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
                 value={value}
             />
             <DeviceMainInfosFilterCreationButton
-                addNewFilter={
-                    addsNewFilter
-                }
+                addNewFilter={() => {
+                    addsNewFilter()
+                }}
             />
         </div>
     )

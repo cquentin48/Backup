@@ -1,11 +1,16 @@
 import React from "react";
+import { BrowserRouter, LinkProps } from "react-router-dom"
 
 import { fireEvent, render } from "@testing-library/react"
 
 import '@testing-library/jest-dom'
 
 import ComputeSideNavBar from "../../../../../main/app/view/pages/computer/navBar/computerSideNavBar";
-import { BrowserRouter } from "react-router-dom"
+
+jest.mock("react-router-dom", () => ({
+    ...jest.requireActual("react-router-dom"),
+    Link: (props: LinkProps) => <span>{props.children}</span>
+}))
 
 describe("Device main infos side nav bar unit test suite", () => {
     test("Check rendering", async () => {
@@ -66,18 +71,20 @@ describe("Device main infos side nav bar unit test suite", () => {
 
     test("Detect update element click event", () => {
         // Given
-        const updateSelectedId: (newID: number) => void = (newID: number) => {
-            console.log(newID)
-        }
+        let mockState = 0;
+        const setStateMock = jest.fn((newState) => (mockState = newState));
+
+        jest.spyOn(React, "useState").mockImplementation(() => [mockState, setStateMock]);
 
         // Acts
         render(
             <BrowserRouter>
                 <ComputeSideNavBar
                     selectedID={0}
-                    updateSelectedID={updateSelectedId}
+                    updateSelectedID={setStateMock}
                 />
-            </BrowserRouter>)
+            </BrowserRouter>
+        )
 
         const textElements = [
             "Main informations",
@@ -89,11 +96,13 @@ describe("Device main infos side nav bar unit test suite", () => {
         // Asserts
         textElements.forEach((textElement, index) => {
             const navBarElement = document.querySelector(`#sideNavBarElement${index}`)
+            console.log(navBarElement?.querySelector("a"))
             if (navBarElement == null) {
                 throw new Error(`Unit test error : nav bar element #${index} not found!`)
             }
+            fireEvent.mouseOver(navBarElement)
             fireEvent.click(navBarElement)
-            expect(console.log).toHaveBeenCalled()
+            expect(setStateMock).toBeCalled()
         })
     })
 })

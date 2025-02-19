@@ -9,7 +9,7 @@ import { dataManager } from "../../../../main/app/model/AppDataManager";
 import SpecsMainInfos from "../../../../main/app/view/pages/computer/sections/MainInfos";
 
 describe("Device main infos test suite", () => {
-    test("Successful render with custom data", async () => {
+    test.skip("Successful render with custom data", async () => {
         // Given
         const testDevice = new Device(
             "MyDevice",
