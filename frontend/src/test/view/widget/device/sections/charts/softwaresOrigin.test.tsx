@@ -1,6 +1,6 @@
 import React from "react"
 
-import { render, waitFor } from "@testing-library/react"
+import { getByText, render, waitFor } from "@testing-library/react"
 
 import '@testing-library/jest-dom'
 
@@ -10,8 +10,10 @@ import { loadSnapshot } from "../../../../../../main/app/view/controller/deviceM
 import { dataManager } from "../../../../../../main/app/model/AppDataManager"
 
 describe("Type of softwares origin chart unit test suite", () => {
-    afterEach(() => {
+    beforeEach(() => {
         loadSnapshot.addObservable("MainInfosFrame", jest.fn())
+    })
+    afterEach(() => {
         dataManager.removeAllData()
         jest.resetAllMocks()
     })
@@ -24,8 +26,8 @@ describe("Type of softwares origin chart unit test suite", () => {
                     versions: [
                         {
                             name: "My software",
-                            softwareInstallType: "type",
-                            softwareVersion: "1.0"
+                            installType: "type",
+                            chosenVersion: "1.0"
                         }
                     ],
                     repositories: []
@@ -35,18 +37,15 @@ describe("Type of softwares origin chart unit test suite", () => {
         gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
 
         // Acts
-        const { rerender } = render(
+        render(
             <SoftwareOrigins />
         )
         loadSnapshot.performAction("1")
-        rerender(
-            <SoftwareOrigins />
-        )
 
         await waitFor(() => {
             expect(document.querySelector(".MuiChartsLegend-series-0")).toBeInTheDocument()
-        }, { timeout: 10000 })
-    }, 10500)
+        }, { timeout: 500 })
+    })
 
     test("Successful render (Multiple softwares, other included)", async () => {
         // Given
@@ -56,38 +55,38 @@ describe("Type of softwares origin chart unit test suite", () => {
                     versions: [
                         {
                             name: "My software",
-                            softwareInstallType: "type",
-                            softwareVersion: "1.0"
+                            installType: "type",
+                            chosenVersion: "1.0"
                         },
                         {
                             name: "My second software",
-                            softwareInstallType: "type2",
-                            softwareVersion: "1.0"
+                            installType: "type2",
+                            chosenVersion: "1.0"
                         },
                         {
                             name: "My third software",
-                            softwareInstallType: "type3",
-                            softwareVersion: "1.0"
+                            installType: "type3",
+                            chosenVersion: "1.0"
                         },
                         {
                             name: "My fourth software",
-                            softwareInstallType: "type4",
-                            softwareVersion: "1.0"
+                            installType: "type4",
+                            chosenVersion: "1.0"
                         },
                         {
                             name: "My fifth software",
-                            softwareInstallType: "type5",
-                            softwareVersion: "1.0"
+                            installType: "type5",
+                            chosenVersion: "1.0"
                         },
                         {
                             name: "My sixth software",
-                            softwareInstallType: "type6",
-                            softwareVersion: "1.0"
+                            installType: "type6",
+                            chosenVersion: "1.0"
                         },
                         {
                             name: "My seventh software",
-                            softwareInstallType: "type7",
-                            softwareVersion: "1.0"
+                            installType: "type7",
+                            chosenVersion: "1.0"
                         }
                     ],
                     repositories: []
@@ -105,7 +104,7 @@ describe("Type of softwares origin chart unit test suite", () => {
         await waitFor(() => {
             expect(document.querySelector(".MuiChartsLegend-series-0")).toBeInTheDocument()
             expect(getByText("Other")).toBeInTheDocument()
-        }, { timeout: 2000 })
+        }, { timeout: 500 })
     })
 
     test("Successful render (Multiple softwares, same type)", async () => {
@@ -116,13 +115,13 @@ describe("Type of softwares origin chart unit test suite", () => {
                     versions: [
                         {
                             name: "My software",
-                            softwareInstallType: "type",
-                            softwareVersion: "1.0"
+                            installType: "type",
+                            chosenVersion: "1.0"
                         },
                         {
                             name: "My second software",
-                            softwareInstallType: "type",
-                            softwareVersion: "1.0"
+                            installType: "type",
+                            chosenVersion: "1.0"
                         }
                     ],
                     repositories: []
@@ -139,6 +138,6 @@ describe("Type of softwares origin chart unit test suite", () => {
 
         await waitFor(() => {
             expect(document.querySelectorAll(".MuiChartsLegend-series").length).toBe(1)
-        }, { timeout: 2000 })
+        }, { timeout: 500 })
     })
 })

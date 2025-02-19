@@ -27,6 +27,7 @@ class LoadSnapshot extends ControllerAction {
             }
         ).then((result: SnapshotData) => {
             dataManager.setElement("snapshot", result);
+
             const callBackMethod = [this.getObservable("MainInfosFrame"), this.getObservable("softwareInfosPieChart")]
             for (let i = 0; i < callBackMethod.length; i++) {
                 callBackMethod[i](JSON.stringify(filterManager.getFilters()))
