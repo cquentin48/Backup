@@ -68,7 +68,7 @@ export default function FieldValue (props: FieldValueProps): React.JSX.Element {
         const helperText = props.value.length === 0 && !props.firstTime && "You must enter a value here!";
         return (
             <TextField
-                id="computerMainInfosFilterValueField"
+                id="deviceMainInfosFilterValueField"
                 label="Field value"
                 variant="standard"
                 type={props.getfieldNameType}
@@ -113,7 +113,7 @@ export default function FieldValue (props: FieldValueProps): React.JSX.Element {
                         slotProps={{
                             textField: {
                                 variant: "standard",
-                                id: "computerMainInfosFilterValueField"
+                                id: "deviceMainInfosFilterValueField"
                             }
                         }}
                     />

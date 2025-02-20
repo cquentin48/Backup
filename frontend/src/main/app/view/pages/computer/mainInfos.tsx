@@ -20,7 +20,7 @@ interface DeviceMainInfosProps {
  */
 export default function DeviceMainInfos (props: DeviceMainInfosProps): React.JSX.Element {
     return (
-        <div id="computerMainInfos">
+        <div id="deviceMainInfos">
             <SpecsMainInfos device={props.device} />
             <DeviceMainInfosHeader device={props.device} />
             <br />

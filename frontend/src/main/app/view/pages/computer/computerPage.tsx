@@ -27,8 +27,8 @@ export default function ComputerPage (): React.JSX.Element {
      */
     const loadedDeviceOpResult = (resultData: string): void => {
         try {
-            if(Object.hasOwn(JSON.parse(resultData), "errorType")){
-                const errorData = (JSON.parse(resultData) as any)['data']
+            if (Object.hasOwn(JSON.parse(resultData), "errorType")) {
+                const errorData = (JSON.parse(resultData)).data
                 throw errorData
             }
             const device = Device.fromJSON(resultData)

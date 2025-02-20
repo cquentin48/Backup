@@ -8,6 +8,7 @@
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.26.3",
+    "@base-ui-components/react": "^1.0.0-alpha.6",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mdi/js": "^7.4.47",

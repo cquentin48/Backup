@@ -1,8 +1,8 @@
 /** @type {import('jest').Config} */
 global.console = {
-    log: console.log,
+    log: jest.fn,
     debug: jest.fn,
     info: jest.fn,
     warn: jest.fn,
-    error: jest.fn
+    error: console.log
 }

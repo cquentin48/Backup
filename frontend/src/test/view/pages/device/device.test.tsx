@@ -34,10 +34,10 @@ describe("Device page", () => {
      * Init jest mock for the method ``enqueueSnackbar`` from the library ``notistack``
      * @returns {jest.Mock} mocked method
      */
-    const initEnqueueSnackbarHook = (): jest.Mock =>{
+    const initEnqueueSnackbarHook = (): jest.Mock => {
         const mockEnqueueSnackbar = jest.fn();
         (useSnackbar as jest.Mock).mockReturnValue({
-            enqueueSnackbar: mockEnqueueSnackbar,
+            enqueueSnackbar: mockEnqueueSnackbar
         });
         return mockEnqueueSnackbar
     }
@@ -138,6 +138,9 @@ describe("Device page", () => {
         )
 
         // Asserts
-        expect(document.title).toBe("Backup - unknown device")
-    }, 3000)
+        await waitFor(() => {
+            expect(document.title).toBe("Backup - unknown device")
+        })
+        expect(enqueueMock).toBeCalled()
+    })
 })

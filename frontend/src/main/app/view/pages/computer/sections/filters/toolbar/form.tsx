@@ -10,7 +10,6 @@ import { addFilter } from "../../../../../controller/deviceMainInfos/addFilter";
 import DeviceMainInfosFilterCreationButton from "./createFilterButton";
 import FieldValue from "./fieldValue";
 import FilterToolbar from "./selectFilter";
-import NotFoundError from "../../../../../../model/exception/errors/notFoundError";
 
 /**
  * State of the new filter form dialog
@@ -52,6 +51,21 @@ interface NewFilterFormProps {
 }
 
 /**
+ * Data defining an error for the snackbar notification
+ */
+interface DataError {
+    /**
+     * Error message
+     */
+    message: string
+
+    /**
+     * Error type
+     */
+    variant: string
+}
+
+/**
  * New filter form in the device main infos page
  * @param {NewFilterFormProps} props Close form dialog function
  * @returns {React.JSX.Element} rendered component
@@ -67,7 +81,6 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
     const inputRefs = useRef<Array<() => undefined>>([]);
     const [firstTime, updateFirstTime] = React.useState(true);
 
-
     /**
      * Adds a new filter to the main device informations filter list
      */
@@ -79,13 +92,9 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             value
         ]
         if (value.length > 0) {
-            try {
-                addFilter.performAction(
-                    JSON.stringify(inputs)
-                );
-            } catch (error) {
-                throw error
-            }
+            addFilter.performAction(
+                JSON.stringify(inputs)
+            );
         } else {
             throw new ValidationError("You must enter a value for the filter to create it!")
         }
@@ -106,8 +115,8 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             if (pressedKey.key === "Enter") {
                 try {
                     addsNewFilter();
-                } catch (error) {
-                    error = initError(error as Error)
+                } catch (rawError) {
+                    const error = initError(rawError as Error)
                     const { enqueueSnackbar } = useSnackbar()
                     enqueueSnackbar((error as any).message, { variant: (error as any).variant })
                 }
@@ -123,9 +132,15 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
         inputRefs.current[i] = input;
     }
 
-    const initError = (error: Error) => {
-        let variant: "warning" | "error" | "default" | "success" | "info" | undefined;
-        let message;
+    /**
+     * Initialise an error
+     * @param {Error} error Error thrown in an operation
+     * @returns {DataError} error Data
+     * TODO: move towards an utils file
+     */
+    const initError = (error: Error): DataError => {
+        let variant: "warning" | "error" | "default" | "success" | "info" | undefined = "default";
+        let message = "";
         if (error instanceof AlreadyAddedWarning) {
             variant = "warning"
             message = error.message;
@@ -133,7 +148,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             variant = "error"
             message = error.message;
         }
-        return { variant: variant, message: message }
+        return { variant, message }
     }
 
     return (

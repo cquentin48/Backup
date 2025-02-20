@@ -1,6 +1,5 @@
 import { dataManager } from "../../main/app/model/AppDataManager"
 import NotFoundError from "../../main/app/model/exception/errors/notFoundError"
-import AlreadyAddedWarning from "../../main/app/model/exception/warning/alreadyAdded"
 
 describe("Application data manager unit tests", () => {
     afterEach(() => {

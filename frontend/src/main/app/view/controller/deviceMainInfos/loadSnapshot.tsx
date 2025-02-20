@@ -32,10 +32,13 @@ class LoadSnapshot extends ControllerAction {
             for (let i = 0; i < callBackMethod.length; i++) {
                 callBackMethod[i](JSON.stringify(filterManager.getFilters()))
             }
-        }).catch(e=>{
-            const error = e as Error
-            const stack = (error.stack as string)
-            console.log(stack)
+        }).catch((error: Error) => {
+            const errorName = error.name
+            const callBackMethod = this.getObservable("MainInfosFrame")
+            callBackMethod(JSON.stringify({
+                errorType: errorName,
+                data: error
+            }))
         })
     }
 }

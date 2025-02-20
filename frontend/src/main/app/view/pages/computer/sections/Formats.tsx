@@ -5,7 +5,7 @@ import { Grid2 } from "@mui/material";
 
 import SoftwareOrigins from "./charts/SoftwareOrigins";
 import FilesTypes from "./charts/FilesTypes";
-import FilterTable from "./filters/table";
+import FilterTable from "./filters/cardTable";
 import type Device from "../../../../model/device/device";
 
 import '../../../../../res/css/ComputerMainInfos.css';

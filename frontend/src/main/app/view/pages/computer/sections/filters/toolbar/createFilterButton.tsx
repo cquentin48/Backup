@@ -20,7 +20,7 @@ interface DeviceMainInfosFilterCreationButtonProps {
  * @returns {React.JSX.Element} Button dom element
  */
 export default function DeviceMainInfosFilterCreationButton
-    (props: DeviceMainInfosFilterCreationButtonProps): React.JSX.Element {
+(props: DeviceMainInfosFilterCreationButtonProps): React.JSX.Element {
     const { enqueueSnackbar } = useSnackbar()
     return (
         <Tooltip title="Adds new filter">
@@ -29,8 +29,7 @@ export default function DeviceMainInfosFilterCreationButton
                 onClick={() => {
                     try {
                         props.addNewFilter()
-                    }
-                    catch (error) {
+                    } catch (error) {
                         enqueueSnackbar((error as any).message, { variant: (error as any).variant })
                     }
                 }}

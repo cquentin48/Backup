@@ -9,7 +9,7 @@ import { dataManager } from "../../../../main/app/model/AppDataManager";
 import SpecsMainInfos from "../../../../main/app/view/pages/computer/sections/MainInfos";
 
 describe("Device main infos test suite", () => {
-    test.skip("Successful render with custom data", async () => {
+    test("Successful render with custom data", async () => {
         // Given
         const testDevice = new Device(
             "MyDevice",
@@ -25,18 +25,27 @@ describe("Device main infos test suite", () => {
         dataManager.setElement("device", testDevice)
 
         // Acts
-        const { container } = render(<SpecsMainInfos device={testDevice}/>)
-        const opResult = container.querySelector("#deviceMainInfos")
+        const { getByText } = render(<SpecsMainInfos device={testDevice} />)
+        const opResult = getByText("Processor")
+        let deviceSpecsContainer = opResult.parentElement as HTMLElement
+
+        while (deviceSpecsContainer.id !== "deviceMainInfosSpecs") {
+            deviceSpecsContainer = deviceSpecsContainer.parentElement as HTMLElement
+        }
+
+        const expectedOutputValues = [
+            testDevice.processor,
+            testDevice.cores.toString(),
+            testDevice.formatBytes(testDevice.memory),
+            (testDevice.snapshots[0]).localizedDate(),
+            (testDevice.snapshots[0]).localizedDate(),
+            "Amount of storage here used in the backup server"
+        ]
 
         // Assert
-        expect(opResult).toHaveTextContent("My processor")
-        expect(opResult).toHaveTextContent("1")
-        expect(opResult).toHaveTextContent("4 GB RAM in total")
-        expect(opResult).toHaveTextContent(
-            (testDevice.snapshots[0]).localizedDate()
-        )
-        expect(opResult).toHaveTextContent(
-            "Amount of storage here used in the backup server"
-        )
+        expectedOutputValues.forEach((expectedOutput: string, index: number) => {
+            const cardValue = deviceSpecsContainer.children[index].children[0].children[1]
+            expect(cardValue).toHaveTextContent(expectedOutput)
+        })
     })
 })

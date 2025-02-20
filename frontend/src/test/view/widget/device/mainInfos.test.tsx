@@ -21,7 +21,7 @@ describe("MainInfosFrame unit test suite", () => {
      * Init graphql query mock for the unit tests
      * @returns {jest.Mock} Mocked graphql query function
      */
-    const initGraphQLMock = (): jest.Mock =>{
+    const initGraphQLMock = (): jest.Mock => {
         const deviceQueryOutput = {
             data: {
                 deviceInfos: {

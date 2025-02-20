@@ -84,11 +84,21 @@ export default class MainInfosFrame extends React.Component<MainInfosFrameProps,
      */
     updateSnapshotViewData = (data: string): void => {
         const snapshots = JSON.parse(data)
-        const currentlySelectedSnapshotID = (this.props.device).snapshots[0].id
-        this.setState({
-            snapshots: snapshots as SnapshotData[],
-            selectedSnapshot: currentlySelectedSnapshotID
-        })
+        try {
+            if (Object.hasOwn(JSON.parse(snapshots), "errorType")) {
+                const errorData = (JSON.parse(snapshots)).data
+                throw errorData
+            }
+            const currentlySelectedSnapshotID = (this.props.device).snapshots[0].id
+            this.setState({
+                snapshots: snapshots as SnapshotData[],
+                selectedSnapshot: currentlySelectedSnapshotID
+            })
+        } catch (e) {
+            if ((e as Error).name !== 'NotFoundError') {
+                console.error(JSON.stringify(e), { variant: "error" })
+            }
+        }
     }
 
     /**

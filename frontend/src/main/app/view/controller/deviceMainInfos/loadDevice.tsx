@@ -2,7 +2,6 @@ import ControllerAction from "../controllerActions";
 
 import getDeviceInfos from '../../../../res/queries/computer_infos.graphql';
 import gqlClient from "../../../model/queries/client";
-import { dataManager } from "../../../model/AppDataManager";
 import FetchComputerInfosGQL from "../../../model/queries/computer/computerInfos";
 import type Device from "../../../model/device/device";
 
@@ -26,7 +25,7 @@ class LoadDevice extends ControllerAction {
                 deviceID: selectedDeviceID
             }
         ).then((device: Device) => {
-            //dataManager.setElement("device", device);
+            // dataManager.setElement("device", device);
             const callBackMethod = this.getObservable("computerPage")
             callBackMethod(JSON.stringify(device))
         }).catch((error: Error) => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, LinkProps, MemoryRouter } from "react-router-dom"
+import { BrowserRouter, type LinkProps, MemoryRouter } from "react-router-dom"
 
 import { fireEvent, render, screen } from "@testing-library/react"
 
@@ -101,17 +101,17 @@ describe("Device main infos side nav bar unit test suite", () => {
         )
 
         const textElement = "Main informations"
-        var navBarObject = ((getByText(textElement) as Element).parentElement as ParentNode).parentElement as HTMLElement
+        let navBarObject = ((getByText(textElement) as Element).parentElement as ParentNode).parentElement as HTMLElement
 
         // Acts
         fireEvent.mouseOver(navBarObject)
         const classesBeforeSelectItem: string[] = []
-        navBarObject.classList.forEach((divClass)=>
+        navBarObject.classList.forEach((divClass) =>
             classesBeforeSelectItem.push(divClass)
         )
 
         fireEvent.click(navBarObject)
-        
+
         rerender(
             <MemoryRouter>
                 <SideNavBarElement

@@ -52,9 +52,9 @@ interface SideNavBarElementProps {
  */
 export default function SideNavBarElement (props: SideNavBarElementProps): React.JSX.Element {
     let classNames;
-    if(props.id === props.selectedElement){
+    if (props.id === props.selectedElement) {
         classNames = "sidebarNavElement selected"
-    }else{
+    } else {
         classNames = "sidebarNavElement"
     }
 
@@ -62,8 +62,7 @@ export default function SideNavBarElement (props: SideNavBarElementProps): React
         <div
             className={classNames}
             id={`sideNavBarElement${props.id}`}
-            onClick={() => 
-                props.updateSelectedNumber(props.id)
+            onClick={() => { props.updateSelectedNumber(props.id); }
             }
         >
             <Link
@@ -81,7 +80,7 @@ export default function SideNavBarElement (props: SideNavBarElementProps): React
                     {props.image}
                 </div>
                 <span className="navBarLabel">
-                        {props.navBarLabel}
+                    {props.navBarLabel}
                 </span>
             </Link>
         </div>
