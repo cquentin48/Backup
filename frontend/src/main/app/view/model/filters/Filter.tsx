@@ -37,7 +37,7 @@ export default class Filter {
     /**
      * Filter operation type (e.g. ``<`` or ``>``)
      */
-    opType: FilterComparisonType;
+    comparisonType: FilterComparisonType;
 
     /**
      * Value including or not elements with the filter on
@@ -58,7 +58,7 @@ export default class Filter {
         filterValue: object) {
         this.elementType = elementType;
         this.fieldName = fieldName;
-        this.opType = opType;
+        this.comparisonType = opType;
         this.filterValue = filterValue
     }
 

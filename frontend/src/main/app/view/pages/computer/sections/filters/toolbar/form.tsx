@@ -6,10 +6,11 @@ import "../../../../../../../res/css/Filters.css";
 import Filter from "../../../../../model/filters/Filter";
 import ValidationError from "../../../../../../model/exception/errors/validationError";
 import AlreadyAddedWarning from "../../../../../../model/exception/warning/alreadyAdded";
-import { addFilter } from "../../../../../controller/deviceMainInfos/addFilter";
 import DeviceMainInfosFilterCreationButton from "./createFilterButton";
 import FieldValue from "./fieldValue";
 import FilterToolbar from "./selectFilter";
+import { useDispatch } from "react-redux";
+import { addFilter } from "../../../../../controller/deviceMainInfos/filterSlice";
 
 /**
  * State of the new filter form dialog
@@ -81,6 +82,8 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
     const inputRefs = useRef<Array<() => undefined>>([]);
     const [firstTime, updateFirstTime] = React.useState(true);
 
+    const dispatch = useDispatch()
+
     /**
      * Adds a new filter to the main device informations filter list
      */
@@ -92,9 +95,11 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             value
         ]
         if (value.length > 0) {
-            addFilter.performAction(
-                JSON.stringify(inputs)
-            );
+            dispatch(
+                addFilter(
+                    JSON.stringify(inputs)
+                )
+            )
         } else {
             throw new ValidationError("You must enter a value for the filter to create it!")
         }

@@ -9,14 +9,14 @@ import { PieChart } from "@mui/x-charts";
 import { dataManager } from "../../../../../model/AppDataManager";
 import NotImplementedError from "../../../../../model/exception/errors/notImplementedError";
 import { type SnapshotData } from "../../../../../model/snapshot/snapshotData";
-import { type SnapshotSoftware } from "../../../../../model/snapshot/snapshotLibrary";
-import { addFilter } from "../../../../controller/deviceMainInfos/addFilter";
-import { loadSnapshot } from "../../../../controller/deviceMainInfos/loadSnapshot";
+import { SnapshotSoftware } from "../../../../../model/snapshot/snapshotLibrary";
 import { type FilterComparisonType } from "../../../../model/filters/Filter";
 import type Filter from "../../../../model/filters/Filter";
 
 import '../../../../../../res/css/ComputerMainInfos.css';
-import { removeDeviceMainInfosFilter as removeFilter } from "../../../../controller/deviceMainInfos/removeFilters";
+import { useSelector } from "react-redux";
+import { AppState as AppDataState } from "../../../../controller/store";
+import { FilterRow } from "../../../../model/filters/FilterManager";
 
 interface SoftwareOriginsState {
     /**
@@ -51,30 +51,25 @@ interface PieChartData {
  *  Sofware Origins pie charts view component
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export default class SoftwareOrigins extends React.Component<{}, SoftwareOriginsState> {
-    state: Readonly<SoftwareOriginsState> = {
-        data: [],
-        filteredSoftwares: undefined
-    };
+export default function SoftwareOrigins (): React.JSX.Element {
+    const [data, setData] = React.useState<PieChartData[]>([]);
 
-    componentDidMount (): void {
-        loadSnapshot.addObservable("softwareInfosPieChart", this.initPieChartData)
-        addFilter.addObservable("softwareInfosPieChart", this.updatePieChartData)
-        removeFilter.addObservable("softwareInfosPieChart", this.updatePieChartData)
-    }
+    const filters = useSelector((state: AppDataState) => state.filters.filters)
+
+    const [filteredSoftwares, setFilteredSoftwares] = React.useState<SnapshotSoftware[] | undefined>([]);
 
     /**
      * Fetch the filtered software from the state
      * @returns {SnapshotSoftware[]} Filtered | all softwares
      */
-    getSoftwares = (): SnapshotSoftware[] => {
+    const getSoftwares = (): SnapshotSoftware[] => {
         let softwares;
-        if (this.state.filteredSoftwares === undefined) {
+        if (filteredSoftwares === undefined) {
             softwares = (
                 JSON.parse(dataManager.getElement("snapshot")) as SnapshotData
             ).softwares
         } else {
-            softwares = this.state.filteredSoftwares
+            softwares = filteredSoftwares
         }
         return softwares
     }
@@ -87,7 +82,7 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
      * @param {string} fieldName Name of the field for the condition (e.g. ``name``)
      * @returns {SnapshotSoftware[]} Software with the condition applied on
      */
-    applyFilterOn = (softwares: SnapshotSoftware[], value: object, operator: FilterComparisonType, fieldName: string): SnapshotSoftware[] => {
+    const applyFilterOn = (softwares: SnapshotSoftware[], value: object, operator: FilterComparisonType, fieldName: string): SnapshotSoftware[] => {
         switch (operator) {
             case "!=":
                 return softwares.filter((software) => {
@@ -121,39 +116,12 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
         }
     }
 
-    updatePieChartData = (filterData: string): void => {
-        const filters = JSON.parse(filterData) as Filter[]
-        let softwares = (
-            JSON.parse(dataManager.getElement("snapshot")) as SnapshotData
-        ).softwares
-        filters.forEach((filter) => {
-            switch (filter.fieldName) {
-                case "name":
-                case "version":
-                    softwares = this.applyFilterOn(softwares, filter.filterValue, filter.opType, filter.fieldName)
-                    break;
-                case "firstUploadDate":
-                case "lastUploadDate":
-                case "repository":
-                case "size":
-                    throw new NotImplementedError("Not implemented yet!")
-                default:
-                    throw new NotImplementedError("Unknown operation type!")
-            }
-        })
-        this.setState({
-            filteredSoftwares: softwares
-        }, () => {
-            this.initPieChartData()
-        })
-    }
-
     /**
      * Update pie chart series data
      * @param {string} softwareData Pie chart series data (first-time load)
      */
-    initPieChartData = (softwareData: string = ""): void => {
-        const softwares = this.getSoftwares()
+    const initPieChartData = (softwareData: string = ""): void => {
+        const softwares = getSoftwares()
         const rawSeries = new Map<string, number>();
         softwares.forEach((singleVersion) => {
             const softwareInstallType = singleVersion.installType
@@ -182,49 +150,65 @@ export default class SoftwareOrigins extends React.Component<{}, SoftwareOrigins
             filteredArray.push(other)
             series = filteredArray
         }
-        this.setState({
-            data: series
-        })
+        setData(series)
     }
 
-    /**
-     * Component DOM rendering method
-     * @returns {React.JSX.Element} View component
-     */
-    render (): React.JSX.Element {
-        const state = this.state;
-        return (
-            <Card className="PieChartCard">
-                <CardHeader
-                    avatar={
-                        <Avatar
-                            className="PieChartIcon"
-                            arial-labels="recipe">
-                            <Icon path={mdiBookOutline} size={1} />
-                        </Avatar>
-                    }
-                    title="Software origins"
-                    action={
-                        <IconButton aria-label="settings">
-                            <Icon path={mdiFilterOutline} size={1} />
-                        </IconButton>
-                    }
-                />
-                <CardContent>
-                    <PieChart
-                        series={[
-                            {
-                                data: state.data.map((element, index) => {
-                                    return { id: index, value: element.value, label: element.label }
-                                })
-                            }
-                        ]}
-                        width={550}
-                        height={200}
-                        className="DisplayedPieChart"
-                    />
-                </CardContent>
-            </Card>
-        )
+    const updatePieChartData = (filters: FilterRow[]): void => {
+        let softwares = (
+            JSON.parse(dataManager.getElement("snapshot")) as SnapshotData
+        ).softwares
+        filters.forEach((filter) => {
+            switch (filter.fieldName) {
+                case "name":
+                case "version":
+                    softwares = applyFilterOn(softwares, filter.value, filter.comparisonType, filter.fieldName)
+                    break;
+                case "firstUploadDate":
+                case "lastUploadDate":
+                case "repository":
+                case "size":
+                    throw new NotImplementedError("Not implemented yet!")
+                default:
+                    throw new NotImplementedError("Unknown operation type!")
+            }
+        })
+        setFilteredSoftwares(softwares)
+        initPieChartData()
     }
+
+    updatePieChartData(filters)
+
+    return (
+        <Card className="PieChartCard">
+            <CardHeader
+                avatar={
+                    <Avatar
+                        className="PieChartIcon"
+                        arial-labels="recipe">
+                        <Icon path={mdiBookOutline} size={1} />
+                    </Avatar>
+                }
+                title="Software origins"
+                action={
+                    <IconButton aria-label="settings">
+                        <Icon path={mdiFilterOutline} size={1} />
+                    </IconButton>
+                }
+            />
+            <CardContent>
+                <PieChart
+                    series={[
+                        {
+                            data: data.map((element, index) => {
+                                return { id: index, value: element.value, label: element.label }
+                            })
+                        }
+                    ]}
+                    width={550}
+                    height={200}
+                    className="DisplayedPieChart"
+                />
+            </CardContent>
+        </Card>
+    )
 }

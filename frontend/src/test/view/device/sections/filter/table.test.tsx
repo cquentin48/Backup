@@ -1,6 +1,6 @@
 import React, { type ReactNode } from "react"
 
-import FilterTable from "../../../../../main/app/view/pages/computer/sections/filters/cardTable"
+import FilterTable from "../../../../../main/app/view/pages/computer/sections/filters/table"
 
 import { addFilter as addMainInfosFilter } from "../../../../../main/app/view/controller/deviceMainInfos/addFilter"
 import { filterManager } from "../../../../../main/app/view/model/filters/FilterManager"

@@ -1,11 +1,32 @@
 import React, { createRef } from "react";
 
-import { type GridColDef, DataGrid } from "@mui/x-data-grid";
-import { updateDeviceMainInfosFilter } from "../../../../controller/deviceMainInfos/updateSelectedFilters";
+import { Paper } from "@mui/material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { GridApiCommunity } from "@mui/x-data-grid/internals";
+
+import { useSnackbar } from "notistack";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import type Device from "../../../../../model/device/device";
+import { type FilterRow } from "../../../../model/filters/FilterManager";
+
 import DeviceMainInfosGridFooter from "./footer/GridFooter";
 import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
-import { type GridApiCommunity } from "@mui/x-data-grid/internals";
-import { type FilterRow } from "../../../../model/filters/FilterManager";
+
+import { updateSelectedFilter, resetError } from "../../../../controller/deviceMainInfos/filterSlice";
+
+import { AppState } from "../../../../controller/store";
+
+/**
+ * Device loaded boolean passed from the Formats components
+ */
+interface FilterTableProps {
+    /**
+     * If the device has been loaded
+     */
+    device: Device
+}
 
 /**
  * Deleted filter row interface
@@ -64,69 +85,94 @@ const filterTableColumns: GridColDef[] = [
 ];
 
 /**
- * Updated rows and method to get the diff elements
+ * Table displaying the filters used to displays selected informations
+ * in the device main informations page.
+ * @implements {React.Component<{}, FilterTableState>}
  */
-interface DeviceMainInfosTableProps {
-    /**
-     * Updated rows
-     */
-    rows: UpdateRow[]
+export default function FilterTable (props: FilterTableProps): React.JSX.Element {
+    const rows = useSelector((state: AppState) => state.filters.filters)
+    const error = useSelector((state: AppState) => state.filters.error)
+
+    const [currentRows, setViewRows] = React.useState<FilterRow[]>([])
+
+    const { enqueueSnackbar } = useSnackbar()
+
+    const dispatch = useDispatch()
 
     /**
-     * Get the updated table elements
-     * @param {FilterRow[]} currentRows current rows
-     * @param {FilterRow[]} newRows  newly created rows
-     * @returns {UpdateRow[]} List of every table rows (whether it is created, updated or deleted)
+     * Filter table manager
      */
-    getDiffElement: (currentRows: FilterRow[], newRows: FilterRow[]) => UpdateRow[]
-}
-
-/**
- * Table showing the device main infos table
- * @param {DeviceMainInfosTableProps} props Updated rows and method to get the diff elements
- * @returns {React.JSX.Element} Rendered web component
- */
-export default function DeviceMainInfosTable (props: DeviceMainInfosTableProps): React.JSX.Element {
-    /**
-     * Datagrid row table manager
-     */
-    const tableManager = createRef() as React.RefObject<GridApiCommunity> | undefined;
-    const [rows, setRows] = React.useState<FilterRow[]>([])
+    const tableManager = createRef<GridApiCommunity>() as React.RefObject<GridApiCommunity> | undefined
 
     /**
-     * Update rows method callback
-     * @param {UpdateRow[]} updatedRows Updated filters for the table
+     * Between the update filter list and the current filter list, compute
+     * the differences done.
+     * @param { FilterRow[] } currentRows Current filter list set in the datagrid
+     * @param { FilterRow[] } newRows New filter list computed in the recently done operation
+     * @returns { UpdateRow[] } Row updated list ready for the transaction
      */
-    const updateRows = (updatedRows: UpdateRow[]): void => {
-        updatedRows.forEach((element: UpdateRow) => {
-            (tableManager as React.RefObject<GridApiCommunity>).current.updateRows(
-                [element]
-            )
-        })
-        const newRows: FilterRow[] = rows;
-        updatedRows.forEach((row: FilterRow | DeleteRow) => {
-            if ("elementType" in row) {
-                newRows.push(row)
+    const updateRows = (currentRows: FilterRow[], newRows: FilterRow[]): UpdateRow[] => {
+        const updatedRows: UpdateRow[] = [];
+        // Fetch the deleted rows
+        currentRows.forEach((currentRow: FilterRow, index: number) => {
+            const hasRowBeenDeleted = newRows.find(
+                (newRow: FilterRow) => { return newRow === currentRow })
+            if ((hasRowBeenDeleted == null) === undefined) {
+                updatedRows.push({ id: index, _action: 'delete' })
             }
         })
-        setRows(newRows)
+
+        // Fetch the created rows
+        newRows.forEach((newRow: FilterRow, index: number) => {
+            const hasRowBeenCreated = currentRows.find(
+                (currentRow: FilterRow) => { return newRow === currentRow });
+            if (hasRowBeenCreated === undefined) {
+                updatedRows.push({
+                    id: index,
+                    comparisonType: newRow.comparisonType,
+                    fieldName: newRow.fieldName,
+                    elementType: newRow.elementType,
+                    value: newRow.value
+                })
+            }
+        })
+
+        if (tableManager?.current != null) {
+            rows.forEach((row: UpdateRow) => {
+                tableManager.current.updateRows(
+                    [row]
+                )
+            })
+        }
+        return updatedRows;
     }
 
-    updateRows(props.rows)
+    updateRows(currentRows, rows)
+    if (error.message !== "" && error.variant !== undefined) {
+        enqueueSnackbar(
+            error.message,
+            {
+                variant: error.variant
+            }
+        )
+        eraseMessage()
+    }
 
     return (
-        <DataGrid
-            columns={filterTableColumns}
-            rows={rows}
-            checkboxSelection
-            slots={{
-                toolbar: FilterGridToolbar,
-                footer: DeviceMainInfosGridFooter
-            }}
-            onRowSelectionModelChange={(event) => {
-                updateDeviceMainInfosFilter.performAction(JSON.stringify(event))
-            }}
-            apiRef={tableManager}
-        />
+        <Paper className="FilterTable">
+            <DataGrid
+                columns={filterTableColumns}
+                rows={rows}
+                checkboxSelection
+                slots={{
+                    toolbar: FilterGridToolbar,
+                    footer: DeviceMainInfosGridFooter
+                }}
+                onRowSelectionModelChange={(event) => {
+                    dispatch(updateSelectedFilter(JSON.stringify(event)))
+                }}
+                apiRef={tableManager}
+            />
+        </Paper>
     )
 }

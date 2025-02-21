@@ -1,10 +1,10 @@
 import React from "react";
 import type Device from "../../../model/device/device";
 
-import DeviceMainInfosHeader from "../../controller/deviceMainInfos/deviceMainInfosHeader";
 import SpecsMainInfos from "./sections/MainInfos";
 
 import '../../../../res/css/ComputerMainInfos.css';
+import DeviceMainInfosHeader from "./sections/deviceMainInfosHeader";
 
 /**
  * Loaded device from the computer page component

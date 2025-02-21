@@ -27,20 +27,20 @@ class FilterManager {
      * @param {"File" | "Library" } elementType Type of element to apply the filter on
      * @param {string} fieldName Name of the property on which the filter will apply
      * @param { "<" | ">" | "!=" | "==" } comparisonType Type of the comparison (e.g. lower than, higher than, ...)
-     * @param {object} value Value for the filter to apply on
+     * @param {object} value Value for the filter to apply on.
      */
     addFilter (
         elementType: "File" | "Library",
         fieldName: string,
         comparisonType: "<" | ">" | "!=" | "==",
         value: object
-    ): void {
+    ) {
         const newFilter = new Filter(elementType, fieldName, comparisonType, value);
         if (this.filters.filter((filter) => {
             const comparedFilter = filter
             const elementTypeCheck = comparedFilter.elementType === elementType;
             const fieldNameCheck = comparedFilter.fieldName === fieldName;
-            const comparisonTypeCheck = comparedFilter.opType === comparisonType;
+            const comparisonTypeCheck = comparedFilter.comparisonType === comparisonType;
             const valueCheck = comparedFilter.filterValue === value;
             return elementTypeCheck && fieldNameCheck && comparisonTypeCheck && valueCheck
         }).length > 0) {
