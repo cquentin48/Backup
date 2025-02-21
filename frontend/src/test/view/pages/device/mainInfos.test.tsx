@@ -29,7 +29,7 @@ describe("Device main Infos unit test suite", () => {
         dataManager.setElement("device", testDevice)
 
         // Acts
-        const { container } = render(<DeviceMainInfos device={testDevice}/>)
+        const { container } = render(<DeviceMainInfos/>)
         const renderedDeviceHeader = container.querySelector("#deviceMainInfosHeader")
         const renderedDeviceHeaderButton = container.querySelector(".MuiButtonBase-root")
 
@@ -57,7 +57,7 @@ describe("Device main Infos unit test suite", () => {
         dataManager.setElement("device", testDevice)
 
         // Acts
-        const { container } = render(<DeviceMainInfos device={testDevice}/>)
+        const { container } = render(<DeviceMainInfos/>)
         const renderedDeviceHeader = container.querySelector("#deviceMainInfosHeader")
         const renderedDeviceHeaderButton = container.querySelector(".MuiButtonBase-root")
 

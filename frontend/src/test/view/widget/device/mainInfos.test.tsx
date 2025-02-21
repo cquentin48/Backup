@@ -89,7 +89,7 @@ describe("MainInfosFrame unit test suite", () => {
 
         // Acts
         render(
-            <MainInfosFrame device={testDevice} />
+            <MainInfosFrame/>
         )
     })
 
@@ -117,7 +117,7 @@ describe("MainInfosFrame unit test suite", () => {
 
         // Acts
         const { container, getByText } = render(
-            <MainInfosFrame device={testDevice} />
+            <MainInfosFrame/>
         )
 
         const snapshotSelect = container.querySelector(".MuiSelect-nativeInput") as Element

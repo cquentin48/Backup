@@ -6,6 +6,7 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
+    'plugin:react-redux/recommended',
     'standard-with-typescript'
   ],
   ignorePatterns: [
@@ -32,7 +33,8 @@ module.exports = {
   },
   plugins: [
     'react',
-    'jsdoc'
+    'jsdoc',
+    "react-redux"
   ],
   rules: {
     '@typescript-eslint/quotes': 'off',

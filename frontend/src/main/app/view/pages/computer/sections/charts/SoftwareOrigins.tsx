@@ -9,14 +9,14 @@ import { PieChart } from "@mui/x-charts";
 import { dataManager } from "../../../../../model/AppDataManager";
 import NotImplementedError from "../../../../../model/exception/errors/notImplementedError";
 import { type SnapshotData } from "../../../../../model/snapshot/snapshotData";
-import { SnapshotSoftware } from "../../../../../model/snapshot/snapshotLibrary";
+import { type SnapshotSoftware } from "../../../../../model/snapshot/snapshotLibrary";
 import { type FilterComparisonType } from "../../../../model/filters/Filter";
 import type Filter from "../../../../model/filters/Filter";
 
 import '../../../../../../res/css/ComputerMainInfos.css';
 import { useSelector } from "react-redux";
-import { AppState as AppDataState } from "../../../../controller/store";
-import { FilterRow } from "../../../../model/filters/FilterManager";
+import { type AppState as AppDataState } from "../../../../controller/store";
+import { type FilterRow } from "../../../../model/filters/FilterManager";
 
 interface SoftwareOriginsState {
     /**

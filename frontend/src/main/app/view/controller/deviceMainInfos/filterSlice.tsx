@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { filterManager, FilterRow } from "../../model/filters/FilterManager";
+import { filterManager, type FilterRow } from "../../model/filters/FilterManager";
 import Filter from "../../model/filters/Filter";
 import AlreadyAddedWarning from "../../../model/exception/warning/alreadyAdded";
 import { SnapshotSoftware } from "../../../model/snapshot/snapshotLibrary";
@@ -26,11 +26,11 @@ interface DeleteRow {
 type UpdateRow = DeleteRow | FilterRow;
 
 interface FilterSliceState {
-    filters: FilterRow[];
-    selectedFilteredIDS: number[];
+    filters: FilterRow[]
+    selectedFilteredIDS: number[]
     error: {
-        message: string;
-        variant: "error" | "default" | "success" | "warning" | "info" | undefined;
+        message: string
+        variant: "error" | "default" | "success" | "warning" | "info" | undefined
     }
 }
 
@@ -90,8 +90,7 @@ export const filterSlice = createSlice({
                     filterManager.removeFilter(filterID)
                 });
                 state.filters = filterManager.getFilters()
-            }
-            catch (error) {
+            } catch (error) {
                 if (error instanceof NotFoundError) {
                     state.error = {
                         message: error.message,

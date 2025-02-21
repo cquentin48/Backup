@@ -1,11 +1,11 @@
-import React, { type JSX } from "react";
+import React from "react";
 
 import { Box } from "@mui/material";
 import GridFooterDelete from "./GridFooterDel";
 
 import "../../../../../../../res/css/Filters.css";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../../../controller/store";
+import { type AppState } from "../../../../../controller/store";
 
 /**
  * Device main infos datagrid footer

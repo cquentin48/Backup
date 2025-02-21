@@ -9,18 +9,15 @@ import { Grid2 } from "@mui/material";
 import '../../../../../res/css/ComputerMainInfos.css';
 import type Device from "../../../../model/device/device";
 import DeviceStat from "./computerStat";
-
-interface SpecsMainInfosProps {
-    device: Device
-}
+import { useSelector } from "react-redux";
+import { type AppState } from "../../../controller/store";
 
 /**
  * Accordion containing the device main informations
- * @param {SpecsMainInfosProps} props Loaded device from the device page component
  * @returns {React.JSX.Element} Accordion with the device main informations
  */
-export default function SpecsMainInfos (props: SpecsMainInfosProps): React.JSX.Element {
-    const device = props.device
+export default function SpecsMainInfos (): React.JSX.Element {
+    const device = useSelector((state: AppState) => state.device.device) as Device
     const firstSnapshot = device.snapshots[0]
     const lastSnapshot = device.snapshots[device.snapshots.length - 1]
 

@@ -25,7 +25,7 @@ describe("Device main infos test suite", () => {
         dataManager.setElement("device", testDevice)
 
         // Acts
-        const { getByText } = render(<SpecsMainInfos device={testDevice} />)
+        const { getByText } = render(<SpecsMainInfos/>)
         const opResult = getByText("Processor")
         let deviceSpecsContainer = opResult.parentElement as HTMLElement
 

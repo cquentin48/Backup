@@ -6,10 +6,13 @@ import filterReducer from "./deviceMainInfos/filterSlice";
 
 export const store = configureStore({
     reducer: {
-        loadSnapshot: loadSnapshotReducer,
+        snapshot: loadSnapshotReducer,
         filters: filterReducer,
         device: loadDeviceReducer
     }
 })
 
 export type AppState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+export default store;

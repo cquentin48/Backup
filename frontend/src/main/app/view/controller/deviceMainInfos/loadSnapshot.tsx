@@ -3,7 +3,6 @@ import ControllerAction from "../controllerActions";
 import { filterManager } from "../../model/filters/FilterManager";
 import snapshotData from "../../../../res/queries/snapshot.graphql";
 import gqlClient from "../../../model/queries/client";
-import { snapshotGQLData } from "../../../model/queries/computer/loadSnapshot";
 import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 import { dataManager } from "../../../model/AppDataManager";
 
@@ -19,6 +18,7 @@ class LoadSnapshot extends ControllerAction {
     performAction (inputs: string): void {
         const selectedSnapshotID = JSON.parse(inputs);
         const query = snapshotData;
+        /*
         snapshotGQLData.computeQuery(
             gqlClient,
             query,
@@ -39,7 +39,7 @@ class LoadSnapshot extends ControllerAction {
                 errorType: errorName,
                 data: error
             }))
-        })
+        })*/
     }
 }
 

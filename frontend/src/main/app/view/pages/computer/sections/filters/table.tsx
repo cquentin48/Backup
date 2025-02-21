@@ -1,8 +1,8 @@
 import React, { createRef } from "react";
 
 import { Paper } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { GridApiCommunity } from "@mui/x-data-grid/internals";
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import { type GridApiCommunity } from "@mui/x-data-grid/internals";
 
 import { useSnackbar } from "notistack";
 
@@ -16,7 +16,7 @@ import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 
 import { updateSelectedFilter, resetError } from "../../../../controller/deviceMainInfos/filterSlice";
 
-import { AppState } from "../../../../controller/store";
+import { type AppState } from "../../../../controller/store";
 
 /**
  * Device loaded boolean passed from the Formats components
@@ -155,7 +155,7 @@ export default function FilterTable (props: FilterTableProps): React.JSX.Element
                 variant: error.variant
             }
         )
-        eraseMessage()
+        resetError()
     }
 
     return (

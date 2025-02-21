@@ -1,55 +1,38 @@
-import { createSlice } from "@reduxjs/toolkit";
-import snapshotData from "../../../../res/queries/snapshot.graphql";
-import { snapshotGQLData } from "../../../model/queries/computer/loadSnapshot";
-import gqlClient from "../../../model/queries/client";
-import { SnapshotData } from "../../../model/snapshot/snapshotData";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { fetchSnapshot } from "../../../model/queries/computer/loadSnapshot";
+import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 
-interface LoadSnapshotState{
-    snapshot: SnapshotData| undefined;
-    errorMessage: {
-        type: "error" | "default" | "success" | "warning" | "info" | undefined;
-        message: string;
-    }
+interface LoadSnapshotState {
+    snapshot: SnapshotData | undefined
+    loading: boolean
+    error: string
 }
 
 const initialState: LoadSnapshotState = {
     snapshot: undefined,
-    errorMessage: {
-        type: undefined,
-        message: ''
-    }
+    loading: false,
+    error: ""
 }
 
 export const loadSnapshotSlice = createSlice({
     name: 'loadSnapshot',
-    initialState: initialState,
-    reducers: {
-        loadSnapshot: (state, inputs) => {
-            const selectedSnapshotID = JSON.parse(inputs.payload as string);
-            const query = snapshotData;
-            snapshotGQLData.computeQuery(
-                gqlClient,
-                query,
-                {
-                    snapshotID: selectedSnapshotID
-                }
-            ).then((result: SnapshotData) => {
-                state.snapshot = result
-            }).catch((error: Error) => {
-                state.errorMessage = {
-                    message: error.message,
-                    type: undefined
-                }
-            })
-        },
-        eraseMessage: (state) => {
-            state.errorMessage = {
-                type: undefined,
-                message: ''
-            }
-        }
-    }
+    initialState,
+    reducers: {},
+    extraReducers (builder) {
+        builder.addCase(fetchSnapshot.pending, (state)=>{
+            state.loading = true
+            state.error = ""
+            state.snapshot = undefined
+        }).addCase(fetchSnapshot.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.error as string
+            state.snapshot = undefined
+        }).addCase(fetchSnapshot.fulfilled, (state, action: PayloadAction<SnapshotData>)=>{
+            state.loading = false
+            state.error = ""
+            state.snapshot = action.payload
+        })
+    },
 })
 
-export const { loadSnapshot, eraseMessage } = loadSnapshotSlice.actions
 export default loadSnapshotSlice.reducer

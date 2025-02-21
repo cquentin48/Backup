@@ -4,7 +4,7 @@ import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';
 import { FormControl, InputLabel, Select, MenuItem, Paper } from "@mui/material";
 
-import { useSnackbar } from "notistack";
+import { enqueueSnackbar, useSnackbar } from "notistack";
 
 import FormatsPieCharts from "./sections/Formats";
 
@@ -13,48 +13,22 @@ import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 
 import '../../../../res/css/ComputerMainInfos.css';
 
-import { loadSnapshot } from "../../controller/deviceMainInfos/loadSnapshotSlice";
+import { fetchSnapshot } from "../../../model/queries/computer/loadSnapshot";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "../../controller/store";
-
-/**
- * State of the main information frame
- */
-interface MainInfosFrameState {
-    /**
-     * Type of package
-     */
-    snapshots: SnapshotData[]
-
-    /**
-     * Currently selected snapshot
-     */
-    selectedSnapshot: string
-
-    /**
-     * Current snapshot
-     */
-    snapshot: SnapshotData | undefined
-
-}
-
-interface MainInfosFrameProps {
-    device: Device
-}
+import { AppDispatch, type AppState } from "../../controller/store";
 
 /**
  * Main informations frame view component
  * @param {MainInfosFrameProps} props Selected device passed from the {ComputerElement} view page.
  * @returns {React.JSX.Element} View component
  */
-export default function MainInfosFrame (props: MainInfosFrameProps): React.JSX.Element {
-    const dispatch = useDispatch()
+export default function MainInfosFrame (): React.JSX.Element {
+    const dispatch = useDispatch<AppDispatch>()
 
     const [snapshotID, setSnapshotID] = React.useState("")
 
-    useEffect(()=>{
-        dispatch (loadSnapshot(JSON.stringify((props.device).snapshots[0].id)))
-    })
+    const device = useSelector((state: AppState) => state.device.device) as Device
+    const { snapshot, error, loading } = useSelector((state: AppState) => state.snapshot)
 
     /**
      * Update the selected snapshot
@@ -62,8 +36,16 @@ export default function MainInfosFrame (props: MainInfosFrameProps): React.JSX.E
      */
     const updateSelectedSnapshot = (newSnapshotID: string): void => {
         setSnapshotID(newSnapshotID)
-        dispatch(loadSnapshot(JSON.stringify(snapshotID)))
+        dispatch(fetchSnapshot({
+            snapshotId: newSnapshotID
+        }))
     }
+
+
+    useEffect(() => {
+        console.log(JSON.stringify(device.snapshots))
+        updateSelectedSnapshot(device.snapshots[0].id)
+    }, [dispatch, snapshotID])
 
     /**
      * Build the Select snapshot Menu items
@@ -99,38 +81,42 @@ export default function MainInfosFrame (props: MainInfosFrameProps): React.JSX.E
         return menuEntries
     }
 
-    /**
-     * Render frame
-     * @returns {React.JSX.Element} View component
-     */
-    const device = props.device;
-    const snapshotList = buildMenuItems(device);
-    const snapshots =
-        <FormControl id="mainInfosSelectForm">
-            <InputLabel id="dataType">Snapshot list</InputLabel>
-            <Select
-                labelId="dataType-label"
-                data-testid="dataType-select"
-                id="dataType-select"
-                value={snapshotID}
-                onChange={(e) => { updateSelectedSnapshot(e.target.value); }}
-                autoWidth
-            >
-                {
-                    snapshotList
-                }
-            </Select>
-        </FormControl>
+    if (error) {
+        enqueueSnackbar(
+            error, { variant: "error" }
+        )
+        return <div></div>
+    } else if (snapshot) {
+        const snapshotList = buildMenuItems(device);
+        const snapshots =
+            <FormControl id="mainInfosSelectForm">
+                <InputLabel id="dataType">Snapshot list</InputLabel>
+                <Select
+                    labelId="dataType-label"
+                    data-testid="dataType-select"
+                    id="dataType-select"
+                    value={snapshotID}
+                    onChange={(e) => { updateSelectedSnapshot(e.target.value); }}
+                    autoWidth
+                >
+                    {
+                        snapshotList
+                    }
+                </Select>
+            </FormControl>
 
-    return (
-        <div id="mainInfosTable">
-            <div id="mainInfosTableSelectHeader">
-                <Icon path={mdiClockOutline} size={1} />
-                {snapshots}
+        return (
+            <div id="mainInfosTable">
+                <div id="mainInfosTableSelectHeader">
+                    <Icon path={mdiClockOutline} size={1} />
+                    {snapshots}
+                </div>
+                <Paper elevation={2} id="detailsContainer">
+                    <FormatsPieCharts device={device} />
+                </Paper>
             </div>
-            <Paper elevation={2} id="detailsContainer">
-                <FormatsPieCharts device={device} />
-            </Paper>
-        </div>
-    );
+        );
+    }else{
+        return <div></div>
+    }
 }

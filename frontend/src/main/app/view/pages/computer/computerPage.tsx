@@ -1,92 +1,49 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import DeviceMainInfos from './mainInfos';
 import DeviceElements from './computerElements';
 import { useParams } from 'react-router-dom';
-import { loadDevice } from '../../controller/deviceMainInfos/loadDevice';
-import Device from '../../../model/device/device';
 
 import DeviceMainInfosSkeleton from './skeleton/DeviceMainInfos';
 import MainInfosFrameSkeleton from './skeleton/DeviceMainInfosFrame';
 import LoadingDeviceModal from './skeleton/DeviceModal';
-import { useSnackbar } from 'notistack';
-import { Box, Typography } from '@mui/material';
+import { AppDispatch, type AppState } from '../../controller/store';
+import { fetchDeviceInfos } from '../../../model/queries/computer/deviceInfos';
+import DeviceNotFound from './notFound/notFoundTitle';
 
 /**
  * Computer page view model
  * @returns {React.JSX.Element} Page component in the web application
  */
 export default function ComputerPage (): React.JSX.Element {
-    const [device, setDevice] = React.useState<Device>();
-    const [loaded, setLoaded] = React.useState<boolean>(false);
-    const { enqueueSnackbar } = useSnackbar()
-
-    /**
-     * Device load operation result method
-     * @param {string} resultData Operating result data (none here)
-     */
-    const loadedDeviceOpResult = (resultData: string): void => {
-        try {
-            if (Object.hasOwn(JSON.parse(resultData), "errorType")) {
-                const errorData = (JSON.parse(resultData)).data
-                throw errorData
-            }
-            const device = Device.fromJSON(resultData)
-            setDevice(device)
-            document.title = `Backup - device ${device.name}`
-        } catch (e) {
-            if ((e as Error).name !== 'NotFoundError') {
-                enqueueSnackbar(JSON.stringify(e), { variant: "error" })
-            }
-            document.title = "Backup - unknown device"
-        } finally {
-            setLoaded(true)
-        }
-    }
-
-    loadDevice.addObservable("computerPage", loadedDeviceOpResult)
+    const dispatch = useDispatch<AppDispatch>();
+    const { loading, device, error } = useSelector((app: AppState) => app.device)
 
     const { id } = useParams()
-    loadDevice.performAction(JSON.stringify(parseInt(id as string)))
-    if (device != null) {
+
+    useEffect(() => {
+        dispatch(fetchDeviceInfos({
+            deviceID: id
+        }))
+    }, [dispatch, id])
+
+    if (!loading && device !== undefined) {
+        document.title = `Backup - device ${device}`
         return (
             <div id="DeviceMainInfosPage">
-                <DeviceMainInfos device={device} />
-                <DeviceElements device={device} />
+                <DeviceMainInfos />
+                <DeviceElements />
             </div>
         )
-    } else if (loaded && device === undefined) {
+    } else if (!loading && device === undefined && error !== undefined) {
+        document.title = "Backup - unknown device"
         return (
-            <div id="DeviceMainInfosPage">
-                <Typography variant='h1'>
-                    404 - Device not found
-                </Typography>
-
-                <Box sx={{
-                    bgcolor: "#ff7c60",
-                    width: "fit-content",
-                    alignItems: "center",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    position: "absolute",
-                    top: "25%",
-                    left: "50%",
-                    transform: "translate(-50%, -25%)",
-                    padding: "12px",
-                    borderRadius: "16px"
-                }}>
-                    <Typography variant='h4'>
-                        The device you are looking for is unavailable right now.
-                        Please check if the device ID you passed is correct.
-                        <br />
-                        If you think the device ID you entered is correct, please contact your
-                        administrator quickly.
-                    </Typography>
-                </Box>
-            </div>
+            <DeviceNotFound />
         )
     } else {
+        document.title = "Backup - loading device"
         return (
             <div id="DeviceMainInfosPage">
                 <LoadingDeviceModal />

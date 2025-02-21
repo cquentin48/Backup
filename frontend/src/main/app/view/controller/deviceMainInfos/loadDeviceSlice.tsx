@@ -1,60 +1,51 @@
-import { createSlice } from "@reduxjs/toolkit";
-import Device from "../../../model/device/device";
-import gqlClient from "../../../model/queries/client";
-import FetchComputerInfosGQL from "../../../model/queries/computer/computerInfos";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import getDeviceInfos from '../../../../res/queries/computer_infos.graphql';
+import Device from "../../../model/device/device";
+import { fetchDeviceInfos } from "../../../model/queries/computer/deviceInfos";
 
 interface LoadDeviceSliceInitialState {
-    device: Device | undefined;
-
+    device: Device | undefined
+    loading: boolean;
     error: {
-        message: string;
-        variant: "error" | "default" | "success" | "warning" | "info" | undefined;
-    }
+        message: string
+        variant: "error" | "default" | "success" | "warning" | "info" | undefined
+    } | undefined
 }
 
 const initialState: LoadDeviceSliceInitialState = {
     device: undefined,
+    loading: false,
     error: {
         message: "",
         variant: undefined
     }
 }
 
-export const loadDeviceSlice = createSlice({
-    name: "Load device",
-    initialState: initialState,
-    reducers: {
-        fetchDevice: (state, action) => {
-            const selectedDeviceID = JSON.parse(action.payload) as number;
-            const query = getDeviceInfos;
-            const gqlRetriever = new FetchComputerInfosGQL()
-            gqlRetriever.computeQuery(
-                gqlClient,
-                query,
-                {
-                    deviceID: selectedDeviceID
-                }
-            ).then((device: Device) => {
-                // dataManager.setElement("device", device);
-                state.device = device
-            }).catch((error: Error) => {
-                state.error = {
-                    message: error.message,
-                    variant: "error"
-                }
+const loadDeviceSlice = createSlice({
+    name: 'device',
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchDeviceInfos.pending, (state) => {
+                state.loading = true;
+                state.device = undefined;
+                state.error = undefined;
             })
-        },
-        resetError: (state) => {
-            state.error = {
-                message: "",
-                variant: undefined
-            }
-        }
+            .addCase(fetchDeviceInfos.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false;
+                state.device = action.payload;
+                state.error = undefined;
+            })
+            .addCase(fetchDeviceInfos.rejected, (state, action) => {
+                state.loading = false;
+                state.device = undefined;
+                state.error = {
+                    message:action.payload as string,
+                    variant: "error"
+                };
+            });
     }
 })
-
-export const { fetchDevice, resetError } = loadDeviceSlice.actions
 
 export default loadDeviceSlice.reducer
