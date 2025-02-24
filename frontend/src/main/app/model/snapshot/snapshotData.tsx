@@ -2,8 +2,7 @@
 import NotFoundError from "../exception/errors/notFoundError";
 import NotImplementedError from "../exception/errors/notImplementedError";
 import AlreadyAddedWarning from "../exception/warning/alreadyAdded";
-import { FilterComparisonType } from "../filters/Filter";
-import { FilterRow } from "../filters/FilterManager";
+import Filter, { FilterComparisonType } from "../filters/Filter";
 import Repositories from "./repositories";
 import { SnapshotSoftware } from "./snapshotLibrary";
 
@@ -109,13 +108,13 @@ export class SnapshotData {
         }
     }
 
-    fetchFilteredSoftwares (filters: FilterRow[]): SnapshotSoftware[] {
+    fetchFilteredSoftwares (filters: Filter[]): SnapshotSoftware[] {
         let softwares = this.versions
         filters.forEach((filter) => {
             switch (filter.fieldName) {
                 case "name":
                 case "version":
-                    softwares = this.applyFilterOn(softwares, filter.value, filter.comparisonType, filter.fieldName)
+                    softwares = this.applyFilterOn(softwares, filter.value, filter.opType, filter.fieldName)
                     break;
                 case "firstUploadDate":
                 case "lastUploadDate":

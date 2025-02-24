@@ -37,12 +37,17 @@ export default class Filter {
     /**
      * Filter operation type (e.g. ``<`` or ``>``)
      */
-    comparisonType: FilterComparisonType;
+    opType: FilterComparisonType;
 
     /**
      * Value including or not elements with the filter on
      */
-    filterValue: object;
+    value: object;
+
+    /**
+     * Filter ID in the filter table
+     */
+    id: number;
 
     /**
      * Constructor method
@@ -55,11 +60,13 @@ export default class Filter {
         elementType: "File" | "Library",
         fieldName: string,
         opType: '<' | '>' | '!=' | '==' | "includes",
-        filterValue: object) {
+        filterValue: object,
+        id: number) {
         this.elementType = elementType;
         this.fieldName = fieldName;
-        this.comparisonType = opType;
-        this.filterValue = filterValue
+        this.opType = opType;
+        this.value = filterValue;
+        this.id = id;
     }
 
     /**

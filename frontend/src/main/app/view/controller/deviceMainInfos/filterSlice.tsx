@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import AlreadyAddedWarning from "../../../model/exception/warning/alreadyAdded";
 import NotFoundError from "../../../model/exception/errors/notFoundError";
-import { filterManager, FilterRow } from "../../../model/filters/FilterManager";
+import { filterManager } from "../../../model/filters/FilterManager";
 import Filter from "../../../model/filters/Filter";
 
 /**
  * Filter slice state
  */
 interface FilterSliceState {
-    filters: FilterRow[]
+    filters: Filter[]
     selectedFilteredIDS: number[]
     error: {
         message: string
@@ -36,15 +36,16 @@ export const filterSlice = createSlice({
         addFilter: (state, action: PayloadAction<Filter>) => {
             const filter = action.payload
             Filter.inputTypeAuthorizedList(action.payload.elementType);
-            Filter.comparisonTypesCheck(filter.comparisonType);
+            Filter.comparisonTypesCheck(filter.opType);
 
             try {
                 filterManager.addFilter(
                     filter.elementType as "File" | "Library",
                     filter.fieldName,
-                    filter.comparisonType as "<" | ">" | "!=" | "==",
-                    filter.filterValue
+                    filter.opType as "<" | ">" | "!=" | "==",
+                    filter.value
                 )
+                state.filters = filterManager.getFilters()
             } catch (e) {
                 if (e instanceof AlreadyAddedWarning) {
                     state.error = {

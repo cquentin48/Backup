@@ -3,17 +3,6 @@ import AlreadyAddedWarning from "../exception/warning/alreadyAdded";
 import Filter from "./Filter";
 
 /**
- * Rows of the filter
- */
-export interface FilterRow {
-    elementType: "File" | "Library"
-    fieldName: string
-    comparisonType: "<" | ">" | "!=" | "=="
-    value: object
-    id: number
-}
-
-/**
  * MainDeviceInformationsFilterManager
  */
 class FilterManager {
@@ -35,13 +24,13 @@ class FilterManager {
         comparisonType: "<" | ">" | "!=" | "==",
         value: object
     ): void {
-        const newFilter = new Filter(elementType, fieldName, comparisonType, value);
+        const newFilter = new Filter(elementType, fieldName, comparisonType, value, this.getFilters().length);
         if (this.filters.filter((filter) => {
             const comparedFilter = filter
             const elementTypeCheck = comparedFilter.elementType === elementType;
             const fieldNameCheck = comparedFilter.fieldName === fieldName;
-            const comparisonTypeCheck = comparedFilter.comparisonType === comparisonType;
-            const valueCheck = comparedFilter.filterValue === value;
+            const comparisonTypeCheck = comparedFilter.opType === comparisonType;
+            const valueCheck = comparedFilter.value === value;
             return elementTypeCheck && fieldNameCheck && comparisonTypeCheck && valueCheck
         }).length > 0) {
             throw new AlreadyAddedWarning("The filter is already set! It will be ignored!")
@@ -65,14 +54,10 @@ class FilterManager {
 
     /**
      * Fetch every filter set
-     * @returns {FilterRow[]} Filter list
+     * @returns {Filter[]} Filter list
      */
-    public getFilters (): FilterRow[] {
-        const input = JSON.parse(JSON.stringify(this.filters));
-        input.forEach((element: FilterRow, index: number) => {
-            element.id = index
-        });
-        return input;
+    public getFilters (): Filter[] {
+        return this.filters
     }
 
     public softwareFilters (): Filter[] {

@@ -12,7 +12,7 @@ import { type SnapshotSoftware } from "../../../../../model/snapshot/snapshotLib
 import '../../../../../../res/css/ComputerMainInfos.css';
 import { useSelector } from "react-redux";
 import { type AppState as AppDataState } from "../../../../controller/store";
-import { type FilterRow } from "../../../../../model/filters/FilterManager";
+import Filter from "../../../../../model/filters/Filter";
 
 /**
  * Pie chart series data
@@ -85,9 +85,9 @@ export default function SoftwareOrigins (): React.JSX.Element {
 
     /**
      * Updates chart data based off the filters set by the user
-     * @param {FilterRow[]} filters Filters set by the user
+     * @param {Filter} filters Filters set by the user
      */
-    const updatePieChartData = (filters: FilterRow[]): void => {
+    const updatePieChartData = (filters: Filter[]): void => {
         const softwares = (snapshot as SnapshotData).fetchFilteredSoftwares(filters)
         initPieChartData(softwares)
     }

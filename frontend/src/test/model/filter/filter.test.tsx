@@ -28,14 +28,18 @@ describe("Filter manager data model unit tests", () => {
         }
 
         const expectedResult = new Filter(
-            elementType, fieldName, comparisonType, fieldValue
+            elementType,
+            fieldName,
+            comparisonType,
+            fieldValue,
+            filterManager.getFilters().length
         )
 
         // Assert
         expect(opResult.elementType).toBe(expectedResult.elementType)
         expect(opResult.fieldName).toBe(expectedResult.fieldName)
-        expect(opResult.filterValue).toBe(expectedResult.filterValue)
-        expect(opResult.comparisonType).toBe(expectedResult.comparisonType)
+        expect(opResult.value).toBe(expectedResult.value)
+        expect(opResult.opType).toBe(expectedResult.opType)
     })
     test('Adds new filter (filter already added)', () => {
         // Given
@@ -94,8 +98,8 @@ describe("Filter manager data model unit tests", () => {
         // Assert
         expect(opResult?.elementType).toBe(elementType)
         expect(opResult?.fieldName).toBe(fieldName)
-        expect(opResult?.filterValue).toBe(fieldValue)
-        expect(opResult?.comparisonType).toBe(comparisonType)
+        expect(opResult?.value).toBe(fieldValue)
+        expect(opResult?.opType).toBe(comparisonType)
     })
     test('Removes filter (filter not yet added)', () => {
         // Acts & asserts

@@ -1,4 +1,4 @@
-import React, { createRef, useEffect } from "react";
+import React, { createRef } from "react";
 
 import { Paper } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
@@ -8,14 +8,13 @@ import { useSnackbar } from "notistack";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { type FilterRow } from "../../../../../model/filters/FilterManager";
-
 import DeviceMainInfosGridFooter from "./footer/GridFooter";
 import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 
 import { updateSelectedFilter, resetError } from "../../../../controller/deviceMainInfos/filterSlice";
 
 import { type AppState } from "../../../../controller/store";
+import Filter from "../../../../../model/filters/Filter";
 
 /**
  * Deleted filter row interface
@@ -35,7 +34,7 @@ interface DeleteRow {
 /**
  * Update row type used for the row update transaction
  */
-type UpdateRow = DeleteRow | FilterRow;
+type UpdateRow = DeleteRow | Filter;
 
 /**
  * Columns set for the filter table below
@@ -66,7 +65,7 @@ const filterTableColumns: GridColDef[] = [
         description: 'Which operation do you wish to apply on the filter.'
     },
     {
-        field: 'filterValue',
+        field: 'value',
         headerName: 'Filter value',
         width: 150,
         description: 'Value where to the filter condition applies.'
@@ -82,7 +81,7 @@ export default function FilterTable (): React.JSX.Element {
     const rows = useSelector((state: AppState) => state.filters.filters)
     const error = useSelector((state: AppState) => state.filters.error)
 
-    const [currentRows, setViewRows] = React.useState<FilterRow[]>([])
+    const [currentRows, setViewRows] = React.useState<Filter[]>([])
 
     const { enqueueSnackbar } = useSnackbar()
 
@@ -96,32 +95,30 @@ export default function FilterTable (): React.JSX.Element {
     /**
      * Between the update filter list and the current filter list, compute
      * the differences done.
-     * @param { FilterRow[] } currentRows Current filter list set in the datagrid
-     * @param { FilterRow[] } newRows New filter list computed in the recently done operation
+     * @param { Filter[] } currentRows Current filter list set in the datagrid
+     * @param { Filter[] } newRows New filter list computed in the recently done operation
      * @returns { UpdateRow[] } Row updated list ready for the transaction
      */
-    const updateRows = (currentRows: FilterRow[], newRows: FilterRow[]): UpdateRow[] => {
+    const updateRows = (currentRows: Filter[], newRows: Filter[]): UpdateRow[] => {
         const updatedRows: UpdateRow[] = [];
 
-        console.log(newRows)
-
         // Fetch the deleted rows
-        currentRows.forEach((currentRow: FilterRow, index: number) => {
+        currentRows.forEach((currentRow: Filter, index: number) => {
             const hasRowBeenDeleted = newRows.find(
-                (newRow: FilterRow) => { return newRow === currentRow })
+                (newRow: Filter) => { return newRow === currentRow })
             if ((hasRowBeenDeleted == null) === undefined) {
                 updatedRows.push({ id: index, _action: 'delete' })
             }
         })
 
         // Fetch the created rows
-        newRows.forEach((newRow: FilterRow, index: number) => {
+        newRows.forEach((newRow: Filter, index: number) => {
             const hasRowBeenCreated = currentRows.find(
-                (currentRow: FilterRow) => { return newRow === currentRow });
+                (currentRow: Filter) => { return newRow === currentRow });
             if (hasRowBeenCreated === undefined) {
                 updatedRows.push({
                     id: index,
-                    comparisonType: newRow.comparisonType,
+                    opType: newRow.opType,
                     fieldName: newRow.fieldName,
                     elementType: newRow.elementType,
                     value: newRow.value
@@ -141,9 +138,7 @@ export default function FilterTable (): React.JSX.Element {
         return updatedRows;
     }
 
-    useEffect(()=>{
-        updateRows(currentRows, rows)
-    }, [rows])
+    updateRows(currentRows, rows)
 
     if (error.message !== "" && error.variant !== undefined) {
         enqueueSnackbar(

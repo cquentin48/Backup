@@ -11,6 +11,7 @@ import FieldValue from "./fieldValue";
 import FilterToolbar from "./selectFilter";
 import { useDispatch } from "react-redux";
 import { addFilter } from "../../../../../controller/deviceMainInfos/filterSlice";
+import { filterManager } from "../../../../../../model/filters/FilterManager";
 
 /**
  * State of the new filter form dialog
@@ -94,7 +95,8 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             inputType as "File" | "Library",
             fieldName,
             comparison as '<' | '>' | '!=' | '==' | "includes",
-            value as unknown as object
+            value as unknown as object,
+            filterManager.getFilters().length
         )
         if (value.length > 0) {
             dispatch(
@@ -124,7 +126,6 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
                     addsNewFilter();
                 } catch (rawError) {
                     const error = initError(rawError as Error)
-                    console.log(error)
                     enqueueSnackbar((error as any).message, { variant: (error as any).variant })
                 }
             }
