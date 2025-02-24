@@ -27,7 +27,7 @@ export default class Filter {
     /**
      * Type of element to filter (either ``file`` or ``library``)
      */
-    elementType: string;
+    elementType: FilterElementType;
 
     /**
      * Name of the field to apply the filter on

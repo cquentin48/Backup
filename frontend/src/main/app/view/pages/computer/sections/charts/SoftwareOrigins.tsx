@@ -87,7 +87,9 @@ export default function SoftwareOrigins (): React.JSX.Element {
      * @param {Filter} filters Filters set by the user
      */
     const updatePieChartData = (filters: Filter[]): void => {
-        const softwaresFilter = filterManager.softwareFilters()
+        const softwaresFilter = filters.filter((filter)=>{
+            filter.elementType === "Library"
+        })
         const softwares = (snapshot as SnapshotData).fetchFilteredSoftwares(softwaresFilter)
         initPieChartData(softwares)
     }

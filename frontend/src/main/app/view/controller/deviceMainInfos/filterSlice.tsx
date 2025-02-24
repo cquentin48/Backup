@@ -97,6 +97,9 @@ export const filterSlice = createSlice({
                     }
                     state.filters.splice(filters.indexOf(filters[0]), 1)
                 });
+                state.filters.forEach((filter, id)=>{
+                    filter.id = id
+                })
             } catch (error) {
                 const errorClasses = [NotFoundError, ConflictError]
                 if (errorClasses.filter((errorClass)=>{
