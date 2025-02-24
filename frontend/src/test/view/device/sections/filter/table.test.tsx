@@ -2,7 +2,7 @@ import React, { type ReactNode } from "react"
 
 import FilterTable from "../../../../../main/app/view/pages/computer/sections/filters/table"
 
-import { filterManager } from "../../../../../main/app/view/model/filters/FilterManager"
+import { filterManager } from "../../../../../main/app/model/filters/FilterManager"
 import { SnackbarProvider, useSnackbar } from "notistack"
 import { fireEvent, render, waitFor, screen } from "@testing-library/react"
 import '@testing-library/jest-dom'

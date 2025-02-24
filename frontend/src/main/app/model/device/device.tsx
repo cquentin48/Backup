@@ -57,10 +57,10 @@ class Device {
         const rawSnapshots = rawDeviceData.snapshots
         const snapshots: SnapshotID[] = []
         rawSnapshots.forEach((rawSnapshot) => {
-            const rawDate = new Date(rawSnapshot.uploadDate)
+            const rawDate = new Date(rawSnapshot.date)
             snapshots.push(
                 new SnapshotID(
-                    rawSnapshot.id,
+                    rawSnapshot.key,
                     `${rawDate.getFullYear()}-${rawDate.getMonth()}-${rawDate.getDay()}`,
                     rawSnapshot.operatingSystem
                 )

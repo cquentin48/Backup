@@ -12,7 +12,7 @@ import { type SnapshotSoftware } from "../../../../../model/snapshot/snapshotLib
 import '../../../../../../res/css/ComputerMainInfos.css';
 import { useSelector } from "react-redux";
 import { type AppState as AppDataState } from "../../../../controller/store";
-import { type FilterRow } from "../../../../model/filters/FilterManager";
+import { type FilterRow } from "../../../../../model/filters/FilterManager";
 
 /**
  * Pie chart series data

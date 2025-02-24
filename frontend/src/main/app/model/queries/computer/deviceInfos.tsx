@@ -7,6 +7,10 @@ import Device from "../../device/device";
 import SnapshotID from "../../device/snapshotId";
 import { type ApolloQueryResult } from "@apollo/client";
 
+interface QueryResult{
+    deviceInfos: Device;
+}
+
 export const fetchDeviceInfos = createAsyncThunk(
     'device/deviceInfos',
     async (parameters: BasicQueryParameters, { rejectWithValue }) => {
@@ -14,13 +18,13 @@ export const fetchDeviceInfos = createAsyncThunk(
             await gqlClient.execute_query(
                 getDeviceInfos,
                 parameters
-            ) as ApolloQueryResult<object>
+            ) as ApolloQueryResult<QueryResult>
         )
-        if ((result.data as ApolloQueryResult<any>).errors != null) {
+        if (result.errors != null) {
             return rejectWithValue("The device wasn't found!")
         }
 
-        const deviceData = (result.data as any).deviceInfos
+        const deviceData = result.data.deviceInfos;
         const rawSnapshots = deviceData.snapshots;
         const snapshots: SnapshotID[] = []
         rawSnapshots.forEach((element: any) => {

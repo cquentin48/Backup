@@ -3,7 +3,7 @@ import { useSnackbar } from "notistack";
 
 import "../../../../../../../res/css/Filters.css";
 
-import Filter from "../../../../../model/filters/Filter";
+import Filter from "../../../../../../model/filters/Filter";
 import ValidationError from "../../../../../../model/exception/errors/validationError";
 import AlreadyAddedWarning from "../../../../../../model/exception/warning/alreadyAdded";
 import DeviceMainInfosFilterCreationButton from "./createFilterButton";
@@ -84,20 +84,22 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
 
     const dispatch = useDispatch()
 
+    const { enqueueSnackbar } = useSnackbar()
+
     /**
      * Adds a new filter to the main device informations filter list
      */
     const addsNewFilter = (): void => {
-        const inputs = [
-            inputType,
+        const filter = new Filter(
+            inputType as "File" | "Library",
             fieldName,
-            comparison,
-            value
-        ]
+            comparison as '<' | '>' | '!=' | '==' | "includes",
+            value as unknown as object
+        )
         if (value.length > 0) {
             dispatch(
                 addFilter(
-                    JSON.stringify(inputs)
+                    filter
                 )
             )
         } else {
@@ -122,7 +124,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
                     addsNewFilter();
                 } catch (rawError) {
                     const error = initError(rawError as Error)
-                    const { enqueueSnackbar } = useSnackbar()
+                    console.log(error)
                     enqueueSnackbar((error as any).message, { variant: (error as any).variant })
                 }
             }

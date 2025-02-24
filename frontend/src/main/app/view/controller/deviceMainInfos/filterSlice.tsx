@@ -1,8 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { filterManager, type FilterRow } from "../../model/filters/FilterManager";
-import Filter from "../../model/filters/Filter";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import AlreadyAddedWarning from "../../../model/exception/warning/alreadyAdded";
 import NotFoundError from "../../../model/exception/errors/notFoundError";
+import { filterManager, FilterRow } from "../../../model/filters/FilterManager";
+import Filter from "../../../model/filters/Filter";
 
 /**
  * Filter slice state
@@ -32,22 +33,17 @@ export const filterSlice = createSlice({
     name: 'filter',
     initialState,
     reducers: {
-        addFilter: (state, action) => {
-            const inputs = JSON.parse(action.payload as string)
-            const elementType = inputs[0];
-            const fieldName = inputs[1];
-            const comparisonType = inputs[2] as "<" | ">" | "!=" | "==";
-            const value = inputs[3] as unknown as object;
-
-            Filter.inputTypeAuthorizedList(elementType);
-            Filter.comparisonTypesCheck(comparisonType);
+        addFilter: (state, action: PayloadAction<Filter>) => {
+            const filter = action.payload
+            Filter.inputTypeAuthorizedList(action.payload.elementType);
+            Filter.comparisonTypesCheck(filter.comparisonType);
 
             try {
                 filterManager.addFilter(
-                    elementType as "File" | "Library",
-                    fieldName,
-                    comparisonType,
-                    value
+                    filter.elementType as "File" | "Library",
+                    filter.fieldName,
+                    filter.comparisonType as "<" | ">" | "!=" | "==",
+                    filter.filterValue
                 )
             } catch (e) {
                 if (e instanceof AlreadyAddedWarning) {

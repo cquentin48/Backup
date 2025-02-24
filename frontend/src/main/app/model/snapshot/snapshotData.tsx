@@ -1,8 +1,10 @@
-import { type FilterComparisonType } from "../../view/model/filters/Filter";
-import { type FilterRow } from "../../view/model/filters/FilterManager";
+
 import NotFoundError from "../exception/errors/notFoundError";
 import NotImplementedError from "../exception/errors/notImplementedError";
 import AlreadyAddedWarning from "../exception/warning/alreadyAdded";
+import { FilterComparisonType } from "../filters/Filter";
+import { FilterRow } from "../filters/FilterManager";
+import Repositories from "./repositories";
 import { SnapshotSoftware } from "./snapshotLibrary";
 
 /**
@@ -12,13 +14,20 @@ export class SnapshotData {
     /**
      * Every software
      */
-    softwares: SnapshotSoftware[];
+    versions: SnapshotSoftware[];
+
+
+    repositories: Repositories[];
+
+    operatingSystem: string;
 
     /**
      * Class object constructor method
      */
     constructor () {
-        this.softwares = [];
+        this.versions = [];
+        this.repositories = [];
+        this.operatingSystem = "";
     }
 
     /**
@@ -34,7 +43,7 @@ export class SnapshotData {
             softwareName,
             softwareInstallType
         )
-        if (this.softwares.filter((software) => {
+        if (this.versions.filter((software) => {
             const sameInstallType = software.installType === softwareInstallType
             const sameName = software.name === softwareName
             const sameVersion = software.version === softwareVersion
@@ -42,7 +51,7 @@ export class SnapshotData {
         }).length > 0) {
             throw new AlreadyAddedWarning(`The software with the name ${softwareName} has already been added! Thus the operation is ignored!`)
         }
-        this.softwares.push(newSoftware)
+        this.versions.push(newSoftware)
     }
 
     /**
@@ -52,10 +61,10 @@ export class SnapshotData {
      * @throws {NotFoundError} In case of not found element
      */
     getSoftware (softwareIndex: number): SnapshotSoftware {
-        if (softwareIndex >= this.softwares.length) {
+        if (softwareIndex >= this.versions.length) {
             throw new NotFoundError("The software ID exceeds the software array size!")
         }
-        return this.softwares[softwareIndex]
+        return this.versions[softwareIndex]
     }
 
     /**
@@ -101,7 +110,7 @@ export class SnapshotData {
     }
 
     fetchFilteredSoftwares (filters: FilterRow[]): SnapshotSoftware[] {
-        let softwares = this.softwares
+        let softwares = this.versions
         filters.forEach((filter) => {
             switch (filter.fieldName) {
                 case "name":

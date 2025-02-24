@@ -121,7 +121,7 @@ describe("MainInfosFrame unit test suite", () => {
         )
 
         const snapshotSelect = container.querySelector(".MuiSelect-nativeInput") as Element
-        fireEvent.change(snapshotSelect, { target: { value: testDevice.snapshots[1].id } })
+        fireEvent.change(snapshotSelect, { target: { value: testDevice.snapshots[1].key } })
 
         // Asserts
         expect(getByText(testDevice.snapshots[1].localizedDate())).toBeInTheDocument()

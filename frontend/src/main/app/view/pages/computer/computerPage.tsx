@@ -38,7 +38,8 @@ export default function ComputerPage (): React.JSX.Element {
                 <DeviceElements />
             </div>
         )
-    } else if (!loading && device === undefined && error !== undefined) {
+    } else if (!loading && device === undefined && error?.message !== "") {
+        console.log(error)
         document.title = "Backup - unknown device"
         return (
             <DeviceNotFound />

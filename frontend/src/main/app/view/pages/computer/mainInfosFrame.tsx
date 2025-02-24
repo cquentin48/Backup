@@ -42,7 +42,7 @@ export default function MainInfosFrame (): React.JSX.Element {
 
 
     useEffect(() => {
-        updateSelectedSnapshot(device.snapshots[0].id)
+        updateSelectedSnapshot(device.snapshots[0].key)
     }, [dispatch, snapshotID])
 
     /**
@@ -59,8 +59,8 @@ export default function MainInfosFrame (): React.JSX.Element {
             }
             const snapshotEntry = snapshotLists.get(snapshot.operatingSystem) as Map<string, React.JSX.Element>;
             snapshotEntry.set(
-                snapshot.id,
-                <MenuItem key={snapshot.id} value={(snapshot).id}>
+                snapshot.key,
+                <MenuItem key={snapshot.key} value={(snapshot).key}>
                     {(snapshot).localizedDate()}
                 </MenuItem>
             )

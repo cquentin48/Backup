@@ -52,7 +52,7 @@ export default function SpecsMainInfos (): React.JSX.Element {
                 }
                 label="Device added on"
                 value={
-                    (firstSnapshot).uploadDate.toLocaleDateString(window.navigator.language, {
+                    (firstSnapshot).date.toLocaleDateString(window.navigator.language, {
                         weekday: "long",
                         year: "numeric",
                         month: "long",
@@ -66,7 +66,7 @@ export default function SpecsMainInfos (): React.JSX.Element {
                 }
                 label="Last update"
                 value={
-                    (lastSnapshot).uploadDate.toLocaleDateString(window.navigator.language, {
+                    (lastSnapshot).date.toLocaleDateString(window.navigator.language, {
                         weekday: "long",
                         year: "numeric",
                         month: "long",

@@ -1,5 +1,5 @@
-import NotFoundError from "../../../model/exception/errors/notFoundError";
-import ValidationError from "../../../model/exception/errors/validationError";
+import NotFoundError from "../exception/errors/notFoundError"
+import ValidationError from "../exception/errors/validationError"
 
 /**
  * Filter DOM Input details

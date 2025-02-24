@@ -15,7 +15,7 @@ describe("Snapshot data", () => {
         snapshotData.addSoftware(newSoftwareVersion, newSoftwareName, newSoftwareInstallType)
 
         // Asserts
-        const addedObject = snapshotData.softwares[0]
+        const addedObject = snapshotData.versions[0]
         expect(addedObject.version).toBe(newSoftwareVersion)
         expect(addedObject.name).toBe(newSoftwareName)
         expect(addedObject.installType).toBe(newSoftwareInstallType)

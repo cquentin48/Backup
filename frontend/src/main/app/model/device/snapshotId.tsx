@@ -3,19 +3,19 @@
  * Composed of the index of database stored data and the upload date.
  */
 export default class SnapshotID {
-    id: string;
-    uploadDate: Date;
+    key: string;
+    date: Date;
     operatingSystem: string;
 
     /**
      * Construction method
-     * @param { string } id snapshot database id
+     * @param { string } key snapshot database id
      * @param { string } uploadDate snapshot date upload (Must be of format ``YYYY``-``MM``-``DD``)
      * @param { string } operatingSystem related device snapshot operating system
      */
-    constructor (id: string = "", uploadDate: string = "2000-01-01", operatingSystem: string = "") {
-        this.id = id;
-        this.uploadDate = new Date(uploadDate);
+    constructor (key: string = "", uploadDate: string = "2000-01-01", operatingSystem: string = "") {
+        this.key = key;
+        this.date = new Date(uploadDate);
         this.operatingSystem = operatingSystem;
     }
 
@@ -24,7 +24,7 @@ export default class SnapshotID {
      * @returns {string} Localized snapshot upload date
      */
     localizedDate (): string {
-        return this.uploadDate.toLocaleDateString(window.navigator.language, {
+        return this.date.toLocaleDateString(window.navigator.language, {
             weekday: "long",
             year: "numeric",
             month: "long",
@@ -38,8 +38,8 @@ export default class SnapshotID {
      * @returns {boolean} ``true`` yes | ``false`` no
      */
     isUndefined (): boolean {
-        const idCondition = this.id === "";
-        const uploadDate = this.uploadDate;
+        const idCondition = this.key === "";
+        const uploadDate = this.date;
         const year = uploadDate.getFullYear().toString()
         const month = (uploadDate.getMonth() + 1) < 10 ? `0${uploadDate.getMonth() + 1}` : (uploadDate.getMonth() + 1).toString()
         const day = (uploadDate.getDate()) < 10 ? `0${uploadDate.getDate()}` : uploadDate.getDate().toString()

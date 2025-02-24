@@ -1,5 +1,5 @@
-import { filterManager } from "../../../main/app/view/model/filters/FilterManager"
-import Filter from "../../../main/app/view/model/filters/Filter"
+import { filterManager } from "../../../main/app/model/filters/FilterManager"
+import Filter from "../../../main/app/model/filters/Filter"
 import AlreadyAddedWarning from "../../../main/app/model/exception/warning/alreadyAdded"
 import NotFoundError from "../../../main/app/model/exception/errors/notFoundError"
 import ValidationError from "../../../main/app/model/exception/errors/validationError"

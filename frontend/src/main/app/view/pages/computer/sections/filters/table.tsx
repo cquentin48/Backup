@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React, { createRef, useEffect } from "react";
 
 import { Paper } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
@@ -8,7 +8,7 @@ import { useSnackbar } from "notistack";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { type FilterRow } from "../../../../model/filters/FilterManager";
+import { type FilterRow } from "../../../../../model/filters/FilterManager";
 
 import DeviceMainInfosGridFooter from "./footer/GridFooter";
 import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
@@ -102,6 +102,9 @@ export default function FilterTable (): React.JSX.Element {
      */
     const updateRows = (currentRows: FilterRow[], newRows: FilterRow[]): UpdateRow[] => {
         const updatedRows: UpdateRow[] = [];
+
+        console.log(newRows)
+
         // Fetch the deleted rows
         currentRows.forEach((currentRow: FilterRow, index: number) => {
             const hasRowBeenDeleted = newRows.find(
@@ -126,9 +129,9 @@ export default function FilterTable (): React.JSX.Element {
             }
         })
 
-        if (tableManager?.current != null) {
+        if ((tableManager as React.RefObject<GridApiCommunity>).current != null) {
             rows.forEach((row: UpdateRow) => {
-                tableManager.current.updateRows(
+                (tableManager as React.RefObject<GridApiCommunity>).current.updateRows(
                     [row]
                 )
             })
@@ -138,7 +141,10 @@ export default function FilterTable (): React.JSX.Element {
         return updatedRows;
     }
 
-    updateRows(currentRows, rows)
+    useEffect(()=>{
+        updateRows(currentRows, rows)
+    }, [rows])
+
     if (error.message !== "" && error.variant !== undefined) {
         enqueueSnackbar(
             error.message,

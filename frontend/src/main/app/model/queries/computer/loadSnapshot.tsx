@@ -3,6 +3,11 @@ import gqlClient from "../client";
 import type BasicQueryParameters from "../basicQueryParameters";
 import { SnapshotData } from "../../snapshot/snapshotData";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { ApolloQueryResult } from "@apollo/client";
+
+interface QueryResult{
+    snapshotInfos: SnapshotData
+}
 
 export const fetchSnapshot = createAsyncThunk(
     'device/snapshotInfos',
@@ -11,7 +16,7 @@ export const fetchSnapshot = createAsyncThunk(
             await gqlClient.execute_query(
                 snapshotInfos,
                 parameters
-            )
+            ) as ApolloQueryResult<QueryResult>
         )
         try {
             if (result.errors != null) {
