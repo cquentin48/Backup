@@ -9,6 +9,7 @@ import { type AppState } from "../../../../../controller/store";
 
 /**
  * Device main infos datagrid footer
+ * @returns {React.JSX.Element} rendered component
  */
 export default function DeviceMainInfosGridFooter (): React.JSX.Element {
     const ids = useSelector((app: AppState) => app.filters.selectedFilteredIDS)

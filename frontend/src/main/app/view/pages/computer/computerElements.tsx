@@ -4,7 +4,6 @@ import ComputeSideNavBar from "./navBar/computerSideNavBar";
 
 /**
  * Device informations display page
- * @param {DeviceElementsProps} props Loaded device from the computer page
  * @returns {React.JSX.Element} Page web component
  */
 export default function DeviceElements (): React.JSX.Element {

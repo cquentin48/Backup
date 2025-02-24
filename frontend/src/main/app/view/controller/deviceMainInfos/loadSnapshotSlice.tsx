@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { fetchSnapshot } from "../../../model/queries/computer/loadSnapshot";
 import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 
@@ -19,20 +19,20 @@ export const loadSnapshotSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers (builder) {
-        builder.addCase(fetchSnapshot.pending, (state)=>{
+        builder.addCase(fetchSnapshot.pending, (state) => {
             state.loading = true
             state.error = ""
             state.snapshot = undefined
-        }).addCase(fetchSnapshot.rejected, (state, action)=>{
+        }).addCase(fetchSnapshot.rejected, (state, action) => {
             state.loading = false
             state.error = action.error as string
             state.snapshot = undefined
-        }).addCase(fetchSnapshot.fulfilled, (state, action: PayloadAction<SnapshotData>)=>{
+        }).addCase(fetchSnapshot.fulfilled, (state, action: PayloadAction<SnapshotData>) => {
             state.loading = false
             state.error = ""
             state.snapshot = action.payload
         })
-    },
+    }
 })
 
 export default loadSnapshotSlice.reducer

@@ -6,13 +6,9 @@ import '@testing-library/jest-dom'
 
 import gqlClient from "../../../../../../main/app/model/queries/client"
 import SoftwareOrigins from "../../../../../../main/app/view/pages/computer/sections/charts/SoftwareOrigins"
-import { loadSnapshot } from "../../../../../../main/app/view/controller/deviceMainInfos/loadSnapshot"
 import { dataManager } from "../../../../../../main/app/model/AppDataManager"
 
 describe("Type of softwares origin chart unit test suite", () => {
-    beforeEach(() => {
-        loadSnapshot.addObservable("MainInfosFrame", jest.fn())
-    })
     afterEach(() => {
         dataManager.removeAllData()
         jest.resetAllMocks()
@@ -40,7 +36,6 @@ describe("Type of softwares origin chart unit test suite", () => {
         render(
             <SoftwareOrigins />
         )
-        loadSnapshot.performAction("1")
 
         await waitFor(() => {
             expect(document.querySelector(".MuiChartsLegend-series-0")).toBeInTheDocument()
@@ -99,7 +94,6 @@ describe("Type of softwares origin chart unit test suite", () => {
         const { getByText } = render(
             <SoftwareOrigins />
         )
-        loadSnapshot.performAction("1")
 
         await waitFor(() => {
             expect(document.querySelector(".MuiChartsLegend-series-0")).toBeInTheDocument()
@@ -134,7 +128,6 @@ describe("Type of softwares origin chart unit test suite", () => {
         render(
             <SoftwareOrigins />
         )
-        loadSnapshot.performAction("1")
 
         await waitFor(() => {
             expect(document.querySelectorAll(".MuiChartsLegend-series").length).toBe(1)

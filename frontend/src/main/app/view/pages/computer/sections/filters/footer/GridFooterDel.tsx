@@ -2,7 +2,9 @@ import React, { type JSX } from "react";
 
 import { Delete } from "@mui/icons-material";
 import { Button, Tooltip } from "@mui/material";
-import { removeDeviceMainInfosFilter } from "../../../../../controller/deviceMainInfos/removeFilters";
+import { useDispatch } from "react-redux";
+
+import { deleteFilter } from "../../../../../controller/deviceMainInfos/filterSlice";
 
 /**
  * Selected filtered ids passed from the device main infos footer
@@ -20,10 +22,17 @@ interface GridFooterDeleteProps {
  * @returns {JSX.Element} Rendered DOM component
  */
 export default function GridFooterDelete (props: GridFooterDeleteProps): JSX.Element {
+    const dispatch = useDispatch()
     return (
         <Tooltip title="Delete filters">
             <Button startIcon={<Delete />}
-                onClick={() => { removeDeviceMainInfosFilter.performAction(JSON.stringify(props.selectedIds)) }}>
+                onClick={() => {
+                    dispatch(
+                        deleteFilter(
+                            props.selectedIds
+                        )
+                    )
+                }}>
                 Delete filters
             </Button>
         </Tooltip>

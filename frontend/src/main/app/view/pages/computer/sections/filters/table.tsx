@@ -8,7 +8,6 @@ import { useSnackbar } from "notistack";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import type Device from "../../../../../model/device/device";
 import { type FilterRow } from "../../../../model/filters/FilterManager";
 
 import DeviceMainInfosGridFooter from "./footer/GridFooter";
@@ -17,16 +16,6 @@ import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 import { updateSelectedFilter, resetError } from "../../../../controller/deviceMainInfos/filterSlice";
 
 import { type AppState } from "../../../../controller/store";
-
-/**
- * Device loaded boolean passed from the Formats components
- */
-interface FilterTableProps {
-    /**
-     * If the device has been loaded
-     */
-    device: Device
-}
 
 /**
  * Deleted filter row interface
@@ -87,9 +76,9 @@ const filterTableColumns: GridColDef[] = [
 /**
  * Table displaying the filters used to displays selected informations
  * in the device main informations page.
- * @implements {React.Component<{}, FilterTableState>}
+ * @returns {React.JSX.Element} Rendered component
  */
-export default function FilterTable (props: FilterTableProps): React.JSX.Element {
+export default function FilterTable (): React.JSX.Element {
     const rows = useSelector((state: AppState) => state.filters.filters)
     const error = useSelector((state: AppState) => state.filters.error)
 
@@ -143,6 +132,8 @@ export default function FilterTable (props: FilterTableProps): React.JSX.Element
                     [row]
                 )
             })
+
+            setViewRows(rows)
         }
         return updatedRows;
     }

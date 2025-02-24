@@ -34,7 +34,7 @@ class FilterManager {
         fieldName: string,
         comparisonType: "<" | ">" | "!=" | "==",
         value: object
-    ) {
+    ): void {
         const newFilter = new Filter(elementType, fieldName, comparisonType, value);
         if (this.filters.filter((filter) => {
             const comparedFilter = filter

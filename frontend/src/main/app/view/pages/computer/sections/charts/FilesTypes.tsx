@@ -6,26 +6,19 @@ import Icon from "@mdi/react";
 import { Avatar, Card, CardContent, CardHeader } from "@mui/material";
 import { PieChart, type PieSeriesType, type PieValueType } from "@mui/x-charts";
 import { type MakeOptional } from "@mui/x-charts/internals";
-import type Device from "../../../../../model/device/device";
+
+import { useSelector } from "react-redux";
+
+import { type AppState } from "../../../../controller/store";
 
 import '../../../../../../res/css/ComputerMainInfos.css';
 
 /**
- * Types of files passed from the chart
- */
-interface FilesTypesProps {
-    /**
-     * If the device has been loaded
-     */
-    device: Device
-}
-
-/**
  *  Files types pie chart view component
  *  @returns {React.JSX.Element} View component
- *  @param {FilesTypesProps} props If the device has been loaded function
  */
-export default function FilesTypes (props: FilesTypesProps): React.JSX.Element {
+export default function FilesTypes (): React.JSX.Element {
+    const device = useSelector((app: AppState) => app.device.device)
     const series: Array<MakeOptional<PieSeriesType<MakeOptional<PieValueType, "id">>, "type">> = [
         {
             data: [
@@ -52,7 +45,7 @@ export default function FilesTypes (props: FilesTypesProps): React.JSX.Element {
             />
             <CardContent>
                 <PieChart
-                    loading={props.device === undefined}
+                    loading={device === undefined}
                     series={series}
                     width={550}
                     height={200}

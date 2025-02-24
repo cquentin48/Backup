@@ -4,12 +4,11 @@ import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';
 import { FormControl, InputLabel, Select, MenuItem, Paper } from "@mui/material";
 
-import { enqueueSnackbar, useSnackbar } from "notistack";
+import { enqueueSnackbar } from "notistack";
 
 import FormatsPieCharts from "./sections/Formats";
 
 import type Device from "../../../model/device/device";
-import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 
 import '../../../../res/css/ComputerMainInfos.css';
 
@@ -37,13 +36,12 @@ export default function MainInfosFrame (): React.JSX.Element {
     const updateSelectedSnapshot = (newSnapshotID: string): void => {
         setSnapshotID(newSnapshotID)
         dispatch(fetchSnapshot({
-            snapshotId: newSnapshotID
+            snapshotID: newSnapshotID
         }))
     }
 
 
     useEffect(() => {
-        console.log(JSON.stringify(device.snapshots))
         updateSelectedSnapshot(device.snapshots[0].id)
     }, [dispatch, snapshotID])
 
@@ -112,7 +110,7 @@ export default function MainInfosFrame (): React.JSX.Element {
                     {snapshots}
                 </div>
                 <Paper elevation={2} id="detailsContainer">
-                    <FormatsPieCharts device={device} />
+                    <FormatsPieCharts />
                 </Paper>
             </div>
         );

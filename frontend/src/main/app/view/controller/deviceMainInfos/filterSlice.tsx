@@ -2,29 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { filterManager, type FilterRow } from "../../model/filters/FilterManager";
 import Filter from "../../model/filters/Filter";
 import AlreadyAddedWarning from "../../../model/exception/warning/alreadyAdded";
-import { SnapshotSoftware } from "../../../model/snapshot/snapshotLibrary";
 import NotFoundError from "../../../model/exception/errors/notFoundError";
 
 /**
- * Deleted filter row interface
+ * Filter slice state
  */
-interface DeleteRow {
-    /**
-     * Row id of the filter in the datagrid
-     */
-    id: number
-
-    /**
-     * Row update action (``delete`` here)
-     */
-    _action?: 'delete'
-}
-
-/**
- * Update row type used for the row update transaction
- */
-type UpdateRow = DeleteRow | FilterRow;
-
 interface FilterSliceState {
     filters: FilterRow[]
     selectedFilteredIDS: number[]
@@ -78,7 +60,7 @@ export const filterSlice = createSlice({
         },
         deleteFilter: (state, action) => {
             try {
-                const inputsIDS = JSON.parse(action.payload) as string[]
+                const inputsIDS = (action.payload) as number[]
                 let filterIDS = inputsIDS.map((filterID: unknown) => {
                     return filterID as number;
                 });

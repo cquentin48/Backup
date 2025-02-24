@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import Device from "../../../model/device/device";
+import type Device from "../../../model/device/device";
 import { fetchDeviceInfos } from "../../../model/queries/computer/deviceInfos";
 
 interface LoadDeviceSliceInitialState {
     device: Device | undefined
-    loading: boolean;
+    loading: boolean
     error: {
         message: string
         variant: "error" | "default" | "success" | "warning" | "info" | undefined
@@ -41,7 +41,7 @@ const loadDeviceSlice = createSlice({
                 state.loading = false;
                 state.device = undefined;
                 state.error = {
-                    message:action.payload as string,
+                    message: action.payload as string,
                     variant: "error"
                 };
             });

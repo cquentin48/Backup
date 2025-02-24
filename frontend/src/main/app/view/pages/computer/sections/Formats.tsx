@@ -6,33 +6,23 @@ import { Grid2 } from "@mui/material";
 import SoftwareOrigins from "./charts/SoftwareOrigins";
 import FilesTypes from "./charts/FilesTypes";
 import FilterTable from "./filters/table";
-import type Device from "../../../../model/device/device";
 
 import '../../../../../res/css/ComputerMainInfos.css';
 
-interface FormatsProps {
-    device: Device
-}
-
 /**
  * Accordion displaying the formats (software and libraries) inside pie charts
- * @param {FormatsProps} props Loaded device from the device page component
- * @returns {React.JSX.Element} Accordion displaying the file formats and libraries types
+ * @returns {React.JSX.Element} Rendered component
  */
-export default function FormatsPieCharts (props: FormatsProps): React.JSX.Element {
-
-    /**
-     * Render the component
-     */
+export default function FormatsPieCharts (): React.JSX.Element {
     return (
         <div className="DeviceMainInfos">
-            <FilterTable device={props.device} />
+            <FilterTable />
             <Grid2 container spacing={2} id="pieCharts">
                 <Grid2 size={6}>
                     <SoftwareOrigins />
                 </Grid2>
                 <Grid2 size={6}>
-                    <FilesTypes device={props.device} />
+                    <FilesTypes />
                 </Grid2>
             </Grid2>
         </div>

@@ -6,26 +6,13 @@ import Icon from "@mdi/react";
 import { Avatar, Card, CardContent, CardHeader, IconButton } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 
-import { dataManager } from "../../../../../model/AppDataManager";
-import NotImplementedError from "../../../../../model/exception/errors/notImplementedError";
 import { type SnapshotData } from "../../../../../model/snapshot/snapshotData";
 import { type SnapshotSoftware } from "../../../../../model/snapshot/snapshotLibrary";
-import { type FilterComparisonType } from "../../../../model/filters/Filter";
-import type Filter from "../../../../model/filters/Filter";
 
 import '../../../../../../res/css/ComputerMainInfos.css';
 import { useSelector } from "react-redux";
 import { type AppState as AppDataState } from "../../../../controller/store";
 import { type FilterRow } from "../../../../model/filters/FilterManager";
-
-interface SoftwareOriginsState {
-    /**
-     * Pie chart series data for the chart display
-     */
-    data: PieChartData[]
-
-    filteredSoftwares: SnapshotSoftware[] | undefined
-}
 
 /**
  * Pie chart series data
@@ -48,82 +35,25 @@ interface PieChartData {
 }
 
 /**
- *  Sofware Origins pie charts view component
+ * Sofware Origins pie charts view component
+ * @returns {React.JSX.Element} rendered component
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export default function SoftwareOrigins (): React.JSX.Element {
     const [data, setData] = React.useState<PieChartData[]>([]);
 
+    const [chartInitialisationDone, setLoadDone] = React.useState<boolean>(false);
+
+    const { snapshot, error, loading } = useSelector((app: AppDataState) => app.snapshot)
+
     const filters = useSelector((state: AppDataState) => state.filters.filters)
-
-    const [filteredSoftwares, setFilteredSoftwares] = React.useState<SnapshotSoftware[] | undefined>([]);
-
-    /**
-     * Fetch the filtered software from the state
-     * @returns {SnapshotSoftware[]} Filtered | all softwares
-     */
-    const getSoftwares = (): SnapshotSoftware[] => {
-        let softwares;
-        if (filteredSoftwares === undefined) {
-            softwares = (
-                JSON.parse(dataManager.getElement("snapshot")) as SnapshotData
-            ).softwares
-        } else {
-            softwares = filteredSoftwares
-        }
-        return softwares
-    }
-
-    /**
-     * Apply filter on the software list
-     * @param {SnapshotSoftware[]} softwares Software list where they will filtered with the conditions set
-     * @param {object} value Value for the filter to be applied on
-     * @param {FilterComparisonType} operator Type of condition (e.g. ``<`` or ``!=``)
-     * @param {string} fieldName Name of the field for the condition (e.g. ``name``)
-     * @returns {SnapshotSoftware[]} Software with the condition applied on
-     */
-    const applyFilterOn = (softwares: SnapshotSoftware[], value: object, operator: FilterComparisonType, fieldName: string): SnapshotSoftware[] => {
-        switch (operator) {
-            case "!=":
-                return softwares.filter((software) => {
-                    return ((software as any)[fieldName] !== value)
-                })
-            case "<":
-                return softwares.filter((software) => {
-                    return ((software as any)[fieldName] < value)
-                })
-
-            case "<=":
-                return softwares.filter((software) => {
-                    return ((software as any)[fieldName] <= value)
-                })
-            case ">":
-                return softwares.filter((software) => {
-                    return ((software as any)[fieldName] > value)
-                })
-            case ">=":
-                return softwares.filter((software) => {
-                    return ((software as any)[fieldName] >= value)
-                })
-            case "==":
-                return softwares.filter((software) => {
-                    return ((software as any)[fieldName] === value)
-                })
-            case "includes":
-                return softwares.filter((software) => {
-                    return (((software as any)[fieldName] as string).includes(value as unknown as string))
-                })
-        }
-    }
 
     /**
      * Update pie chart series data
-     * @param {string} softwareData Pie chart series data (first-time load)
+     * @param {SnapshotSoftware[]} filteredSoftwares softwares with the filters applied on
      */
-    const initPieChartData = (softwareData: string = ""): void => {
-        const softwares = getSoftwares()
+    const initPieChartData = (filteredSoftwares: SnapshotSoftware[]): void => {
         const rawSeries = new Map<string, number>();
-        softwares.forEach((singleVersion) => {
+        (filteredSoftwares).forEach((singleVersion) => {
             const softwareInstallType = singleVersion.installType
             if (!rawSeries.has(softwareInstallType)) {
                 rawSeries.set(softwareInstallType, 1)
@@ -153,62 +83,78 @@ export default function SoftwareOrigins (): React.JSX.Element {
         setData(series)
     }
 
+    /**
+     * Updates chart data based off the filters set by the user
+     * @param {FilterRow[]} filters Filters set by the user
+     */
     const updatePieChartData = (filters: FilterRow[]): void => {
-        let softwares = (
-            JSON.parse(dataManager.getElement("snapshot")) as SnapshotData
-        ).softwares
-        filters.forEach((filter) => {
-            switch (filter.fieldName) {
-                case "name":
-                case "version":
-                    softwares = applyFilterOn(softwares, filter.value, filter.comparisonType, filter.fieldName)
-                    break;
-                case "firstUploadDate":
-                case "lastUploadDate":
-                case "repository":
-                case "size":
-                    throw new NotImplementedError("Not implemented yet!")
-                default:
-                    throw new NotImplementedError("Unknown operation type!")
-            }
-        })
-        setFilteredSoftwares(softwares)
-        initPieChartData()
+        const softwares = (snapshot as SnapshotData).fetchFilteredSoftwares(filters)
+        initPieChartData(softwares)
     }
 
-    updatePieChartData(filters)
-
-    return (
-        <Card className="PieChartCard">
-            <CardHeader
-                avatar={
-                    <Avatar
-                        className="PieChartIcon"
-                        arial-labels="recipe">
-                        <Icon path={mdiBookOutline} size={1} />
-                    </Avatar>
-                }
-                title="Software origins"
-                action={
-                    <IconButton aria-label="settings">
-                        <Icon path={mdiFilterOutline} size={1} />
-                    </IconButton>
-                }
-            />
-            <CardContent>
-                <PieChart
-                    series={[
-                        {
-                            data: data.map((element, index) => {
-                                return { id: index, value: element.value, label: element.label }
-                            })
-                        }
-                    ]}
-                    width={550}
-                    height={200}
-                    className="DisplayedPieChart"
+    if (loading) {
+        return <div>Loading...</div>
+    } else if (!loading && error !== "") {
+        return (
+            <Card className="PieChartCard">
+                <CardHeader
+                    avatar={
+                        <Avatar
+                            className="PieChartIcon"
+                            arial-labels="recipe">
+                            <Icon path={mdiBookOutline} size={1} />
+                        </Avatar>
+                    }
+                    title="Software origins"
+                    action={
+                        <IconButton aria-label="settings">
+                            <Icon path={mdiFilterOutline} size={1} />
+                        </IconButton>
+                    }
                 />
-            </CardContent>
-        </Card>
-    )
+                <CardContent>
+                    The softwares origins chart could not be loaded!
+                    <br/>
+                    If the problem occurs frequently, please send an email to you admin!
+                </CardContent>
+            </Card>
+        )
+    } else {
+        if (!chartInitialisationDone) {
+            updatePieChartData(filters)
+            setLoadDone(true)
+        }
+        return (
+            <Card className="PieChartCard">
+                <CardHeader
+                    avatar={
+                        <Avatar
+                            className="PieChartIcon"
+                            arial-labels="recipe">
+                            <Icon path={mdiBookOutline} size={1} />
+                        </Avatar>
+                    }
+                    title="Software origins"
+                    action={
+                        <IconButton aria-label="settings">
+                            <Icon path={mdiFilterOutline} size={1} />
+                        </IconButton>
+                    }
+                />
+                <CardContent>
+                    <PieChart
+                        loading={data.length === 0}
+                        series={[
+                            {
+                                data
+                            }
+                        ]}
+                        width={550}
+                        height={200}
+                        className="DisplayedPieChart"
+                    />
+                </CardContent>
+            </Card>
+        )
+    }
 }

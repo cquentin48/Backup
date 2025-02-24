@@ -11,7 +11,6 @@ import { type AppState } from "../../../controller/store";
 
 /**
  * Device header containing OS icon, computer name and delete button
- * @param {DeviceMainInfosProps} props loaded device from the device page component
  * @returns {React.JSX.Element} rendered component
  */
 export default function DeviceMainInfosHeader (): React.JSX.Element {

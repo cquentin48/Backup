@@ -10,12 +10,11 @@ export const fetchSnapshot = createAsyncThunk(
         const result = (
             await gqlClient.execute_query(
                 snapshotInfos,
-                parameters as BasicQueryParameters
+                parameters
             )
         )
         try {
-            console.log(JSON.stringify(result))
-            if (result.errors) {
+            if (result.errors != null) {
                 return rejectWithValue("The snapshot you try to seek doesn't exist!")
             }
             const rawSnapshotData = result.data.snapshotInfos;
@@ -32,8 +31,7 @@ export const fetchSnapshot = createAsyncThunk(
                 );
             });
             return snapshot;
-        }
-        catch (e) {
+        } catch (e) {
             return rejectWithValue("Selected snapshot doesn't exist!")
         }
     }

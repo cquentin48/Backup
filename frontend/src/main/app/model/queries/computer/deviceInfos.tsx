@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import BasicQueryParameters from "../basicQueryParameters";
+import type BasicQueryParameters from "../basicQueryParameters";
 
 import getDeviceInfos from "../../../../res/queries/computer_infos.graphql";
 import gqlClient from "../client";
 import Device from "../../device/device";
 import SnapshotID from "../../device/snapshotId";
+import { type ApolloQueryResult } from "@apollo/client";
 
 export const fetchDeviceInfos = createAsyncThunk(
     'device/deviceInfos',
@@ -12,14 +13,14 @@ export const fetchDeviceInfos = createAsyncThunk(
         const result = (
             await gqlClient.execute_query(
                 getDeviceInfos,
-                parameters as BasicQueryParameters
-            )
+                parameters
+            ) as ApolloQueryResult<object>
         )
-        if (result === null || result.data.errors) {
+        if ((result.data as ApolloQueryResult<any>).errors != null) {
             return rejectWithValue("The device wasn't found!")
         }
 
-        const deviceData = result.data.deviceInfos
+        const deviceData = (result.data as any).deviceInfos
         const rawSnapshots = deviceData.snapshots;
         const snapshots: SnapshotID[] = []
         rawSnapshots.forEach((element: any) => {

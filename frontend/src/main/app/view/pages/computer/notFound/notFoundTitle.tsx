@@ -1,5 +1,11 @@
+import React from "react";
+
 import { Box, Typography } from "@mui/material";
 
+/**
+ * Device not found error component
+ * @returns {React.JSX.Element} rendered component
+ */
 export default function DeviceNotFound (): React.JSX.Element {
     return (
         <div id="DeviceMainInfosPage">

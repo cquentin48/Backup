@@ -2,14 +2,11 @@ import React, { type ReactNode } from "react"
 
 import FilterTable from "../../../../../main/app/view/pages/computer/sections/filters/table"
 
-import { addFilter as addMainInfosFilter } from "../../../../../main/app/view/controller/deviceMainInfos/addFilter"
 import { filterManager } from "../../../../../main/app/view/model/filters/FilterManager"
-import Device from "../../../../../main/app/model/device/device"
 import { SnackbarProvider, useSnackbar } from "notistack"
 import { fireEvent, render, waitFor, screen } from "@testing-library/react"
 import '@testing-library/jest-dom'
 import userEvent from "@testing-library/user-event"
-import { removeDeviceMainInfosFilter as removeMainInfosFilter } from "../../../../../main/app/view/controller/deviceMainInfos/removeFilters"
 
 jest.mock('@mui/material/Popper', () => {
     return async ({ children }: { children: ReactNode }) => await children;
@@ -30,8 +27,6 @@ jest.mock("notistack", () => {
 
 describe("Device main infos Filter table render (no filter)", () => {
     beforeEach(() => {
-        addMainInfosFilter.addObservable("softwareInfosPieChart", jest.fn())
-        removeMainInfosFilter.addObservable("softwareInfosPieChart", jest.fn())
         const mockEnqueueSnackbar = jest.fn();
         (useSnackbar as jest.Mock).mockReturnValue({
             enqueueSnackbar: mockEnqueueSnackbar
@@ -42,8 +37,6 @@ describe("Device main infos Filter table render (no filter)", () => {
         for (let index = filtersCount - 1; index >= 0; index--) {
             filterManager.removeFilter(index)
         }
-        addMainInfosFilter.removeObservable("softwareInfosPieChart")
-        removeMainInfosFilter.removeObservable("softwareInfosPieChart")
         jest.resetAllMocks()
     })
 
@@ -51,7 +44,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Acts
         const { container } = render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider >
         )
 
@@ -64,10 +57,9 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider >
         )
-        addMainInfosFilter.addObservable("softwareInfosPieChart", jest.fn())
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
@@ -102,7 +94,7 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider >
         )
 
@@ -123,7 +115,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider >
         )
 
@@ -151,7 +143,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider>
         )
 
@@ -173,12 +165,11 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
         const { container } = render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider >
         )
 
         // Acts
-        addMainInfosFilter.addObservable("mainDeviceInfosFilterTable", jest.fn())
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
 
@@ -205,7 +196,7 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider >
         )
 
@@ -234,7 +225,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider >
         )
 
@@ -263,7 +254,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider >
         )
 
@@ -288,7 +279,7 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider>
         )
 
@@ -322,7 +313,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider>
         )
 
@@ -353,7 +344,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider >
         )
 
@@ -387,11 +378,9 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         const { getByText } = render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider>
         )
-        addMainInfosFilter.addObservable("softwareInfosPieChart", jest.fn())
-        removeMainInfosFilter.addObservable("softwareInfosPieChart", jest.fn())
 
         // Acts
         const newFilterButton = getByText("New filter") as HTMLInputElement
@@ -429,7 +418,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         })
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider >
         )
 
@@ -466,7 +455,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         })
         render(
             <SnackbarProvider>
-                <FilterTable device={new Device()} />
+                <FilterTable />
             </SnackbarProvider>
         )
 

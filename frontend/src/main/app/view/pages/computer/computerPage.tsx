@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import DeviceMainInfosSkeleton from './skeleton/DeviceMainInfos';
 import MainInfosFrameSkeleton from './skeleton/DeviceMainInfosFrame';
 import LoadingDeviceModal from './skeleton/DeviceModal';
-import { AppDispatch, type AppState } from '../../controller/store';
+import { type AppDispatch, type AppState } from '../../controller/store';
 import { fetchDeviceInfos } from '../../../model/queries/computer/deviceInfos';
 import DeviceNotFound from './notFound/notFoundTitle';
 
@@ -24,13 +24,14 @@ export default function ComputerPage (): React.JSX.Element {
     const { id } = useParams()
 
     useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         dispatch(fetchDeviceInfos({
             deviceID: id
         }))
     }, [dispatch, id])
 
     if (!loading && device !== undefined) {
-        document.title = `Backup - device ${device}`
+        document.title = `Backup - device ${device.name}`
         return (
             <div id="DeviceMainInfosPage">
                 <DeviceMainInfos />
