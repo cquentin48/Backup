@@ -11,7 +11,6 @@ import FieldValue from "./fieldValue";
 import FilterToolbar from "./selectFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { addFilter } from "../../../../../controller/deviceMainInfos/filterSlice";
-import { filterManager } from "../../../../../../model/filters/FilterManager";
 import { AppState } from "../../../../../controller/store";
 
 /**
@@ -99,7 +98,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             fieldName,
             comparison as '<' | '>' | '!=' | '==' | "includes",
             value as unknown as object,
-            filterManager.getFilters().length
+            filters.filters.length
         )
 
         if (value.length > 0) {

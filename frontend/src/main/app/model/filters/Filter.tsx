@@ -83,6 +83,19 @@ export default class Filter {
     }
 
     /**
+     * Check if this filter and another one are equal
+     * @param {Filter} otherFilter Other filter for comparison
+     * @returns {boolean} ``true`` yes | ``false`` no
+     */
+    public isEqual(otherFilter: Filter){
+        const elementTypeCheck = this.elementType === otherFilter.elementType;
+        const fieldNameCheck = this.fieldName === otherFilter.fieldName;
+        const comparisonTypeCheck = this.opType === otherFilter.opType;
+        const valueCheck = this.value === otherFilter.value;
+        return elementTypeCheck && fieldNameCheck && comparisonTypeCheck && valueCheck
+    }
+
+    /**
      * Check if the comparison is in the authorized list
      * @param {string} comparaison Filter comparison operator
      * @see {@link} Authorized comparison operators

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { mdiBookOutline, mdiFilterOutline } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -13,6 +13,7 @@ import '../../../../../../res/css/ComputerMainInfos.css';
 import { useSelector } from "react-redux";
 import { type AppState as AppDataState } from "../../../../controller/store";
 import Filter from "../../../../../model/filters/Filter";
+import { filterManager } from "../../../../../model/filters/FilterManager";
 
 /**
  * Pie chart series data
@@ -40,8 +41,6 @@ interface PieChartData {
  */
 export default function SoftwareOrigins (): React.JSX.Element {
     const [data, setData] = React.useState<PieChartData[]>([]);
-
-    const [chartInitialisationDone, setLoadDone] = React.useState<boolean>(false);
 
     const { snapshot, error, loading } = useSelector((app: AppDataState) => app.snapshot)
 
@@ -88,7 +87,8 @@ export default function SoftwareOrigins (): React.JSX.Element {
      * @param {Filter} filters Filters set by the user
      */
     const updatePieChartData = (filters: Filter[]): void => {
-        const softwares = (snapshot as SnapshotData).fetchFilteredSoftwares(filters)
+        const softwaresFilter = filterManager.softwareFilters()
+        const softwares = (snapshot as SnapshotData).fetchFilteredSoftwares(softwaresFilter)
         initPieChartData(softwares)
     }
 
@@ -120,10 +120,9 @@ export default function SoftwareOrigins (): React.JSX.Element {
             </Card>
         )
     } else {
-        if (!chartInitialisationDone) {
+        useEffect(()=>{
             updatePieChartData(filters)
-            setLoadDone(true)
-        }
+        },[filters])
         return (
             <Card className="PieChartCard">
                 <CardHeader
@@ -143,7 +142,6 @@ export default function SoftwareOrigins (): React.JSX.Element {
                 />
                 <CardContent>
                     <PieChart
-                        loading={data.length === 0}
                         series={[
                             {
                                 data
