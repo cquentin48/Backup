@@ -125,6 +125,7 @@ export class SnapshotData {
                     throw new NotImplementedError("Unknown operation type!")
             }
         })
+        console.log(softwares)
         return softwares
     }
 }

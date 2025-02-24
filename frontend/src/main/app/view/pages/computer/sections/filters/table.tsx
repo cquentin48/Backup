@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DeviceMainInfosGridFooter from "./footer/GridFooter";
 import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 
-import { updateSelectedFilter, resetError } from "../../../../controller/deviceMainInfos/filterSlice";
+import { updateSelectedFilter } from "../../../../controller/deviceMainInfos/filterSlice";
 
 import { type AppState } from "../../../../controller/store";
 import Filter from "../../../../../model/filters/Filter";
@@ -147,7 +147,6 @@ export default function FilterTable (): React.JSX.Element {
                 variant: error.variant
             }
         )
-        resetError()
     }
 
     return (

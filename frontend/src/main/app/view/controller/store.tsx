@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import loadSnapshotReducer from "./deviceMainInfos/loadSnapshotSlice";
-import loadDeviceReducer from "./deviceMainInfos/loadDeviceSlice";
 import filterReducer from "./deviceMainInfos/filterSlice";
+import loadDeviceReducer from "./deviceMainInfos/loadDeviceSlice";
+import loadSnapshotReducer from "./deviceMainInfos/loadSnapshotSlice";
 
 export const store = configureStore({
     reducer: {
-        snapshot: loadSnapshotReducer,
+        device: loadDeviceReducer,
         filters: filterReducer,
-        device: loadDeviceReducer
+        snapshot: loadSnapshotReducer
     }
 })
 

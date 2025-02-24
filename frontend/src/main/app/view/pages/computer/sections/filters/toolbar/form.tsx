@@ -9,9 +9,10 @@ import AlreadyAddedWarning from "../../../../../../model/exception/warning/alrea
 import DeviceMainInfosFilterCreationButton from "./createFilterButton";
 import FieldValue from "./fieldValue";
 import FilterToolbar from "./selectFilter";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addFilter } from "../../../../../controller/deviceMainInfos/filterSlice";
 import { filterManager } from "../../../../../../model/filters/FilterManager";
+import { AppState } from "../../../../../controller/store";
 
 /**
  * State of the new filter form dialog
@@ -83,6 +84,8 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
     const inputRefs = useRef<Array<() => undefined>>([]);
     const [firstTime, updateFirstTime] = React.useState(true);
 
+    const filters = useSelector((app: AppState) => app.filters)
+
     const dispatch = useDispatch()
 
     const { enqueueSnackbar } = useSnackbar()
@@ -98,6 +101,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             value as unknown as object,
             filterManager.getFilters().length
         )
+
         if (value.length > 0) {
             dispatch(
                 addFilter(
@@ -123,7 +127,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             }
             if (pressedKey.key === "Enter") {
                 try {
-                    addsNewFilter();
+                    addsNewFilter()
                 } catch (rawError) {
                     const error = initError(rawError as Error)
                     enqueueSnackbar((error as any).message, { variant: (error as any).variant })
@@ -134,7 +138,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
         document.addEventListener("keydown", handlePressedKey)
 
         return () => { document.removeEventListener("keydown", handlePressedKey); }
-    })
+    }, [filters, value])
 
     const initInputRef = (input: never, i: number): void => {
         inputRefs.current[i] = input;

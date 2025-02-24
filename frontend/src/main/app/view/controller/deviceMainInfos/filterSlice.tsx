@@ -4,6 +4,7 @@ import AlreadyAddedWarning from "../../../model/exception/warning/alreadyAdded";
 import NotFoundError from "../../../model/exception/errors/notFoundError";
 import { filterManager } from "../../../model/filters/FilterManager";
 import Filter from "../../../model/filters/Filter";
+import ValidationError from "../../../model/exception/errors/validationError";
 
 /**
  * Filter slice state
@@ -34,30 +35,38 @@ export const filterSlice = createSlice({
     initialState,
     reducers: {
         addFilter: (state, action: PayloadAction<Filter>) => {
-            const filter = action.payload
-            Filter.inputTypeAuthorizedList(action.payload.elementType);
-            Filter.comparisonTypesCheck(filter.opType);
-
             try {
+                const filter = action.payload
+                Filter.inputTypeAuthorizedList(action.payload.elementType);
+                Filter.comparisonTypesCheck(filter.opType);
+
                 filterManager.addFilter(
                     filter.elementType as "File" | "Library",
                     filter.fieldName,
                     filter.opType as "<" | ">" | "!=" | "==",
                     filter.value
                 )
-                state.filters = filterManager.getFilters()
+                state.filters = filterManager.getFilters().map((filter)=>{
+                    return filter
+                })
             } catch (e) {
+                console.error(e)
                 if (e instanceof AlreadyAddedWarning) {
                     state.error = {
                         variant: "warning",
                         message: e.message
                     }
+                } else if(e instanceof ValidationError){
+                    state.error = {
+                        variant: "error",
+                        message: e.message
+                    }
                 }
             }
         },
-        deleteFilter: (state, action) => {
+        deleteFilter: (state, action: PayloadAction<number[]>) => {
             try {
-                const inputsIDS = (action.payload) as number[]
+                const inputsIDS = action.payload
                 let filterIDS = inputsIDS.map((filterID: unknown) => {
                     return filterID as number;
                 });

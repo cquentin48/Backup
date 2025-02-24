@@ -9,7 +9,7 @@ class FilterManager {
     /**
      * Filters set in the filter main device informations
      */
-    private readonly filters: Filter[] = [];
+    private filters: Filter[] = [];
 
     /**
      * Adds a new filter inside the table
@@ -26,17 +26,15 @@ class FilterManager {
     ): void {
         const newFilter = new Filter(elementType, fieldName, comparisonType, value, this.getFilters().length);
         if (this.filters.filter((filter) => {
-            const comparedFilter = filter
-            const elementTypeCheck = comparedFilter.elementType === elementType;
-            const fieldNameCheck = comparedFilter.fieldName === fieldName;
-            const comparisonTypeCheck = comparedFilter.opType === comparisonType;
-            const valueCheck = comparedFilter.value === value;
+            const elementTypeCheck = filter.elementType === elementType;
+            const fieldNameCheck = filter.fieldName === fieldName;
+            const comparisonTypeCheck = filter.opType === comparisonType;
+            const valueCheck = filter.value === value;
             return elementTypeCheck && fieldNameCheck && comparisonTypeCheck && valueCheck
         }).length > 0) {
             throw new AlreadyAddedWarning("The filter is already set! It will be ignored!")
-        } else {
-            this.filters.push(newFilter);
         }
+        this.filters.push(newFilter);
     }
 
     /**
