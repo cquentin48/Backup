@@ -7,11 +7,43 @@ import '@testing-library/jest-dom'
 import gqlClient from "../../../../../../main/app/model/queries/client"
 import SoftwareOrigins from "../../../../../../main/app/view/pages/computer/sections/charts/SoftwareOrigins"
 import { dataManager } from "../../../../../../main/app/model/AppDataManager"
+import { Provider } from "react-redux"
+import store from "../../../../../../main/app/view/controller/store"
 
 describe("Type of softwares origin chart unit test suite", () => {
     afterEach(() => {
         dataManager.removeAllData()
         jest.resetAllMocks()
+    })
+
+    test("Successful render (no data yet!)", async () => {
+        // Given
+        const queryOutput = {
+            data: {
+                snapshotInfos: {
+                    versions: [
+                        {
+                            name: "My software",
+                            installType: "type",
+                            chosenVersion: "1.0"
+                        }
+                    ],
+                    repositories: []
+                }
+            }
+        }
+        gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
+
+        // Acts
+        const { getByText } = render(
+            <Provider store={store}>
+                <SoftwareOrigins />
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(getByText("Software origins")).toBeInTheDocument()
+        }, { timeout: 500 })
     })
 
     test("Successful render (single software)", async () => {
@@ -34,7 +66,9 @@ describe("Type of softwares origin chart unit test suite", () => {
 
         // Acts
         render(
-            <SoftwareOrigins />
+            <Provider store={store}>
+                <SoftwareOrigins />
+            </Provider>
         )
 
         await waitFor(() => {
@@ -92,7 +126,9 @@ describe("Type of softwares origin chart unit test suite", () => {
 
         // Acts
         const { getByText } = render(
-            <SoftwareOrigins />
+            <Provider store={store}>
+                <SoftwareOrigins />
+            </Provider>
         )
 
         await waitFor(() => {
@@ -126,7 +162,9 @@ describe("Type of softwares origin chart unit test suite", () => {
 
         // Acts
         render(
-            <SoftwareOrigins />
+            <Provider store={store}>
+                <SoftwareOrigins />
+            </Provider>
         )
 
         await waitFor(() => {
