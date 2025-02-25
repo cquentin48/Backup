@@ -2,9 +2,12 @@ import React from "react";
 
 import { Grid2, Card, CardHeader, Avatar, CardContent, Skeleton } from "@mui/material";
 
-import "../../../../../res/css/ComputerMainInfos.css";
 import { useSelector } from "react-redux";
-import { type AppState } from "../../../controller/store";
+
+import { deviceState } from "../../../controller/deviceMainInfos/loadDeviceSlice";
+import { snapshotState } from "../../../controller/deviceMainInfos/loadSnapshotSlice";
+
+import "../../../../../res/css/ComputerMainInfos.css";
 
 /**
  * Elements passed from the device main infos header
@@ -32,18 +35,18 @@ interface DeviceStatProps {
  * @returns {React.JSX.Element} rendered component
  */
 export default function DeviceStat (props: DeviceStatProps): React.JSX.Element {
-    const deviceState = useSelector((app: AppState) => app.device)
-    const snapshotState = useSelector((app: AppState) => app.snapshot)
+    const { device, deviceError: error } = useSelector(deviceState)
+    const { snapshot, snapshotError } = useSelector(snapshotState)
 
     let avatar;
     let value;
     let label;
 
-    if (deviceState.device !== undefined && snapshotState.snapshot !== undefined) {
+    if (device !== undefined && snapshot !== undefined) {
         avatar = props.avatar;
         value = props.value;
         label = props.label;
-    } else if (deviceState.error !== undefined || snapshotState.error !== "") {
+    } else if (error !== undefined || snapshotError !== "") {
         avatar = props.avatar
         label = props.label
         value = "Error in loading data"

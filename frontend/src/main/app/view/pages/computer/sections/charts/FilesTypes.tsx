@@ -9,16 +9,15 @@ import { type MakeOptional } from "@mui/x-charts/internals";
 
 import { useSelector } from "react-redux";
 
-import { type AppState } from "../../../../controller/store";
-
 import '../../../../../../res/css/ComputerMainInfos.css';
+import { snapshotState } from "../../../../controller/deviceMainInfos/loadSnapshotSlice";
 
 /**
  *  Files types pie chart view component
  *  @returns {React.JSX.Element} View component
  */
 export default function FilesTypes (): React.JSX.Element {
-    const { snapshot, loading } = useSelector((app: AppState) => app.snapshot)
+    const { snapshot, snapshotLoading } = useSelector(snapshotState)
     const series: Array<MakeOptional<PieSeriesType<MakeOptional<PieValueType, "id">>, "type">> = [
         {
             data: [
@@ -45,7 +44,7 @@ export default function FilesTypes (): React.JSX.Element {
             />
             <CardContent>
                 <PieChart
-                    loading={loading || snapshot === undefined}
+                    loading={snapshotLoading || snapshot === undefined}
                     series={snapshot !== undefined ? series : [{ data: [] }]}
                     width={550}
                     height={200}

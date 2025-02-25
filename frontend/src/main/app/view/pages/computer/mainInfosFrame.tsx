@@ -14,7 +14,9 @@ import '../../../../res/css/ComputerMainInfos.css';
 
 import { fetchSnapshot } from "../../../model/queries/computer/loadSnapshot";
 import { useDispatch, useSelector } from "react-redux";
-import { type AppDispatch, type AppState } from "../../controller/store";
+import { type AppDispatch } from "../../controller/store";
+import { deviceState } from "../../controller/deviceMainInfos/loadDeviceSlice";
+import { snapshotState } from "../../controller/deviceMainInfos/loadSnapshotSlice";
 
 /**
  * Main informations frame view component
@@ -25,8 +27,8 @@ export default function MainInfosFrame (): React.JSX.Element {
 
     const [snapshotID, setSnapshotID] = React.useState("")
 
-    const deviceState = useSelector((state: AppState) => state.device)
-    const snapshotState = useSelector((state: AppState) => state.snapshot)
+    const { deviceLoading, device, deviceError } = useSelector(deviceState)
+    const { snapshotError } = useSelector(snapshotState)
 
     /**
      * Update the selected snapshot
@@ -77,19 +79,19 @@ export default function MainInfosFrame (): React.JSX.Element {
     let snapshots;
 
     useEffect(() => {
-        if (!deviceState.loading && deviceState.device !== undefined) {
-            updateSelectedSnapshot((deviceState.device).snapshots[0].key)
+        if (!deviceLoading && device !== undefined) {
+            updateSelectedSnapshot((device).snapshots[0].key)
         }
-    }, [dispatch, snapshotID, deviceState.device])
+    }, [dispatch, snapshotID, device])
 
-    if (snapshotState.error !== "" || (deviceState.error !== undefined && deviceState.error.message !== "")) {
-        if (deviceState.error !== undefined && deviceState.error.message !== "") {
+    if (snapshotError !== "" || (deviceError !== undefined && deviceError.message !== "")) {
+        if (deviceError !== undefined && deviceError.message !== "") {
             enqueueSnackbar(
-                deviceState.error.message, { variant: deviceState.error.variant }
+                deviceError.message, { variant: deviceError.variant }
             )
         } else {
             enqueueSnackbar(
-                snapshotState.error, { variant: "error" }
+                snapshotError, { variant: "error" }
             )
         }
         snapshots = <FormControl id="mainInfosSelectForm">
@@ -109,10 +111,10 @@ export default function MainInfosFrame (): React.JSX.Element {
                 }
             </Select>
         </FormControl>
-    } else if (deviceState.loading) {
-        snapshots = <Skeleton variant="rounded" width={256} height={56} id="mainInfosSelectForm"/>
-    } else if (!deviceState.loading && deviceState.device !== undefined) {
-        const snapshotMenuItems = buildMenuItems(deviceState.device);
+    } else if (deviceLoading) {
+        snapshots = <Skeleton variant="rounded" width={256} height={56} id="mainInfosSelectForm" />
+    } else if (!deviceLoading && device !== undefined) {
+        const snapshotMenuItems = buildMenuItems(device);
         snapshots =
             <FormControl id="mainInfosSelectForm">
                 <InputLabel id="dataType">Snapshot list</InputLabel>

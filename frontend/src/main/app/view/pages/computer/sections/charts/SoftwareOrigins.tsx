@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { mdiBookOutline } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -11,8 +11,10 @@ import { type SnapshotSoftware } from "../../../../../model/snapshot/snapshotLib
 
 import '../../../../../../res/css/ComputerMainInfos.css';
 import { useSelector } from "react-redux";
-import { type AppState as AppDataState } from "../../../../controller/store";
+
 import type Filter from "../../../../../model/filters/Filter";
+import { snapshotState } from "../../../../controller/deviceMainInfos/loadSnapshotSlice";
+import { deviceMainInfosFilterState } from "../../../../controller/deviceMainInfos/filterSlice";
 
 /**
  * Pie chart series data
@@ -41,9 +43,12 @@ interface PieChartData {
 export default function SoftwareOrigins (): React.JSX.Element {
     const [data, setData] = React.useState<PieChartData[]>([]);
 
-    const { snapshot, error, loading } = useSelector((app: AppDataState) => app.snapshot)
+    const { snapshot, snapshotError, snapshotLoading } = useSelector(snapshotState)
 
-    const filters = useSelector((state: AppDataState) => state.filters.filters)
+    const { filters } = useSelector(deviceMainInfosFilterState)
+
+    const memoSnapshot = useMemo(() => snapshot, [snapshot])
+    const memoFilter = useMemo(() => filters, [filters])
 
     /**
      * Update pie chart series data
@@ -96,17 +101,17 @@ export default function SoftwareOrigins (): React.JSX.Element {
         const softwaresFilter = filters.filter((filter) =>
             filter.elementType === "Library"
         )
-        const softwares = (snapshot as SnapshotData).fetchFilteredSoftwares(softwaresFilter)
+        const softwares = (memoSnapshot as SnapshotData).fetchFilteredSoftwares(softwaresFilter)
         initPieChartData(softwares)
     }
 
     useEffect(() => {
-        if (!loading && error === "" && snapshot !== undefined) {
-            updatePieChartData(filters)
+        if (!snapshotLoading && snapshotError === "" && snapshot !== undefined) {
+            updatePieChartData(memoFilter)
         }
-    }, [filters, snapshot])
+    }, [snapshot, filters])
 
-    if (error === "") {
+    if (snapshotError === "") {
         return (
             <Card className="PieChartCard">
                 <CardHeader
@@ -121,7 +126,7 @@ export default function SoftwareOrigins (): React.JSX.Element {
                 />
                 <CardContent>
                     <PieChart
-                        loading={loading || snapshot === undefined}
+                        loading={snapshotLoading || snapshot === undefined}
                         series={snapshot === undefined ? [{ data: [] }] : [{ data }]}
                         width={550}
                         height={200}

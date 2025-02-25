@@ -2,15 +2,17 @@ import React from "react";
 
 import { Modal, Box, CircularProgress, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import { type AppState } from "../../controller/store";
+
+import { deviceState } from "../../controller/deviceMainInfos/loadDeviceSlice";
+import { snapshotState } from "../../controller/deviceMainInfos/loadSnapshotSlice";
 
 /**
  * Loading device modal (before data is loaded)
  * @returns {React.JSX.Element} rendered web component
  */
 export default function LoadingDeviceModal (): React.JSX.Element {
-    const loadingDevice = useSelector((app: AppState) => app.device.loading)
-    const loadingSnapshot = useSelector((app: AppState) => app.snapshot.loading)
+    const { deviceLoading } = useSelector(deviceState)
+    const { snapshotLoading } = useSelector(snapshotState)
 
     /**
      * Set the text for the modal loading
@@ -18,9 +20,9 @@ export default function LoadingDeviceModal (): React.JSX.Element {
      */
     const setModalText = (): string => {
         let modalText;
-        if (loadingDevice) {
+        if (deviceLoading) {
             modalText = "Loading device informations"
-        } else if (loadingSnapshot) {
+        } else if (snapshotLoading) {
             modalText = "Loading snapshot informations"
         } else {
             modalText = ""
@@ -30,7 +32,7 @@ export default function LoadingDeviceModal (): React.JSX.Element {
 
     return (
         <Modal
-            open={loadingDevice || loadingSnapshot}>
+            open={deviceLoading || snapshotLoading}>
             <Box sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -54,7 +56,7 @@ export default function LoadingDeviceModal (): React.JSX.Element {
                             marginTop: "16px"
                         }}
                     >
-                        {setModalText() }
+                        {setModalText()}
                     </Typography>
                 </Box>
             </Box>

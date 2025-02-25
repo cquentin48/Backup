@@ -5,32 +5,32 @@ import GridFooterDelete from "./GridFooterDel";
 
 import "../../../../../../../res/css/Filters.css";
 import { useSelector } from "react-redux";
-import { type AppState } from "../../../../../controller/store";
+import { deviceMainInfosFilterState } from "../../../../../controller/deviceMainInfos/filterSlice";
 
 /**
  * Device main infos datagrid footer
  * @returns {React.JSX.Element} rendered component
  */
 export default function DeviceMainInfosGridFooter (): React.JSX.Element {
-    const ids = useSelector((app: AppState) => app.filters.selectedFilteredIDS)
+    const { selectedFilteredIDS } = useSelector(deviceMainInfosFilterState)
 
     /**
      * Render web component
      * @returns {React.JSX.Element} Rendered component
      */
-    let formatedFiltersCount = `${ids.length} filtre`
-    if (ids.length > 1) {
+    let formatedFiltersCount = `${selectedFilteredIDS.length} filtre`
+    if (selectedFilteredIDS.length > 1) {
         formatedFiltersCount = `${formatedFiltersCount}s sélectionnés`
     } else {
         formatedFiltersCount = `${formatedFiltersCount} sélectionné`
     }
-    if (ids.length > 0) {
+    if (selectedFilteredIDS.length > 0) {
         return (
             <Box
                 id="GridFooterContent"
             >
                 <p>{formatedFiltersCount}!</p>
-                <GridFooterDelete selectedIds={ids} />
+                <GridFooterDelete selectedIds={selectedFilteredIDS} />
             </Box>
         )
     } else {

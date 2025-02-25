@@ -8,14 +8,14 @@ import { Tooltip, Typography, Button, Skeleton } from "@mui/material";
 import { useSelector } from "react-redux";
 
 import "../../../../../res/css/ComputerMainInfos.css";
-import { type AppState } from "../../../controller/store";
+import { deviceState } from "../../../controller/deviceMainInfos/loadDeviceSlice";
 
 /**
  * Device header containing OS icon, computer name and delete button
  * @returns {React.JSX.Element} rendered component
  */
 export default function DeviceMainInfosHeader (): React.JSX.Element {
-    const { device, error, loading } = useSelector((state: AppState) => state.device)
+    const { device, deviceError: error, deviceLoading: loading } = useSelector(deviceState)
 
     /**
      * Fetch the correct icon from the mdi labs

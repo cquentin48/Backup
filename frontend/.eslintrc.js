@@ -68,8 +68,7 @@ module.exports = {
     "jsdoc/require-yields": 1,
     "jsdoc/require-yields-check": 1,
     "jsdoc/tag-lines": 1,
-    "jsdoc/valid-types": 1,
-    'react-redux/useSelector-prefer-selectors': 'off'
+    "jsdoc/valid-types": 1
   },
   settings: {
     react: {

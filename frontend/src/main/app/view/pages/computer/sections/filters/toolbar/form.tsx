@@ -10,8 +10,7 @@ import DeviceMainInfosFilterCreationButton from "./createFilterButton";
 import FieldValue from "./fieldValue";
 import FilterToolbar from "./selectFilter";
 import { useDispatch, useSelector } from "react-redux";
-import { addFilter } from "../../../../../controller/deviceMainInfos/filterSlice";
-import { type AppState } from "../../../../../controller/store";
+import { addFilter, deviceMainInfosFilterState } from "../../../../../controller/deviceMainInfos/filterSlice";
 
 /**
  * State of the new filter form dialog
@@ -83,7 +82,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
     const inputRefs = useRef<Array<() => undefined>>([]);
     const [firstTime, updateFirstTime] = React.useState(true);
 
-    const filters = useSelector((app: AppState) => app.filters)
+    const filters = useSelector(deviceMainInfosFilterState)
 
     const dispatch = useDispatch()
 

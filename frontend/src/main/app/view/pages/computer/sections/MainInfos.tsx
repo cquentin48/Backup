@@ -9,16 +9,16 @@ import { Grid2 } from "@mui/material";
 import { useSelector } from "react-redux";
 
 import DeviceStat from "./computerStat";
-import { type AppState } from "../../../controller/store";
 
 import '../../../../../res/css/ComputerMainInfos.css';
+import { deviceState } from "../../../controller/deviceMainInfos/loadDeviceSlice";
 
 /**
  * Accordion containing the device main informations
  * @returns {React.JSX.Element} Accordion with the device main informations
  */
 export default function SpecsMainInfos (): React.JSX.Element {
-    const device = useSelector((state: AppState) => state.device.device)
+    const { device } = useSelector(deviceState)
     const firstSnapshot = device !== undefined ? device.snapshots[0] : undefined
     const lastSnapshot = device !== undefined ? device.snapshots[device.snapshots.length - 1] : undefined
 

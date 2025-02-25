@@ -6,6 +6,7 @@ import NotFoundError from "../../../model/exception/errors/notFoundError";
 import ValidationError from "../../../model/exception/errors/validationError";
 
 import Filter from "../../../model/filters/Filter";
+import { type AppState } from "../store";
 
 /**
  * Filter slice state
@@ -13,7 +14,7 @@ import Filter from "../../../model/filters/Filter";
 interface FilterSliceState {
     filters: Filter[]
     selectedFilteredIDS: number[]
-    error: {
+    filterError: {
         message: string
         variant: "error" | "default" | "success" | "warning" | "info" | undefined
     }
@@ -25,7 +26,7 @@ interface FilterSliceState {
 const initialState: FilterSliceState = {
     filters: [],
     selectedFilteredIDS: [],
-    error: {
+    filterError: {
         message: "",
         variant: undefined
     }
@@ -58,12 +59,12 @@ export const filterSlice = createSlice({
                 )
             } catch (e) {
                 if (e instanceof AlreadyAddedWarning) {
-                    state.error = {
+                    state.filterError = {
                         variant: "warning",
                         message: e.message
                     }
                 } else if (e instanceof ValidationError) {
-                    state.error = {
+                    state.filterError = {
                         variant: "error",
                         message: e.message
                     }
@@ -102,7 +103,7 @@ export const filterSlice = createSlice({
                 })
             } catch (error) {
                 if (error instanceof NotFoundError || error instanceof ConflictError) {
-                    state.error = {
+                    state.filterError = {
                         message: (error as NotFoundError).message,
                         variant: "error"
                     }
@@ -114,7 +115,7 @@ export const filterSlice = createSlice({
             state.selectedFilteredIDS = selectedIDS
         },
         resetError: (state) => {
-            state.error = {
+            state.filterError = {
                 message: "",
                 variant: undefined
             }
@@ -122,6 +123,7 @@ export const filterSlice = createSlice({
     }
 })
 
-export const { addFilter, deleteFilter, updateSelectedFilter, resetError } = filterSlice.actions
-
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const deviceMainInfosFilterState = (state: AppState) => state.filter;
 export default filterSlice.reducer
+export const { addFilter, deleteFilter, updateSelectedFilter, resetError } = filterSlice.actions

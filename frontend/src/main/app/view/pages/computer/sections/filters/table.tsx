@@ -11,10 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 import DeviceMainInfosGridFooter from "./footer/GridFooter";
 import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 
-import { updateSelectedFilter } from "../../../../controller/deviceMainInfos/filterSlice";
+import { deviceMainInfosFilterState, updateSelectedFilter } from "../../../../controller/deviceMainInfos/filterSlice";
 
-import { type AppState } from "../../../../controller/store";
 import type Filter from "../../../../../model/filters/Filter";
+import { snapshotState } from "../../../../controller/deviceMainInfos/loadSnapshotSlice";
 
 /**
  * Deleted filter row interface
@@ -78,9 +78,9 @@ const filterTableColumns: GridColDef[] = [
  * @returns {React.JSX.Element} Rendered component
  */
 export default function FilterTable (): React.JSX.Element {
-    const { filters, error } = useSelector((state: AppState) => state.filters)
+    const { filters, filterError: error } = useSelector(deviceMainInfosFilterState)
 
-    const { loading, snapshot } = useSelector((state: AppState) => state.snapshot)
+    const { snapshotLoading: loading, snapshot } = useSelector(snapshotState)
 
     const [currentRows, setViewRows] = React.useState<Filter[]>([])
 

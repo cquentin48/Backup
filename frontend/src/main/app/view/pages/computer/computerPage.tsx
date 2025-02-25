@@ -7,9 +7,10 @@ import DeviceElements from './computerElements';
 import { useParams } from 'react-router-dom';
 
 import LoadingDeviceModal from './DeviceModal';
-import { type AppDispatch, type AppState } from '../../controller/store';
+import { type AppDispatch } from '../../controller/store';
 import { fetchDeviceInfos } from '../../../model/queries/computer/deviceInfos';
 import DeviceNotFound from './notFound/notFoundTitle';
+import { deviceState } from '../../controller/deviceMainInfos/loadDeviceSlice';
 
 /**
  * Computer page view model
@@ -17,7 +18,7 @@ import DeviceNotFound from './notFound/notFoundTitle';
  */
 export default function ComputerPage (): React.JSX.Element {
     const dispatch = useDispatch<AppDispatch>();
-    const { loading, device, error } = useSelector((app: AppState) => app.device)
+    const { deviceLoading, device, deviceError } = useSelector(deviceState)
 
     const { id } = useParams()
 
@@ -28,8 +29,8 @@ export default function ComputerPage (): React.JSX.Element {
         }))
     }, [dispatch, id])
 
-    if (error === undefined || (error !== undefined && error.message === "")) {
-        if (!loading && device !== undefined) {
+    if (deviceError === undefined || (deviceError !== undefined && deviceError.message === "")) {
+        if (!deviceLoading && device !== undefined) {
             document.title = `Backup - device ${device.name}`
         } else {
             document.title = "Backup - loading device"
