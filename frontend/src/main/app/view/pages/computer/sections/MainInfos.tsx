@@ -6,20 +6,21 @@ import { mdiCpu64Bit, mdiCalendarPlusOutline, mdiCalendarSync } from "@mdi/js";
 import { Memory, Storage } from "@mui/icons-material";
 import { Grid2 } from "@mui/material";
 
-import '../../../../../res/css/ComputerMainInfos.css';
-import type Device from "../../../../model/device/device";
-import DeviceStat from "./computerStat";
 import { useSelector } from "react-redux";
+
+import DeviceStat from "./computerStat";
 import { type AppState } from "../../../controller/store";
+
+import '../../../../../res/css/ComputerMainInfos.css';
 
 /**
  * Accordion containing the device main informations
  * @returns {React.JSX.Element} Accordion with the device main informations
  */
 export default function SpecsMainInfos (): React.JSX.Element {
-    const device = useSelector((state: AppState) => state.device.device) as Device
-    const firstSnapshot = device.snapshots[0]
-    const lastSnapshot = device.snapshots[device.snapshots.length - 1]
+    const device = useSelector((state: AppState) => state.device.device)
+    const firstSnapshot = device !== undefined ? device.snapshots[0] : undefined
+    const lastSnapshot = device !== undefined ? device.snapshots[device.snapshots.length - 1] : undefined
 
     return (
         <Grid2 container spacing={2} id="deviceMainInfosSpecs">
@@ -28,7 +29,7 @@ export default function SpecsMainInfos (): React.JSX.Element {
                     <Icon path={mdiCpu64Bit} size={1} />
                 }
                 label="Processor"
-                value={(device).processor}
+                value={device !== undefined ? device.processor : ""}
             />
 
             <DeviceStat
@@ -36,7 +37,7 @@ export default function SpecsMainInfos (): React.JSX.Element {
                     <Memory />
                 }
                 label="Computer cores"
-                value={((device).cores.toString())}
+                value={device !== undefined ? device.cores.toString() : ""}
             />
 
             <DeviceStat
@@ -44,7 +45,7 @@ export default function SpecsMainInfos (): React.JSX.Element {
                     <Storage />
                 }
                 label="RAM"
-                value={(device).formatBytes((device).memory)}
+                value={device !== undefined ? device.formatBytes(device.memory) : ""}
             />
             <DeviceStat
                 avatar={
@@ -52,12 +53,14 @@ export default function SpecsMainInfos (): React.JSX.Element {
                 }
                 label="Device added on"
                 value={
-                    (firstSnapshot).date.toLocaleDateString(window.navigator.language, {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric"
-                    })
+                    firstSnapshot !== undefined
+                        ? firstSnapshot.date.toLocaleDateString(window.navigator.language, {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                        })
+                        : ""
                 }
             />
             <DeviceStat
@@ -66,12 +69,14 @@ export default function SpecsMainInfos (): React.JSX.Element {
                 }
                 label="Last update"
                 value={
-                    (lastSnapshot).date.toLocaleDateString(window.navigator.language, {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric"
-                    })
+                    lastSnapshot !== undefined
+                        ? lastSnapshot.date.toLocaleDateString(window.navigator.language, {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                        })
+                        : ""
                 }
             />
             <DeviceStat

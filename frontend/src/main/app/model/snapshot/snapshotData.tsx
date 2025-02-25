@@ -2,8 +2,9 @@
 import NotFoundError from "../exception/errors/notFoundError";
 import NotImplementedError from "../exception/errors/notImplementedError";
 import AlreadyAddedWarning from "../exception/warning/alreadyAdded";
-import Filter, { FilterComparisonType } from "../filters/Filter";
-import Repositories from "./repositories";
+import { type FilterComparisonType } from "../filters/Filter";
+import type Filter from "../filters/Filter";
+import type Repositories from "./repositories";
 import { SnapshotSoftware } from "./snapshotLibrary";
 
 /**
@@ -14,7 +15,6 @@ export class SnapshotData {
      * Every software
      */
     versions: SnapshotSoftware[];
-
 
     repositories: Repositories[];
 
@@ -81,41 +81,38 @@ export class SnapshotData {
                     return ((software as any)[fieldName] !== value)
                 })
             case "<":
-                if(value instanceof String){
+                if (value instanceof String) {
                     return softwares.filter((software) => {
                         return (((software as any)[fieldName] as string).toLowerCase() < value.toLocaleLowerCase())
-                    })                        
+                    })
                 }
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] < value)
                 })
 
             case "<=":
-                if(value instanceof String){
+                if (value instanceof String) {
                     return softwares.filter((software) => {
                         return (((software as any)[fieldName] as string).toLowerCase() <= value.toLocaleLowerCase())
-                    })                        
+                    })
                 }
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] <= value)
                 })
             case ">":
-                if(value instanceof String){
-                    console.log(softwares.filter((software) => {
-                        return (((software as any)[fieldName] as string).toLowerCase() > value.toLocaleLowerCase())
-                    }))
+                if (value instanceof String) {
                     return softwares.filter((software) => {
                         return (((software as any)[fieldName] as string).toLowerCase() > value.toLocaleLowerCase())
-                    })                        
+                    })
                 }
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] > value)
                 })
             case ">=":
-                if(value instanceof String){
+                if (value instanceof String) {
                     return softwares.filter((software) => {
                         return (((software as any)[fieldName] as string).toLowerCase() > value.toLocaleLowerCase())
-                    })                        
+                    })
                 }
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] > value)

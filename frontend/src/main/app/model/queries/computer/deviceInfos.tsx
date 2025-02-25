@@ -7,8 +7,8 @@ import Device from "../../device/device";
 import SnapshotID from "../../device/snapshotId";
 import { type ApolloQueryResult } from "@apollo/client";
 
-interface QueryResult{
-    deviceInfos: Device;
+interface QueryResult {
+    deviceInfos: Device
 }
 
 export const fetchDeviceInfos = createAsyncThunk(

@@ -55,6 +55,7 @@ export default class Filter {
      * @param { string } fieldName name of the field to apply the filter on
      * @param { '<' | '>' | '!=' | '==' } opType filter operation type
      * @param { object } filterValue value including or not elements with the filter on
+     * @param {number} id Filter ID in the device filter table
      */
     constructor (
         elementType: "File" | "Library",
@@ -87,7 +88,7 @@ export default class Filter {
      * @param {Filter} otherFilter Other filter for comparison
      * @returns {boolean} ``true`` yes | ``false`` no
      */
-    public isEqual(otherFilter: Filter){
+    public isEqual (otherFilter: Filter): boolean {
         const elementTypeCheck = this.elementType === otherFilter.elementType;
         const fieldNameCheck = this.fieldName === otherFilter.fieldName;
         const comparisonTypeCheck = this.opType === otherFilter.opType;

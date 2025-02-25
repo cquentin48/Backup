@@ -3,9 +3,9 @@ import gqlClient from "../client";
 import type BasicQueryParameters from "../basicQueryParameters";
 import { SnapshotData } from "../../snapshot/snapshotData";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ApolloQueryResult } from "@apollo/client";
+import { type ApolloQueryResult } from "@apollo/client";
 
-interface QueryResult{
+interface QueryResult {
     snapshotInfos: SnapshotData
 }
 

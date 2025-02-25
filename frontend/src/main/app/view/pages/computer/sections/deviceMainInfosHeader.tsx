@@ -1,12 +1,13 @@
+import React from "react";
+
 import { mdiUbuntu, mdiMicrosoftWindows } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Delete } from "@mui/icons-material";
-import { Tooltip, Typography, Button } from "@mui/material";
-import React from "react";
+import { Tooltip, Typography, Button, Skeleton } from "@mui/material";
 
-import type Device from "../../../../model/device/device";
-import "../../../../../res/css/ComputerMainInfos.css";
 import { useSelector } from "react-redux";
+
+import "../../../../../res/css/ComputerMainInfos.css";
 import { type AppState } from "../../../controller/store";
 
 /**
@@ -14,7 +15,7 @@ import { type AppState } from "../../../controller/store";
  * @returns {React.JSX.Element} rendered component
  */
 export default function DeviceMainInfosHeader (): React.JSX.Element {
-    const device = useSelector((state: AppState) => state.device.device) as Device
+    const { device, error, loading } = useSelector((state: AppState) => state.device)
 
     /**
      * Fetch the correct icon from the mdi labs
@@ -29,29 +30,46 @@ export default function DeviceMainInfosHeader (): React.JSX.Element {
         }
     }
 
+    let deviceOSIcon;
+    let deviceTitle;
+    let deleteDeviceButton;
+
+    if (!loading && (error === undefined || error.message !== "") && device !== undefined) {
+        deviceOSIcon = <Tooltip title={device.snapshots[0].operatingSystem} placement='top'>
+            <div id="OSIcon">
+                <Icon
+                    id="DeviceMainInfosOSIcon"
+                    path={getOSIcon(device.snapshots[0].operatingSystem)} size={2}
+                />
+            </div>
+        </Tooltip>
+        deviceTitle = <Typography variant="h4">
+            {device.name}
+        </Typography>
+        deleteDeviceButton = <Button
+            variant="contained"
+            color="error"
+            startIcon={<Delete />}
+            id="deleteDeviceButton"
+        >
+            Delete device
+        </Button>
+    } else {
+        deviceOSIcon = <Skeleton variant="circular" width={40} height={40} id="OSIcon" />
+        deviceTitle = <Skeleton variant="text"><Typography variant="h4">Device name</Typography></Skeleton>
+        deleteDeviceButton = <Skeleton variant="rounded" width={172} height={51}
+            id="deleteDeviceButton">
+            <Button />
+        </Skeleton>
+    }
+
     return (
         <div id="deviceMainInfosHeader">
             <div id="computerName">
-                <Tooltip title={device.snapshots[0].operatingSystem} placement='top'>
-                    <div id="OSIcon">
-                        <Icon
-                            id="DeviceMainInfosOSIcon"
-                            path={getOSIcon(device.snapshots[0].operatingSystem)} size={2}
-                        />
-                    </div>
-                </Tooltip>
-                <Typography variant="h4">
-                    {device.name}
-                </Typography>
+                {deviceOSIcon}
+                {deviceTitle}
             </div>
-            <Button
-                variant="contained"
-                color="error"
-                startIcon={<Delete />}
-                id="deleteDeviceButton"
-            >
-                Delete device
-            </Button>
+            {deleteDeviceButton}
         </div>
     )
 }

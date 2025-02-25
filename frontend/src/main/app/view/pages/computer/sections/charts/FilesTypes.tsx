@@ -18,7 +18,7 @@ import '../../../../../../res/css/ComputerMainInfos.css';
  *  @returns {React.JSX.Element} View component
  */
 export default function FilesTypes (): React.JSX.Element {
-    const device = useSelector((app: AppState) => app.device.device)
+    const { snapshot, loading } = useSelector((app: AppState) => app.snapshot)
     const series: Array<MakeOptional<PieSeriesType<MakeOptional<PieValueType, "id">>, "type">> = [
         {
             data: [
@@ -45,8 +45,8 @@ export default function FilesTypes (): React.JSX.Element {
             />
             <CardContent>
                 <PieChart
-                    loading={device === undefined}
-                    series={series}
+                    loading={loading || snapshot === undefined}
+                    series={snapshot !== undefined ? series : [{ data: [] }]}
                     width={550}
                     height={200}
                     className="DisplayedPieChart"

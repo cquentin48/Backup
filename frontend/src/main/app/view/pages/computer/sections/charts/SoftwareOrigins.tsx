@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 
-import { mdiBookOutline, mdiFilterOutline } from "@mdi/js";
+import { mdiBookOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 
-import { Autocomplete, Avatar, Card, CardContent, CardHeader, IconButton } from "@mui/material";
+import { Avatar, Card, CardContent, CardHeader } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 
 import { type SnapshotData } from "../../../../../model/snapshot/snapshotData";
@@ -12,7 +12,7 @@ import { type SnapshotSoftware } from "../../../../../model/snapshot/snapshotLib
 import '../../../../../../res/css/ComputerMainInfos.css';
 import { useSelector } from "react-redux";
 import { type AppState as AppDataState } from "../../../../controller/store";
-import Filter from "../../../../../model/filters/Filter";
+import type Filter from "../../../../../model/filters/Filter";
 
 /**
  * Pie chart series data
@@ -93,44 +93,20 @@ export default function SoftwareOrigins (): React.JSX.Element {
      * @param {Filter} filters Filters set by the user
      */
     const updatePieChartData = (filters: Filter[]): void => {
-        const softwaresFilter = filters.filter((filter)=>
+        const softwaresFilter = filters.filter((filter) =>
             filter.elementType === "Library"
         )
         const softwares = (snapshot as SnapshotData).fetchFilteredSoftwares(softwaresFilter)
         initPieChartData(softwares)
     }
 
-    if (loading) {
-        return <div>Loading...</div>
-    } else if (!loading && error !== "") {
-        return (
-            <Card className="PieChartCard">
-                <CardHeader
-                    avatar={
-                        <Avatar
-                            className="PieChartIcon"
-                            arial-labels="recipe">
-                            <Icon path={mdiBookOutline} size={1} />
-                        </Avatar>
-                    }
-                    title="Software origins"
-                    action={
-                        <IconButton aria-label="settings">
-                            <Icon path={mdiFilterOutline} size={1} />
-                        </IconButton>
-                    }
-                />
-                <CardContent>
-                    The softwares origins chart could not be loaded!
-                    <br/>
-                    If the problem occurs frequently, please send an email to you admin!
-                </CardContent>
-            </Card>
-        )
-    } else {
-        useEffect(()=>{
+    useEffect(() => {
+        if (!loading && error === "" && snapshot !== undefined) {
             updatePieChartData(filters)
-        },[filters])
+        }
+    }, [filters, snapshot])
+
+    if (error === "") {
         return (
             <Card className="PieChartCard">
                 <CardHeader
@@ -142,23 +118,35 @@ export default function SoftwareOrigins (): React.JSX.Element {
                         </Avatar>
                     }
                     title="Software origins"
-                    action={
-                        <IconButton aria-label="settings">
-                            <Icon path={mdiFilterOutline} size={1} />
-                        </IconButton>
-                    }
                 />
                 <CardContent>
                     <PieChart
-                        series={[
-                            {
-                                data
-                            }
-                        ]}
+                        loading={loading || snapshot === undefined}
+                        series={snapshot === undefined ? [{ data: [] }] : [{ data }]}
                         width={550}
                         height={200}
                         className="DisplayedPieChart"
                     />
+                </CardContent>
+            </Card>
+        )
+    } else {
+        return (
+            <Card className="PieChartCard">
+                <CardHeader
+                    avatar={
+                        <Avatar
+                            className="PieChartIcon"
+                            arial-labels="recipe">
+                            <Icon path={mdiBookOutline} size={1} />
+                        </Avatar>
+                    }
+                    title="Software origins"
+                />
+                <CardContent>
+                    The softwares origins chart could not be loaded!
+                    <br />
+                    If the problem occurs frequently, please send an email to you admin!
                 </CardContent>
             </Card>
         )

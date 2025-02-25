@@ -9,7 +9,7 @@ class FilterManager {
     /**
      * Filters set in the filter main device informations
      */
-    private filters: Filter[] = [];
+    private readonly filters: Filter[] = [];
 
     /**
      * Adds a new filter inside the table

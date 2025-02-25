@@ -11,7 +11,7 @@ import FieldValue from "./fieldValue";
 import FilterToolbar from "./selectFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { addFilter } from "../../../../../controller/deviceMainInfos/filterSlice";
-import { AppState } from "../../../../../controller/store";
+import { type AppState } from "../../../../../controller/store";
 
 /**
  * State of the new filter form dialog
@@ -192,7 +192,6 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
                 selectLabel="Type of comparison"
             />
             <FieldValue
-                fieldName={value}
                 firstTime={firstTime}
                 getfieldNameType={Filter.getFieldNameType(inputType, fieldName)}
                 index={3}

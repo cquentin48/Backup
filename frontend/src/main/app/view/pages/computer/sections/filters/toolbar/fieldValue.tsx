@@ -24,11 +24,6 @@ interface FieldValueProps {
     firstTime: boolean
 
     /**
-     * Name of the field for the filter to be applied on
-     */
-    fieldName: string
-
-    /**
      * Filter value input type (e.g. ``text`` or ``number``)
      */
     getfieldNameType: string

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import AlreadyAddedWarning from "../../../model/exception/warning/alreadyAdded";
 import ConflictError from "../../../model/exception/errors/conflictError";
@@ -40,7 +40,7 @@ export const filterSlice = createSlice({
     reducers: {
         /**
          * Adds a new filter
-         * @param {WritableDraft<FilterSliceState>} state Current filter slice state
+         * @param {FilterSliceState} state Current filter slice state
          * @param {PayloadAction<Filter>} action New filter yet to be added
          */
         addFilter: (state, action: PayloadAction<Filter>) => {
@@ -48,9 +48,9 @@ export const filterSlice = createSlice({
                 const newFilter = action.payload
                 Filter.inputTypeAuthorizedList(action.payload.elementType);
                 Filter.comparisonTypesCheck(newFilter.opType);
-                if (state.filters.filter((filter) => {
+                if (state.filters.filter((filter) =>
                     filter.isEqual(newFilter)
-                }).length > 0) {
+                ).length > 0) {
                     throw new AlreadyAddedWarning("The filter is already set! It will be ignored!")
                 }
                 state.filters.push(
@@ -73,7 +73,7 @@ export const filterSlice = createSlice({
 
         /**
          * Deletes filters from the filter table
-         * @param { WritableDraft<FilterSliceState> } state current slice state
+         * @param { FilterSliceState } state current slice state
          * @param { PayloadAction<number[]> } action Filter IDS list for removal
          */
         deleteFilter: (state, action: PayloadAction<number[]>) => {
@@ -97,14 +97,11 @@ export const filterSlice = createSlice({
                     }
                     state.filters.splice(filters.indexOf(filters[0]), 1)
                 });
-                state.filters.forEach((filter, id)=>{
+                state.filters.forEach((filter, id) => {
                     filter.id = id
                 })
             } catch (error) {
-                const errorClasses = [NotFoundError, ConflictError]
-                if (errorClasses.filter((errorClass)=>{
-                    error instanceof errorClass
-                }).length === 1) {
+                if (error instanceof NotFoundError || error instanceof ConflictError) {
                     state.error = {
                         message: (error as NotFoundError).message,
                         variant: "error"

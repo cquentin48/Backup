@@ -1,15 +1,36 @@
 import React from "react";
 
 import { Modal, Box, CircularProgress, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+import { type AppState } from "../../controller/store";
 
 /**
  * Loading device modal (before data is loaded)
  * @returns {React.JSX.Element} rendered web component
  */
 export default function LoadingDeviceModal (): React.JSX.Element {
+    const loadingDevice = useSelector((app: AppState) => app.device.loading)
+    const loadingSnapshot = useSelector((app: AppState) => app.snapshot.loading)
+
+    /**
+     * Set the text for the modal loading
+     * @returns {string} Modal text
+     */
+    const setModalText = (): string => {
+        let modalText;
+        if (loadingDevice) {
+            modalText = "Loading device informations"
+        } else if (loadingSnapshot) {
+            modalText = "Loading snapshot informations"
+        } else {
+            modalText = ""
+        }
+        return modalText
+    }
+
     return (
         <Modal
-            open={true}>
+            open={loadingDevice || loadingSnapshot}>
             <Box sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -33,7 +54,7 @@ export default function LoadingDeviceModal (): React.JSX.Element {
                             marginTop: "16px"
                         }}
                     >
-                        Loading device
+                        {setModalText() }
                     </Typography>
                 </Box>
             </Box>

@@ -6,7 +6,7 @@ module.exports = ({ mode } = { mode: "production" }) => {
     mode,
     entry: "./src/index.tsx",
     resolve: {
-      extensions: ['.ts', '.tsx', '.js']
+      extensions: ['.ts', '.tsx', '.js'],
     },    
     output: {
       publicPath: "/",

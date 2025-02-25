@@ -1,8 +1,10 @@
 import React from "react";
 
-import { Grid2, Card, CardHeader, Avatar, CardContent } from "@mui/material";
+import { Grid2, Card, CardHeader, Avatar, CardContent, Skeleton } from "@mui/material";
 
 import "../../../../../res/css/ComputerMainInfos.css";
+import { useSelector } from "react-redux";
+import { type AppState } from "../../../controller/store";
 
 /**
  * Elements passed from the device main infos header
@@ -30,9 +32,29 @@ interface DeviceStatProps {
  * @returns {React.JSX.Element} rendered component
  */
 export default function DeviceStat (props: DeviceStatProps): React.JSX.Element {
-    const avatar = props.avatar;
-    const value = props.value;
-    const label = props.label;
+    const deviceState = useSelector((app: AppState) => app.device)
+    const snapshotState = useSelector((app: AppState) => app.snapshot)
+
+    let avatar;
+    let value;
+    let label;
+
+    if (deviceState.device !== undefined && snapshotState.snapshot !== undefined) {
+        avatar = props.avatar;
+        value = props.value;
+        label = props.label;
+    } else if (deviceState.error !== undefined || snapshotState.error !== "") {
+        avatar = props.avatar
+        label = props.label
+        value = "Error in loading data"
+    } else {
+        avatar = <Skeleton variant="circular"><Avatar /></Skeleton>
+        label = <Skeleton variant="text" width="100%" />
+        value = <Skeleton variant="rounded" width="100%">
+            Device specs value
+        </Skeleton>
+    }
+
     return (
         <Grid2 size={{ md: 2 }}>
             <Card className="DeviceSpecsCard">

@@ -14,7 +14,7 @@ import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 import { updateSelectedFilter } from "../../../../controller/deviceMainInfos/filterSlice";
 
 import { type AppState } from "../../../../controller/store";
-import Filter from "../../../../../model/filters/Filter";
+import type Filter from "../../../../../model/filters/Filter";
 
 /**
  * Deleted filter row interface
@@ -78,8 +78,9 @@ const filterTableColumns: GridColDef[] = [
  * @returns {React.JSX.Element} Rendered component
  */
 export default function FilterTable (): React.JSX.Element {
-    const rows = useSelector((state: AppState) => state.filters.filters)
-    const error = useSelector((state: AppState) => state.filters.error)
+    const { filters, error } = useSelector((state: AppState) => state.filters)
+
+    const { loading, snapshot } = useSelector((state: AppState) => state.snapshot)
 
     const [currentRows, setViewRows] = React.useState<Filter[]>([])
 
@@ -127,18 +128,18 @@ export default function FilterTable (): React.JSX.Element {
         })
 
         if ((tableManager as React.RefObject<GridApiCommunity>).current != null) {
-            rows.forEach((row: UpdateRow) => {
+            filters.forEach((row: UpdateRow) => {
                 (tableManager as React.RefObject<GridApiCommunity>).current.updateRows(
                     [row]
                 )
             })
 
-            setViewRows(rows)
+            setViewRows(filters)
         }
         return updatedRows;
     }
 
-    updateRows(currentRows, rows)
+    updateRows(currentRows, filters)
 
     if (error.message !== "" && error.variant !== undefined) {
         enqueueSnackbar(
@@ -152,8 +153,9 @@ export default function FilterTable (): React.JSX.Element {
     return (
         <Paper className="FilterTable">
             <DataGrid
+                loading={loading || snapshot === undefined}
                 columns={filterTableColumns}
-                rows={rows}
+                rows={filters}
                 checkboxSelection
                 slots={{
                     toolbar: FilterGridToolbar,
