@@ -74,7 +74,7 @@ interface DataError {
  */
 export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Element {
     const [inputType, updateInputType] = React.useState(Filter.authorizedInputTypes[0]);
-    const [comparison, updateComparison] = React.useState(Filter.authorizedComparisonOperations[0]);
+    const [comparison, updateComparison] = React.useState(Filter.authorizedComparisonOperationsString[0]);
     const [value, updateValue] = React.useState("");
     const [fieldName, updateFieldName] = React.useState(Filter.inputFieldName(
         Filter.authorizedInputTypes[0] as "File" | "Library"
@@ -186,7 +186,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
                 selectedValue={comparison}
                 initInputRef={initInputRef}
                 inputID={2}
-                selectedItem={Filter.authorizedComparisonOperations}
+                selectedItem={Filter.authorizedComparisonOperationsString}
                 updateSelectedValue={updateComparison}
                 selectID="comparisonOperator"
                 selectLabel="Type of comparison"

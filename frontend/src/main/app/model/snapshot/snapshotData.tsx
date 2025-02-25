@@ -81,25 +81,56 @@ export class SnapshotData {
                     return ((software as any)[fieldName] !== value)
                 })
             case "<":
+                if(value instanceof String){
+                    return softwares.filter((software) => {
+                        return (((software as any)[fieldName] as string).toLowerCase() < value.toLocaleLowerCase())
+                    })                        
+                }
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] < value)
                 })
 
             case "<=":
+                if(value instanceof String){
+                    return softwares.filter((software) => {
+                        return (((software as any)[fieldName] as string).toLowerCase() <= value.toLocaleLowerCase())
+                    })                        
+                }
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] <= value)
                 })
             case ">":
+                if(value instanceof String){
+                    console.log(softwares.filter((software) => {
+                        return (((software as any)[fieldName] as string).toLowerCase() > value.toLocaleLowerCase())
+                    }))
+                    return softwares.filter((software) => {
+                        return (((software as any)[fieldName] as string).toLowerCase() > value.toLocaleLowerCase())
+                    })                        
+                }
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] > value)
                 })
             case ">=":
+                if(value instanceof String){
+                    return softwares.filter((software) => {
+                        return (((software as any)[fieldName] as string).toLowerCase() > value.toLocaleLowerCase())
+                    })                        
+                }
                 return softwares.filter((software) => {
-                    return ((software as any)[fieldName] >= value)
+                    return ((software as any)[fieldName] > value)
                 })
             case "==":
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] === value)
+                })
+            case "startswith":
+                return softwares.filter((software) => {
+                    return (((software as any)[fieldName] as string).startsWith(value as unknown as string))
+                })
+            case "endswith":
+                return softwares.filter((software) => {
+                    return (((software as any)[fieldName] as string).endsWith(value as unknown as string))
                 })
             case "includes":
                 return softwares.filter((software) => {
@@ -111,12 +142,10 @@ export class SnapshotData {
     fetchFilteredSoftwares (filters: Filter[]): SnapshotSoftware[] {
         let softwares = this.versions
         filters.forEach((filter) => {
-            console.log(`Field name : ${filter.fieldName} ; value : ${filter.value} ; operator : ${filter.opType}`)
             switch (filter.fieldName) {
                 case "name":
                 case "version":
                     softwares = this.applyFilterOn(softwares, filter.value, filter.opType, filter.fieldName)
-                    console.log(softwares)
                     break;
                 case "firstUploadDate":
                 case "lastUploadDate":

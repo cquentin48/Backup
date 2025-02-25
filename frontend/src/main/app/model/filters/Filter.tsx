@@ -17,7 +17,7 @@ interface FilterInputDetails {
 }
 
 export type FilterElementType = "File" | "Library"
-export type FilterComparisonType = "<" | "<=" | ">" | ">=" | "!=" | "==" | "includes"
+export type FilterComparisonType = "<" | "<=" | ">" | ">=" | "!=" | "==" | "includes" | "startswith" | "endswith"
 export type FilterSoftwareFieldName = "name" | "firstUploadDate" | "lastUploadDate" | "size" | "repository" | "version"
 
 /**
@@ -117,7 +117,13 @@ export default class Filter {
      * Authorized comparison operations : ``<``, ``<=``, ``>``, ``>=``, ``!=``, ``==``
      *  or ``includes``.
      */
-    public static authorizedComparisonOperations = ["<", "<=", ">", ">=", "!=", "==", "includes"];
+    public static authorizedComparisonOperationsString = ["<", "<=", ">", ">=", "!=", "==", "includes", "starts with", "ends with"];
+
+    /**
+     * Authorized comparison operations : ``<``, ``<=``, ``>``, ``>=``, ``!=``, ``==``
+     *  or ``includes``.
+     */
+    public static authorizedComparisonOperationsNumber = ["<", "<=", ">", ">=", "!=", "=="];
 
     /**
      * Authorized comparison operations : ``<``, ``<=``, ``>``, ``>=``, ``!=`` or ``==``.
@@ -149,7 +155,7 @@ export default class Filter {
                     [
                         "name", {
                             inputType: 'text',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsString
                         }
                     ],
                     [
@@ -167,19 +173,19 @@ export default class Filter {
                     [
                         "size", {
                             inputType: 'number',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsNumber
                         }
                     ],
                     [
                         "path", {
                             inputType: 'text',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsString
                         }
                     ],
                     [
                         "type", {
                             inputType: 'text',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsString
                         }
                     ]
                 ]
@@ -189,7 +195,7 @@ export default class Filter {
                     [
                         "name", {
                             inputType: 'text',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsString
                         }
                     ],
                     [
@@ -207,19 +213,19 @@ export default class Filter {
                     [
                         "size", {
                             inputType: 'number',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsNumber
                         }
                     ],
                     [
                         "repository", {
                             inputType: 'text',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsString
                         }
                     ],
                     [
                         "version", {
                             inputType: 'text',
-                            comparisonOperators: Filter.authorizedComparisonOperations
+                            comparisonOperators: Filter.authorizedComparisonOperationsString
                         }
                     ]
                 ]

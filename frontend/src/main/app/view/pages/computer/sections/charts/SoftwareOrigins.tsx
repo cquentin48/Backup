@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { mdiBookOutline, mdiFilterOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 
-import { Avatar, Card, CardContent, CardHeader, IconButton } from "@mui/material";
+import { Autocomplete, Avatar, Card, CardContent, CardHeader, IconButton } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 
 import { type SnapshotData } from "../../../../../model/snapshot/snapshotData";
@@ -13,7 +13,6 @@ import '../../../../../../res/css/ComputerMainInfos.css';
 import { useSelector } from "react-redux";
 import { type AppState as AppDataState } from "../../../../controller/store";
 import Filter from "../../../../../model/filters/Filter";
-import { filterManager } from "../../../../../model/filters/FilterManager";
 
 /**
  * Pie chart series data
@@ -61,9 +60,16 @@ export default function SoftwareOrigins (): React.JSX.Element {
                 rawSeries.set(softwareInstallType, previousValue + 1)
             }
         });
+        const sorterdArray = new Map([...rawSeries.entries()].sort((a, b) => a[1] - b[1]))
         let series = Array.from(
-            new Map([...rawSeries.entries()].sort((a, b) => a[1] - b[1])),
-            ([label, value], index) => ({ label, value, id: index })
+            sorterdArray,
+            ([label, value], index) => (
+                {
+                    label,
+                    value,
+                    id: index
+                }
+            )
         )
         if (series.length >= 7) {
             const other = series.slice(5).reduce((a, b) => {
@@ -87,9 +93,9 @@ export default function SoftwareOrigins (): React.JSX.Element {
      * @param {Filter} filters Filters set by the user
      */
     const updatePieChartData = (filters: Filter[]): void => {
-        const softwaresFilter = filters.filter((filter)=>{
+        const softwaresFilter = filters.filter((filter)=>
             filter.elementType === "Library"
-        })
+        )
         const softwares = (snapshot as SnapshotData).fetchFilteredSoftwares(softwaresFilter)
         initPieChartData(softwares)
     }
