@@ -7,7 +7,7 @@ import Device from "../../device/device";
 import SnapshotID from "../../device/snapshotId";
 import { type ApolloQueryResult } from "@apollo/client";
 
-interface QueryResult {
+export interface DeviceInfosQueryResult {
     deviceInfos: Device
 }
 
@@ -18,7 +18,7 @@ export const fetchDeviceInfos = createAsyncThunk(
             await gqlClient.execute_query(
                 getDeviceInfos,
                 parameters
-            ) as ApolloQueryResult<QueryResult>
+            ) as ApolloQueryResult<DeviceInfosQueryResult>
         )
         if (result.errors != null) {
             return rejectWithValue("The device wasn't found!")

@@ -19,17 +19,28 @@ import FETCH_SNAPSHOT from '../../../../../../main/res/queries/snapshot.graphql'
 import { type LoadSnapshotQueryResult } from "../../../../../../main/app/model/queries/computer/loadSnapshot"
 import Filter from "../../../../../../main/app/model/filters/Filter"
 import { type SnapshotSoftware } from "../../../../../../main/app/model/snapshot/snapshotLibrary"
+import NotFoundError from "../../../../../../main/app/model/exception/errors/notFoundError"
+
+/**
+ * Preloaded state used for the mocks in the tests
+ */
+interface MockedPreloadedState {
+    /**
+     * Snapshot defined in the snapshot slice
+     */
+    snapshot: SnapshotSliceState
+
+    /**
+     * Filters state defined in the filter slice
+     */
+    filter: FilterSliceState
+}
 
 jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),
     useSelector: jest.fn(),
     useDispatch: jest.fn()
 }))
-
-interface MockedPreloadedState {
-    snapshot: SnapshotSliceState
-    filter: FilterSliceState
-}
 
 describe("Type of softwares origin chart unit test suite", () => {
     afterEach(() => {
@@ -65,11 +76,18 @@ describe("Type of softwares origin chart unit test suite", () => {
         )
     }
 
-    const renderMockedComponent = (testType: "success" | "failure" | "loading", snapshot: SnapshotData | undefined, store: EnhancedStore): RenderResult => {
+    /**
+     * Render the SoftwaresOrigin component with the Apollo query and store mocks
+     * @param {"success" | "failure" | "loading" | "initial"} operationStatus Fetch snapshot operation stage
+     * @param {SnapshotData | undefined} snapshot Provided snapshot for the success fetch snapshot data
+     * @param {EnhancedStore} store Redux mocked store
+     * @returns {NotFoundError} If the operation is marked as a success and no snapshot is provided.
+     */
+    const renderMockedComponent = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined, store: EnhancedStore): RenderResult => {
         let apolloMocks: Array<MockedResponse<LoadSnapshotQueryResult, any>>;
-        if (testType === "success") {
+        if (operationStatus === "success") {
             if (snapshot === undefined) {
-                throw new Error("Invalid operation : if the test type is a success, the snapshot must be defined!")
+                throw new NotFoundError("Invalid operation : if the test type is a success, the snapshot must be defined!")
             }
             apolloMocks = [
                 {
@@ -83,7 +101,7 @@ describe("Type of softwares origin chart unit test suite", () => {
                     }
                 }
             ]
-        } else if (testType === "failure") {
+        } else if (operationStatus === "failure") {
             apolloMocks = [
                 {
                     request: {
@@ -119,12 +137,14 @@ describe("Type of softwares origin chart unit test suite", () => {
 
     /**
      * Initialise the test
-     * @param {"success" | "failure" | "loading"} testType Type of operation mocked for the unit test
+     * @param {"success" | "failure" | "loading" | "initial"} testType Type of operation mocked for the unit test
      * @param {SnapshotData | undefined} snapshot Device snapshot used in the unit test
      * @param {Filter[]} filters Filters used in the unit test
      * @returns {EnhancedStore} Mocked store
+     * 
+     * @throws {Error} If the test stage is not in the list
      */
-    const initStore = (testType: "success" | "failure" | "loading", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): EnhancedStore => {
+    const initStore = (testType: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): EnhancedStore => {
         let preloadedState: MockedPreloadedState;
         switch (testType) {
             case "success":
@@ -165,6 +185,7 @@ describe("Type of softwares origin chart unit test suite", () => {
                 }
                 break;
             case "loading":
+            case "initial":
                 preloadedState = {
                     snapshot: {
                         snapshot: undefined,

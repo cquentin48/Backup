@@ -4,16 +4,37 @@ import type Device from "../../../model/device/device";
 import { fetchDeviceInfos } from "../../../model/queries/computer/deviceInfos";
 import { type AppState } from "../store";
 
-export interface LoadDeviceSliceInitialState {
+/**
+ * Device slice state interface
+ */
+export interface FetchDeviceSliceInitialState {
+    /**
+     * Current fetched device from the server
+     */
     device: Device | undefined
+
+    /**
+     * If the device is loading or not
+     */
     deviceLoading: boolean
+
+    /**
+     * Device error
+     */
     deviceError: {
+        /**
+         * Error message
+         */
         message: string
+
+        /**
+         * Error type
+         */
         variant: "error" | "default" | "success" | "warning" | "info" | undefined
     } | undefined
 }
 
-const initialState: LoadDeviceSliceInitialState = {
+const initialState: FetchDeviceSliceInitialState = {
     device: undefined,
     deviceLoading: false,
     deviceError: {
