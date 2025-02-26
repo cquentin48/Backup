@@ -22,7 +22,7 @@ export default function LoadingDeviceModal (): React.JSX.Element {
         let modalText;
         if (deviceLoading) {
             modalText = "Loading device informations"
-        } else if (operationStatus) {
+        } else if (operationStatus === "loading" || operationStatus === "initial") {
             modalText = "Loading snapshot informations"
         } else {
             modalText = ""

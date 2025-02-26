@@ -1,25 +1,24 @@
 import React from "react"
 
-import { MockedProvider, MockedResponse } from '@apollo/client/testing'
+import { MockedProvider, type MockedResponse } from '@apollo/client/testing'
 
-import { render, RenderResult, waitFor } from "@testing-library/react"
+import { render, type RenderResult, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
 
 import { Provider, useSelector } from "react-redux"
-import { configureStore, EnhancedStore } from "@reduxjs/toolkit"
+import { configureStore, type EnhancedStore } from "@reduxjs/toolkit"
 
 import gqlClient from "../../../../../../main/app/model/queries/client"
 import SoftwareOrigins from "../../../../../../main/app/view/pages/computer/sections/charts/SoftwareOrigins"
 
 import { SnapshotData } from "../../../../../../main/app/model/snapshot/snapshotData"
-import filterReducer, { FilterSliceState } from "../../../../../../main/app/view/controller/deviceMainInfos/filterSlice";
-import snapshotReducer, { SnapshotSliceState } from "../../../../../../main/app/view/controller/deviceMainInfos/loadSnapshotSlice"
+import filterReducer, { type FilterSliceState } from "../../../../../../main/app/view/controller/deviceMainInfos/filterSlice";
+import snapshotReducer, { type SnapshotSliceState } from "../../../../../../main/app/view/controller/deviceMainInfos/loadSnapshotSlice"
 
 import FETCH_SNAPSHOT from '../../../../../../main/res/queries/snapshot.graphql';
-import { LoadSnapshotQueryResult } from "../../../../../../main/app/model/queries/computer/loadSnapshot"
+import { type LoadSnapshotQueryResult } from "../../../../../../main/app/model/queries/computer/loadSnapshot"
 import Filter from "../../../../../../main/app/model/filters/Filter"
-import { SnapshotSoftware } from "../../../../../../main/app/model/snapshot/snapshotLibrary"
-
+import { type SnapshotSoftware } from "../../../../../../main/app/model/snapshot/snapshotLibrary"
 
 jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),
@@ -28,8 +27,8 @@ jest.mock("react-redux", () => ({
 }))
 
 interface MockedPreloadedState {
-    snapshot: SnapshotSliceState;
-    filter: FilterSliceState;
+    snapshot: SnapshotSliceState
+    filter: FilterSliceState
 }
 
 describe("Type of softwares origin chart unit test suite", () => {
@@ -37,14 +36,13 @@ describe("Type of softwares origin chart unit test suite", () => {
         jest.resetAllMocks()
     })
 
-
     /**
      * Init the ``useSelector`` mock for the unit test
      * @param {"init" | "success" | "failure" | "loading"} operationStatus Mocked operation status in the test
      * @param {SnapshotData} snapshot Snapshot used for the test
      * @param {Filter[]} filters Filter(s) used for the test
      */
-    const initUseSelectorMock = (operationStatus: "init" | "success" | "failure" | "loading", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []) => {
+    const initUseSelectorMock = (operationStatus: "init" | "success" | "failure" | "loading", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): void => {
         const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
         mockedUseSelector.mockImplementation((selector) =>
             selector(
@@ -59,7 +57,7 @@ describe("Type of softwares origin chart unit test suite", () => {
                     },
                     snapshot: {
                         snapshotError: operationStatus === "failure" ? "Error raised here!" : "",
-                        operationStatus: operationStatus,
+                        operationStatus,
                         snapshot: operationStatus === "success" ? snapshot : undefined
                     }
                 }
@@ -67,9 +65,9 @@ describe("Type of softwares origin chart unit test suite", () => {
         )
     }
 
-    const renderMockedComponent = (test_type: "success" | "failure" | "loading", snapshot: SnapshotData | undefined, store: EnhancedStore): RenderResult => {
-        let apolloMocks: MockedResponse<LoadSnapshotQueryResult, any>[];
-        if (test_type === "success") {
+    const renderMockedComponent = (testType: "success" | "failure" | "loading", snapshot: SnapshotData | undefined, store: EnhancedStore): RenderResult => {
+        let apolloMocks: Array<MockedResponse<LoadSnapshotQueryResult, any>>;
+        if (testType === "success") {
             if (snapshot === undefined) {
                 throw new Error("Invalid operation : if the test type is a success, the snapshot must be defined!")
             }
@@ -80,12 +78,12 @@ describe("Type of softwares origin chart unit test suite", () => {
                     },
                     result: {
                         data: {
-                            snapshotInfos: snapshot as SnapshotData
+                            snapshotInfos: snapshot
                         }
                     }
                 }
             ]
-        } else if (test_type === "failure") {
+        } else if (testType === "failure") {
             apolloMocks = [
                 {
                     request: {
@@ -98,7 +96,7 @@ describe("Type of softwares origin chart unit test suite", () => {
                             }
                         ]
                     }
-                },
+                }
             ]
         } else {
             apolloMocks = [
@@ -120,22 +118,22 @@ describe("Type of softwares origin chart unit test suite", () => {
     }
 
     /**
-     * Initialise the test 
-     * @param {"success" | "failure" | "loading"} test_type Type of operation mocked for the unit test
-     * @param {Snapshot} snapshot Device snapshot used in the unit test
+     * Initialise the test
+     * @param {"success" | "failure" | "loading"} testType Type of operation mocked for the unit test
+     * @param {SnapshotData | undefined} snapshot Device snapshot used in the unit test
      * @param {Filter[]} filters Filters used in the unit test
-     * @returns 
+     * @returns {EnhancedStore} Mocked store
      */
-    const initStore = (test_type: "success" | "failure" | "loading", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): EnhancedStore => {
+    const initStore = (testType: "success" | "failure" | "loading", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): EnhancedStore => {
         let preloadedState: MockedPreloadedState;
-        switch (test_type) {
+        switch (testType) {
             case "success":
                 if (snapshot === undefined) {
                     throw new Error("The snapshot must be defined if the loading snapshot data with a GraphQL query is successful!")
                 }
                 preloadedState = {
                     snapshot: {
-                        snapshot: snapshot,
+                        snapshot,
                         snapshotError: "",
                         operationStatus: "success"
                     },
@@ -144,7 +142,7 @@ describe("Type of softwares origin chart unit test suite", () => {
                             message: "",
                             variant: undefined
                         },
-                        filters: filters,
+                        filters,
                         selectedFilteredIDS: []
                     }
                 }
@@ -189,27 +187,33 @@ describe("Type of softwares origin chart unit test suite", () => {
         return configureStore({
             reducer: {
                 snapshot: snapshotReducer,
-                filter: filterReducer,
+                filter: filterReducer
             },
             preloadedState
         })
     }
 
-    const buildQueryResult = (softwareList: SnapshotSoftware[]) => {
-        const output = []
-        softwareList.forEach((software) => {
+    /**
+     * Build the apollo query result for the mock
+     * @param {SnapshotSoftware[]} softwares softwares set inside a snapshot
+     * @returns {{name:string; installType: string; chosenVersion: string}[]} Apollo query result built for the mock.
+     */
+    const buildQueryResult = (softwares: SnapshotSoftware[]): Array<{ name: string, installType: string, chosenVersion: string }> => {
+        const output: Array<{ name: string, installType: string, chosenVersion: string }> = []
+        softwares.forEach((software) => {
             output.push({
                 name: software.name,
                 installType: software.installType,
                 chosenVersion: software.version
             })
         })
+        return output
     }
 
     test("Successful render (no data yet!)", async () => {
         // Given
         initUseSelectorMock("loading")
-        const store = initStore("loading", undefined )
+        const store = initStore("loading", undefined)
 
         const queryOutput = {
             data: {
