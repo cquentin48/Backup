@@ -11,10 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 import DeviceMainInfosGridFooter from "./footer/GridFooter";
 import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 
-import { deviceMainInfosFilterState, updateSelectedFilter } from "../../../../controller/deviceMainInfos/filterSlice";
+import { deviceMainInfosFilterState, updateSelectedFilter } from "../../../../../controller/deviceMainInfos/filterSlice";
 
+import { snapshotState } from "../../../../../controller/deviceMainInfos/loadSnapshotSlice";
 import type Filter from "../../../../../model/filters/Filter";
-import { snapshotState } from "../../../../controller/deviceMainInfos/loadSnapshotSlice";
 
 /**
  * Deleted filter row interface

@@ -1,11 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import AlreadyAddedWarning from "../../../model/exception/warning/alreadyAdded";
-import ConflictError from "../../../model/exception/errors/conflictError";
-import NotFoundError from "../../../model/exception/errors/notFoundError";
-import ValidationError from "../../../model/exception/errors/validationError";
+import AlreadyAddedWarning from "../../model/exception/warning/alreadyAdded";
+import ConflictError from "../../model/exception/errors/conflictError";
+import NotFoundError from "../../model/exception/errors/notFoundError";
+import ValidationError from "../../model/exception/errors/validationError";
 
-import Filter from "../../../model/filters/Filter";
+import Filter from "../../model/filters/Filter";
 import { type AppState } from "../store";
 
 /**

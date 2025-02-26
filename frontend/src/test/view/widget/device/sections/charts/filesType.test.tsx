@@ -5,7 +5,7 @@ import FilesTypes from "../../../../../../main/app/view/pages/computer/sections/
 
 import '@testing-library/jest-dom'
 import { Provider } from "react-redux"
-import store from "../../../../../../main/app/view/controller/store"
+import store from "../../../../../../main/app/controller/store"
 
 describe("Type of files chart unit test suite", () => {
     test("Successful render", async () => {

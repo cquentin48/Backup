@@ -4,8 +4,8 @@ import { Grid2, Card, CardHeader, Avatar, CardContent, Skeleton } from "@mui/mat
 
 import { useSelector } from "react-redux";
 
-import { deviceState } from "../../../controller/deviceMainInfos/loadDeviceSlice";
-import { snapshotState } from "../../../controller/deviceMainInfos/loadSnapshotSlice";
+import { deviceState } from "../../../../controller/deviceMainInfos/loadDeviceSlice";
+import { snapshotState } from "../../../../controller/deviceMainInfos/loadSnapshotSlice";
 
 import "../../../../../res/css/ComputerMainInfos.css";
 

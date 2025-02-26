@@ -10,7 +10,7 @@ import DeviceMainInfosFilterCreationButton from "./createFilterButton";
 import FieldValue from "./fieldValue";
 import FilterToolbar from "./selectFilter";
 import { useDispatch, useSelector } from "react-redux";
-import { addFilter, deviceMainInfosFilterState } from "../../../../../controller/deviceMainInfos/filterSlice";
+import { addFilter, deviceMainInfosFilterState } from "../../../../../../controller/deviceMainInfos/filterSlice";
 
 /**
  * State of the new filter form dialog

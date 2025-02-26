@@ -7,10 +7,10 @@ import DeviceElements from './computerElements';
 import { useParams } from 'react-router-dom';
 
 import LoadingDeviceModal from './DeviceModal';
-import { type AppDispatch } from '../../controller/store';
+import { type AppDispatch } from '../../../controller/store';
 import { fetchDeviceInfos } from '../../../model/queries/computer/deviceInfos';
 import DeviceNotFound from './notFound/notFoundTitle';
-import { deviceState } from '../../controller/deviceMainInfos/loadDeviceSlice';
+import { deviceState } from '../../../controller/deviceMainInfos/loadDeviceSlice';
 
 /**
  * Computer page view model

@@ -1,5 +1,5 @@
-import NotFoundError from "../../model/exception/errors/notFoundError";
-import NotImplementedError from "../../model/exception/errors/notImplementedError";
+import NotFoundError from "../model/exception/errors/notFoundError";
+import NotImplementedError from "../model/exception/errors/notImplementedError";
 
 /**
  * Controller action blueprint

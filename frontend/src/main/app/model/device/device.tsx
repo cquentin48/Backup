@@ -48,34 +48,6 @@ class Device {
     }
 
     /**
-     * From JSON string result, creates a ``Device`` object alongside the related snapshots
-     * @param {string} parsedData Device parsed data
-     * @returns {Device} Device object
-     */
-    static fromJSON (parsedData: string): Device {
-        const rawDeviceData = JSON.parse(parsedData) as Device
-        const rawSnapshots = rawDeviceData.snapshots
-        const snapshots: SnapshotID[] = []
-        rawSnapshots.forEach((rawSnapshot) => {
-            const rawDate = new Date(rawSnapshot.date)
-            snapshots.push(
-                new SnapshotID(
-                    rawSnapshot.key,
-                    `${rawDate.getFullYear()}-${rawDate.getMonth()}-${rawDate.getDay()}`,
-                    rawSnapshot.operatingSystem
-                )
-            )
-        })
-        return new Device(
-            rawDeviceData.name,
-            rawDeviceData.processor,
-            rawDeviceData.cores,
-            rawDeviceData.memory,
-            snapshots
-        )
-    }
-
-    /**
      * Format memory for visualisation
      * @param { number } memory volatile memory quantity
      * @returns { string } Amount in bytes formated

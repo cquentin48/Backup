@@ -14,9 +14,9 @@ import '../../../../res/css/ComputerMainInfos.css';
 
 import { fetchSnapshot } from "../../../model/queries/computer/loadSnapshot";
 import { useDispatch, useSelector } from "react-redux";
-import { type AppDispatch } from "../../controller/store";
-import { deviceState } from "../../controller/deviceMainInfos/loadDeviceSlice";
-import { snapshotState } from "../../controller/deviceMainInfos/loadSnapshotSlice";
+import { type AppDispatch } from "../../../controller/store";
+import { deviceState } from "../../../controller/deviceMainInfos/loadDeviceSlice";
+import { snapshotState } from "../../../controller/deviceMainInfos/loadSnapshotSlice";
 
 /**
  * Main informations frame view component

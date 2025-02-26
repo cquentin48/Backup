@@ -9,8 +9,8 @@ import { type MakeOptional } from "@mui/x-charts/internals";
 
 import { useSelector } from "react-redux";
 
+import { snapshotState } from "../../../../../controller/deviceMainInfos/loadSnapshotSlice";
 import '../../../../../../res/css/ComputerMainInfos.css';
-import { snapshotState } from "../../../../controller/deviceMainInfos/loadSnapshotSlice";
 
 /**
  *  Files types pie chart view component

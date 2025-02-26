@@ -3,8 +3,9 @@ import React from "react";
 import { Modal, Box, CircularProgress, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
-import { deviceState } from "../../controller/deviceMainInfos/loadDeviceSlice";
-import { snapshotState } from "../../controller/deviceMainInfos/loadSnapshotSlice";
+import { deviceState } from "../../../controller/deviceMainInfos/loadDeviceSlice";
+import { snapshotState } from "../../../controller/deviceMainInfos/loadSnapshotSlice";
+
 
 /**
  * Loading device modal (before data is loaded)

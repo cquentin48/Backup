@@ -5,7 +5,7 @@ import GridFooterDelete from "./GridFooterDel";
 
 import "../../../../../../../res/css/Filters.css";
 import { useSelector } from "react-redux";
-import { deviceMainInfosFilterState } from "../../../../../controller/deviceMainInfos/filterSlice";
+import { deviceMainInfosFilterState } from "../../../../../../controller/deviceMainInfos/filterSlice";
 
 /**
  * Device main infos datagrid footer

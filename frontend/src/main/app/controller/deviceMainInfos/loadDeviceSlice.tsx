@@ -1,8 +1,8 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import type Device from "../../../model/device/device";
-import { fetchDeviceInfos } from "../../../model/queries/computer/deviceInfos";
 import { type AppState } from "../store";
+import Device from "../../model/device/device";
+import { fetchDeviceInfos } from "../../model/queries/computer/deviceInfos";
 
 /**
  * Device slice state interface

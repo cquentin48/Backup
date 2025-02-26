@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { fetchSnapshot } from "../../../model/queries/computer/loadSnapshot";
-import { type SnapshotData } from "../../../model/snapshot/snapshotData";
+import { fetchSnapshot } from "../../model/queries/computer/loadSnapshot";
+import { type SnapshotData } from "../../model/snapshot/snapshotData";
 import { type AppState } from "../store";
 
 export interface SnapshotSliceState {

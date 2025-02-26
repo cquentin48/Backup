@@ -10,8 +10,8 @@ import { useSelector } from "react-redux";
 
 import DeviceStat from "./computerStat";
 
+import { deviceState } from "../../../../controller/deviceMainInfos/loadDeviceSlice";
 import '../../../../../res/css/ComputerMainInfos.css';
-import { deviceState } from "../../../controller/deviceMainInfos/loadDeviceSlice";
 
 /**
  * Accordion containing the device main informations

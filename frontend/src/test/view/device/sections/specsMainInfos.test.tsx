@@ -11,8 +11,9 @@ import Device from "../../../../main/app/model/device/device"
 import SnapshotID from "../../../../main/app/model/device/snapshotId"
 import { DeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos";
 import { configureStore, EnhancedStore } from "@reduxjs/toolkit";
-import deviceReducer, { FetchDeviceSliceInitialState } from "../../../../main/app/view/controller/deviceMainInfos/loadDeviceSlice";
-import snapshotReducer, { SnapshotSliceState } from "../../../../main/app/view/controller/deviceMainInfos/loadSnapshotSlice";
+
+import deviceReducer, { FetchDeviceSliceInitialState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
+import snapshotReducer, { SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
 import SpecsMainInfos from "../../../../main/app/view/pages/computer/sections/MainInfos";
 

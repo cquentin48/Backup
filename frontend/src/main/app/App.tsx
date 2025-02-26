@@ -8,7 +8,7 @@ import ComputerPage from "./view/pages/computer/computerPage";
 import TopBar from "./view/pages/computer/topbar";
 import { SnackbarProvider } from "notistack";
 import { Provider } from "react-redux";
-import { store } from "./view/controller/store";
+import { store } from "./controller/store";
 
 /**
  * Web application main function

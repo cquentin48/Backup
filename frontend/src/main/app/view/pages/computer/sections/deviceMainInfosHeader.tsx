@@ -8,7 +8,7 @@ import { Tooltip, Typography, Button, Skeleton } from "@mui/material";
 import { useSelector } from "react-redux";
 
 import "../../../../../res/css/ComputerMainInfos.css";
-import { deviceState } from "../../../controller/deviceMainInfos/loadDeviceSlice";
+import { deviceState } from "../../../../controller/deviceMainInfos/loadDeviceSlice";
 
 /**
  * Device header containing OS icon, computer name and delete button

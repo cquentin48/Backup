@@ -6,15 +6,17 @@ import Icon from "@mdi/react";
 import { Avatar, Card, CardContent, CardHeader } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 
+import { useSelector } from "react-redux";
+
 import { type SnapshotData } from "../../../../../model/snapshot/snapshotData";
 import { type SnapshotSoftware } from "../../../../../model/snapshot/snapshotLibrary";
 
 import '../../../../../../res/css/ComputerMainInfos.css';
-import { useSelector } from "react-redux";
 
 import type Filter from "../../../../../model/filters/Filter";
-import { snapshotState } from "../../../../controller/deviceMainInfos/loadSnapshotSlice";
-import { deviceMainInfosFilterState } from "../../../../controller/deviceMainInfos/filterSlice";
+
+import { snapshotState } from "../../../../../controller/deviceMainInfos/loadSnapshotSlice";
+import { deviceMainInfosFilterState } from "../../../../../controller/deviceMainInfos/filterSlice";
 
 /**
  * Pie chart series data
@@ -101,7 +103,7 @@ export default function SoftwareOrigins (): React.JSX.Element {
         const softwaresFilter = filters.filter((filter) =>
             filter.elementType === "Library"
         )
-        console.log(JSON.stringify(memoSnapshot as SnapshotData))
+
         const softwares = (memoSnapshot as SnapshotData).fetchFilteredSoftwares(softwaresFilter)
         initPieChartData(softwares)
     }

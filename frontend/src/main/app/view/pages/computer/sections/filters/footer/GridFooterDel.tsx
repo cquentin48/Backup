@@ -4,7 +4,7 @@ import { Delete } from "@mui/icons-material";
 import { Button, Tooltip } from "@mui/material";
 import { useDispatch } from "react-redux";
 
-import { deleteFilter } from "../../../../../controller/deviceMainInfos/filterSlice";
+import { deleteFilter } from "../../../../../../controller/deviceMainInfos/filterSlice";
 
 /**
  * Selected filtered ids passed from the device main infos footer

@@ -12,8 +12,8 @@ import gqlClient from "../../../../../../main/app/model/queries/client"
 import SoftwareOrigins from "../../../../../../main/app/view/pages/computer/sections/charts/SoftwareOrigins"
 
 import { SnapshotData } from "../../../../../../main/app/model/snapshot/snapshotData"
-import filterReducer, { type FilterSliceState } from "../../../../../../main/app/view/controller/deviceMainInfos/filterSlice";
-import snapshotReducer, { type SnapshotSliceState } from "../../../../../../main/app/view/controller/deviceMainInfos/loadSnapshotSlice"
+import filterReducer, { type FilterSliceState } from "../../../../../../main/app/controller/deviceMainInfos/filterSlice";
+import snapshotReducer, { type SnapshotSliceState } from "../../../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 
 import FETCH_SNAPSHOT from '../../../../../../main/res/queries/snapshot.graphql';
 import { type LoadSnapshotQueryResult } from "../../../../../../main/app/model/queries/computer/loadSnapshot"
