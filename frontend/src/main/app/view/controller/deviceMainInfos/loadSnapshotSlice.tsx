@@ -5,13 +5,13 @@ import { type AppState } from "../store";
 
 export interface SnapshotSliceState {
     snapshot: SnapshotData | undefined
-    snapshotLoading: boolean
+    operationStatus: "initial" | "loading" | "success" | "error"
     snapshotError: string
 }
 
 const initialState: SnapshotSliceState = {
     snapshot: undefined,
-    snapshotLoading: false,
+    operationStatus: "initial",
     snapshotError: ""
 }
 
@@ -21,15 +21,15 @@ export const snapshotSlice = createSlice({
     reducers: {},
     extraReducers (builder) {
         builder.addCase(fetchSnapshot.pending, (state) => {
-            state.snapshotLoading = true
+            state.operationStatus = "loading"
             state.snapshotError = ""
             state.snapshot = undefined
         }).addCase(fetchSnapshot.rejected, (state, action) => {
-            state.snapshotLoading = false
+            state.operationStatus = "error"
             state.snapshotError = action.error as string
             state.snapshot = undefined
         }).addCase(fetchSnapshot.fulfilled, (state, action: PayloadAction<SnapshotData>) => {
-            state.snapshotLoading = false
+            state.operationStatus = "success"
             state.snapshotError = ""
             state.snapshot = action.payload
         })

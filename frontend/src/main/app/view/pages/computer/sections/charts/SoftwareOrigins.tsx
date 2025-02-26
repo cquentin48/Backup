@@ -43,7 +43,7 @@ interface PieChartData {
 export default function SoftwareOrigins (): React.JSX.Element {
     const [data, setData] = React.useState<PieChartData[]>([]);
 
-    const { snapshot, snapshotError, snapshotLoading } = useSelector(snapshotState)
+    const { snapshot, snapshotError, operationStatus } = useSelector(snapshotState)
 
     const { filters } = useSelector(deviceMainInfosFilterState)
 
@@ -106,10 +106,10 @@ export default function SoftwareOrigins (): React.JSX.Element {
     }
 
     useEffect(() => {
-        if (!snapshotLoading && snapshotError === "" && snapshot !== undefined) {
+        if (!(operationStatus === "initial" || operationStatus === "loading") && snapshotError === "" && snapshot !== undefined) {
             updatePieChartData(memoFilter)
         }
-    }, [snapshot, filters])
+    }, [operationStatus])
 
     if (snapshotError === "") {
         return (
@@ -126,7 +126,7 @@ export default function SoftwareOrigins (): React.JSX.Element {
                 />
                 <CardContent>
                     <PieChart
-                        loading={snapshotLoading || snapshot === undefined}
+                        loading={!(operationStatus === "initial" || operationStatus === "loading") || snapshot === undefined}
                         series={snapshot === undefined ? [{ data: [] }] : [{ data }]}
                         width={550}
                         height={200}

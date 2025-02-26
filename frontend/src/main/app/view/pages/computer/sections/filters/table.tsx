@@ -80,7 +80,7 @@ const filterTableColumns: GridColDef[] = [
 export default function FilterTable (): React.JSX.Element {
     const { filters, filterError: error } = useSelector(deviceMainInfosFilterState)
 
-    const { snapshotLoading: loading, snapshot } = useSelector(snapshotState)
+    const { operationStatus: loading, snapshot } = useSelector(snapshotState)
 
     const [currentRows, setViewRows] = React.useState<Filter[]>([])
 
@@ -153,7 +153,7 @@ export default function FilterTable (): React.JSX.Element {
     return (
         <Paper className="FilterTable">
             <DataGrid
-                loading={loading || snapshot === undefined}
+                loading={loading === "initial" || loading === "loading" || snapshot === undefined}
                 columns={filterTableColumns}
                 rows={filters}
                 checkboxSelection

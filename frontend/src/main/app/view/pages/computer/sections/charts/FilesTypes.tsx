@@ -17,7 +17,7 @@ import { snapshotState } from "../../../../controller/deviceMainInfos/loadSnapsh
  *  @returns {React.JSX.Element} View component
  */
 export default function FilesTypes (): React.JSX.Element {
-    const { snapshot, snapshotLoading } = useSelector(snapshotState)
+    const { snapshot, operationStatus } = useSelector(snapshotState)
     const series: Array<MakeOptional<PieSeriesType<MakeOptional<PieValueType, "id">>, "type">> = [
         {
             data: [
@@ -44,7 +44,7 @@ export default function FilesTypes (): React.JSX.Element {
             />
             <CardContent>
                 <PieChart
-                    loading={snapshotLoading || snapshot === undefined}
+                    loading={operationStatus === "initial" || operationStatus === "loading" || snapshot === undefined}
                     series={snapshot !== undefined ? series : [{ data: [] }]}
                     width={550}
                     height={200}

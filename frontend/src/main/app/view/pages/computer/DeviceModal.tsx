@@ -12,7 +12,7 @@ import { snapshotState } from "../../controller/deviceMainInfos/loadSnapshotSlic
  */
 export default function LoadingDeviceModal (): React.JSX.Element {
     const { deviceLoading } = useSelector(deviceState)
-    const { snapshotLoading } = useSelector(snapshotState)
+    const { operationStatus } = useSelector(snapshotState)
 
     /**
      * Set the text for the modal loading
@@ -22,7 +22,7 @@ export default function LoadingDeviceModal (): React.JSX.Element {
         let modalText;
         if (deviceLoading) {
             modalText = "Loading device informations"
-        } else if (snapshotLoading) {
+        } else if (operationStatus) {
             modalText = "Loading snapshot informations"
         } else {
             modalText = ""
@@ -32,7 +32,7 @@ export default function LoadingDeviceModal (): React.JSX.Element {
 
     return (
         <Modal
-            open={deviceLoading || snapshotLoading}>
+            open={deviceLoading || (operationStatus === "loading" || operationStatus === "initial")}>
             <Box sx={{
                 display: "flex",
                 flexDirection: "column",
