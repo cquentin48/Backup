@@ -14,7 +14,7 @@ import store from '../../../../main/app/controller/store';
 import { DeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos";
 import { configureStore, EnhancedStore } from "@reduxjs/toolkit";
 
-import deviceReducer, { FetchDeviceSliceInitialState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
+import deviceReducer, { FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
 import snapshotReducer, { SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
 import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
@@ -29,7 +29,7 @@ jest.mock("react-redux", () => ({
 }))
 
 interface MockedState {
-    device: FetchDeviceSliceInitialState;
+    device: FetchDeviceSliceState;
     snapshot: SnapshotSliceState;
 }
 

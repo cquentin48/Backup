@@ -37,6 +37,7 @@ export default function MainInfosFrame (): React.JSX.Element {
     const updateSelectedSnapshot = (newSnapshotID: string): void => {
         setSnapshotID(newSnapshotID)
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        console.log(`Dispatch : ${dispatch}`)
         dispatch(fetchSnapshot({
             snapshotID: newSnapshotID
         }))

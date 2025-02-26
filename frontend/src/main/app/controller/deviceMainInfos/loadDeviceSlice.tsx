@@ -7,7 +7,7 @@ import { fetchDeviceInfos } from "../../model/queries/computer/deviceInfos";
 /**
  * Device slice state interface
  */
-export interface FetchDeviceSliceInitialState {
+export interface FetchDeviceSliceState {
     /**
      * Current fetched device from the server
      */
@@ -34,7 +34,7 @@ export interface FetchDeviceSliceInitialState {
     } | undefined
 }
 
-const initialState: FetchDeviceSliceInitialState = {
+const initialState: FetchDeviceSliceState = {
     device: undefined,
     deviceLoading: false,
     deviceError: {
