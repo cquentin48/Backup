@@ -5,7 +5,7 @@ import { SnapshotData } from "../../snapshot/snapshotData";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { type ApolloQueryResult } from "@apollo/client";
 
-interface QueryResult {
+export interface LoadSnapshotQueryResult {
     snapshotInfos: SnapshotData
 }
 
@@ -16,7 +16,7 @@ export const fetchSnapshot = createAsyncThunk(
             await gqlClient.execute_query(
                 snapshotInfos,
                 parameters
-            ) as ApolloQueryResult<QueryResult>
+            ) as ApolloQueryResult<LoadSnapshotQueryResult>
         )
         try {
             if (result.errors != null) {

@@ -3,19 +3,19 @@ import { fetchSnapshot } from "../../../model/queries/computer/loadSnapshot";
 import { type SnapshotData } from "../../../model/snapshot/snapshotData";
 import { type AppState } from "../store";
 
-interface LoadSnapshotState {
+export interface SnapshotSliceState {
     snapshot: SnapshotData | undefined
     snapshotLoading: boolean
     snapshotError: string
 }
 
-const initialState: LoadSnapshotState = {
+const initialState: SnapshotSliceState = {
     snapshot: undefined,
     snapshotLoading: false,
     snapshotError: ""
 }
 
-export const loadSnapshotSlice = createSlice({
+export const snapshotSlice = createSlice({
     name: 'snapshot',
     initialState,
     reducers: {},
@@ -38,4 +38,4 @@ export const loadSnapshotSlice = createSlice({
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const snapshotState = (state: AppState) => state.snapshot
-export default loadSnapshotSlice.reducer
+export default snapshotSlice.reducer

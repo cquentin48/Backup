@@ -4,7 +4,7 @@ import type Device from "../../../model/device/device";
 import { fetchDeviceInfos } from "../../../model/queries/computer/deviceInfos";
 import { type AppState } from "../store";
 
-interface LoadDeviceSliceInitialState {
+export interface LoadDeviceSliceInitialState {
     device: Device | undefined
     deviceLoading: boolean
     deviceError: {

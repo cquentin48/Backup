@@ -1,15 +1,23 @@
 import React from "react"
 
-import { render, waitFor } from "@testing-library/react"
+import { MockedProvider, MockedResponse } from '@apollo/client/testing'
 
+import { render, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
+
+import { Provider, useSelector } from "react-redux"
+import { configureStore } from "@reduxjs/toolkit"
 
 import gqlClient from "../../../../../../main/app/model/queries/client"
 import SoftwareOrigins from "../../../../../../main/app/view/pages/computer/sections/charts/SoftwareOrigins"
-import { dataManager } from "../../../../../../main/app/model/AppDataManager"
-import { Provider, useSelector } from "react-redux"
 import store from "../../../../../../main/app/view/controller/store"
 import { SnapshotData } from "../../../../../../main/app/model/snapshot/snapshotData"
+import filterReducer, { FilterSliceState } from "../../../../../../main/app/view/controller/deviceMainInfos/filterSlice";
+import snapshotReducer, { SnapshotSliceState } from "../../../../../../main/app/view/controller/deviceMainInfos/loadSnapshotSlice"
+
+import FETCH_SNAPSHOT from '../../../../../../main/res/queries/snapshot.graphql';
+import { LoadSnapshotQueryResult } from "../../../../../../main/app/model/queries/computer/loadSnapshot"
+
 
 jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),
@@ -17,9 +25,21 @@ jest.mock("react-redux", () => ({
     useDispatch: jest.fn()
 }))
 
+
+const successSingleSnapshot = new SnapshotData()
+successSingleSnapshot.addSoftware(
+    "test",
+    "Test software",
+    "test"
+)
+
+interface MockedPreloadedState {
+    snapshot: SnapshotSliceState;
+    filter: FilterSliceState;
+}
+
 describe("Type of softwares origin chart unit test suite", () => {
     afterEach(() => {
-        dataManager.removeAllData()
         jest.resetAllMocks()
     })
 
@@ -49,6 +69,16 @@ describe("Type of softwares origin chart unit test suite", () => {
                 }
             )
         )
+    }
+
+    const initStore = (preloadedState: MockedPreloadedState) => {
+        return configureStore({
+            reducer: {
+                snapshot: snapshotReducer,
+                filter: filterReducer,
+            },
+            preloadedState
+        })
     }
 
     test.skip("Successful render (no data yet!)", async () => {
@@ -100,10 +130,47 @@ describe("Type of softwares origin chart unit test suite", () => {
             }
         }
         gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
+        const snapshot = new SnapshotData()
+        snapshot.addSoftware("1.0", "Test software", "Test")
+        const store = initStore(
+            {
+                snapshot: {
+                    snapshot: snapshot,
+                    snapshotError: "",
+                    snapshotLoading: false
+                },
+                filter: {
+                    filterError: {
+                        message: "",
+                        variant: undefined
+                    },
+                    filters: [],
+                    selectedFilteredIDS: []
+                }
+            }
+        )
+
+        const apolloMocks: MockedResponse<LoadSnapshotQueryResult, any>[] = [ // TODO : replace the any by the interface with query parameters
+            {
+                request:{
+                    query: FETCH_SNAPSHOT
+                },
+                result: {
+                    data: {
+                        snapshotInfos: successSingleSnapshot
+                    }
+                }
+            }
+        ]
 
         // Acts
+        // TODO: replace the render with a method which takes into account the type of operation to simulates it
         render(
-            <SoftwareOrigins />
+            <Provider store={store}>
+                <MockedProvider mocks={apolloMocks} addTypename={false}>
+                    <SoftwareOrigins />
+                </MockedProvider>
+            </Provider>
         )
 
         await waitFor(() => {

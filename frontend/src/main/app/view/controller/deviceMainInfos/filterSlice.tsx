@@ -11,7 +11,7 @@ import { type AppState } from "../store";
 /**
  * Filter slice state
  */
-interface FilterSliceState {
+export interface FilterSliceState {
     filters: Filter[]
     selectedFilteredIDS: number[]
     filterError: {
