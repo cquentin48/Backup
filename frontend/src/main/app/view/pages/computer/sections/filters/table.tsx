@@ -15,6 +15,7 @@ import { deviceMainInfosFilterState, updateSelectedFilter } from "../../../../..
 
 import { snapshotState } from "../../../../../controller/deviceMainInfos/loadSnapshotSlice";
 import type Filter from "../../../../../model/filters/Filter";
+import gqlClient from "../../../../../model/queries/client";
 
 /**
  * Deleted filter row interface
@@ -80,7 +81,7 @@ const filterTableColumns: GridColDef[] = [
 export default function FilterTable (): React.JSX.Element {
     const { filters, filterError: error } = useSelector(deviceMainInfosFilterState)
 
-    const { operationStatus, snapshot } = useSelector(snapshotState)
+    const { operationStatus } = useSelector(snapshotState)
 
     const [currentRows, setViewRows] = React.useState<Filter[]>([])
 
