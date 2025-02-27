@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Modal, Box, CircularProgress, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
@@ -32,7 +32,7 @@ export default function LoadingDeviceModal (): React.JSX.Element {
 
     return (
         <Modal
-            open={deviceLoading || (operationStatus === "loading" || operationStatus === "initial")}>
+            open={deviceLoading || operationStatus === "loading" || operationStatus === "initial"}>
             <Box sx={{
                 display: "flex",
                 flexDirection: "column",

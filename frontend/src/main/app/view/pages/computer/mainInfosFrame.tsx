@@ -28,7 +28,7 @@ export default function MainInfosFrame (): React.JSX.Element {
     const [snapshotID, setSnapshotID] = React.useState("")
 
     const { deviceLoading, device, deviceError } = useSelector(deviceState)
-    const { snapshotError } = useSelector(snapshotState)
+    const { snapshot, snapshotError } = useSelector(snapshotState)
 
     /**
      * Update the selected snapshot

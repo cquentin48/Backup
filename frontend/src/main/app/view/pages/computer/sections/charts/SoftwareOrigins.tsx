@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from "react";
 
-import { mdiBookOutline } from "@mdi/js";
+import { mdiCodeNotEqualVariant } from "@mdi/js";
 import Icon from "@mdi/react";
 
-import { Avatar, Card, CardContent, CardHeader } from "@mui/material";
+import { Avatar, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 
 import { useSelector } from "react-redux";
@@ -122,14 +122,18 @@ export default function SoftwareOrigins (): React.JSX.Element {
                         <Avatar
                             className="PieChartIcon"
                             arial-labels="recipe">
-                            <Icon path={mdiBookOutline} size={1} />
+                            <Icon path={mdiCodeNotEqualVariant} size={1} />
                         </Avatar>
                     }
-                    title="Software origins"
+                    title={
+                        <Typography variant="h4">
+                            Software origins
+                        </Typography>
+                    }
                 />
                 <CardContent>
                     <PieChart
-                        loading={!(operationStatus === "initial" || operationStatus === "loading") || snapshot === undefined}
+                        loading={operationStatus === "loading" || operationStatus === "initial" || snapshot === undefined}
                         series={snapshot === undefined ? [{ data: [] }] : [{ data }]}
                         width={550}
                         height={200}
@@ -146,10 +150,14 @@ export default function SoftwareOrigins (): React.JSX.Element {
                         <Avatar
                             className="PieChartIcon"
                             arial-labels="recipe">
-                            <Icon path={mdiBookOutline} size={1} />
+                            <Icon path={mdiCodeNotEqualVariant} size={1} />
                         </Avatar>
                     }
-                    title="Software origins"
+                    title={
+                        <Typography variant="h5">
+                            Software origins - error
+                        </Typography>
+                    }
                 />
                 <CardContent>
                     The softwares origins chart could not be loaded!

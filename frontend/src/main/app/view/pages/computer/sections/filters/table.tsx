@@ -1,6 +1,6 @@
-import React, { createRef } from "react";
+import React, { createRef, useEffect } from "react";
 
-import { Paper } from "@mui/material";
+import { Paper, Skeleton, Typography } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { type GridApiCommunity } from "@mui/x-data-grid/internals";
 
@@ -80,7 +80,7 @@ const filterTableColumns: GridColDef[] = [
 export default function FilterTable (): React.JSX.Element {
     const { filters, filterError: error } = useSelector(deviceMainInfosFilterState)
 
-    const { operationStatus: loading, snapshot } = useSelector(snapshotState)
+    const { operationStatus, snapshot } = useSelector(snapshotState)
 
     const [currentRows, setViewRows] = React.useState<Filter[]>([])
 
@@ -150,22 +150,37 @@ export default function FilterTable (): React.JSX.Element {
         )
     }
 
+    if (operationStatus === "success") {
+        return (
+            <Paper className="FilterTable">
+                <DataGrid
+                    columns={filterTableColumns}
+                    rows={filters}
+                    checkboxSelection
+                    slots={{
+                        toolbar: FilterGridToolbar,
+                        footer: DeviceMainInfosGridFooter
+                    }}
+                    onRowSelectionModelChange={(event) => {
+                        dispatch(updateSelectedFilter(JSON.stringify(event)))
+                    }}
+                    apiRef={tableManager}
+                />
+            </Paper>
+        )
+    }
+    if (operationStatus === "error") {
+        return (
+            <Paper className="FilterTable">
+                <Typography variant="h1">
+                    Error in rendering the table : the snapshot can't be loaded!
+                </Typography>
+            </Paper>
+        )
+    }
     return (
         <Paper className="FilterTable">
-            <DataGrid
-                loading={loading === "initial" || loading === "loading" || snapshot === undefined}
-                columns={filterTableColumns}
-                rows={filters}
-                checkboxSelection
-                slots={{
-                    toolbar: FilterGridToolbar,
-                    footer: DeviceMainInfosGridFooter
-                }}
-                onRowSelectionModelChange={(event) => {
-                    dispatch(updateSelectedFilter(JSON.stringify(event)))
-                }}
-                apiRef={tableManager}
-            />
+            <Skeleton width="100%" height={224}/>
         </Paper>
     )
 }

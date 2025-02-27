@@ -3,7 +3,7 @@ import React from "react";
 import { mdiFileOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 
-import { Avatar, Card, CardContent, CardHeader } from "@mui/material";
+import { Avatar, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { PieChart, type PieSeriesType, type PieValueType } from "@mui/x-charts";
 import { type MakeOptional } from "@mui/x-charts/internals";
 
@@ -40,7 +40,11 @@ export default function FilesTypes (): React.JSX.Element {
                         <Icon path={mdiFileOutline} size={1} />
                     </Avatar>
                 }
-                title="Types of files"
+                title={
+                    <Typography variant="h5">
+                        Types of files
+                    </Typography>
+                }
             />
             <CardContent>
                 <PieChart

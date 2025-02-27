@@ -54,7 +54,7 @@ export default function DeviceStat (props: DeviceStatProps): React.JSX.Element {
         avatar = <Skeleton variant="circular"><Avatar /></Skeleton>
         label = <Skeleton variant="text" width="100%" />
         value = <Skeleton variant="rounded" width="100%">
-            Device specs value
+            <p></p>
         </Skeleton>
     }
 
