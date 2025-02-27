@@ -326,7 +326,7 @@ describe("MainInfosFrame unit test suite", () => {
         renderMockedComponent("success", snapshot, device, store)
     })
 
-    test.skip("Update selected item", async () => {
+    test("Update selected item", async () => {
         // Given
         const device = new Device(
             "MyDevice",

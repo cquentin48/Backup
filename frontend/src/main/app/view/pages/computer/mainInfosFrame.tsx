@@ -78,6 +78,13 @@ export default function MainInfosFrame (): React.JSX.Element {
 
     let snapshots;
 
+    useEffect(() => {
+        if (!deviceLoading && device !== undefined) {
+            const newID = snapshotID !== "" ? snapshotID : device.snapshots[0].key
+            updateSelectedSnapshot(newID)
+        }
+    }, [dispatch, snapshotID, device])
+
     if (snapshotError !== "" || (deviceError !== undefined && deviceError.message !== "")) {
         if (deviceError !== undefined && deviceError.message !== "") {
             enqueueSnackbar(
@@ -108,13 +115,6 @@ export default function MainInfosFrame (): React.JSX.Element {
     } else if (deviceLoading) {
         snapshots = <Skeleton variant="rounded" width={256} height={56} id="mainInfosSelectForm" />
     } else if (!deviceLoading && device !== undefined) {
-        useEffect(() => {
-            if (!deviceLoading && device !== undefined) {
-                updateSelectedSnapshot(
-                    (device).snapshots[0].key
-                )
-            }
-        }, [dispatch, snapshotID, device])
         const snapshotMenuItems = buildMenuItems(device);
         snapshots =
             <FormControl id="mainInfosSelectForm">
