@@ -2,11 +2,12 @@ import React from "react"
 
 import '@testing-library/jest-dom'
 
-import { MockedResponse, MockedProvider } from "@apollo/client/testing"
-import { EnhancedStore, configureStore } from "@reduxjs/toolkit"
-import { fireEvent, render, RenderResult } from "@testing-library/react"
+import { MockedProvider, type ResultFunction } from "@apollo/client/testing"
+import { type FetchResult } from "@apollo/client"
+import { type EnhancedStore, configureStore } from "@reduxjs/toolkit"
+import { fireEvent, render, waitFor, type RenderResult } from "@testing-library/react"
 
-import { useSelector, Provider } from "react-redux"
+import { useSelector, Provider, useDispatch } from "react-redux"
 
 import Device from "../../../../main/app/model/device/device"
 import SnapshotID from "../../../../main/app/model/device/snapshotId"
@@ -14,19 +15,18 @@ import MainInfosFrame from "../../../../main/app/view/pages/computer/mainInfosFr
 
 import gqlClient from "../../../../main/app/model/queries/client"
 
-import deviceReducer, { FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
-import filterReducer, { FilterSliceState } from "../../../../main/app/controller/deviceMainInfos/filterSlice"
-import snapshotReducer, { SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
+import deviceReducer, { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
+import filterReducer, { type FilterSliceState } from "../../../../main/app/controller/deviceMainInfos/filterSlice"
+import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 import NotFoundError from "../../../../main/app/model/exception/errors/notFoundError"
-import Filter from "../../../../main/app/model/filters/Filter"
-import { LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot"
+import type Filter from "../../../../main/app/model/filters/Filter"
+import { type LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot"
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData"
-import { SnapshotSoftware } from "../../../../main/app/model/snapshot/snapshotLibrary"
 
 import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
 import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 
-import { DeviceInfosQueryResult as FetchDeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos"
+import { type DeviceInfosQueryResult as FetchDeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos"
 
 /**
  * Preloaded state used for the mocks in the tests
@@ -57,6 +57,8 @@ jest.mock("react-redux", () => ({
 describe("MainInfosFrame unit test suite", () => {
     beforeEach(() => {
         gqlClient.get_query_client().query = initGraphQLMock()
+        const mockedDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch);
     })
 
     afterEach(() => {
@@ -64,22 +66,23 @@ describe("MainInfosFrame unit test suite", () => {
     })
 
     /**
-    * Init the ``useSelector`` mock for the unit test
-    * @param {"init" | "success" | "failure" | "loading"} operationStatus Mocked operation status in the test
-    * @param {SnapshotData} snapshot Snapshot used for the test
-    * @param {Filter[]} filters Filter(s) used for the test
-    */
-    const initUseSelectorMock = (operationStatus: "init" | "success" | "failure" | "loading", device: Device | undefined, snapshot: SnapshotData | undefined = undefined, filter: Filter[] = []): void => {
+     * Init the ``useSelector`` mock for the unit test
+     * @param {"init" | "success" | "failure" | "loading"} operationStatus Mocked operation status in the test
+     * @param {Device} device Device used for the mock used in a test
+     * @param {SnapshotData} snapshot Snapshot used for the test
+     * @param {Filter[]} filters Filter(s) used for the test
+     */
+    const initUseSelectorMock = (operationStatus: "init" | "success" | "failure" | "loading", device: Device | undefined, snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): void => {
         const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
         mockedUseSelector.mockImplementation((selector) =>
             selector(
                 {
                     device: {
-                        device: device,
+                        device,
                         deviceLoading: operationStatus === "init" || operationStatus === "loading",
                         error: {
                             message: operationStatus === "failure" ? "Error raised in test" : "",
-                            variant: operationStatus === "failure" ? "Error raised in test" : undefined
+                            variant: operationStatus === "failure" ? "error" : undefined
                         }
                     },
                     snapshot: {
@@ -88,7 +91,7 @@ describe("MainInfosFrame unit test suite", () => {
                         snapshot: operationStatus === "success" ? snapshot : undefined
                     },
                     filter: {
-                        filters: filter,
+                        filters,
                         selectedFilteredIDS: [],
                         filterError: {
                             message: operationStatus === "failure" ? "Error raised in test" : "",
@@ -104,62 +107,98 @@ describe("MainInfosFrame unit test suite", () => {
      * Render the SoftwaresOrigin component with the Apollo query and store mocks
      * @param {"success" | "failure" | "loading" | "initial"} operationStatus Fetch snapshot operation stage
      * @param {SnapshotData | undefined} snapshot Provided snapshot for the success fetch snapshot data
+     * @param {Device | undefined} device Preloaded device
      * @param {EnhancedStore} store Redux mocked store
      * @returns {NotFoundError} If the operation is marked as a success and no snapshot is provided.
      */
     const renderMockedComponent = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined, device: Device | undefined, store: EnhancedStore): RenderResult => {
-        let apolloMocks: Array<MockedResponse<LoadSnapshotQueryResult | FetchDeviceInfosQueryResult, any>>;
+
+        let deviceResult: FetchResult<FetchDeviceInfosQueryResult> | ResultFunction<FetchResult<FetchDeviceInfosQueryResult>, any> | undefined;
+
+        let snapshotResult: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined;
+
         if (operationStatus === "success") {
-            if (snapshot === undefined) {
+            if (snapshot === undefined && operationStatus !== "success") {
                 throw new NotFoundError("Invalid operation : if the test type is a success, the snapshot must be defined!")
             }
-            apolloMocks = [
-                {
-                    request: {
-                        query: FETCH_SNAPSHOT
-                    },
-                    result: {
-                        data: {
-                            snapshotInfos: snapshot
-                        }
-                    }
-                },
-                {
-                    request: {
-                        query: FETCH_DEVICE
-                    },
-                    result: {
-                        data: {
-                            deviceInfos: device as Device
-                        }
-                    }
+            deviceResult = {
+                data: {
+                    deviceInfos: device as Device
                 }
-            ]
+            }
+            snapshotResult = {
+                data: {
+                    snapshotInfos: snapshot as SnapshotData
+                }
+            }
+
         } else if (operationStatus === "failure") {
-            apolloMocks = [
-                {
-                    request: {
-                        query: FETCH_SNAPSHOT
-                    },
-                    result: {
-                        errors: [
-                            {
-                                message: "Failure here for the test!"
-                            }
-                        ]
+            const errorMessage = "Raised error message here!"
+            deviceResult = {
+                errors: [
+                    {
+                        message: errorMessage
                     }
-                }
-            ]
-        } else {
-            apolloMocks = [
-                {
-                    request: {
-                        query: FETCH_SNAPSHOT
-                    },
-                    result: {}
-                }
-            ]
+                ]
+            }
+            snapshotResult = {
+                errors: [
+                    {
+                        message: errorMessage
+                    }
+                ]
+            }
         }
+        const apolloMocks = [
+            {
+                request: {
+                    query: FETCH_SNAPSHOT
+                },
+                result: snapshotResult
+            },
+            {
+                request: {
+                    query: FETCH_DEVICE
+                },
+                result: deviceResult
+            }
+        ]
+        jest.fn().mockImplementation(async ({ query }) => {
+            if (query === FETCH_SNAPSHOT) {
+                return await Promise.resolve(
+                    {
+                        result: {
+                            data: {
+                                snapshotInfos: snapshot as SnapshotData
+                            }
+                        }
+                    }
+                )
+            } else if (query === FETCH_DEVICE) {
+                return await Promise.resolve(
+                    {
+                        result: {
+                            data: {
+                                deviceInfos: device as Device
+                            }
+                        }
+                    }
+                )
+            }
+        })
+
+        gqlClient.get_query_client().query = jest.fn().mockImplementation(async ({ query }) => {
+            if (query === FETCH_SNAPSHOT) {
+                return await Promise.resolve(
+                    snapshotResult
+                )
+            } else if (query === FETCH_DEVICE) {
+                return await Promise.resolve(
+                    deviceResult
+                )
+            }
+        })
+
         return render(
             <Provider store={store}>
                 <MockedProvider mocks={apolloMocks} addTypename={false}>
@@ -174,17 +213,15 @@ describe("MainInfosFrame unit test suite", () => {
      * @param {"success" | "failure" | "loading" | "initial"} operationStatus Type of operation mocked for the unit test
      * @param {SnapshotData | undefined} snapshot Device snapshot used in the unit test
      * @param {Device |undefined} device device used for the mock
-     * @param {Filter[]} filters Filters used in the unit test
+     * @param {Filter[]} filter Filters used in the unit test
      * @returns {EnhancedStore} Mocked store
-     * 
      * @throws {Error} If the test stage is not in the list
      */
     const initStore = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, device: Device | undefined, filter: Filter[] = []): EnhancedStore => {
-        let preloadedState: MockedPreloadedState;
         if (snapshot === undefined && operationStatus === "success") {
             throw new Error("The snapshot must be defined if the loading snapshot data with a GraphQL query is successful!")
         }
-        preloadedState = {
+        const preloadedState: MockedPreloadedState = {
             snapshot: {
                 snapshot,
                 snapshotError: "",
@@ -215,23 +252,6 @@ describe("MainInfosFrame unit test suite", () => {
             },
             preloadedState
         })
-    }
-
-    /**
-     * Build the apollo query result for the mock
-     * @param {SnapshotSoftware[]} softwares softwares set inside a snapshot
-     * @returns {{name:string; installType: string; chosenVersion: string}[]} Apollo query result built for the mock.
-     */
-    const buildQueryResult = (softwares: SnapshotSoftware[]): Array<{ name: string, installType: string, chosenVersion: string }> => {
-        const output: Array<{ name: string, installType: string, chosenVersion: string }> = []
-        softwares.forEach((software) => {
-            output.push({
-                name: software.name,
-                installType: software.installType,
-                chosenVersion: software.version
-            })
-        })
-        return output
     }
 
     /**
@@ -304,16 +324,11 @@ describe("MainInfosFrame unit test suite", () => {
 
         // Acts
         renderMockedComponent("success", snapshot, device, store)
-
-        // Acts
-        render(
-            <MainInfosFrame />
-        )
     })
 
     test.skip("Update selected item", async () => {
         // Given
-        const testDevice = new Device(
+        const device = new Device(
             "MyDevice",
             "My processor",
             1,
@@ -331,16 +346,21 @@ describe("MainInfosFrame unit test suite", () => {
                 )
             ]
         )
+        const snapshot = new SnapshotData()
+        snapshot.addSoftware("test", "test software", "1.0")
+
+        initUseSelectorMock("success", device, snapshot)
+        const store = initStore("success", snapshot, device)
 
         // Acts
-        const { container, getByText } = render(
-            <MainInfosFrame />
-        )
+        const { container, getByText } = renderMockedComponent("success", snapshot, device, store)
 
         const snapshotSelect = container.querySelector(".MuiSelect-nativeInput") as Element
-        fireEvent.change(snapshotSelect, { target: { value: testDevice.snapshots[1].key } })
+        fireEvent.change(snapshotSelect, { target: { value: device.snapshots[1].key } })
 
         // Asserts
-        expect(getByText(testDevice.snapshots[1].localizedDate())).toBeInTheDocument()
+        await waitFor(()=>{
+            expect(getByText(device.snapshots[1].localizedDate())).toBeInTheDocument()
+        }, {timeout: 500})
     })
 })

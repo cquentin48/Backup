@@ -37,7 +37,6 @@ export default function MainInfosFrame (): React.JSX.Element {
     const updateSelectedSnapshot = (newSnapshotID: string): void => {
         setSnapshotID(newSnapshotID)
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        console.log(`Dispatch : ${dispatch}`)
         dispatch(fetchSnapshot({
             snapshotID: newSnapshotID
         }))
@@ -79,12 +78,6 @@ export default function MainInfosFrame (): React.JSX.Element {
 
     let snapshots;
 
-    useEffect(() => {
-        if (!deviceLoading && device !== undefined) {
-            updateSelectedSnapshot((device).snapshots[0].key)
-        }
-    }, [dispatch, snapshotID, device])
-
     if (snapshotError !== "" || (deviceError !== undefined && deviceError.message !== "")) {
         if (deviceError !== undefined && deviceError.message !== "") {
             enqueueSnackbar(
@@ -115,6 +108,13 @@ export default function MainInfosFrame (): React.JSX.Element {
     } else if (deviceLoading) {
         snapshots = <Skeleton variant="rounded" width={256} height={56} id="mainInfosSelectForm" />
     } else if (!deviceLoading && device !== undefined) {
+        useEffect(() => {
+            if (!deviceLoading && device !== undefined) {
+                updateSelectedSnapshot(
+                    (device).snapshots[0].key
+                )
+            }
+        }, [dispatch, snapshotID, device])
         const snapshotMenuItems = buildMenuItems(device);
         snapshots =
             <FormControl id="mainInfosSelectForm">

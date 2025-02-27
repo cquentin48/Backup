@@ -6,7 +6,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { type ApolloQueryResult } from "@apollo/client";
 
 export interface LoadSnapshotQueryResult {
-    snapshotInfos: SnapshotData
+    snapshotInfos: SnapshotData | undefined
 }
 
 export const fetchSnapshot = createAsyncThunk(
@@ -23,7 +23,7 @@ export const fetchSnapshot = createAsyncThunk(
                 return rejectWithValue("The snapshot you try to seek doesn't exist!")
             }
             const rawSnapshotData = result.data.snapshotInfos;
-            const rawSoftwares = rawSnapshotData.versions;
+            const rawSoftwares = (rawSnapshotData as SnapshotData).versions;
             const snapshot = new SnapshotData();
             rawSoftwares.forEach((softwareRaw: any) => {
                 const chosenVersion = softwareRaw.chosenVersion;

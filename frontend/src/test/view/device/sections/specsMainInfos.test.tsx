@@ -1,26 +1,27 @@
 import React from "react";
 
-import { render, RenderResult, waitFor } from "@testing-library/react"
+import { render, type RenderResult, waitFor } from "@testing-library/react"
 
 import '@testing-library/jest-dom'
 
 import { Provider, useSelector } from "react-redux";
-import { MockedResponse, MockedProvider } from "@apollo/client/testing";
+import { type MockedResponse, MockedProvider } from "@apollo/client/testing";
 
 import Device from "../../../../main/app/model/device/device"
 import SnapshotID from "../../../../main/app/model/device/snapshotId"
-import { DeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos";
-import { configureStore, EnhancedStore } from "@reduxjs/toolkit";
+import { type DeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos";
+import { configureStore, type EnhancedStore } from "@reduxjs/toolkit";
 
-import deviceReducer, { FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
-import snapshotReducer, { SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
+import deviceReducer, { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
+import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
 import SpecsMainInfos from "../../../../main/app/view/pages/computer/sections/MainInfos";
 
 import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
-import { LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot";
+import { type LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot";
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
+import NotFoundError from "../../../../main/app/model/exception/errors/notFoundError";
 
 jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),
@@ -29,13 +30,13 @@ jest.mock("react-redux", () => ({
 }))
 
 interface MockedState {
-    device: FetchDeviceSliceState;
-    snapshot: SnapshotSliceState;
+    device: FetchDeviceSliceState
+    snapshot: SnapshotSliceState
 }
 
 describe("Device main infos test suite", () => {
     const renderMockedComponent = (device: Device, store: EnhancedStore, snapshot: SnapshotData): RenderResult => {
-        let apolloMocks: Array<MockedResponse<DeviceInfosQueryResult|LoadSnapshotQueryResult, any>> = [
+        const apolloMocks: Array<MockedResponse<DeviceInfosQueryResult | LoadSnapshotQueryResult, any>> = [
             {
                 request: {
                     query: FETCH_DEVICE
@@ -67,7 +68,7 @@ describe("Device main infos test suite", () => {
     }
 
     const initStore = (device: Device, snapshot: SnapshotData): EnhancedStore => {
-        let preloadedState: MockedState = {
+        const preloadedState: MockedState = {
             device: {
                 device,
                 deviceError: {
@@ -78,7 +79,7 @@ describe("Device main infos test suite", () => {
             },
             snapshot: {
                 operationStatus: "success",
-                snapshot: snapshot,
+                snapshot,
                 snapshotError: ""
             }
         };
@@ -94,9 +95,8 @@ describe("Device main infos test suite", () => {
 
     /**
      * Init the ``useSelector`` Mock for the unit test
-     * @param {"init" | "success" | "failure"| "loading"} operationStatus Device informations fetch operation status
      * @param {Device|undefined} device Device fetched from the server. If successful, must be loaded, otherwise could be left blank.
-     * 
+     * @param {SnapshotData} snapshot Fetched snapshot from the server.
      * @throws {NotFoundError} If the operation is marked as a success and no device is
      */
     const initUseSelectorMock = (device: Device, snapshot: SnapshotData): void => {
@@ -106,7 +106,7 @@ describe("Device main infos test suite", () => {
             selector(
                 {
                     device: {
-                        device: device,
+                        device,
                         error: {
                             message: "",
                             variant: undefined
@@ -115,7 +115,7 @@ describe("Device main infos test suite", () => {
                     },
                     snapshot: {
                         operationStatus: "success",
-                        snapshot: snapshot,
+                        snapshot,
                         snapshotError: ""
                     }
                 }
@@ -138,7 +138,7 @@ describe("Device main infos test suite", () => {
         )
 
         const snapshot = new SnapshotData()
-        snapshot.addSoftware("test","test software", "1.0")
+        snapshot.addSoftware("test", "test software", "1.0")
 
         initUseSelectorMock(device, snapshot)
         const store = initStore(device, snapshot)
@@ -164,7 +164,7 @@ describe("Device main infos test suite", () => {
                 deviceSpecsContainer = deviceSpecsContainer.parentElement as HTMLElement
             }
 
-            expectedOutputValues.forEach(async (expectedOutput: string, index: number) => {
+            expectedOutputValues.forEach((expectedOutput: string, index: number) => {
                 const cardValue = deviceSpecsContainer.children[index].children[0].children[1]
                 expect(cardValue).toHaveTextContent(expectedOutput)
             })

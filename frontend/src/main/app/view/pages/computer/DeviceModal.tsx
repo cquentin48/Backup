@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { deviceState } from "../../../controller/deviceMainInfos/loadDeviceSlice";
 import { snapshotState } from "../../../controller/deviceMainInfos/loadSnapshotSlice";
 
-
 /**
  * Loading device modal (before data is loaded)
  * @returns {React.JSX.Element} rendered web component

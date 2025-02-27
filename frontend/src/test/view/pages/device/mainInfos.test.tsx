@@ -1,26 +1,26 @@
 import React from 'react';
 
-import { MockedResponse, MockedProvider } from '@apollo/client/testing';
+import { type MockedResponse, MockedProvider } from '@apollo/client/testing';
 import '@testing-library/jest-dom'
-import { render, screen, fireEvent, RenderResult } from '@testing-library/react';
+import { render, screen, fireEvent, type RenderResult } from '@testing-library/react';
 
 import DeviceMainInfos from '../../../../main/app/view/pages/computer/mainInfos';
 import Device from '../../../../main/app/model/device/device';
 import SnapshotID from '../../../../main/app/model/device/snapshotId';
 
 import { Provider, useSelector } from 'react-redux';
-import store from '../../../../main/app/controller/store';
 
-import { DeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos";
-import { configureStore, EnhancedStore } from "@reduxjs/toolkit";
+import { type DeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos";
+import { configureStore, type EnhancedStore } from "@reduxjs/toolkit";
 
-import deviceReducer, { FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
-import snapshotReducer, { SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
+import deviceReducer, { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
+import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
 import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
-import { LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot";
+import { type LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot";
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
+import NotFoundError from '../../../../main/app/model/exception/errors/notFoundError';
 
 jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),
@@ -29,13 +29,13 @@ jest.mock("react-redux", () => ({
 }))
 
 interface MockedState {
-    device: FetchDeviceSliceState;
-    snapshot: SnapshotSliceState;
+    device: FetchDeviceSliceState
+    snapshot: SnapshotSliceState
 }
 
 describe("Device main Infos unit test suite", () => {
     const renderMockedComponent = (device: Device, store: EnhancedStore, snapshot: SnapshotData): RenderResult => {
-        let apolloMocks: Array<MockedResponse<DeviceInfosQueryResult | LoadSnapshotQueryResult, any>> = [
+        const apolloMocks: Array<MockedResponse<DeviceInfosQueryResult | LoadSnapshotQueryResult, any>> = [
             {
                 request: {
                     query: FETCH_DEVICE
@@ -67,7 +67,7 @@ describe("Device main Infos unit test suite", () => {
     }
 
     const initStore = (device: Device, snapshot: SnapshotData): EnhancedStore => {
-        let preloadedState: MockedState = {
+        const preloadedState: MockedState = {
             device: {
                 device,
                 deviceError: {
@@ -78,7 +78,7 @@ describe("Device main Infos unit test suite", () => {
             },
             snapshot: {
                 operationStatus: "success",
-                snapshot: snapshot,
+                snapshot,
                 snapshotError: ""
             }
         };
@@ -94,10 +94,9 @@ describe("Device main Infos unit test suite", () => {
 
     /**
      * Init the ``useSelector`` Mock for the unit test
-     * @param {"init" | "success" | "failure"| "loading"} operationStatus Device informations fetch operation status
      * @param {Device|undefined} device Device fetched from the server. If successful, must be loaded, otherwise could be left blank.
-     * 
-     * @throws {NotFoundError} If the operation is marked as a success and no device is
+     * @param {SnapshotData} snapshot Preloaded snapshot before the test
+     * @throws {NotFoundError} If the operation is marked as a success and no device is.
      */
     const initUseSelectorMock = (device: Device, snapshot: SnapshotData): void => {
         const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
@@ -106,7 +105,7 @@ describe("Device main Infos unit test suite", () => {
             selector(
                 {
                     device: {
-                        device: device,
+                        device,
                         error: {
                             message: "",
                             variant: undefined
@@ -115,14 +114,14 @@ describe("Device main Infos unit test suite", () => {
                     },
                     snapshot: {
                         operationStatus: "success",
-                        snapshot: snapshot,
+                        snapshot,
                         snapshotError: ""
                     }
                 }
             )
         )
     }
-    
+
     afterEach(() => {
         jest.resetAllMocks()
     })

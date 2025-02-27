@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import { type AppState } from "../store";
-import Device from "../../model/device/device";
+import type Device from "../../model/device/device";
 import { fetchDeviceInfos } from "../../model/queries/computer/deviceInfos";
 
 /**

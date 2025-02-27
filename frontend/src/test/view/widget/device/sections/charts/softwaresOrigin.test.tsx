@@ -141,7 +141,6 @@ describe("Type of softwares origin chart unit test suite", () => {
      * @param {SnapshotData | undefined} snapshot Device snapshot used in the unit test
      * @param {Filter[]} filters Filters used in the unit test
      * @returns {EnhancedStore} Mocked store
-     * 
      * @throws {Error} If the test stage is not in the list
      */
     const initStore = (testType: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): EnhancedStore => {
