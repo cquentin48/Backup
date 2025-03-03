@@ -1,6 +1,6 @@
-import React, { createRef, useEffect } from "react";
+import React, { createRef } from "react";
 
-import { Paper, Skeleton, Typography } from "@mui/material";
+import { Box, Paper, Skeleton, Typography } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { type GridApiCommunity } from "@mui/x-data-grid/internals";
 
@@ -15,7 +15,6 @@ import { deviceMainInfosFilterState, updateSelectedFilter } from "../../../../..
 
 import { snapshotState } from "../../../../../controller/deviceMainInfos/loadSnapshotSlice";
 import type Filter from "../../../../../model/filters/Filter";
-import gqlClient from "../../../../../model/queries/client";
 
 /**
  * Deleted filter row interface
@@ -174,14 +173,26 @@ export default function FilterTable (): React.JSX.Element {
         return (
             <Paper className="FilterTable">
                 <Typography variant="h1">
-                    Error in rendering the table : the snapshot can't be loaded!
+                    Error in rendering the table : the snapshot can&apos;t be loaded!
                 </Typography>
             </Paper>
         )
     }
     return (
-        <Paper className="FilterTable">
-            <Skeleton width="100%" height={224}/>
-        </Paper>
+        <Box className="FilterTable" >
+            <Skeleton width="100%" height={203}>
+                <DataGrid
+                    columns={[]}
+                    slotProps={{
+                        toolbar: {
+                            hidden: true
+                        },
+                        columnHeaders: {
+                            hidden: true
+                        }
+                    }}
+                />
+            </Skeleton>
+        </Box>
     )
 }

@@ -113,7 +113,9 @@ export default function MainInfosFrame (): React.JSX.Element {
             </Select>
         </FormControl>
     } else if (deviceLoading) {
-        snapshots = <Skeleton variant="rounded" width={256} height={56} id="mainInfosSelectForm" />
+        snapshots = <Skeleton variant="rounded" width={256} height={56} id="mainInfosSelectForm" sx={{
+            marginLeft: "8px"
+        }}/>
     } else if (!deviceLoading && device !== undefined) {
         const snapshotMenuItems = buildMenuItems(device);
         snapshots =

@@ -359,8 +359,8 @@ describe("MainInfosFrame unit test suite", () => {
         fireEvent.change(snapshotSelect, { target: { value: device.snapshots[1].key } })
 
         // Asserts
-        await waitFor(()=>{
+        await waitFor(() => {
             expect(getByText(device.snapshots[1].localizedDate())).toBeInTheDocument()
-        }, {timeout: 500})
+        }, { timeout: 500 })
     })
 })
