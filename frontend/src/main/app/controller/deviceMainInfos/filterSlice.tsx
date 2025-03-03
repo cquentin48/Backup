@@ -110,9 +110,9 @@ export const filterSlice = createSlice({
                 }
             }
         },
-        updateSelectedFilter: (state, action) => {
-            const selectedIDS = JSON.parse(action.payload) as number[];
-            state.selectedFilteredIDS = selectedIDS
+        updateSelectedFilter: (state, action: PayloadAction<number[]>) => {
+            const selectedIDS = action.payload;
+            state.selectedFilteredIDS = selectedIDS;
         },
         resetError: (state) => {
             state.filterError = {

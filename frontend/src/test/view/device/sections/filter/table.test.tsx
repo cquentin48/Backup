@@ -3,7 +3,7 @@ import React, { type ReactNode } from "react"
 import { type FetchResult } from "@apollo/client"
 import { type ResultFunction, MockedProvider } from "@apollo/client/testing"
 
-import { type EnhancedStore, configureStore } from "@reduxjs/toolkit"
+import { Dispatch, type EnhancedStore, configureStore } from "@reduxjs/toolkit"
 
 import '@testing-library/jest-dom'
 import { fireEvent, screen, render, waitFor, type RenderResult } from "@testing-library/react"
@@ -34,18 +34,18 @@ interface MockedPreloadedState {
     /**
      * Snapshot defined in the snapshot slice
      */
-    snapshot: SnapshotSliceState
-
     filters: FilterSliceState
+
+    snapshot: SnapshotSliceState
 
     device: FetchDeviceSliceState
 }
 
-jest.mock("@mui/x-data-grid", ()=>{
+jest.mock("@mui/x-data-grid", () => {
     const originalModule = jest.requireActual("@mui/x-data-grid")
     return {
         ...originalModule,
-        DataGrid: ({apiRef, ...props}: DataGridProps & {apiRef: React.RefObject<any>}) => {
+        DataGrid: ({ apiRef, ...props }: DataGridProps & { apiRef: React.RefObject<any> }) => {
             apiRef.current = {};
             return <originalModule.DataGrid {...props} />
         }
@@ -83,10 +83,6 @@ describe("Device main infos Filter table render (no filter)", () => {
         });
 
         gqlClient.get_query_client().query = initGraphQLMock()
-        const mockedDispatch = jest.fn();
-        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
-            return mockedDispatch
-        });
     })
     afterAll(() => {
         jest.resetAllMocks()
@@ -99,24 +95,11 @@ describe("Device main infos Filter table render (no filter)", () => {
      * @param {Filter[]} filters Filter(s) used for the test
      * @param {Device} device Device used for the mock used in a test
      */
-    const initUseSelectorMock = (operationStatus: "init" | "success" | "failure" | "loading", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = [], device: Device | undefined = undefined): void => {
+    const initUseSelectorMock = (operationStatus: "init" | "success" | "failure" | "loading", snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, filters: Filter[] = [], selectedFilteredIDS: number[] = []): void => {
         const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
         mockedUseSelector.mockImplementation((selector) => {
             return selector(
                 {
-                    device: {
-                        device,
-                        error: {
-                            message: "",
-                            variant: undefined
-                        },
-                        deviceLoading: false
-                    },
-                    snapshot: {
-                        snapshotError: operationStatus === "failure" ? "Error raised here!" : "",
-                        operationStatus,
-                        snapshot: operationStatus === "success" ? snapshot : undefined
-                    },
                     filter: {
                         filters,
                         selectedFilteredIDS: [],
@@ -124,6 +107,19 @@ describe("Device main infos Filter table render (no filter)", () => {
                             message: operationStatus === "failure" ? "Error raised in test" : "",
                             variant: operationStatus === "failure" ? "Error raised in test" : undefined
                         }
+                    },
+                    snapshot: {
+                        snapshotError: operationStatus === "failure" ? "Error raised here!" : "",
+                        operationStatus,
+                        snapshot: operationStatus === "success" ? snapshot : undefined
+                    },
+                    device: {
+                        device,
+                        error: {
+                            message: "",
+                            variant: undefined
+                        },
+                        deviceLoading: false
                     }
                 }
             )
@@ -188,15 +184,14 @@ describe("Device main infos Filter table render (no filter)", () => {
             )
         )
 
-        return render(
-            <Provider store={store}>
-                <MockedProvider mocks={apolloMocks} addTypename={false}>
-                    <SnackbarProvider>
-                        <FilterTable />
-                    </SnackbarProvider>
-                </MockedProvider>
-            </Provider>
-        )
+
+        return render(<Provider store={store}>
+            <MockedProvider mocks={apolloMocks} addTypename={false}>
+                <SnackbarProvider>
+                    <FilterTable />
+                </SnackbarProvider>
+            </MockedProvider>
+        </Provider>)
     }
 
     /**
@@ -208,23 +203,19 @@ describe("Device main infos Filter table render (no filter)", () => {
      * @returns {EnhancedStore} Mocked store
      * @throws {Error} If the test stage is not in the list
      */
-    const initStore = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = [], device: Device | undefined = undefined): EnhancedStore => {
+    const initStore = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, filters: Filter[] = [], selectedFiltersIDs: number[] = []): EnhancedStore => {
         if (device === undefined && snapshot === undefined && operationStatus === "success") {
             throw new Error("The snapshot and the device must be defined if the loading snapshot data with a GraphQL query is successful!")
         }
         const preloadedState: MockedPreloadedState = {
-            snapshot: {
-                snapshot,
-                snapshotError: operationStatus === "failure" ? "Device : Error raised here!" : "",
-                operationStatus: "success"
-            },
+            
             filters: {
                 filters,
                 filterError: {
                     message: operationStatus === "failure" ? "Snapshot : Error raised here!" : "",
                     variant: operationStatus === "failure" ? "error" : undefined
                 },
-                selectedFilteredIDS: []
+                selectedFilteredIDS: selectedFiltersIDs
             },
             device: {
                 device,
@@ -233,6 +224,10 @@ describe("Device main infos Filter table render (no filter)", () => {
                     variant: operationStatus === "failure" ? "error" : undefined
                 },
                 deviceLoading: operationStatus === "initial" || operationStatus === "loading"
+            },snapshot: {
+                snapshot,
+                snapshotError: operationStatus === "failure" ? "Device : Error raised here!" : "",
+                operationStatus: "success"
             }
         }
         return configureStore({
@@ -268,11 +263,17 @@ describe("Device main infos Filter table render (no filter)", () => {
     }
 
     test("Initial render", async () => {
+        // Before
+        const mockedDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
+            return mockedDispatch
+        });
+
         // Given
         const snapshot = new SnapshotData()
         snapshot.addSoftware("test", "test software", "1.0")
-        const store = initStore("success", snapshot, [], new Device())
-        initUseSelectorMock("success", snapshot, [], new Device())
+        const store = initStore("success", snapshot, new Device())
+        initUseSelectorMock("success", snapshot, new Device(), [])
 
         // Acts
         const { container } = renderMockedComponent("success", snapshot, store)
@@ -295,24 +296,20 @@ describe("Device main infos Filter table render (no filter)", () => {
             )
         ]
         snapshot.addSoftware("test", "test software", "1.0")
-        const store = initStore("success", snapshot, filters, new Device())
-        initUseSelectorMock("success", snapshot, filters, new Device())
+        let store = initStore("success", snapshot, new Device(), filters)
+        initUseSelectorMock("success", snapshot, new Device(), filters)
+
+        const mockedDispatch: Dispatch = jest.fn((action) => {
+            store.dispatch({
+                type: "updateSelectedFilter"
+            })
+            store = initStore("success", snapshot, new Device(), filters, [0])
+            return action
+        });
+
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
 
         const { container } = renderMockedComponent("success", snapshot, store)
-
-        // Acts
-        /*
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
-        fireEvent.click(newFilterButton)
-
-        const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
-
-        fireEvent.change(fieldValueInput, { target: { value: "Test value" } })
-
-        fireEvent.keyDown(fieldValueInput, {
-            key: "Enter",
-            code: "Enter"
-        })*/
 
         // Acts
         const rowFileCell = container.querySelector(".MuiDataGrid-row")
@@ -320,9 +317,10 @@ describe("Device main infos Filter table render (no filter)", () => {
             throw new Error("No row : test fail!")
         }
         userEvent.click(rowFileCell)
+        useDispatch()
 
         // Asserts
-        await waitFor(()=>{
+        await waitFor(() => {
             expect(screen.findByText("Delete filters")).toBeInTheDocument()
         })
     })

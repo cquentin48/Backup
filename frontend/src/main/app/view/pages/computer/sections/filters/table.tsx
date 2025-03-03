@@ -162,7 +162,8 @@ export default function FilterTable (): React.JSX.Element {
                         footer: DeviceMainInfosGridFooter
                     }}
                     onRowSelectionModelChange={(event) => {
-                        dispatch(updateSelectedFilter(JSON.stringify(event)))
+                        const values = Array.from(new Set(event.values())) as number[]
+                        dispatch(updateSelectedFilter(values))
                     }}
                     apiRef={tableManager}
                 />
