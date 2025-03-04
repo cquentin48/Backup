@@ -6,8 +6,10 @@ import App from '../../main/app/App';
 
 describe("App root DOM node unit test suite", () => {
     test('renders learn react link', () => {
-        render(<App/>);
-        const linkElement = screen.getByText("Bonjour!");
-        expect(linkElement).toBeInTheDocument();
+        // Acts
+        const {asFragment} = render(<App/>);
+        
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
     })
 })

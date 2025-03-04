@@ -25,14 +25,14 @@ jest.mock("react-router-dom", () => {
 })
 
 describe("Device main infos side nav bar unit test suite", () => {
-    test("Check rendering", async () => {
+    test("Check render", async () => {
         // Given
         const updateSelectedId: (newID: number) => void = (newID: number) => {
             newID = newID + 1
         }
 
         // Acts
-        const { container } = render(
+        const { asFragment } = render(
             <BrowserRouter>
                 <ComputeSideNavBar
                     selectedID={0}
@@ -40,12 +40,8 @@ describe("Device main infos side nav bar unit test suite", () => {
                 />
             </BrowserRouter>)
 
-        const navBarElements = container.querySelectorAll(".sidebarNavElement")
-
         // Asserts
-        navBarElements.forEach((domElement) => {
-            expect(domElement).toBeInTheDocument()
-        })
+        expect(asFragment()).toMatchSnapshot()
     })
 
     test("Detect hover on element", async () => {

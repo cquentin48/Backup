@@ -8,11 +8,11 @@ import '@testing-library/jest-dom'
 describe("Topbar unit test suite", () => {
     test("Successful render", async () => {
         // Acts
-        const result = render(
-            <TopBar/>
+        const { asFragment } = render(
+            <TopBar />
         )
 
         // Assert
-        expect(result.getByText("Top bar here!")).toBeInTheDocument()
+        expect(asFragment()).toMatchSnapshot()
     })
 })

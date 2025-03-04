@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { Box } from "@mui/material";
 import GridFooterDelete from "./GridFooterDel";
@@ -14,10 +14,6 @@ import { deviceMainInfosFilterState } from "../../../../../../controller/deviceM
 export default function DeviceMainInfosGridFooter (): React.JSX.Element {
     const { selectedFilteredIDS } = useSelector(deviceMainInfosFilterState)
 
-    /**
-     * Render web component
-     * @returns {React.JSX.Element} Rendered component
-     */
     let formatedFiltersCount = `${selectedFilteredIDS.length} filtre`
     if (selectedFilteredIDS.length > 1) {
         formatedFiltersCount = `${formatedFiltersCount}s sélectionnés`

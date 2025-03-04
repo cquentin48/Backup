@@ -53,9 +53,7 @@ export default function DeviceStat (props: DeviceStatProps): React.JSX.Element {
     } else {
         avatar = <Skeleton variant="circular"><Avatar /></Skeleton>
         label = <Skeleton variant="text" width="100%" />
-        value = <Skeleton variant="rounded" width="100%">
-            <p></p>
-        </Skeleton>
+        value = <Skeleton variant="rounded" width="100%" height={72}/>
     }
 
     return (

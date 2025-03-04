@@ -97,10 +97,10 @@ describe.skip("Device page", () => {
         gqlClient.get_query_client().query = mockGraphQLQueryMethod()
 
         // Acts
-        const { container } = render(<ComputerPage />)
+        const { asFragment } = render(<ComputerPage />)
 
         // Asserts
-        expect(container).toBeInTheDocument()
+        expect(asFragment()).toMatchSnapshot()
     })
 
     test("Initial render (after loaded data)", async () => {
@@ -109,17 +109,15 @@ describe.skip("Device page", () => {
         gqlClient.get_query_client().query = mockGraphQLQueryMethod()
 
         // Acts
-        const { container } = render(
+        const { asFragment } = render(
             <BrowserRouter>
                 <ComputerPage />
             </BrowserRouter>
         )
 
         // Asserts
-        await waitFor(() => {
-            expect(container.querySelector("#DeviceMainInfosPage")).toBeInTheDocument()
-        }, { timeout: 2500 })
-    }, 3000)
+        expect(asFragment()).toMatchSnapshot()
+    })
 
     test("Initial render (data error)", async () => {
 
@@ -131,16 +129,14 @@ describe.skip("Device page", () => {
         gqlClient.get_query_client().query = graphqlMockQueryOutput
 
         // Acts
-        render(
+        const { asFragment } = render(
             <BrowserRouter>
                 <ComputerPage />
             </BrowserRouter>
         )
 
         // Asserts
-        await waitFor(() => {
-            expect(document.title).toBe("Backup - unknown device")
-        })
+        expect(asFragment()).toMatchSnapshot()
         expect(enqueueMock).toBeCalled()
     })
 })

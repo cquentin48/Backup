@@ -13,35 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFilter, deviceMainInfosFilterState } from "../../../../../../controller/deviceMainInfos/filterSlice";
 
 /**
- * State of the new filter form dialog
- */
-// interface NewFilterFormState {
-/**
- * Type of input
- * @see {@link Filter}
- */
-// inputType: string
-
-/**
- * Comparison operator
- * @see {@link Filter}
- */
-// comparison: string
-
-/**
- * Value used in the comparison
- * @see {@link Filter}
- */
-// value: string
-
-/**
- * Name of the property used for the comparison
- * @see {@link Filter}
- */
-// fieldName: string
-// }
-
-/**
  * Method which closes the new filter dialog once its done.
  */
 interface NewFilterFormProps {

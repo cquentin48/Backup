@@ -5,7 +5,7 @@ import { render, type RenderResult, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
 
 import { Provider, useSelector } from "react-redux";
-import { type MockedResponse, MockedProvider } from "@apollo/client/testing";
+import { type MockedResponse, MockedProvider, ResultFunction } from "@apollo/client/testing";
 
 import Device from "../../../../main/app/model/device/device"
 import SnapshotID from "../../../../main/app/model/device/snapshotId"
@@ -21,6 +21,9 @@ import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
 import { type LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot";
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
+import { AppState } from "../../../../main/app/controller/store";
+import { DocumentNode, FetchResult } from "@apollo/client";
+import device from "../../../../main/app/model/device/device";
 import NotFoundError from "../../../../main/app/model/exception/errors/notFoundError";
 
 jest.mock("react-redux", () => ({
@@ -34,8 +37,70 @@ interface MockedState {
     snapshot: SnapshotSliceState
 }
 
+interface ApolloMockResult {
+    request: {
+        query: DocumentNode;
+    };
+    result: FetchResult<LoadSnapshotQueryResult|DeviceInfosQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult|DeviceInfosQueryResult>, any> | undefined;
+}
+
 describe("Device main infos test suite", () => {
-    const renderMockedComponent = (device: Device, store: EnhancedStore, snapshot: SnapshotData): RenderResult => {
+    const initApolloMock = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData, device:Device): ApolloMockResult[] => {
+        let snapshotResult: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined;
+        let deviceResult: FetchResult<DeviceInfosQueryResult> | ResultFunction<FetchResult<DeviceInfosQueryResult>, any> | undefined;
+
+        if (operationStatus === "success") {
+            if (snapshot === undefined && operationStatus !== "success") {
+                throw new NotFoundError("Invalid operation : if the test type is a success, the snapshot must be defined!")
+            }
+            snapshotResult = {
+                data: {
+                    snapshotInfos: snapshot as SnapshotData
+                }
+            }
+            if (device === undefined && operationStatus !== "success") {
+                throw new NotFoundError("Invalid operation : if the test type is a success, the device must be defined!")
+            }
+            deviceResult = {
+                data: {
+                    deviceInfos: device
+                }
+            }
+
+        } else if (operationStatus === "failure") {
+            const errorMessage = "Raised error message here!"
+            snapshotResult = {
+                errors: [
+                    {
+                        message: errorMessage
+                    }
+                ]
+            }
+            deviceResult =  {
+                errors: [
+                    {
+                        message: errorMessage
+                    }
+                ]
+            }
+        }
+        return [
+            {
+                request: {
+                    query: FETCH_SNAPSHOT
+                },
+                result: snapshotResult
+            },
+            {
+                request: {
+                    query: FETCH_DEVICE
+                },
+                result: deviceResult
+            }
+        ]
+    }
+
+    const renderMockedComponent = (store: EnhancedStore<AppState>, operationStatus: "loading"|"success"|"error"): RenderResult => {
         const apolloMocks: Array<MockedResponse<DeviceInfosQueryResult | LoadSnapshotQueryResult, any>> = [
             {
                 request: {
@@ -43,7 +108,7 @@ describe("Device main infos test suite", () => {
                 },
                 result: {
                     data: {
-                        deviceInfos: device
+                        deviceInfos: store.getState().device.device as Device
                     }
                 }
             },
@@ -67,20 +132,20 @@ describe("Device main infos test suite", () => {
         )
     }
 
-    const initStore = (device: Device, snapshot: SnapshotData): EnhancedStore => {
+    const initStore = (operationStatus: "loading" | "success" | "error", device: Device | undefined = undefined, snapshot: SnapshotData | undefined = undefined): EnhancedStore => {
         const preloadedState: MockedState = {
             device: {
                 device,
                 deviceError: {
-                    message: "",
-                    variant: undefined
+                    message: operationStatus === "error" ? "Error raised!" : "",
+                    variant: operationStatus === "error" ? "error" : undefined
                 },
-                deviceLoading: false
+                deviceLoading: operationStatus === "loading"
             },
             snapshot: {
-                operationStatus: "success",
+                operationStatus: operationStatus,
                 snapshot,
-                snapshotError: ""
+                snapshotError: operationStatus === "error" ? "Error raised!" : ""
             }
         };
 
@@ -99,27 +164,30 @@ describe("Device main infos test suite", () => {
      * @param {SnapshotData} snapshot Fetched snapshot from the server.
      * @throws {NotFoundError} If the operation is marked as a success and no device is
      */
-    const initUseSelectorMock = (device: Device, snapshot: SnapshotData): void => {
+    const initUseSelectorMock = (store: EnhancedStore<AppState>): void => {
         const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
+        mockedUseSelector.mockImplementation((selector) => {
+            const deviceState = store.getState().device
+            const snapshotState = store.getState().snapshot
 
-        mockedUseSelector.mockImplementation((selector) =>
-            selector(
+            return selector(
                 {
                     device: {
-                        device,
-                        error: {
-                            message: "",
-                            variant: undefined
-                        },
-                        deviceLoading: false
+                        device:deviceState.device,
+                        error: deviceState.deviceError !== undefined ?{
+                            message: deviceState.deviceError.message,
+                            variant: deviceState.deviceError?.variant
+                        } : undefined,
+                        deviceLoading: deviceState.deviceLoading
                     },
                     snapshot: {
-                        operationStatus: "success",
-                        snapshot,
-                        snapshotError: ""
+                        operationStatus: snapshotState.operationStatus,
+                        snapshot: snapshotState.snapshot,
+                        snapshotError: snapshotState.snapshotError
                     }
                 }
             )
+        }
         )
     }
 
@@ -140,34 +208,55 @@ describe("Device main infos test suite", () => {
         const snapshot = new SnapshotData()
         snapshot.addSoftware("test", "test software", "1.0")
 
-        initUseSelectorMock(device, snapshot)
-        const store = initStore(device, snapshot)
+        const store = initStore("success", device, snapshot)
+        initUseSelectorMock(store)
 
         // Acts
-        const { getByText } = renderMockedComponent(device, store, snapshot)
-
-        const expectedOutputValues = [
-            device.processor,
-            device.cores.toString(),
-            device.formatBytes(device.memory),
-            (device.snapshots[0]).localizedDate(),
-            (device.snapshots[0]).localizedDate(),
-            "Amount of storage here used in the backup server"
-        ]
+        const { asFragment } = renderMockedComponent(device, store, snapshot)
 
         // Assert
-        await waitFor(() => {
-            const opResult = getByText("Processor")
-            let deviceSpecsContainer = opResult.parentElement as HTMLElement
+        expect(asFragment()).toMatchSnapshot()
+    })
 
-            while (deviceSpecsContainer.id !== "deviceMainInfosSpecs") {
-                deviceSpecsContainer = deviceSpecsContainer.parentElement as HTMLElement
-            }
+    test("Loading specs main infos (error)", async () => {
+        // Given
+        const device = new Device(
+            "MyDevice",
+            "My processor",
+            1,
+            4e+9,
+            [new SnapshotID(
+                "1",
+                "2020-01-01",
+                "My OS!"
+            )]
+        )
 
-            expectedOutputValues.forEach((expectedOutput: string, index: number) => {
-                const cardValue = deviceSpecsContainer.children[index].children[0].children[1]
-                expect(cardValue).toHaveTextContent(expectedOutput)
-            })
-        }, { timeout: 2500 })
+        const snapshot = new SnapshotData()
+        snapshot.addSoftware("test", "test software", "1.0")
+
+        const store = initStore("error")
+        initUseSelectorMock(store)
+
+        // Acts
+        const { asFragment } = renderMockedComponent(device, store, snapshot)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Loading specs main infos (loading)", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        snapshot.addSoftware("test", "test software", "1.0")
+
+        const store = initStore("loading")
+        initUseSelectorMock(store)
+
+        // Acts
+        const { asFragment } = renderMockedComponent(device, store, snapshot)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
     })
 })

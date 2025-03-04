@@ -126,7 +126,7 @@ export default function SoftwareOrigins (): React.JSX.Element {
                         </Avatar>
                     }
                     title={
-                        <Typography variant="h4">
+                        <Typography variant="h5">
                             Software origins
                         </Typography>
                     }

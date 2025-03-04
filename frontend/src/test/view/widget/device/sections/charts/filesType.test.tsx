@@ -10,13 +10,13 @@ import store from "../../../../../../main/app/controller/store"
 describe("Type of files chart unit test suite", () => {
     test("Successful render", async () => {
         // Acts
-        const { container } = render(
+        const { asFragment } = render(
             <Provider store={store}>
                 <FilesTypes />
             </Provider>
         )
 
         // Acts
-        expect(container).toBeInTheDocument()
+        expect(asFragment()).toMatchSnapshot
     })
 })

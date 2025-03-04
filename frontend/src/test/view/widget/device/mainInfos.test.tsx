@@ -323,7 +323,10 @@ describe("MainInfosFrame unit test suite", () => {
         const store = initStore("success", snapshot, device)
 
         // Acts
-        renderMockedComponent("success", snapshot, device, store)
+        const {asFragment} = renderMockedComponent("success", snapshot, device, store)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
     })
 
     test("Update selected item", async () => {

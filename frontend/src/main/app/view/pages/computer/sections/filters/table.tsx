@@ -78,7 +78,7 @@ const filterTableColumns: GridColDef[] = [
  * @returns {React.JSX.Element} Rendered component
  */
 export default function FilterTable (): React.JSX.Element {
-    const { filters, filterError: error } = useSelector(deviceMainInfosFilterState)
+    const { filters, filterError } = useSelector(deviceMainInfosFilterState)
 
     const { operationStatus } = useSelector(snapshotState)
 
@@ -141,11 +141,11 @@ export default function FilterTable (): React.JSX.Element {
 
     updateRows(currentRows, filters)
 
-    if (error.message !== "" && error.variant !== undefined) {
+    if (filterError.message !== "" && filterError.variant !== undefined) {
         enqueueSnackbar(
-            error.message,
+            filterError.message,
             {
-                variant: error.variant
+                variant: filterError.variant
             }
         )
     }
