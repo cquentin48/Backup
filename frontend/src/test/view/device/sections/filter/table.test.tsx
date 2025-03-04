@@ -3,7 +3,9 @@ import React, { type ReactNode } from "react"
 import { DocumentNode, type FetchResult } from "@apollo/client"
 import { type ResultFunction, MockedProvider } from "@apollo/client/testing"
 
-import { Dispatch, type EnhancedStore, configureStore } from "@reduxjs/toolkit"
+import { DataGridProps } from "@mui/x-data-grid"
+
+import { type EnhancedStore, configureStore } from "@reduxjs/toolkit"
 
 import '@testing-library/jest-dom'
 import { fireEvent, screen, render, waitFor, type RenderResult } from "@testing-library/react"
@@ -15,18 +17,19 @@ import { Provider, useDispatch, useSelector } from "react-redux"
 import snapshotReducer, { type SnapshotSliceState } from "../../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 import filterReducer, { type FilterSliceState } from "../../../../../main/app/controller/deviceMainInfos/filterSlice"
 import deviceReducer, { type FetchDeviceSliceState } from "../../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
+import { AppDispatch, AppState } from "../../../../../main/app/controller/store"
+
 import Device from "../../../../../main/app/model/device/device"
 import NotFoundError from "../../../../../main/app/model/exception/errors/notFoundError"
 import Filter from "../../../../../main/app/model/filters/Filter"
 import gqlClient from "../../../../../main/app/model/queries/client"
 import { type LoadSnapshotQueryResult } from "../../../../../main/app/model/queries/computer/loadSnapshot"
 import { SnapshotData } from "../../../../../main/app/model/snapshot/snapshotData"
+
 import FilterTable from "../../../../../main/app/view/pages/computer/sections/filters/table"
 
 import FETCH_SNAPSHOT from '../../../../../main/res/queries/snapshot.graphql';
-import { filterManager } from "../../../../../main/app/model/filters/FilterManager"
-import { DataGridProps } from "@mui/x-data-grid"
-import { AppDispatch, AppState } from "../../../../../main/app/controller/store"
+
 
 /**
  * Preloaded state used for the mocks in the tests
@@ -81,7 +84,7 @@ jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),
     useSelector: jest.fn(),
     useDispatch: jest.fn()
-}))
+}));
 
 describe("Device main infos Filter table render (no filter)", () => {
     beforeEach(() => {
@@ -125,10 +128,10 @@ describe("Device main infos Filter table render (no filter)", () => {
                     snapshot: {
                         snapshotError: snapshotState.snapshotError,
                         operationStatus: snapshotState.operationStatus,
-                        snapshot: JSON.parse(JSON.stringify(snapshotState.snapshot)),
+                        snapshot: snapshotState.snapshot !== undefined ? JSON.parse(JSON.stringify(snapshotState.snapshot)) : undefined,
                     },
                     device: {
-                        device: JSON.parse(JSON.stringify(deviceState.device)),
+                        device: deviceState.device !== undefined ? JSON.parse(JSON.stringify(deviceState.device)) : undefined,
                         deviceError: deviceState.deviceError !== undefined ? {
                             message: deviceState.deviceError.message,
                             variant: deviceState.deviceError.variant
@@ -141,7 +144,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         )
     }
 
-    const initApolloMock = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData): ApolloMockResult[] => {
+    const initApolloMock = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined): ApolloMockResult[] => {
         let snapshotResult: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined;
 
         if (operationStatus === "success") {
@@ -163,6 +166,12 @@ describe("Device main infos Filter table render (no filter)", () => {
                     }
                 ]
             }
+        } else {
+            snapshotResult = {
+                data: {
+                    snapshotInfos: new SnapshotData()
+                }
+            }
         }
         return [
             {
@@ -182,14 +191,6 @@ describe("Device main infos Filter table render (no filter)", () => {
      * @returns {NotFoundError} If the operation is marked as a success and no snapshot is provided.
      */
     const renderMockedComponent = (store: EnhancedStore, apolloMocks: ApolloMockResult[]): RenderResult => {
-
-        let snapshotResult = apolloMocks[0].result
-
-        gqlClient.get_query_client().query = jest.fn().mockImplementation(async ({ query }) =>
-            await Promise.resolve(
-                snapshotResult
-            )
-        )
 
         return render(<Provider store={store}>
             <MockedProvider mocks={apolloMocks} addTypename={false}>
@@ -213,9 +214,9 @@ describe("Device main infos Filter table render (no filter)", () => {
         if (device === undefined && snapshot === undefined && operationStatus === "success") {
             throw new Error("The snapshot and the device must be defined if the loading snapshot data with a GraphQL query is successful!")
         }
-        const parsedFilters = JSON.parse(JSON.stringify(filters))
-        const parsedDevice = JSON.parse(JSON.stringify(device))
-        const parsedSnapshot = JSON.parse(JSON.stringify(snapshot))
+        const parsedFilters = filters !== undefined ? JSON.parse(JSON.stringify(filters)) : undefined
+        const parsedDevice = device !== undefined ? JSON.parse(JSON.stringify(device)) : undefined
+        const parsedSnapshot = snapshot !== undefined ? JSON.parse(JSON.stringify(snapshot)) : undefined
 
         const preloadedState: MockedPreloadedState = {
 
@@ -273,7 +274,29 @@ describe("Device main infos Filter table render (no filter)", () => {
         return jest.fn().mockReturnValue(snapshotQueryOutput)
     }
 
-    test("Initial render", async () => {
+    test("Pending data render", async () => {
+        // Before
+        const mockedDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
+            return mockedDispatch
+        });
+
+        // Given
+        const snapshot = new SnapshotData()
+        snapshot.addSoftware("test", "test software", "1.0")
+        const store = initStore("loading")
+
+        initUseSelectorMock(store)
+
+        // Acts
+        const apolloMocks = initApolloMock("loading", snapshot)
+        const { asFragment } = renderMockedComponent(store, apolloMocks)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Successful render", async () => {
         // Before
         const mockedDispatch = jest.fn();
         (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
@@ -289,6 +312,28 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         // Acts
         const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(store, apolloMocks)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Unsuccessful render", async () => {
+        // Before
+        const mockedDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
+            return mockedDispatch
+        });
+
+        // Given
+        const snapshot = new SnapshotData()
+        snapshot.addSoftware("test", "test software", "1.0")
+        const store = initStore("failure")
+
+        initUseSelectorMock(store)
+
+        // Acts
+        const apolloMocks = initApolloMock("failure", snapshot)
         const { asFragment } = renderMockedComponent(store, apolloMocks)
 
         // Asserts

@@ -113,12 +113,6 @@ export const filterSlice = createSlice({
         updateSelectedFilter: (state, action: PayloadAction<number[]>) => {
             const selectedIDS = action.payload;
             state.selectedFilteredIDS = selectedIDS;
-        },
-        resetError: (state) => {
-            state.filterError = {
-                message: "",
-                variant: undefined
-            }
         }
     }
 })
@@ -126,4 +120,4 @@ export const filterSlice = createSlice({
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const deviceMainInfosFilterState = (state: AppState) => state.filter;
 export default filterSlice.reducer
-export const { addFilter, deleteFilter, updateSelectedFilter, resetError } = filterSlice.actions
+export const { addFilter, deleteFilter, updateSelectedFilter } = filterSlice.actions

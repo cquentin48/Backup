@@ -41,11 +41,11 @@ interface ApolloMockResult {
     request: {
         query: DocumentNode;
     };
-    result: FetchResult<LoadSnapshotQueryResult|DeviceInfosQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult|DeviceInfosQueryResult>, any> | undefined;
+    result: FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult>, any> | undefined;
 }
 
 describe("Device main infos test suite", () => {
-    const initApolloMock = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData, device:Device): ApolloMockResult[] => {
+    const mockApolloCalls = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined): ApolloMockResult[] => {
         let snapshotResult: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined;
         let deviceResult: FetchResult<DeviceInfosQueryResult> | ResultFunction<FetchResult<DeviceInfosQueryResult>, any> | undefined;
 
@@ -63,7 +63,7 @@ describe("Device main infos test suite", () => {
             }
             deviceResult = {
                 data: {
-                    deviceInfos: device
+                    deviceInfos: device as Device
                 }
             }
 
@@ -76,7 +76,7 @@ describe("Device main infos test suite", () => {
                     }
                 ]
             }
-            deviceResult =  {
+            deviceResult = {
                 errors: [
                     {
                         message: errorMessage
@@ -100,29 +100,7 @@ describe("Device main infos test suite", () => {
         ]
     }
 
-    const renderMockedComponent = (store: EnhancedStore<AppState>, operationStatus: "loading"|"success"|"error"): RenderResult => {
-        const apolloMocks: Array<MockedResponse<DeviceInfosQueryResult | LoadSnapshotQueryResult, any>> = [
-            {
-                request: {
-                    query: FETCH_DEVICE
-                },
-                result: {
-                    data: {
-                        deviceInfos: store.getState().device.device as Device
-                    }
-                }
-            },
-            {
-                request: {
-                    query: FETCH_SNAPSHOT
-                },
-                result: {
-                    data: {
-                        snapshotInfos: snapshot
-                    }
-                }
-            }
-        ]
+    const renderMockedComponent = (store: EnhancedStore<AppState>, operationStatus: "loading" | "success" | "error", apolloMocks: Array<MockedResponse<DeviceInfosQueryResult | LoadSnapshotQueryResult, any>>): RenderResult => {
         return render(
             <Provider store={store}>
                 <MockedProvider mocks={apolloMocks} addTypename={false}>
@@ -173,8 +151,8 @@ describe("Device main infos test suite", () => {
             return selector(
                 {
                     device: {
-                        device:deviceState.device,
-                        error: deviceState.deviceError !== undefined ?{
+                        device: deviceState.device,
+                        error: deviceState.deviceError !== undefined ? {
                             message: deviceState.deviceError.message,
                             variant: deviceState.deviceError?.variant
                         } : undefined,
@@ -208,11 +186,14 @@ describe("Device main infos test suite", () => {
         const snapshot = new SnapshotData()
         snapshot.addSoftware("test", "test software", "1.0")
 
+        const apolloMocks = mockApolloCalls("success", snapshot, device)
+
         const store = initStore("success", device, snapshot)
         initUseSelectorMock(store)
 
         // Acts
-        const { asFragment } = renderMockedComponent(device, store, snapshot)
+
+        const { asFragment } = renderMockedComponent(store, "success", apolloMocks)
 
         // Assert
         expect(asFragment()).toMatchSnapshot()
@@ -238,8 +219,10 @@ describe("Device main infos test suite", () => {
         const store = initStore("error")
         initUseSelectorMock(store)
 
+        const apolloMocks = mockApolloCalls("failure", snapshot, device)
+
         // Acts
-        const { asFragment } = renderMockedComponent(device, store, snapshot)
+        const { asFragment } = renderMockedComponent(store, "error", apolloMocks)
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()
@@ -253,8 +236,10 @@ describe("Device main infos test suite", () => {
         const store = initStore("loading")
         initUseSelectorMock(store)
 
+        const apolloMocks = mockApolloCalls("loading")
+
         // Acts
-        const { asFragment } = renderMockedComponent(device, store, snapshot)
+        const { asFragment } = renderMockedComponent(store, "loading", apolloMocks)
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()

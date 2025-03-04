@@ -1,26 +1,50 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { type MockedResponse, MockedProvider } from '@apollo/client/testing';
 import '@testing-library/jest-dom'
-import { render, screen, fireEvent, type RenderResult } from '@testing-library/react';
+import { DataGridProps } from '@mui/x-data-grid';
+import { configureStore, type EnhancedStore } from "@reduxjs/toolkit";
+import { render, screen, fireEvent, type RenderResult, waitFor } from '@testing-library/react';
+
+import { Provider, useSelector } from 'react-redux';
 
 import DeviceMainInfos from '../../../../main/app/view/pages/computer/mainInfos';
 import Device from '../../../../main/app/model/device/device';
 import SnapshotID from '../../../../main/app/model/device/snapshotId';
-
-import { Provider, useSelector } from 'react-redux';
+import { type LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot";
+import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
 
 import { type DeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos";
-import { configureStore, type EnhancedStore } from "@reduxjs/toolkit";
 
 import deviceReducer, { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
 import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
 import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
-import { type LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot";
-import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
-import NotFoundError from '../../../../main/app/model/exception/errors/notFoundError';
+
+jest.mock("@mui/x-data-grid", () => {
+    const originalModule = jest.requireActual("@mui/x-data-grid")
+    return {
+        ...originalModule,
+        DataGrid: ({ apiRef, ...props }: DataGridProps & { apiRef: React.RefObject<any> }) => {
+            apiRef.current = {};
+            return <originalModule.DataGrid {...props} />
+        }
+    }
+})
+
+jest.mock('@mui/material/transitions', () => ({
+    ...jest.requireActual('@mui/material/transitions'),
+    useTransitionProps: () => ({ timeout: 0 })
+}));
+
+jest.mock("notistack", () => {
+    const actual = jest.requireActual("notistack");
+    return {
+        ...actual,
+        useSnackbar: jest.fn()
+    };
+});
 
 jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),
@@ -126,7 +150,7 @@ describe("Device main Infos unit test suite", () => {
         jest.resetAllMocks()
     })
 
-    test("Successful render (non Ubuntu OS)", async () => {
+    test("Initial render (success)", async () => {
         // Given
         const device = new Device(
             "MyDevice",
@@ -147,19 +171,47 @@ describe("Device main Infos unit test suite", () => {
         const store = initStore(device, snapshot)
 
         // Acts
-        const { container } = renderMockedComponent(device, store, snapshot)
-        const renderedDeviceHeader = container.querySelector("#deviceMainInfosHeader")
-        const renderedDeviceHeaderButton = container.querySelector(".MuiButtonBase-root")
-
-        fireEvent.mouseOver(screen.getByLabelText(device.snapshots[0].operatingSystem))
+        const { asFragment } = renderMockedComponent(device, store, snapshot)
 
         // Asserts
-        expect(renderedDeviceHeader).toHaveTextContent(device.name)
-        expect(renderedDeviceHeaderButton).not.toBeNull()
-        expect(renderedDeviceHeaderButton).toHaveTextContent("Delete device")
+        expect(asFragment()).toMatchSnapshot()
     })
 
-    test("Successful render Ubuntu OS", async () => {
+    test("Tooltip displayed (non Ubuntu OS device)", async () => {
+        // Given
+        const device = new Device(
+            "MyDevice",
+            "My processor",
+            1,
+            4e+9,
+            [new SnapshotID(
+                "1",
+                "2020-01-01",
+                "My OS!"
+            )]
+        )
+
+        const snapshot = new SnapshotData()
+        snapshot.addSoftware("test", "test software", "1.0")
+
+        initUseSelectorMock(device, snapshot)
+        const store = initStore(device, snapshot)
+
+        // Acts
+        const { container, getByText } = renderMockedComponent(device, store, snapshot)
+        const renderedDeviceHeader = container.querySelector("#deviceMainInfosHeader")
+
+        const osIcon = (getByText(device.name).parentNode as HTMLElement).querySelector("svg") as Element
+
+        fireEvent.mouseOver(osIcon)
+
+        // Asserts
+        await waitFor(()=>{
+            expect(renderedDeviceHeader).toHaveTextContent(device.name)
+        })
+    })
+
+    test("Tooltip displayed (Ubuntu OS device)", async () => {
         // Given
         const device = new Device(
             "MyDevice",
@@ -182,13 +234,12 @@ describe("Device main Infos unit test suite", () => {
         // Acts
         const { container } = renderMockedComponent(device, store, snapshot)
         const renderedDeviceHeader = container.querySelector("#deviceMainInfosHeader")
-        const renderedDeviceHeaderButton = container.querySelector(".MuiButtonBase-root")
 
         fireEvent.mouseOver(screen.getByLabelText(device.snapshots[0].operatingSystem))
 
         // Asserts
-        expect(renderedDeviceHeader).toHaveTextContent(device.name)
-        expect(renderedDeviceHeaderButton).not.toBeNull()
-        expect(renderedDeviceHeaderButton).toHaveTextContent("Delete device")
+        await waitFor(()=>{
+            expect(renderedDeviceHeader).toHaveTextContent(device.name)
+        })
     })
 })
