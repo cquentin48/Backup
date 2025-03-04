@@ -46,6 +46,7 @@ export const filterSlice = createSlice({
          */
         addFilter: (state, action: PayloadAction<Filter>) => {
             try {
+                console.log("New value!")
                 const newFilter = action.payload
                 Filter.inputTypeAuthorizedList(action.payload.elementType);
                 Filter.comparisonTypesCheck(newFilter.opType);

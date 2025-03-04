@@ -88,16 +88,20 @@ jest.mock("react-redux", () => ({
 
 describe("Device main infos Filter table render (no filter)", () => {
     beforeEach(() => {
+        gqlClient.get_query_client().query = initGraphQLMock()
+    })
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
+    const initEnqueueSnackbarMock = () => {
         const mockEnqueueSnackbar = jest.fn();
         (useSnackbar as jest.Mock).mockReturnValue({
             enqueueSnackbar: mockEnqueueSnackbar
         });
 
-        gqlClient.get_query_client().query = initGraphQLMock()
-    })
-    afterEach(() => {
-        jest.resetAllMocks()
-    })
+        return mockEnqueueSnackbar
+    }
 
     /**
      * Init the ``useSelector`` mock for the unit test
@@ -280,6 +284,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
             return mockedDispatch
         });
+        initEnqueueSnackbarMock()
 
         // Given
         const snapshot = new SnapshotData()
@@ -302,6 +307,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
             return mockedDispatch
         });
+        initEnqueueSnackbarMock()
 
         // Given
         const snapshot = new SnapshotData()
@@ -324,6 +330,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
             return mockedDispatch
         });
+        initEnqueueSnackbarMock()
 
         // Given
         const snapshot = new SnapshotData()
@@ -355,6 +362,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -399,6 +407,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -430,6 +439,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -465,6 +475,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        const enqueueSnackbarMock = initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -487,7 +498,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         fireEvent.click(addFilterButton as ChildNode)
 
         // Asserts
-        expect(useSnackbar).toHaveBeenCalled()
+        expect(enqueueSnackbarMock).toHaveBeenCalled()
     })
 
     test("Trying to add new filter without setting value should launch console.log", async () => {
@@ -497,6 +508,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -535,6 +547,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -571,6 +584,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -629,6 +643,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -668,13 +683,14 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        const mockEnqueueSnackbar = initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
         (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
 
         const apolloMocks = initApolloMock("success", snapshot)
-        renderMockedComponent(store, apolloMocks)
+        const { rerender } = renderMockedComponent(store, apolloMocks)
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
@@ -689,8 +705,20 @@ describe("Device main infos Filter table render (no filter)", () => {
             code: "Enter"
         })
 
+        rerender(
+            <Provider store={store}>
+                <MockedProvider mocks={apolloMocks} addTypename={false}>
+                    <SnackbarProvider>
+                        <FilterTable />
+                    </SnackbarProvider>
+                </MockedProvider>
+            </Provider>
+        )
+
+        console.log(store.getState().filter.filters.length)
         // Asserts
         expect(fieldValueInput).not.toBeInTheDocument()
+        //expect(mockEnqueueSnackbar).toHaveBeenCalledWith("The filter is already set! It will be ignored!", { variant: "warning" })
         expect(useSnackbar).toBeCalled()
 
     })
@@ -710,6 +738,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -787,6 +816,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -812,7 +842,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         }
         store.dispatch({
             type: "filter/updateSelectedFilter",
-            payload: [0,1]
+            payload: [0, 1]
         })
 
         rerender(
@@ -863,6 +893,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -922,10 +953,11 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         // Given
         const snapshot = new SnapshotData()
-        const filters:Filter[] = []
+        const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -960,13 +992,14 @@ describe("Device main infos Filter table render (no filter)", () => {
     test("Typing date directly in the input field name from the new filter Form", async () => {
         // Before
         jest.useFakeTimers().setSystemTime(new Date('2020-01-01'))
-        
+
         // Given
         const snapshot = new SnapshotData()
-        const filters:Filter[] = []
+        const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
         let store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
+        initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -986,7 +1019,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const inputField = fieldValue.querySelector("input") as HTMLInputElement
         userEvent.type(inputField, "01/10/2020")
         const newDate = inputField.value
-        
+
         fireEvent.keyDown(newFilterButton, {
             key: "Enter",
             code: "Enter"
