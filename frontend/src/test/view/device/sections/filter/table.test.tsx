@@ -14,9 +14,9 @@ import userEvent from "@testing-library/user-event"
 import { SnackbarProvider, useSnackbar } from "notistack"
 import { Provider, useDispatch, useSelector } from "react-redux"
 
-import snapshotReducer, { type SnapshotSliceState } from "../../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
-import filterReducer, { type FilterSliceState } from "../../../../../main/app/controller/deviceMainInfos/filterSlice"
-import deviceReducer, { type FetchDeviceSliceState } from "../../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
+import snapshotReducer from "../../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
+import filterReducer from "../../../../../main/app/controller/deviceMainInfos/filterSlice"
+import deviceReducer from "../../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
 import { AppDispatch, AppState } from "../../../../../main/app/controller/store"
 
 import Device from "../../../../../main/app/model/device/device"
@@ -29,21 +29,6 @@ import { SnapshotData } from "../../../../../main/app/model/snapshot/snapshotDat
 import FilterTable from "../../../../../main/app/view/pages/computer/sections/filters/table"
 
 import FETCH_SNAPSHOT from '../../../../../main/res/queries/snapshot.graphql';
-
-
-/**
- * Preloaded state used for the mocks in the tests
- */
-interface MockedPreloadedState {
-    /**
-     * Snapshot defined in the snapshot slice
-     */
-    filter: FilterSliceState
-
-    snapshot: SnapshotSliceState
-
-    device: FetchDeviceSliceState
-}
 
 interface ApolloMockResult {
     request: {
@@ -148,7 +133,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         )
     }
 
-    const initApolloMock = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined): ApolloMockResult[] => {
+    const initApolloMock = (operationStatus: "success" | "error" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined): ApolloMockResult[] => {
         let snapshotResult: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined;
 
         if (operationStatus === "success") {
@@ -161,7 +146,7 @@ describe("Device main infos Filter table render (no filter)", () => {
                 }
             }
 
-        } else if (operationStatus === "failure") {
+        } else if (operationStatus === "error") {
             const errorMessage = "Raised error message here!"
             snapshotResult = {
                 errors: [
@@ -195,26 +180,27 @@ describe("Device main infos Filter table render (no filter)", () => {
      * @returns {NotFoundError} If the operation is marked as a success and no snapshot is provided.
      */
     const renderMockedComponent = (store: EnhancedStore, apolloMocks: ApolloMockResult[]): RenderResult => {
-
-        return render(<Provider store={store}>
-            <MockedProvider mocks={apolloMocks} addTypename={false}>
-                <SnackbarProvider>
-                    <FilterTable />
-                </SnackbarProvider>
-            </MockedProvider>
-        </Provider>)
+        return render(
+            <Provider store={store}>
+                <MockedProvider mocks={apolloMocks} addTypename={false}>
+                    <SnackbarProvider>
+                        <FilterTable />
+                    </SnackbarProvider>
+                </MockedProvider>
+            </Provider>
+        )
     }
 
     /**
      * Initialise the test
-     * @param {"success" | "failure" | "loading" | "initial"} operationStatus Type of operation mocked for the unit test
+     * @param {"success" | "error" | "loading" | "initial"} operationStatus Type of operation mocked for the unit test
      * @param {SnapshotData | undefined} snapshot Device snapshot used in the unit test
      * @param {Filter[]} filters Filters used in the unit test
      * @param {Device |undefined} device device used for the mock
      * @returns {EnhancedStore} Mocked store
      * @throws {Error} If the test stage is not in the list
      */
-    const initStore = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, filters: Filter[] = [], selectedFiltersIDs: number[] = []): EnhancedStore<AppState> => {
+    const initStore = (operationStatus: "initial" | "loading" | "success" | "error", snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, filters: Filter[] = [], selectedFiltersIDs: number[] = []): EnhancedStore<AppState> => {
         if (device === undefined && snapshot === undefined && operationStatus === "success") {
             throw new Error("The snapshot and the device must be defined if the loading snapshot data with a GraphQL query is successful!")
         }
@@ -222,30 +208,30 @@ describe("Device main infos Filter table render (no filter)", () => {
         const parsedDevice = device !== undefined ? JSON.parse(JSON.stringify(device)) : undefined
         const parsedSnapshot = snapshot !== undefined ? JSON.parse(JSON.stringify(snapshot)) : undefined
 
-        const preloadedState: MockedPreloadedState = {
-
+        const preloadedState: AppState = {
             filter: {
                 filters: parsedFilters,
                 filterError: {
-                    message: operationStatus === "failure" ? "Snapshot : Error raised here!" : "",
-                    variant: operationStatus === "failure" ? "error" : undefined
+                    message: operationStatus === "error" ? "Snapshot : Error raised here!" : "",
+                    variant: operationStatus === "error" ? "error" : undefined
                 },
                 selectedFilteredIDS: selectedFiltersIDs
             },
             device: {
                 device: parsedDevice,
                 deviceError: {
-                    message: operationStatus === "failure" ? "Snapshot : Error raised here!" : "",
-                    variant: operationStatus === "failure" ? "error" : undefined
+                    message: operationStatus === "error" ? "Snapshot : Error raised here!" : "",
+                    variant: operationStatus === "error" ? "error" : undefined
                 },
                 deviceLoading: operationStatus === "initial" || operationStatus === "loading"
             },
             snapshot: {
                 snapshot: parsedSnapshot,
-                snapshotError: operationStatus === "failure" ? "Device : Error raised here!" : "",
-                operationStatus: "success"
+                snapshotError: operationStatus === "error" ? "Device : Error raised here!" : "",
+                operationStatus: operationStatus
             }
         }
+
         return configureStore({
             reducer: {
                 device: deviceReducer,
@@ -292,9 +278,9 @@ describe("Device main infos Filter table render (no filter)", () => {
         const store = initStore("loading")
 
         initUseSelectorMock(store)
+        const apolloMocks = initApolloMock("loading", snapshot)
 
         // Acts
-        const apolloMocks = initApolloMock("loading", snapshot)
         const { asFragment } = renderMockedComponent(store, apolloMocks)
 
         // Asserts
@@ -335,12 +321,12 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Given
         const snapshot = new SnapshotData()
         snapshot.addSoftware("test", "test software", "1.0")
-        const store = initStore("failure")
+        const store = initStore("error")
 
         initUseSelectorMock(store)
 
         // Acts
-        const apolloMocks = initApolloMock("failure", snapshot)
+        const apolloMocks = initApolloMock("error", snapshot)
         const { asFragment } = renderMockedComponent(store, apolloMocks)
 
         // Asserts
@@ -698,11 +684,23 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
 
-        fireEvent.change(fieldValueInput, { target: { value: "Test value" } })
+        fireEvent.change(fieldValueInput, { target: { value: "Test value!" } })
 
         fireEvent.keyDown(fieldValueInput, {
             key: "Enter",
             code: "Enter"
+        })
+        store.dispatch({
+            type: "filter/addFilter",
+            payload: JSON.parse(JSON.stringify(
+                new Filter(
+                    "File",
+                    "name",
+                    "<",
+                    "Test value!" as unknown as object,
+                    2
+                )
+            ))
         })
 
         rerender(
@@ -715,12 +713,187 @@ describe("Device main infos Filter table render (no filter)", () => {
             </Provider>
         )
 
-        console.log(store.getState().filter.filters.length)
         // Asserts
         expect(fieldValueInput).not.toBeInTheDocument()
-        //expect(mockEnqueueSnackbar).toHaveBeenCalledWith("The filter is already set! It will be ignored!", { variant: "warning" })
-        expect(useSnackbar).toBeCalled()
+        expect(mockEnqueueSnackbar).toHaveBeenCalledWith("The filter is already set! It will be ignored!", { variant: "warning" })
 
+    })
+
+    test("Adding two filters with same ID", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        const filters: Filter[] = [
+            new Filter(
+                "File",
+                "name",
+                "<",
+                "Test value!" as unknown as object,
+                1
+            )
+        ]
+        snapshot.addSoftware("test", "test software", "1.0")
+        let store = initStore("success", snapshot, new Device(), filters)
+        initUseSelectorMock(store)
+        const mockEnqueueSnackbar = initEnqueueSnackbarMock()
+
+        const mockedDispatch: AppDispatch = jest.fn();
+
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { rerender } = renderMockedComponent(store, apolloMocks)
+
+        // Acts
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+        fireEvent.click(newFilterButton)
+
+        const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
+
+        fireEvent.change(fieldValueInput, { target: { value: "Test value!" } })
+
+        fireEvent.keyDown(fieldValueInput, {
+            key: "Enter",
+            code: "Enter"
+        })
+        store.dispatch({
+            type: "filter/addFilter",
+            payload: JSON.parse(JSON.stringify(
+                new Filter(
+                    "File",
+                    "name",
+                    "<",
+                    "Test value!" as unknown as object,
+                    1
+                )
+            ))
+        })
+
+        rerender(
+            <Provider store={store}>
+                <MockedProvider mocks={apolloMocks} addTypename={false}>
+                    <SnackbarProvider>
+                        <FilterTable />
+                    </SnackbarProvider>
+                </MockedProvider>
+            </Provider>
+        )
+
+        // Asserts
+        expect(fieldValueInput).not.toBeInTheDocument()
+        expect(mockEnqueueSnackbar).toHaveBeenCalledWith("Another filter has this id!", { variant: "warning" })
+
+    })
+
+    test("Adding filter with invalid element type", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        const filters: Filter[] = []
+        snapshot.addSoftware("test", "test software", "1.0")
+        let store = initStore("success", snapshot, new Device(), filters)
+        initUseSelectorMock(store)
+        const mockEnqueueSnackbar = initEnqueueSnackbarMock()
+
+        const mockedDispatch: AppDispatch = jest.fn();
+
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { rerender } = renderMockedComponent(store, apolloMocks)
+
+        // Acts
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+        fireEvent.click(newFilterButton)
+
+        const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
+
+        fireEvent.change(fieldValueInput, { target: { value: "Test value!" } })
+
+        fireEvent.keyDown(fieldValueInput, {
+            key: "Enter",
+            code: "Enter"
+        })
+        store.dispatch({
+            type: "filter/addFilter",
+            payload: JSON.parse(JSON.stringify(
+                new Filter(
+                    "file" as any,
+                    "name",
+                    "<",
+                    "Test value!" as unknown as object,
+                    1
+                )
+            ))
+        })
+
+        rerender(
+            <Provider store={store}>
+                <MockedProvider mocks={apolloMocks} addTypename={false}>
+                    <SnackbarProvider>
+                        <FilterTable />
+                    </SnackbarProvider>
+                </MockedProvider>
+            </Provider>
+        )
+
+        // Asserts
+        expect(fieldValueInput).not.toBeInTheDocument()
+        expect(mockEnqueueSnackbar).toHaveBeenCalledWith("The input type file set is not valid. The only ones accepted are : \"File\" or \"Library\".", { variant: "error" })
+    })
+
+    test("Adding filter with invalid comparison operator", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        const filters: Filter[] = []
+        snapshot.addSoftware("test", "test software", "1.0")
+        let store = initStore("success", snapshot, new Device(), filters)
+        initUseSelectorMock(store)
+        const mockEnqueueSnackbar = initEnqueueSnackbarMock()
+
+        const mockedDispatch: AppDispatch = jest.fn();
+
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { rerender } = renderMockedComponent(store, apolloMocks)
+
+        // Acts
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+        fireEvent.click(newFilterButton)
+
+        const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
+
+        fireEvent.change(fieldValueInput, { target: { value: "Test value!" } })
+
+        fireEvent.keyDown(fieldValueInput, {
+            key: "Enter",
+            code: "Enter"
+        })
+        store.dispatch({
+            type: "filter/addFilter",
+            payload: JSON.parse(JSON.stringify(
+                new Filter(
+                    "File",
+                    "name",
+                    "<>" as any,
+                    "Test value!" as unknown as object,
+                    1
+                )
+            ))
+        })
+
+        rerender(
+            <Provider store={store}>
+                <MockedProvider mocks={apolloMocks} addTypename={false}>
+                    <SnackbarProvider>
+                        <FilterTable />
+                    </SnackbarProvider>
+                </MockedProvider>
+            </Provider>
+        )
+
+        // Asserts
+        expect(fieldValueInput).not.toBeInTheDocument()
+        expect(mockEnqueueSnackbar).toHaveBeenCalledWith("The comparison <> set is not valid. The only ones accepted are : \"<\", \"<=\", \">\", \">=\", \"!=\", \"==\" or \"includes\".", { variant: "error" })
     })
 
     test("Adding two filters and pressing enter key", async () => {

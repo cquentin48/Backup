@@ -46,12 +46,14 @@ export const filterSlice = createSlice({
          */
         addFilter: (state, action: PayloadAction<Filter>) => {
             try {
-                console.log("New value!")
                 const newFilter = action.payload
+                if(state.filters.filter((filter)=>filter.id === newFilter.id).length > 0){
+                    throw new AlreadyAddedWarning("Another filter has this id!")
+                }
                 Filter.inputTypeAuthorizedList(action.payload.elementType);
                 Filter.comparisonTypesCheck(newFilter.opType);
                 if (state.filters.filter((filter) =>
-                    filter.isEqual(newFilter)
+                    Filter.isEqual(filter, newFilter)
                 ).length > 0) {
                     throw new AlreadyAddedWarning("The filter is already set! It will be ignored!")
                 }

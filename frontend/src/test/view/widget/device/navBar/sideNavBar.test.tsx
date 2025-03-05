@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, type LinkProps, MemoryRouter } from "react-router-dom"
+import { BrowserRouter, type LinkProps } from "react-router-dom"
 
 import { fireEvent, render, screen } from "@testing-library/react"
 
@@ -27,9 +27,7 @@ jest.mock("react-router-dom", () => {
 describe("Device main infos side nav bar unit test suite", () => {
     test("Check render", async () => {
         // Given
-        const updateSelectedId: (newID: number) => void = (newID: number) => {
-            newID = newID + 1
-        }
+        const updateSelectedId: (jest.Mock) = jest.fn()
 
         // Acts
         const { asFragment } = render(
@@ -46,9 +44,7 @@ describe("Device main infos side nav bar unit test suite", () => {
 
     test("Detect hover on element", async () => {
         // Given
-        const updateSelectedId: (newID: number) => void = (newID: number) => {
-            newID = newID + 1
-        }
+        const updateSelectedId: (jest.Mock) = jest.fn()
 
         // Acts
         const { container } = render(
@@ -68,10 +64,7 @@ describe("Device main infos side nav bar unit test suite", () => {
 
         // Asserts
         textElements.forEach((textElement, index) => {
-            const navBarElement = document.querySelector(`#sideNavBarElement${index}`)
-            if (navBarElement == null) {
-                throw new Error(`Unit test error : nav bar element #${index} not found!`)
-            }
+            const navBarElement = document.querySelector(`#sideNavBarElement${index}`) as HTMLElement
             fireEvent.mouseOver(navBarElement)
             expect(container).toHaveTextContent(textElement)
         })
@@ -79,57 +72,41 @@ describe("Device main infos side nav bar unit test suite", () => {
 
     test("Detect update element click event", () => {
         // Given
-        const updateMock = jest.fn()
-        const { getByText, rerender } = render(
-            <MemoryRouter>
-                <SideNavBarElement
-                    componentPath="/"
-                    navBarLabel="Main informations"
-                    classId="mainInformations"
-                    image={
-                        <div></div>
-                    }
-                    id={1}
-                    updateSelectedNumber={updateMock}
-                    selectedElement={0}
-                />
-            </MemoryRouter>
-        )
-
-        const textElement = "Main informations"
-        let navBarObject = ((getByText(textElement) as Element).parentElement as ParentNode).parentElement as HTMLElement
+        const updateSelectedId: (jest.Mock) = jest.fn()
 
         // Acts
-        fireEvent.mouseOver(navBarObject)
-        const classesBeforeSelectItem: string[] = []
-        navBarObject.classList.forEach((divClass) =>
-            classesBeforeSelectItem.push(divClass)
-        )
-
-        fireEvent.click(navBarObject)
-
-        rerender(
-            <MemoryRouter>
-                <SideNavBarElement
-                    componentPath="/"
-                    navBarLabel="Main informations"
-                    classId="mainInformations"
-                    image={
-                        <div></div>
-                    }
-                    id={1}
-                    updateSelectedNumber={updateMock}
-                    selectedElement={1}
+        const { rerender } = render(
+            <BrowserRouter>
+                <ComputeSideNavBar
+                    selectedID={0}
+                    updateSelectedID={updateSelectedId}
                 />
-            </MemoryRouter>
-        )
-        navBarObject = ((screen.getByText(textElement) as Element).parentElement as ParentNode).parentElement as HTMLElement
+            </BrowserRouter>)
+
+        const textElements = [
+            "Main informations",
+            "Libraries",
+            "Software configurations",
+            "Folder storage"
+        ]
 
         // Asserts
-        expect(classesBeforeSelectItem).not.toContain('selected')
-        expect(classesBeforeSelectItem).toContain('sidebarNavElement')
-        expect(updateMock).toHaveBeenCalledTimes(1)
-        expect(navBarObject).toHaveClass('selected')
+        textElements.forEach((_, index) => {
+            const navBarElement = document.querySelector(`#sideNavBarElement${index}`) as HTMLElement
+            fireEvent.click(navBarElement)
 
+            rerender(
+            <BrowserRouter>
+                <ComputeSideNavBar
+                    selectedID={index}
+                    updateSelectedID={updateSelectedId}
+                />
+            </BrowserRouter>
+            )
+
+            expect(updateSelectedId).toBeCalledTimes(index+1)
+            expect(updateSelectedId).toBeCalledWith(index)
+            expect(navBarElement).toHaveClass("selected")
+        })
     })
 })

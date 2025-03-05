@@ -179,6 +179,7 @@ export default function FilterTable (): React.JSX.Element {
             </Paper>
         )
     }
+
     return (
         <Box className="FilterTable" >
             <Skeleton width="100%" height={203}>
@@ -192,6 +193,7 @@ export default function FilterTable (): React.JSX.Element {
                             hidden: true
                         }
                     }}
+                    apiRef={tableManager}
                 />
             </Skeleton>
         </Box>

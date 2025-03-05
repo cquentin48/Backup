@@ -78,21 +78,22 @@ export default class Filter {
     public static inputTypeAuthorizedList (inputType: string): void {
         const authorizedList = ["File", "Library"];
         if (!authorizedList.includes(inputType)) {
-            throw new ValidationError(`The input type ${inputType} set is not valid. "+
-                "The only ones accepted are : "File" or "Library".`)
+            throw new ValidationError(`The input type ${inputType} set is not valid. The only ones accepted are : "File" or "Library".`)
         }
     }
 
     /**
-     * Check if this filter and another one are equal
-     * @param {Filter} otherFilter Other filter for comparison
+     * Check if two filters are identical based off their attributes
+     * @param {Filter} lValue Left side filter value in the comparison operation
+     * @param {Filter} rValue Right side filter value in the comparison operation
      * @returns {boolean} ``true`` yes | ``false`` no
      */
-    public isEqual (otherFilter: Filter): boolean {
-        const elementTypeCheck = this.elementType === otherFilter.elementType;
-        const fieldNameCheck = this.fieldName === otherFilter.fieldName;
-        const comparisonTypeCheck = this.opType === otherFilter.opType;
-        const valueCheck = this.value === otherFilter.value;
+    public static isEqual (lValue: Filter, rValue: Filter): boolean {
+        const elementTypeCheck = lValue.elementType === rValue.elementType;
+        const fieldNameCheck = lValue.fieldName === rValue.fieldName;
+        const comparisonTypeCheck = lValue.opType === rValue.opType;
+        const valueCheck = lValue.value === rValue.value;
+
         return elementTypeCheck && fieldNameCheck && comparisonTypeCheck && valueCheck
     }
 
@@ -104,8 +105,7 @@ export default class Filter {
     public static comparisonTypesCheck (comparaison: string): void {
         const authorizedList = ["<", "<=", ">", ">=", "!=", "==", "includes"];
         if (!authorizedList.includes(comparaison)) {
-            throw new ValidationError(`The comparison ${comparaison} set is not valid. "+
-                "The only ones accepted are : "<", "<=", ">", ">=", "!=", "==" or "includes".`)
+            throw new ValidationError(`The comparison ${comparaison} set is not valid. The only ones accepted are : "<", "<=", ">", ">=", "!=", "==" or "includes".`)
         }
     }
 
