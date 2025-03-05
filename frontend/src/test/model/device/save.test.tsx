@@ -10,7 +10,7 @@ describe("Snapshot data model unit tests", () => {
         )
 
         // Acts
-        const opResult = snapshotID.localizedDate()
+        const opResult = SnapshotID.localizedDate(snapshotID.date)
 
         // Asserts
         const expectedResult = "Wednesday, January 1, 2020"

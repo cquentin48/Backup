@@ -19,7 +19,7 @@ describe("Device data model unit tests", () => {
         dataManager.setElement("device", newDevice)
 
         // Acts
-        const opResult = newDevice.formatBytes(newDevice.memory)
+        const opResult = Device.formatBytes(newDevice.memory)
         const expectedResult = "4 GB"
 
         // Assert

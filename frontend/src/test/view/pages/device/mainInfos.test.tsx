@@ -58,6 +58,10 @@ interface MockedState {
 }
 
 describe("Device main Infos unit test suite", () => {
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
+
     const renderMockedComponent = (device: Device, store: EnhancedStore, snapshot: SnapshotData): RenderResult => {
         const apolloMocks: Array<MockedResponse<DeviceInfosQueryResult | LoadSnapshotQueryResult, any>> = [
             {
@@ -90,20 +94,20 @@ describe("Device main Infos unit test suite", () => {
         )
     }
 
-    const initStore = (device: Device, snapshot: SnapshotData): EnhancedStore => {
+    const initStore = (operationStatus: "initial" | "loading" | "success" | "error", device: Device, snapshot: SnapshotData): EnhancedStore => {
         const preloadedState: MockedState = {
             device: {
-                device,
-                deviceError: {
-                    message: "",
-                    variant: undefined
-                },
-                deviceLoading: false
+                device: operationStatus === "success" ? device : undefined,
+                deviceError: operationStatus === "error" ? {
+                    message: operationStatus === "error" ? "Error" : "",
+                    variant: operationStatus === "error" ? "error" : undefined
+                } : undefined,
+                deviceLoading: operationStatus === "initial" || operationStatus === "loading"
             },
             snapshot: {
-                operationStatus: "success",
-                snapshot,
-                snapshotError: ""
+                operationStatus: operationStatus,
+                snapshot: operationStatus === "success" ? snapshot : undefined,
+                snapshotError: operationStatus === "error" ? "Error" : ""
             }
         };
 
@@ -122,35 +126,31 @@ describe("Device main Infos unit test suite", () => {
      * @param {SnapshotData} snapshot Preloaded snapshot before the test
      * @throws {NotFoundError} If the operation is marked as a success and no device is.
      */
-    const initUseSelectorMock = (device: Device, snapshot: SnapshotData): void => {
+    const initUseSelectorMock = (operationStatus: "initial" | "loading" | "success" | "error", device: Device, snapshot: SnapshotData): void => {
         const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
 
         mockedUseSelector.mockImplementation((selector) =>
             selector(
                 {
                     device: {
-                        device,
-                        error: {
-                            message: "",
-                            variant: undefined
-                        },
-                        deviceLoading: false
+                        device: operationStatus === "success" ? device : undefined,
+                        error: operationStatus === "error" ? {
+                            message: operationStatus === "error" ? "Error" : "",
+                            variant: operationStatus === "error" ? "error" : undefined
+                        } : undefined,
+                        deviceLoading: operationStatus === "initial" || operationStatus === "loading"
                     },
                     snapshot: {
-                        operationStatus: "success",
-                        snapshot,
-                        snapshotError: ""
+                        operationStatus: operationStatus,
+                        snapshot: operationStatus === "success" ? snapshot : undefined,
+                        snapshotError: operationStatus === "error" ? "Error" : ""
                     }
                 }
             )
         )
     }
 
-    afterEach(() => {
-        jest.resetAllMocks()
-    })
-
-    test("Initial render (success)", async () => {
+    test("Pending render", async () => {
         // Given
         const device = new Device(
             "MyDevice",
@@ -167,8 +167,35 @@ describe("Device main Infos unit test suite", () => {
         const snapshot = new SnapshotData()
         snapshot.addSoftware("test", "test software", "1.0")
 
-        initUseSelectorMock(device, snapshot)
-        const store = initStore(device, snapshot)
+        initUseSelectorMock("loading", device, snapshot)
+        const store = initStore("loading", device, snapshot)
+
+        // Acts
+        const { asFragment } = renderMockedComponent(device, store, snapshot)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Successful render", async () => {
+        // Given
+        const device = new Device(
+            "MyDevice",
+            "My processor",
+            1,
+            4e+9,
+            [new SnapshotID(
+                "1",
+                "2020-01-01",
+                "My OS!"
+            )]
+        )
+
+        const snapshot = new SnapshotData()
+        snapshot.addSoftware("test", "test software", "1.0")
+
+        initUseSelectorMock("success", device, snapshot)
+        const store = initStore("success", device, snapshot)
 
         // Acts
         const { asFragment } = renderMockedComponent(device, store, snapshot)
@@ -194,8 +221,8 @@ describe("Device main Infos unit test suite", () => {
         const snapshot = new SnapshotData()
         snapshot.addSoftware("test", "test software", "1.0")
 
-        initUseSelectorMock(device, snapshot)
-        const store = initStore(device, snapshot)
+        initUseSelectorMock("success", device, snapshot)
+        const store = initStore("success", device, snapshot)
 
         // Acts
         const { container, getByText } = renderMockedComponent(device, store, snapshot)
@@ -206,7 +233,7 @@ describe("Device main Infos unit test suite", () => {
         fireEvent.mouseOver(osIcon)
 
         // Asserts
-        await waitFor(()=>{
+        await waitFor(() => {
             expect(renderedDeviceHeader).toHaveTextContent(device.name)
         })
     })
@@ -228,8 +255,8 @@ describe("Device main Infos unit test suite", () => {
         const snapshot = new SnapshotData()
         snapshot.addSoftware("test", "test software", "1.0")
 
-        initUseSelectorMock(device, snapshot)
-        const store = initStore(device, snapshot)
+        initUseSelectorMock("success", device, snapshot)
+        const store = initStore("success", device, snapshot)
 
         // Acts
         const { container } = renderMockedComponent(device, store, snapshot)
@@ -238,7 +265,7 @@ describe("Device main Infos unit test suite", () => {
         fireEvent.mouseOver(screen.getByLabelText(device.snapshots[0].operatingSystem))
 
         // Asserts
-        await waitFor(()=>{
+        await waitFor(() => {
             expect(renderedDeviceHeader).toHaveTextContent(device.name)
         })
     })

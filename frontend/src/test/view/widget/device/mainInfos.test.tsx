@@ -27,6 +27,7 @@ import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
 import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 
 import { type DeviceInfosQueryResult as FetchDeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos"
+import { SnackbarProvider, useSnackbar } from "notistack"
 
 /**
  * Preloaded state used for the mocks in the tests
@@ -54,16 +55,34 @@ jest.mock("react-redux", () => ({
     useDispatch: jest.fn()
 }))
 
+jest.mock("notistack", () => {
+    const actual = jest.requireActual("notistack");
+    return {
+        ...actual,
+        useSnackbar: jest.fn()
+    };
+});
+
 describe("MainInfosFrame unit test suite", () => {
     beforeEach(() => {
         gqlClient.get_query_client().query = initGraphQLMock()
         const mockedDispatch = jest.fn();
         (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch);
+        initEnqueueSnackbarMock()
     })
 
     afterEach(() => {
         jest.resetAllMocks()
     })
+
+    const initEnqueueSnackbarMock = () => {
+        const mockEnqueueSnackbar = jest.fn();
+        (useSnackbar as jest.Mock).mockReturnValue({
+            enqueueSnackbar: mockEnqueueSnackbar
+        });
+
+        return mockEnqueueSnackbar
+    }
 
     /**
      * Init the ``useSelector`` mock for the unit test
@@ -201,9 +220,11 @@ describe("MainInfosFrame unit test suite", () => {
 
         return render(
             <Provider store={store}>
-                <MockedProvider mocks={apolloMocks} addTypename={false}>
-                    <MainInfosFrame />
-                </MockedProvider>
+                <SnackbarProvider>
+                    <MockedProvider mocks={apolloMocks} addTypename={false}>
+                        <MainInfosFrame />
+                    </MockedProvider>
+                </SnackbarProvider>
             </Provider>
         )
     }
@@ -303,6 +324,32 @@ describe("MainInfosFrame unit test suite", () => {
         })
     }
 
+    test("Pending render", async () => {
+        // Given
+        const device = new Device(
+            "MyDevice",
+            "My processor",
+            1,
+            4e+9,
+            [new SnapshotID(
+                "1",
+                "2020-01-01",
+                "Ubuntu"
+            )]
+        )
+        const snapshot = new SnapshotData()
+        snapshot.addSoftware("test", "test software", "1.0")
+
+        initUseSelectorMock("loading", device, snapshot)
+        const store = initStore("loading", snapshot, device)
+
+        // Acts
+        const { asFragment } = renderMockedComponent("loading", snapshot, device, store)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
     test("Successful render", async () => {
         // Given
         const device = new Device(
@@ -323,7 +370,33 @@ describe("MainInfosFrame unit test suite", () => {
         const store = initStore("success", snapshot, device)
 
         // Acts
-        const {asFragment} = renderMockedComponent("success", snapshot, device, store)
+        const { asFragment } = renderMockedComponent("success", snapshot, device, store)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Error render", async () => {
+        // Given
+        const device = new Device(
+            "MyDevice",
+            "My processor",
+            1,
+            4e+9,
+            [new SnapshotID(
+                "1",
+                "2020-01-01",
+                "Ubuntu"
+            )]
+        )
+        const snapshot = new SnapshotData()
+        snapshot.addSoftware("test", "test software", "1.0")
+
+        initUseSelectorMock("failure", device, snapshot)
+        const store = initStore("failure", snapshot, device)
+
+        // Acts
+        const { asFragment } = renderMockedComponent("failure", snapshot, device, store)
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()
@@ -363,7 +436,7 @@ describe("MainInfosFrame unit test suite", () => {
 
         // Asserts
         await waitFor(() => {
-            expect(getByText(device.snapshots[1].localizedDate())).toBeInTheDocument()
+            expect(getByText(SnapshotID.localizedDate(device.snapshots[1].date))).toBeInTheDocument()
         }, { timeout: 500 })
     })
 })

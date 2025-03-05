@@ -12,6 +12,8 @@ import DeviceStat from "./computerStat";
 
 import { deviceState } from "../../../../controller/deviceMainInfos/loadDeviceSlice";
 import '../../../../../res/css/ComputerMainInfos.css';
+import Device from "../../../../model/device/device";
+import SnapshotID from "../../../../model/device/snapshotId";
 
 /**
  * Accordion containing the device main informations
@@ -45,7 +47,7 @@ export default function SpecsMainInfos (): React.JSX.Element {
                     <Storage />
                 }
                 label="RAM"
-                value={device !== undefined ? device.formatBytes(device.memory) : ""}
+                value={device !== undefined ? Device.formatBytes(device.memory) : ""}
             />
             <DeviceStat
                 avatar={
@@ -54,13 +56,7 @@ export default function SpecsMainInfos (): React.JSX.Element {
                 label="Device added on"
                 value={
                     firstSnapshot !== undefined
-                        ? firstSnapshot.date.toLocaleDateString(window.navigator.language, {
-                            weekday: "long",
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric"
-                        })
-                        : ""
+                        ? SnapshotID.localizedDate(firstSnapshot.date): ""
                 }
             />
             <DeviceStat
@@ -70,12 +66,7 @@ export default function SpecsMainInfos (): React.JSX.Element {
                 label="Last update"
                 value={
                     lastSnapshot !== undefined
-                        ? lastSnapshot.date.toLocaleDateString(window.navigator.language, {
-                            weekday: "long",
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric"
-                        })
+                        ? SnapshotID.localizedDate(lastSnapshot.date)
                         : ""
                 }
             />

@@ -52,7 +52,7 @@ class Device {
      * @param { number } memory volatile memory quantity
      * @returns { string } Amount in bytes formated
      */
-    formatBytes (memory: number): string {
+    static formatBytes (memory: number): string {
         const units = ['Bytes', 'kB', 'MB', 'GB', 'TB']
         let formattedMemory: number = memory;
         let unitIndex: number = 0;

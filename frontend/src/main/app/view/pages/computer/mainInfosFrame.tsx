@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch } from "../../../controller/store";
 import { deviceState } from "../../../controller/deviceMainInfos/loadDeviceSlice";
 import { snapshotState } from "../../../controller/deviceMainInfos/loadSnapshotSlice";
+import SnapshotID from "../../../model/device/snapshotId";
 
 /**
  * Main informations frame view component
@@ -58,7 +59,7 @@ export default function MainInfosFrame (): React.JSX.Element {
             snapshotEntry.set(
                 snapshot.key,
                 <MenuItem key={snapshot.key} value={(snapshot).key}>
-                    {(snapshot).localizedDate()}
+                    {SnapshotID.localizedDate(snapshot.date)}
                 </MenuItem>
             )
         })

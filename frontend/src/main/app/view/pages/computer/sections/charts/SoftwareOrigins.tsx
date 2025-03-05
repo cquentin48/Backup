@@ -8,7 +8,7 @@ import { PieChart } from "@mui/x-charts";
 
 import { useSelector } from "react-redux";
 
-import { type SnapshotData } from "../../../../../model/snapshot/snapshotData";
+import { SnapshotData } from "../../../../../model/snapshot/snapshotData";
 import { type SnapshotSoftware } from "../../../../../model/snapshot/snapshotLibrary";
 
 import '../../../../../../res/css/ComputerMainInfos.css';
@@ -104,7 +104,7 @@ export default function SoftwareOrigins (): React.JSX.Element {
             filter.elementType === "Library"
         )
 
-        const softwares = (memoSnapshot as SnapshotData).fetchFilteredSoftwares(softwaresFilter)
+        const softwares = SnapshotData.fetchFilteredSoftwares((memoSnapshot as SnapshotData),softwaresFilter)
         initPieChartData(softwares)
     }
 

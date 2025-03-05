@@ -23,8 +23,9 @@ export default class SnapshotID {
      * Format the snapshot date for display in the web application according to the chosen language
      * @returns {string} Localized snapshot upload date
      */
-    localizedDate (): string {
-        return this.date.toLocaleDateString(window.navigator.language, {
+    static localizedDate (date: Date): string {
+        const snapshotDate = new Date(date)
+        return snapshotDate.toLocaleDateString(window.navigator.language, {
             weekday: "long",
             year: "numeric",
             month: "long",

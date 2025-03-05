@@ -228,7 +228,6 @@ describe("Device page", () => {
         mockedUseSelector.mockImplementation((selector: (state: AppState) => unknown) => {
             const state = store.getState()
 
-            const filterState = state.filter
             const deviceState = state.device
             const snapshotState = state.snapshot
 
@@ -284,7 +283,9 @@ describe("Device page", () => {
         // Before
         const snapshot = new SnapshotData()
         snapshot.addSoftware("test", "test software", "test")
-        const device = new Device()
+        const device = new Device(
+            "my device!"
+        )
 
         const mockedDispatch = jest.fn();
         (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
@@ -292,15 +293,16 @@ describe("Device page", () => {
         });
         initEnqueueSnackbarHook()
         
-        
         const apolloMocks = mockApolloCalls("success", snapshot, device)
         let store = initStore("success", snapshot, device)
+        initUseSelectorMock(store)
 
         // Acts
         const { asFragment } = renderMockedComponent(store, apolloMocks)
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()
+        expect(document.title).toBe(`Backup - device ${device.name}`)
     })
 
     test("Initial render (error)", async () => {
@@ -318,11 +320,13 @@ describe("Device page", () => {
         
         const apolloMocks = mockApolloCalls("failure", snapshot, device)
         let store = initStore("failure", snapshot, device)
+        initUseSelectorMock(store)
 
         // Acts
         const { asFragment } = renderMockedComponent(store, apolloMocks)
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()
+        expect(document.title).toBe(`Backup - unknown device`)
     })
 })

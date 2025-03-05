@@ -104,7 +104,7 @@ describe("Device loading modal test suite snapshot", () => {
                             message: deviceState.deviceError.message,
                             variant: deviceState.deviceError.variant
                         } : undefined,
-                        deviceLoading: false
+                        deviceLoading: store.getState().device.deviceLoading
                     }
                 }
             )
@@ -231,7 +231,7 @@ describe("Device loading modal test suite snapshot", () => {
             snapshot: {
                 snapshot: parsedSnapshot,
                 snapshotError: operationStatus === "error" ? "Device : Error raised here!" : "",
-                operationStatus: operationStatus === "loadingSnapshot" ? "loading" : "success"
+                operationStatus: operationStatus === "loadingSnapshot" ? "loading" : (operationStatus !== "loadingDevice" ? operationStatus : "loading")
             }
         }
 
@@ -266,6 +266,30 @@ describe("Device loading modal test suite snapshot", () => {
         }
         return jest.fn().mockReturnValue(snapshotQueryOutput)
     }
+
+    test("Before loading", async () => {
+        // Before
+        const mockedDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
+            return mockedDispatch
+        });
+        initEnqueueSnackbarMock()
+        expect(true).toBe(true)
+
+        // Given
+        const store = initStore("initial")
+
+        initUseSelectorMock(store)
+
+        const apolloMocks = initApolloMock("initial")
+
+        // Acts
+        const { asFragment } = renderMockedComponent(store, apolloMocks)
+
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
 
     test("Loading device", async () => {
         // Before
@@ -306,6 +330,33 @@ describe("Device loading modal test suite snapshot", () => {
         initUseSelectorMock(store)
 
         const apolloMocks = initApolloMock("loading")
+
+        // Acts
+        const { asFragment } = renderMockedComponent(store, apolloMocks)
+
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("After loading", async () => {
+        // Before
+        const mockedDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
+            return mockedDispatch
+        });
+        initEnqueueSnackbarMock()
+        expect(true).toBe(true)
+
+        const snapshot = new SnapshotData()
+        const device = new Device()
+
+        // Given
+        const store = initStore("success", snapshot, device)
+
+        initUseSelectorMock(store)
+
+        const apolloMocks = initApolloMock("success")
 
         // Acts
         const { asFragment } = renderMockedComponent(store, apolloMocks)
