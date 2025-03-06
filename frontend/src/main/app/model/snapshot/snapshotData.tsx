@@ -74,16 +74,18 @@ export class SnapshotData {
      * @param {string} fieldName Name of the field for the condition (e.g. ``name``)
      * @returns {SnapshotSoftware[]} Software with the condition applied on
      */
-    applyFilterOn = (softwares: SnapshotSoftware[], value: object, operator: FilterComparisonType, fieldName: string): SnapshotSoftware[] => {
+    static applyFilterOn = (softwares: SnapshotSoftware[], value: object, operator: FilterComparisonType, fieldName: string): SnapshotSoftware[] => {
         switch (operator) {
             case "!=":
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] !== value)
                 })
             case "<":
-                if (value instanceof String) {
+                if (value.constructor.name === "String") {
                     return softwares.filter((software) => {
-                        return (((software as any)[fieldName] as string).toLowerCase() < value.toLocaleLowerCase())
+                        const leftOperand = JSON.parse(JSON.stringify(software))[fieldName].toLowerCase()
+                        const rightOperand = JSON.parse(JSON.stringify(value)).toLowerCase()
+                        return leftOperand < rightOperand
                     })
                 }
                 return softwares.filter((software) => {
@@ -91,27 +93,33 @@ export class SnapshotData {
                 })
 
             case "<=":
-                if (value instanceof String) {
+                if (value.constructor.name === "String") {
                     return softwares.filter((software) => {
-                        return (((software as any)[fieldName] as string).toLowerCase() <= value.toLocaleLowerCase())
+                        const leftOperand = JSON.parse(JSON.stringify(software))[fieldName].toLowerCase()
+                        const rightOperand = JSON.parse(JSON.stringify(value)).toLowerCase()
+                        return leftOperand <= rightOperand
                     })
                 }
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] <= value)
                 })
             case ">":
-                if (value instanceof String) {
+                if (value.constructor.name === "String") {
                     return softwares.filter((software) => {
-                        return (((software as any)[fieldName] as string).toLowerCase() > value.toLocaleLowerCase())
+                        const leftOperand = JSON.parse(JSON.stringify(software))[fieldName].toLowerCase()
+                        const rightOperand = JSON.parse(JSON.stringify(value)).toLowerCase()
+                        return leftOperand > rightOperand
                     })
                 }
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] > value)
                 })
             case ">=":
-                if (value instanceof String) {
+                if (value.constructor.name === "String") {
                     return softwares.filter((software) => {
-                        return (((software as any)[fieldName] as string).toLowerCase() > value.toLocaleLowerCase())
+                        const leftOperand = JSON.parse(JSON.stringify(software))[fieldName].toLowerCase()
+                        const rightOperand = JSON.parse(JSON.stringify(value)).toLowerCase()
+                        return leftOperand >= rightOperand
                     })
                 }
                 return softwares.filter((software) => {
@@ -142,7 +150,7 @@ export class SnapshotData {
             switch (filter.fieldName) {
                 case "name":
                 case "version":
-                    softwares = snapshot.applyFilterOn(softwares, filter.value, filter.opType, filter.fieldName)
+                    softwares = SnapshotData.applyFilterOn(softwares, filter.value, filter.opType, filter.fieldName)
                     break;
                 case "firstUploadDate":
                 case "lastUploadDate":

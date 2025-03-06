@@ -50,7 +50,9 @@ export default function SoftwareOrigins (): React.JSX.Element {
     const { filters } = useSelector(deviceMainInfosFilterState)
 
     const memoSnapshot = useMemo(() => snapshot, [snapshot])
-    const memoFilter = useMemo(() => filters, [filters])
+    const memoFilter = useMemo(() => {
+        return filters
+    }, [filters])
 
     /**
      * Update pie chart series data
@@ -103,7 +105,6 @@ export default function SoftwareOrigins (): React.JSX.Element {
         const softwaresFilter = filters.filter((filter) =>
             filter.elementType === "Library"
         )
-
         const softwares = SnapshotData.fetchFilteredSoftwares((memoSnapshot as SnapshotData),softwaresFilter)
         initPieChartData(softwares)
     }

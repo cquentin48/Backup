@@ -5,7 +5,7 @@ import { MockedProvider, type MockedResponse } from '@apollo/client/testing'
 import { render, type RenderResult, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom'
 
-import { Provider, useSelector } from "react-redux"
+import { Provider, useDispatch, useSelector } from "react-redux"
 import { configureStore, type EnhancedStore } from "@reduxjs/toolkit"
 
 import gqlClient from "../../../../../../main/app/model/queries/client"
@@ -20,6 +20,7 @@ import { type LoadSnapshotQueryResult } from "../../../../../../main/app/model/q
 import Filter from "../../../../../../main/app/model/filters/Filter"
 import { type SnapshotSoftware } from "../../../../../../main/app/model/snapshot/snapshotLibrary"
 import NotFoundError from "../../../../../../main/app/model/exception/errors/notFoundError"
+import { AppDispatch } from "../../../../../../main/app/controller/store"
 
 /**
  * Preloaded state used for the mocks in the tests
@@ -44,7 +45,7 @@ jest.mock("react-redux", () => ({
 
 describe("Type of softwares origin chart unit test suite", () => {
     afterEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
     })
 
     /**
@@ -69,21 +70,14 @@ describe("Type of softwares origin chart unit test suite", () => {
                     snapshot: {
                         snapshotError: operationStatus === "failure" ? "Error raised here!" : "",
                         operationStatus,
-                        snapshot: operationStatus === "success" ? snapshot : undefined
+                        snapshot: operationStatus === "success" ? JSON.parse(JSON.stringify(snapshot)) : undefined
                     }
                 }
             )
         )
     }
 
-    /**
-     * Render the SoftwaresOrigin component with the Apollo query and store mocks
-     * @param {"success" | "failure" | "loading" | "initial"} operationStatus Fetch snapshot operation stage
-     * @param {SnapshotData | undefined} snapshot Provided snapshot for the success fetch snapshot data
-     * @param {EnhancedStore} store Redux mocked store
-     * @returns {NotFoundError} If the operation is marked as a success and no snapshot is provided.
-     */
-    const renderMockedComponent = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined, store: EnhancedStore): RenderResult => {
+    const initApolloMock = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined) => {
         let apolloMocks: Array<MockedResponse<LoadSnapshotQueryResult, any>>;
         if (operationStatus === "success") {
             if (snapshot === undefined) {
@@ -126,6 +120,17 @@ describe("Type of softwares origin chart unit test suite", () => {
                 }
             ]
         }
+        return apolloMocks
+    }
+
+    /**
+     * Render the SoftwaresOrigin component with the Apollo query and store mocks
+     * @param {"success" | "failure" | "loading" | "initial"} operationStatus Fetch snapshot operation stage
+     * @param {SnapshotData | undefined} snapshot Provided snapshot for the success fetch snapshot data
+     * @param {EnhancedStore} store Redux mocked store
+     * @returns {NotFoundError} If the operation is marked as a success and no snapshot is provided.
+     */
+    const renderMockedComponent = (apolloMocks: Array<MockedResponse<LoadSnapshotQueryResult, any>>, store: EnhancedStore): RenderResult => {
         return render(
             <Provider store={store}>
                 <MockedProvider mocks={apolloMocks} addTypename={false}>
@@ -137,72 +142,32 @@ describe("Type of softwares origin chart unit test suite", () => {
 
     /**
      * Initialise the test
-     * @param {"success" | "failure" | "loading" | "initial"} testType Type of operation mocked for the unit test
+     * @param {"success" | "failure" | "loading" | "initial"} operationStatus Type of operation mocked for the unit test
      * @param {SnapshotData | undefined} snapshot Device snapshot used in the unit test
      * @param {Filter[]} filters Filters used in the unit test
      * @returns {EnhancedStore} Mocked store
      * @throws {Error} If the test stage is not in the list
      */
-    const initStore = (testType: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): EnhancedStore => {
+    const initStore = (operationStatus: "success" | "error" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): EnhancedStore => {
         let preloadedState: MockedPreloadedState;
-        switch (testType) {
-            case "success":
-                if (snapshot === undefined) {
-                    throw new Error("The snapshot must be defined if the loading snapshot data with a GraphQL query is successful!")
-                }
-                preloadedState = {
-                    snapshot: {
-                        snapshot,
-                        snapshotError: "",
-                        operationStatus: "success"
-                    },
-                    filter: {
-                        filterError: {
-                            message: "",
-                            variant: undefined
-                        },
-                        filters,
-                        selectedFilteredIDS: []
-                    }
-                }
-                break;
-            case "failure":
-                preloadedState = {
-                    snapshot: {
-                        snapshot: undefined,
-                        snapshotError: "Error raised for the test",
-                        operationStatus: "error"
-                    },
-                    filter: {
-                        filterError: {
-                            message: "",
-                            variant: undefined
-                        },
-                        filters: [],
-                        selectedFilteredIDS: []
-                    }
-                }
-                break;
-            case "loading":
-            case "initial":
-                preloadedState = {
-                    snapshot: {
-                        snapshot: undefined,
-                        snapshotError: "",
-                        operationStatus: "loading"
-                    },
-                    filter: {
-                        filterError: {
-                            message: "",
-                            variant: undefined
-                        },
-                        filters: [],
-                        selectedFilteredIDS: []
-                    }
-                }
-                break;
-            default:
-                throw new Error("Invalid test type!")
+        if (operationStatus === "success" && snapshot === undefined) {
+            throw new Error("The snapshot must be defined if the loading snapshot data with a GraphQL query is successful!")
+        }
+
+        preloadedState = {
+            snapshot: {
+                snapshot: operationStatus === "success" ? JSON.parse(JSON.stringify(snapshot)) : undefined,
+                snapshotError: operationStatus === "error" ? "Error raised" : "",
+                operationStatus: operationStatus
+            },
+            filter: {
+                filterError: {
+                    message: operationStatus === "error" ? "Error raised" : "",
+                    variant: operationStatus === "error" ? "error" : undefined
+                },
+                filters: operationStatus === "success" ? JSON.parse(JSON.stringify(filters)) : undefined,
+                selectedFilteredIDS: []
+            }
         }
         return configureStore({
             reducer: {
@@ -230,7 +195,7 @@ describe("Type of softwares origin chart unit test suite", () => {
         return output
     }
 
-    test("Successful render (no data yet!)", async () => {
+    test("Pending render", async () => {
         // Given
         initUseSelectorMock("loading")
         const store = initStore("loading", undefined)
@@ -246,13 +211,10 @@ describe("Type of softwares origin chart unit test suite", () => {
         gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
 
         // Acts
-        const { getByText } = renderMockedComponent(
-            "loading", undefined, store
-        )
+        const apolloMocks = initApolloMock("loading", undefined)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
 
-        await waitFor(() => {
-            expect(getByText("Software origins")).toBeInTheDocument()
-        }, { timeout: 500 })
+        expect(asFragment()).toMatchSnapshot()
     })
 
     test("Successful render (single software)", async () => {
@@ -276,16 +238,11 @@ describe("Type of softwares origin chart unit test suite", () => {
         gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
 
         const store = initStore("success", snapshot)
-        renderMockedComponent(
-            "success", snapshot, store
-        )
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
 
         // Acts
-        // TODO: replace the render with a method which takes into account the type of operation to simulates it
-
-        await waitFor(() => {
-            expect(document.querySelector(".MuiChartsLegend-series-0")).toBeInTheDocument()
-        }, { timeout: 500 })
+        expect(asFragment()).toMatchSnapshot()
     })
 
     test("Successful render (Multiple softwares, other included)", async () => {
@@ -309,12 +266,10 @@ describe("Type of softwares origin chart unit test suite", () => {
         const store = initStore("success", snapshot)
 
         // Acts
-        const { getByText } = renderMockedComponent("success", snapshot, store)
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
 
-        await waitFor(() => {
-            expect(document.querySelector(".MuiChartsLegend-series-0")).toBeInTheDocument()
-            expect(getByText("Other")).toBeInTheDocument()
-        }, { timeout: 500 })
+        expect(asFragment()).toMatchSnapshot()
     })
 
     test("Successful render (Multiple softwares, same type)", async () => {
@@ -338,15 +293,14 @@ describe("Type of softwares origin chart unit test suite", () => {
         const store = initStore("success", snapshot)
 
         // Acts
-        renderMockedComponent("success", snapshot, store)
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
 
         // Asserts
-        await waitFor(() => {
-            expect(document.querySelectorAll(".MuiChartsLegend-series").length).toBe(1)
-        }, { timeout: 500 })
+        expect(asFragment()).toMatchSnapshot()
     })
 
-    test("Successful render (Multiple softwares, same type, one filter)", async () => {
+    test("Successful render (Multiple softwares, same type, filter == applied)", async () => {
         // Given
         const snapshot = new SnapshotData()
         for (let i = 0; i < 2; i++) {
@@ -371,15 +325,294 @@ describe("Type of softwares origin chart unit test suite", () => {
         const store = initStore("success", snapshot, filters)
 
         // Acts
-        renderMockedComponent("success", snapshot, store)
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
 
         // Asserts
-        await waitFor(() => {
-            expect(document.querySelectorAll(".MuiChartsLegend-series").length).toBe(1)
-        }, { timeout: 500 })
+        expect(asFragment()).toMatchSnapshot()
     })
 
-    test("Failure in render", async () => {
+    test("Successful render (Multiple softwares, same type, filter != applied)", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        for (let i = 0; i < 2; i++) {
+            snapshot.addSoftware("1.0", `${String.fromCharCode(97 + i)}`, `type`)
+        }
+
+        const filters = [
+            new Filter("Library", "name", "!=", "b" as unknown as object, 0)
+        ]
+
+        initUseSelectorMock("success", snapshot, filters)
+        const queryOutput = {
+            data: {
+                snapshotInfos: {
+                    versions: buildQueryResult(snapshot.versions),
+                    repositories: []
+                }
+            }
+        }
+        gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
+
+        const mockedDispatch: AppDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const store = initStore("success", snapshot, filters)
+
+        // Acts
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Successful render (Multiple softwares, same type, filter < applied)", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        for (let i = 0; i < 2; i++) {
+            snapshot.addSoftware("1.0", `${String.fromCharCode(97 + i)}`, `type`)
+        }
+
+        const filters = [
+            new Filter("Library", "name", "<", "b" as unknown as object, 0)
+        ]
+
+        initUseSelectorMock("success", snapshot, filters)
+        const queryOutput = {
+            data: {
+                snapshotInfos: {
+                    versions: buildQueryResult(snapshot.versions),
+                    repositories: []
+                }
+            }
+        }
+        gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
+
+        const mockedDispatch: AppDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const store = initStore("success", snapshot, filters)
+
+        // Acts
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Successful render (Multiple softwares, same type, filter <= applied)", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        for (let i = 0; i < 2; i++) {
+            snapshot.addSoftware("1.0", `${String.fromCharCode(97 + i)}`, `type`)
+        }
+
+        const filters = [
+            new Filter("Library", "name", "<=", "b" as unknown as object, 0)
+        ]
+
+        initUseSelectorMock("success", snapshot, filters)
+        const queryOutput = {
+            data: {
+                snapshotInfos: {
+                    versions: buildQueryResult(snapshot.versions),
+                    repositories: []
+                }
+            }
+        }
+        gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
+
+        const mockedDispatch: AppDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const store = initStore("success", snapshot, filters)
+
+        // Acts
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Successful render (Multiple softwares, same type, filter > applied)", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        for (let i = 0; i < 2; i++) {
+            snapshot.addSoftware("1.0", `${String.fromCharCode(97 + i)}`, `type`)
+        }
+
+        const filters = [
+            new Filter("Library", "name", ">", "a" as unknown as object, 0)
+        ]
+
+        initUseSelectorMock("success", snapshot, filters)
+        const queryOutput = {
+            data: {
+                snapshotInfos: {
+                    versions: buildQueryResult(snapshot.versions),
+                    repositories: []
+                }
+            }
+        }
+        gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
+
+        const mockedDispatch: AppDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const store = initStore("success", snapshot, filters)
+
+        // Acts
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Successful render (Multiple softwares, same type, filter >= applied)", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        for (let i = 0; i < 2; i++) {
+            snapshot.addSoftware("1.0", `${String.fromCharCode(97 + i)}`, `type`)
+        }
+
+        const filters = [
+            new Filter("Library", "name", ">=", "b" as unknown as object, 0)
+        ]
+
+        initUseSelectorMock("success", snapshot, filters)
+        const queryOutput = {
+            data: {
+                snapshotInfos: {
+                    versions: buildQueryResult(snapshot.versions),
+                    repositories: []
+                }
+            }
+        }
+        gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
+
+        const mockedDispatch: AppDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const store = initStore("success", snapshot, filters)
+
+        // Acts
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Successful render (Multiple softwares, same type, filter startswith applied)", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        for (let i = 0; i < 2; i++) {
+            snapshot.addSoftware("1.0", `${String.fromCharCode(97 + i)}`, `type`)
+        }
+
+        const filters = [
+            new Filter("Library", "name", "startswith", "a" as unknown as object, 0)
+        ]
+
+        initUseSelectorMock("success", snapshot, filters)
+        const queryOutput = {
+            data: {
+                snapshotInfos: {
+                    versions: buildQueryResult(snapshot.versions),
+                    repositories: []
+                }
+            }
+        }
+        gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
+
+        const mockedDispatch: AppDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const store = initStore("success", snapshot, filters)
+
+        // Acts
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Successful render (Multiple softwares, same type, filter endswith applied)", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        for (let i = 0; i < 2; i++) {
+            snapshot.addSoftware("1.0", `${String.fromCharCode(97 + i)}`, `type`)
+        }
+
+        const filters = [
+            new Filter("Library", "name", "endswith", "b" as unknown as object, 0)
+        ]
+
+        initUseSelectorMock("success", snapshot, filters)
+        const queryOutput = {
+            data: {
+                snapshotInfos: {
+                    versions: buildQueryResult(snapshot.versions),
+                    repositories: []
+                }
+            }
+        }
+        gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
+
+        const mockedDispatch: AppDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const store = initStore("success", snapshot, filters)
+
+        // Acts
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Successful render (Multiple softwares, same type, filter includes applied)", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        for (let i = 0; i < 2; i++) {
+            snapshot.addSoftware("1.0", `${String.fromCharCode(97 + i)}`, `type`)
+        }
+
+        const filters = [
+            new Filter("Library", "name", "includes", "a" as unknown as object, 0)
+        ]
+
+        initUseSelectorMock("success", snapshot, filters)
+        const queryOutput = {
+            data: {
+                snapshotInfos: {
+                    versions: buildQueryResult(snapshot.versions),
+                    repositories: []
+                }
+            }
+        }
+        gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
+
+        const mockedDispatch: AppDispatch = jest.fn();
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const store = initStore("success", snapshot, filters)
+
+        // Acts
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
+
+        // Asserts
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Failure in render", () => {
         // Given
 
         initUseSelectorMock("failure")
@@ -392,14 +625,13 @@ describe("Type of softwares origin chart unit test suite", () => {
         }
         gqlClient.get_query_client().query = jest.fn().mockReturnValue(queryOutput)
 
-        const store = initStore("failure")
+        const store = initStore("error")
 
         // Acts
-        const { getByText } = renderMockedComponent("failure", undefined, store)
+        const apolloMocks = initApolloMock("failure", undefined)
+        const { asFragment } = renderMockedComponent(apolloMocks, store)
 
         // Asserts
-        await waitFor(() => {
-            expect(getByText("The softwares origins chart could not be loaded!If the problem occurs frequently, please send an email to you admin!")).toBeInTheDocument()
-        }, { timeout: 500 })
+        expect(asFragment).toMatchSnapshot()
     })
 })

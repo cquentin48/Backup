@@ -57,6 +57,7 @@ export const filterSlice = createSlice({
                 ).length > 0) {
                     throw new AlreadyAddedWarning("The filter is already set! It will be ignored!")
                 }
+
                 state.filters.push(
                     newFilter
                 )

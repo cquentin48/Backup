@@ -60,7 +60,7 @@ export default class Filter {
     constructor (
         elementType: "File" | "Library",
         fieldName: string,
-        opType: '<' | '>' | '!=' | '==' | "includes",
+        opType: '<' | '>' | '!=' | '==' | '<=' | '>=' | "includes" | "startswith" | "endswith",
         filterValue: object,
         id: number) {
         this.elementType = elementType;
