@@ -4,7 +4,7 @@ import Icon from '@mdi/react';
 import { mdiClockOutline } from '@mdi/js';
 import { FormControl, InputLabel, Select, MenuItem, Paper, Skeleton } from "@mui/material";
 
-import { enqueueSnackbar } from "notistack";
+import { useSnackbar } from "notistack";
 
 import FormatsPieCharts from "./sections/Formats";
 
@@ -29,7 +29,9 @@ export default function MainInfosFrame (): React.JSX.Element {
     const [snapshotID, setSnapshotID] = React.useState("")
 
     const { deviceLoading, device, deviceError } = useSelector(deviceState)
-    const { snapshot, snapshotError } = useSelector(snapshotState)
+    const { snapshotError } = useSelector(snapshotState)
+
+    const { enqueueSnackbar } = useSnackbar()
 
     /**
      * Update the selected snapshot
@@ -66,7 +68,7 @@ export default function MainInfosFrame (): React.JSX.Element {
         const menuEntries: React.JSX.Element[] = [];
         snapshotLists.forEach((snapshotList: Map<string, React.JSX.Element>, operatingSystem: string) => {
             menuEntries.push(
-                <MenuItem disabled>
+                <MenuItem disabled key={`OSSelector${operatingSystem}`}>
                     {operatingSystem}
                 </MenuItem>
             )
@@ -86,16 +88,20 @@ export default function MainInfosFrame (): React.JSX.Element {
         }
     }, [dispatch, snapshotID, device])
 
+
     if (snapshotError !== "" || (deviceError !== undefined && deviceError.message !== "")) {
-        if (deviceError !== undefined && deviceError.message !== "") {
-            enqueueSnackbar(
-                deviceError.message, { variant: deviceError.variant }
-            )
-        } else {
-            enqueueSnackbar(
-                snapshotError, { variant: "error" }
-            )
-        }
+        useEffect(()=>{
+            if (deviceError !== undefined && deviceError.message !== "") {
+                enqueueSnackbar(
+                    deviceError.message, { variant: deviceError.variant }
+                )
+            } else {
+                enqueueSnackbar(
+                    snapshotError, { variant: "error" }
+                )
+            }
+        }, [snapshotError, deviceError])
+
         snapshots = <FormControl id="mainInfosSelectForm">
             <InputLabel id="dataType">Snapshot list</InputLabel>
             <Select
@@ -103,11 +109,10 @@ export default function MainInfosFrame (): React.JSX.Element {
                 data-testid="dataType-select"
                 id="dataType-select"
                 value={snapshotID}
-                onChange={(e) => { updateSelectedSnapshot(e.target.value); }}
                 autoWidth
             >
                 {
-                    <MenuItem disabled>
+                    <MenuItem disabled key="failure">
                         Error : impossible to fetch data
                     </MenuItem>
                 }
@@ -116,7 +121,7 @@ export default function MainInfosFrame (): React.JSX.Element {
     } else if (deviceLoading) {
         snapshots = <Skeleton variant="rounded" width={256} height={56} id="mainInfosSelectForm" sx={{
             marginLeft: "8px"
-        }}/>
+        }} />
     } else if (!deviceLoading && device !== undefined) {
         const snapshotMenuItems = buildMenuItems(device);
         snapshots =

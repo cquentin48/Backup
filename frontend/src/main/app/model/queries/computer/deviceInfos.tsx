@@ -20,6 +20,7 @@ export const fetchDeviceInfos = createAsyncThunk(
                 parameters
             ) as ApolloQueryResult<DeviceInfosQueryResult>
         )
+
         if (result.errors != null) {
             return rejectWithValue("The device wasn't found!")
         }

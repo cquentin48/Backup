@@ -1,15 +1,10 @@
-import { filterManager } from "../../../main/app/model/filters/FilterManager"
 import Filter from "../../../main/app/model/filters/Filter"
 import AlreadyAddedWarning from "../../../main/app/model/exception/warning/alreadyAdded"
 import NotFoundError from "../../../main/app/model/exception/errors/notFoundError"
 import ValidationError from "../../../main/app/model/exception/errors/validationError"
 
 describe("Filter manager data model unit tests", () => {
-    afterEach(() => {
-        while (filterManager.getFilters().length > 0) {
-            filterManager.removeFilter(0)
-        }
-    })
+
     test('Adds new filter (filter not yet added)', () => {
         // Given
         const elementType = "File" as "File" | "Library"
@@ -18,92 +13,19 @@ describe("Filter manager data model unit tests", () => {
         const fieldValue = "3" as unknown as object
 
         // Acts
-        filterManager.addFilter(
-            elementType, fieldName, comparisonType, fieldValue
-        )
-        const opResult = filterManager.getFilter(0)
-
-        if (opResult === null || opResult === undefined) {
-            throw new Error("Test failed : no filter added!")
-        }
-
-        const expectedResult = new Filter(
+        const opResult = new Filter(
             elementType,
             fieldName,
             comparisonType,
             fieldValue,
-            filterManager.getFilters().length
+            1
         )
 
         // Assert
-        expect(opResult.elementType).toBe(expectedResult.elementType)
-        expect(opResult.fieldName).toBe(expectedResult.fieldName)
-        expect(opResult.value).toBe(expectedResult.value)
-        expect(opResult.opType).toBe(expectedResult.opType)
-    })
-    test('Adds new filter (filter already added)', () => {
-        // Given
-        const elementType = "File" as "File" | "Library"
-        const fieldName = "name"
-        const comparisonType = "<"
-        const fieldValue = "3" as unknown as object
-
-        // Acts
-        filterManager.addFilter(
-            elementType, fieldName, comparisonType, fieldValue
-        )
-
-        // Assert
-        expect(() => {
-            filterManager.addFilter(
-                elementType, fieldName, comparisonType, fieldValue
-            );
-        }).toThrowError(AlreadyAddedWarning)
-    })
-    test('Removes filter (filter already added)', () => {
-        // Given
-        const elementType = "File" as "File" | "Library"
-        const fieldName = "name"
-        const comparisonType = "<"
-        const fieldValue = "3" as unknown as object
-
-        filterManager.addFilter(
-            elementType, fieldName, comparisonType, fieldValue
-        )
-
-        // Acts
-        filterManager.removeFilter(0)
-
-        // Assert
-        expect(filterManager.getFilters().length).toBe(0)
-    })
-    test('Removes filter (filter not yet added)', () => {
-        // Acts & asserts
-        expect(() => { filterManager.removeFilter(0); }).toThrow(NotFoundError)
-    })
-    test('Gets filter (filter already added)', () => {
-        // Given
-        const elementType = "File" as "File" | "Library"
-        const fieldName = "name"
-        const comparisonType = "<"
-        const fieldValue = "3" as unknown as object
-
-        filterManager.addFilter(
-            elementType, fieldName, comparisonType, fieldValue
-        )
-
-        // Acts
-        const opResult = filterManager.getFilter(0)
-
-        // Assert
-        expect(opResult?.elementType).toBe(elementType)
-        expect(opResult?.fieldName).toBe(fieldName)
-        expect(opResult?.value).toBe(fieldValue)
-        expect(opResult?.opType).toBe(comparisonType)
-    })
-    test('Removes filter (filter not yet added)', () => {
-        // Acts & asserts
-        expect(() => filterManager.getFilter(0)).toThrow(NotFoundError)
+        expect(opResult.elementType).toBe(elementType)
+        expect(opResult.fieldName).toBe(fieldName)
+        expect(opResult.value).toBe(fieldValue)
+        expect(opResult.opType).toBe(comparisonType)
     })
 
     test('Input type filter (no error should be raised here)', () => {

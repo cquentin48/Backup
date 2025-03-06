@@ -23,10 +23,10 @@ export class SnapshotData {
     /**
      * Class object constructor method
      */
-    constructor () {
+    constructor (operatingSystem: string = "") {
         this.versions = [];
         this.repositories = [];
-        this.operatingSystem = "";
+        this.operatingSystem = operatingSystem;
     }
 
     /**

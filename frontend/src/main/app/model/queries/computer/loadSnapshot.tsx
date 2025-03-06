@@ -4,6 +4,7 @@ import type BasicQueryParameters from "../basicQueryParameters";
 import { SnapshotData } from "../../snapshot/snapshotData";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { type ApolloQueryResult } from "@apollo/client";
+import { SnapshotSoftware } from "../../snapshot/snapshotLibrary";
 
 export interface LoadSnapshotQueryResult {
     snapshotInfos: SnapshotData | undefined
@@ -18,26 +19,23 @@ export const fetchSnapshot = createAsyncThunk(
                 parameters
             ) as ApolloQueryResult<LoadSnapshotQueryResult>
         )
-        try {
-            if (result.errors != null) {
-                return rejectWithValue("The snapshot you try to seek doesn't exist!")
-            }
-            const rawSnapshotData = result.data.snapshotInfos;
-            const rawSoftwares = (rawSnapshotData as SnapshotData).versions;
-            const snapshot = new SnapshotData();
-            rawSoftwares.forEach((softwareRaw: any) => {
-                const chosenVersion = softwareRaw.chosenVersion;
-                const name = softwareRaw.name;
-                const installType = softwareRaw.installType;
-                snapshot.addSoftware(
-                    chosenVersion,
-                    name,
-                    installType
-                );
-            });
-            return snapshot;
-        } catch (e) {
-            return rejectWithValue("Selected snapshot doesn't exist!")
+        if (result.errors != null) {
+            return rejectWithValue("The snapshot you try to seek doesn't exist!")
         }
+        const rawSnapshotData = result.data.snapshotInfos as SnapshotData;
+        const rawSoftwares = rawSnapshotData.versions;
+        const operatingSystem = rawSnapshotData.operatingSystem
+        const snapshot = new SnapshotData(operatingSystem);
+        rawSoftwares.forEach((softwareRaw: SnapshotSoftware) => {
+            const chosenVersion = softwareRaw.version;
+            const name = softwareRaw.name;
+            const installType = softwareRaw.installType;
+            snapshot.addSoftware(
+                chosenVersion,
+                name,
+                installType
+            );
+        });
+        return snapshot;
     }
 );

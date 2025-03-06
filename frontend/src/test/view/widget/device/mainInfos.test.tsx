@@ -1,12 +1,13 @@
-import React from "react"
+import React, { ReactNode } from "react"
 
 import '@testing-library/jest-dom'
 
 import { MockedProvider, type ResultFunction } from "@apollo/client/testing"
 import { type FetchResult } from "@apollo/client"
+import { DataGridProps } from "@mui/x-data-grid"
 import { type EnhancedStore, configureStore } from "@reduxjs/toolkit"
 import { fireEvent, render, waitFor, type RenderResult } from "@testing-library/react"
-
+import { enqueueSnackbar, SnackbarProvider, useSnackbar } from "notistack"
 import { useSelector, Provider, useDispatch } from "react-redux"
 
 import Device from "../../../../main/app/model/device/device"
@@ -27,7 +28,7 @@ import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
 import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 
 import { type DeviceInfosQueryResult as FetchDeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos"
-import { SnackbarProvider, useSnackbar } from "notistack"
+import { AppState } from "../../../../main/app/controller/store"
 
 /**
  * Preloaded state used for the mocks in the tests
@@ -48,6 +49,22 @@ interface MockedPreloadedState {
      */
     filter: FilterSliceState
 }
+
+jest.mock("@mui/x-data-grid", () => {
+    const originalModule = jest.requireActual("@mui/x-data-grid")
+    return {
+        ...originalModule,
+        DataGrid: ({ apiRef, ...props }: DataGridProps & { apiRef: React.RefObject<any> }) => {
+            apiRef.current = {};
+            return <originalModule.DataGrid {...props} />
+        }
+    }
+})
+
+
+jest.mock('@mui/material/Tooltip', () => {
+    return ({ children }: { children: ReactNode }) => children;
+});
 
 jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),
@@ -72,7 +89,7 @@ describe("MainInfosFrame unit test suite", () => {
     })
 
     afterEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
     })
 
     const initEnqueueSnackbarMock = () => {
@@ -91,30 +108,30 @@ describe("MainInfosFrame unit test suite", () => {
      * @param {SnapshotData} snapshot Snapshot used for the test
      * @param {Filter[]} filters Filter(s) used for the test
      */
-    const initUseSelectorMock = (operationStatus: "init" | "success" | "failure" | "loading", device: Device | undefined, snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): void => {
+    const initUseSelectorMock = (operationStatus: "initial" | "success" | "deviceError" | "snapshotError" | "loading", device: Device | undefined, snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): void => {
         const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
-        mockedUseSelector.mockImplementation((selector) =>
+        mockedUseSelector.mockImplementation((selector : (state:AppState) => unknown) =>
             selector(
                 {
                     device: {
                         device,
-                        deviceLoading: operationStatus === "init" || operationStatus === "loading",
-                        error: {
-                            message: operationStatus === "failure" ? "Error raised in test" : "",
-                            variant: operationStatus === "failure" ? "error" : undefined
-                        }
+                        deviceLoading: operationStatus === "initial" || operationStatus === "loading",
+                        deviceError: operationStatus === "deviceError" ? {
+                            message: operationStatus === "deviceError" ? "Device error raised in test" : "",
+                            variant: operationStatus === "deviceError" ? "error" : undefined
+                        } : undefined
                     },
                     snapshot: {
-                        snapshotError: operationStatus === "failure" ? "Error raised here!" : "",
-                        operationStatus,
+                        snapshotError: operationStatus === "snapshotError" ? "Snapshot error raised here!" : "",
+                        operationStatus : operationStatus === "snapshotError" ? "error" : (operationStatus !== "deviceError" ? operationStatus : "initial"),
                         snapshot: operationStatus === "success" ? snapshot : undefined
                     },
                     filter: {
                         filters,
                         selectedFilteredIDS: [],
                         filterError: {
-                            message: operationStatus === "failure" ? "Error raised in test" : "",
-                            variant: operationStatus === "failure" ? "Error raised in test" : undefined
+                            message: operationStatus === "deviceError" || operationStatus === "snapshotError" ? "Error raised in test" : "",
+                            variant: operationStatus === "deviceError" || operationStatus === "snapshotError" ? "error" : undefined
                         }
                     }
                 }
@@ -251,15 +268,15 @@ describe("MainInfosFrame unit test suite", () => {
             device: {
                 device: operationStatus === "success" ? device as Device : undefined,
                 deviceError: {
-                    message: operationStatus === "failure" ? "Error raised in test" : "",
-                    variant: undefined
+                    message: operationStatus === "failure" ? "Device error raised in test" : "",
+                    variant: operationStatus === "failure" ? "error" : undefined
                 },
                 deviceLoading: operationStatus === "initial" || operationStatus === "loading"
             },
             filter: {
                 filters: filter,
                 filterError: {
-                    message: operationStatus === "failure" ? "Error raised in test" : "",
+                    message: operationStatus === "failure" ? "Snaphsot error raised in test" : "",
                     variant: undefined
                 },
                 selectedFilteredIDS: []
@@ -376,7 +393,7 @@ describe("MainInfosFrame unit test suite", () => {
         expect(asFragment()).toMatchSnapshot()
     })
 
-    test("Error render", async () => {
+    test("Device error render", async () => {
         // Given
         const device = new Device(
             "MyDevice",
@@ -392,13 +409,43 @@ describe("MainInfosFrame unit test suite", () => {
         const snapshot = new SnapshotData()
         snapshot.addSoftware("test", "test software", "1.0")
 
-        initUseSelectorMock("failure", device, snapshot)
+        initUseSelectorMock("deviceError", device, snapshot)
         const store = initStore("failure", snapshot, device)
+        const enqueueSnackbar = initEnqueueSnackbarMock()
 
         // Acts
         const { asFragment } = renderMockedComponent("failure", snapshot, device, store)
 
         // Asserts
+        expect(enqueueSnackbar).toHaveBeenCalled()
+        expect(asFragment()).toMatchSnapshot()
+    })
+
+    test("Snapshot error render", async () => {
+        // Given
+        const device = new Device(
+            "MyDevice",
+            "My processor",
+            1,
+            4e+9,
+            [new SnapshotID(
+                "1",
+                "2020-01-01",
+                "Ubuntu"
+            )]
+        )
+        const snapshot = new SnapshotData()
+        snapshot.addSoftware("test", "test software", "1.0")
+
+        initUseSelectorMock("snapshotError", device, snapshot)
+        const store = initStore("failure", snapshot, device)
+        const enqueueSnackbar = initEnqueueSnackbarMock()
+
+        // Acts
+        const { asFragment } = renderMockedComponent("failure", snapshot, device, store)
+
+        // Asserts
+        expect(enqueueSnackbar).toHaveBeenCalled()
         expect(asFragment()).toMatchSnapshot()
     })
 
