@@ -27,7 +27,7 @@ export const fetchSnapshot = createAsyncThunk(
         const operatingSystem = rawSnapshotData.operatingSystem
         const snapshot = new SnapshotData(operatingSystem);
         rawSoftwares.forEach((softwareRaw: SnapshotSoftware) => {
-            const chosenVersion = softwareRaw.version;
+            const chosenVersion = softwareRaw.chosenVersion;
             const name = softwareRaw.name;
             const installType = softwareRaw.installType;
             snapshot.addSoftware(

@@ -35,7 +35,7 @@ interface DeviceStatProps {
  * @returns {React.JSX.Element} rendered component
  */
 export default function DeviceStat (props: DeviceStatProps): React.JSX.Element {
-    const { device, deviceError: error } = useSelector(deviceState)
+    const { device, deviceError } = useSelector(deviceState)
     const { snapshot, snapshotError } = useSelector(snapshotState)
 
     let avatar;
@@ -46,7 +46,7 @@ export default function DeviceStat (props: DeviceStatProps): React.JSX.Element {
         avatar = props.avatar;
         value = props.value;
         label = props.label;
-    } else if (error !== undefined || snapshotError !== "") {
+    } else if (deviceError.message !== "" || snapshotError.message !== "") {
         avatar = props.avatar
         label = props.label
         value = "Error in loading data"

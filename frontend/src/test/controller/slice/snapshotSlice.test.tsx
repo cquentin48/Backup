@@ -8,7 +8,10 @@ describe("Snapshot slice test suite", ()=>{
         // Given
         const initialState: SnapshotSliceState = {
             snapshot: undefined,
-            snapshotError: "",
+            snapshotError: {
+                message: "",
+                variant: undefined
+            },
             operationStatus: "initial"
         }
 
@@ -25,7 +28,10 @@ describe("Snapshot slice test suite", ()=>{
         // Given
         const initialState: SnapshotSliceState = {
             snapshot: undefined,
-            snapshotError: "",
+            snapshotError: {
+                message: "",
+                variant: undefined
+            },
             operationStatus: "initial"
         }
         const snapshot = new SnapshotData("My OS!")
@@ -44,7 +50,10 @@ describe("Snapshot slice test suite", ()=>{
         // Given
         const initialState: SnapshotSliceState = {
             snapshot: undefined,
-            snapshotError: "",
+            snapshotError: {
+                message: "",
+                variant: undefined
+            },
             operationStatus: "initial"
         }
 

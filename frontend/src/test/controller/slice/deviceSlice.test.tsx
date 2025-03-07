@@ -7,7 +7,10 @@ describe("Device slice test suite", ()=>{
         // Given
         const initialState: FetchDeviceSliceState = {
             device: undefined,
-            deviceError: undefined,
+            deviceError: {
+                message: "",
+                variant: undefined
+            },
             deviceLoading: false
         }
 
@@ -24,7 +27,10 @@ describe("Device slice test suite", ()=>{
         // Given
         const initialState: FetchDeviceSliceState = {
             device: undefined,
-            deviceError: undefined,
+            deviceError: {
+                message: "",
+                variant: undefined
+            },
             deviceLoading: false
         }
         const device = new Device("Computer name!")
@@ -42,7 +48,10 @@ describe("Device slice test suite", ()=>{
         // Given
         const initialState: FetchDeviceSliceState = {
             device: undefined,
-            deviceError: undefined,
+            deviceError: {
+                message: "",
+                variant: undefined
+            },
             deviceLoading: false
         }
 

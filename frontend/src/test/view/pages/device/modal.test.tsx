@@ -100,10 +100,10 @@ describe("Device loading modal test suite snapshot", () => {
                     },
                     device: {
                         device: deviceState.device !== undefined ? JSON.parse(JSON.stringify(deviceState.device)) : undefined,
-                        deviceError: deviceState.deviceError !== undefined ? {
+                        deviceError: {
                             message: deviceState.deviceError.message,
                             variant: deviceState.deviceError.variant
-                        } : undefined,
+                        },
                         deviceLoading: store.getState().device.deviceLoading
                     }
                 }
@@ -230,7 +230,10 @@ describe("Device loading modal test suite snapshot", () => {
             },
             snapshot: {
                 snapshot: parsedSnapshot,
-                snapshotError: operationStatus === "error" ? "Device : Error raised here!" : "",
+                snapshotError: {
+                    message: operationStatus === "error" ? "Device : Error raised here!" : "",
+                    variant: operationStatus === "error" ? "error" : undefined,
+                },
                 operationStatus: operationStatus === "loadingSnapshot" ? "loading" : (operationStatus !== "loadingDevice" ? operationStatus : "loading")
             }
         }

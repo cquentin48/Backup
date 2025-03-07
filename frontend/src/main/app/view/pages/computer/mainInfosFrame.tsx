@@ -28,8 +28,8 @@ export default function MainInfosFrame (): React.JSX.Element {
 
     const [snapshotID, setSnapshotID] = React.useState("")
 
-    const { deviceLoading, device, deviceError } = useSelector(deviceState)
-    const { snapshotError } = useSelector(snapshotState)
+    const { device, deviceError, deviceLoading } = useSelector(deviceState)
+    const { operationStatus: SnapshotOperationStatus, snapshotError } = useSelector(snapshotState)
 
     const { enqueueSnackbar } = useSnackbar()
 
@@ -81,6 +81,7 @@ export default function MainInfosFrame (): React.JSX.Element {
 
     let snapshots;
 
+
     useEffect(() => {
         if (!deviceLoading && device !== undefined) {
             const newID = snapshotID !== "" ? snapshotID : device.snapshots[0].key
@@ -89,18 +90,18 @@ export default function MainInfosFrame (): React.JSX.Element {
     }, [dispatch, snapshotID, device])
 
 
-    if (snapshotError !== "" || (deviceError !== undefined && deviceError.message !== "")) {
-        useEffect(() => {
-            if (deviceError !== undefined && deviceError.message !== "") {
+    if (snapshotError.message !== "" || deviceError.message !== "") {
+        useEffect(()=>{
+            if(deviceError.message !== "") {
                 enqueueSnackbar(
                     deviceError.message, { variant: deviceError.variant }
                 )
             } else {
                 enqueueSnackbar(
-                    snapshotError, { variant: "error" }
+                    snapshotError.message, { variant: snapshotError.variant }
                 )
             }
-        }, [snapshotError, deviceError])
+        },[deviceError, snapshotError])
 
         snapshots = <FormControl id="mainInfosSelectForm">
             <InputLabel id="dataType">Snapshot list</InputLabel>

@@ -123,7 +123,10 @@ describe("Device main infos test suite", () => {
             snapshot: {
                 operationStatus: operationStatus,
                 snapshot,
-                snapshotError: operationStatus === "error" ? "Error raised!" : ""
+                snapshotError: {
+                    message: operationStatus === "error" ? "Error raised!" : "",
+                    variant: operationStatus === "error" ? "error" : undefined
+                }
             }
         };
 

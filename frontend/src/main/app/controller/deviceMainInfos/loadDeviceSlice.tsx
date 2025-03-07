@@ -3,6 +3,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { type AppState } from "../store";
 import type Device from "../../model/device/device";
 import { fetchDeviceInfos } from "../../model/queries/computer/deviceInfos";
+import { NotificationError } from "../utils";
 
 /**
  * Device slice state interface
@@ -21,17 +22,7 @@ export interface FetchDeviceSliceState {
     /**
      * Device error
      */
-    deviceError: {
-        /**
-         * Error message
-         */
-        message: string
-
-        /**
-         * Error type
-         */
-        variant: "error" | "default" | "success" | "warning" | "info" | undefined
-    } | undefined
+    deviceError: NotificationError;
 }
 
 const initialState: FetchDeviceSliceState = {
@@ -52,12 +43,18 @@ const loadDeviceSlice = createSlice({
             .addCase(fetchDeviceInfos.pending, (state) => {
                 state.deviceLoading = true;
                 state.device = undefined;
-                state.deviceError = undefined;
+                state.deviceError = {
+                    message: "",
+                    variant: undefined
+                };
             })
             .addCase(fetchDeviceInfos.fulfilled, (state, action: PayloadAction<any>) => {
                 state.deviceLoading = false;
                 state.device = action.payload;
-                state.deviceError = undefined;
+                state.deviceError = {
+                    message: "",
+                    variant: undefined
+                };
             })
             .addCase(fetchDeviceInfos.rejected, (state, action) => {
                 state.deviceLoading = false;

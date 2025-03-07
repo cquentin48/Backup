@@ -157,7 +157,10 @@ describe("Type of softwares origin chart unit test suite", () => {
         preloadedState = {
             snapshot: {
                 snapshot: operationStatus === "success" ? JSON.parse(JSON.stringify(snapshot)) : undefined,
-                snapshotError: operationStatus === "error" ? "Error raised" : "",
+                snapshotError: {
+                    message: operationStatus === "error" ? "Error raised": "",
+                    variant: operationStatus === "error" ? "error": undefined
+                },
                 operationStatus: operationStatus
             },
             filter: {
@@ -189,7 +192,7 @@ describe("Type of softwares origin chart unit test suite", () => {
             output.push({
                 name: software.name,
                 installType: software.installType,
-                chosenVersion: software.version
+                chosenVersion: software.chosenVersion
             })
         })
         return output

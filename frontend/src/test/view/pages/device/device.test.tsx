@@ -135,7 +135,10 @@ describe("Device page", () => {
             },
             snapshot: {
                 snapshot: parsedSnapshot,
-                snapshotError: operationStatus === "failure" ? "Device : Error raised here!" : "",
+                snapshotError: {
+                    message: operationStatus === "failure" ? "Device : Error raised here!" : "",
+                    variant: operationStatus === "failure" ? "error" : undefined,
+                },
                 operationStatus: "success"
             }
         }
@@ -248,10 +251,10 @@ describe("Device page", () => {
                     },
                     device: {
                         device: deviceState.device !== undefined ? JSON.parse(JSON.stringify(deviceState.device)) : undefined,
-                        deviceError: deviceState.deviceError !== undefined ? {
+                        deviceError: {
                             message: deviceState.deviceError.message,
                             variant: deviceState.deviceError.variant
-                        } : undefined,
+                        },
                         deviceLoading: false
                     }
                 }

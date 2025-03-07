@@ -98,16 +98,19 @@ describe("Device main Infos unit test suite", () => {
         const preloadedState: MockedState = {
             device: {
                 device: operationStatus === "success" ? device : undefined,
-                deviceError: operationStatus === "error" ? {
+                deviceError: {
                     message: operationStatus === "error" ? "Error" : "",
                     variant: operationStatus === "error" ? "error" : undefined
-                } : undefined,
+                },
                 deviceLoading: operationStatus === "initial" || operationStatus === "loading"
             },
             snapshot: {
                 operationStatus: operationStatus,
                 snapshot: operationStatus === "success" ? snapshot : undefined,
-                snapshotError: operationStatus === "error" ? "Error" : ""
+                snapshotError: {
+                    message: operationStatus === "error" ? "Error" : "",
+                    variant: operationStatus === "error" ? "error" : undefined,
+                }
             }
         };
 

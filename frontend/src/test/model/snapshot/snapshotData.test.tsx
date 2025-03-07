@@ -16,7 +16,7 @@ describe("Snapshot data", () => {
 
         // Asserts
         const addedObject = snapshotData.versions[0]
-        expect(addedObject.version).toBe(newSoftwareVersion)
+        expect(addedObject.chosenVersion).toBe(newSoftwareVersion)
         expect(addedObject.name).toBe(newSoftwareName)
         expect(addedObject.installType).toBe(newSoftwareInstallType)
     })
@@ -50,7 +50,7 @@ describe("Snapshot data", () => {
         // Asserts
         expect(opResult.installType).toBe(softwareInstallType)
         expect(opResult.name).toBe(softwareName)
-        expect(opResult.version).toBe(version)
+        expect(opResult.chosenVersion).toBe(version)
     })
 
     test("Get sofware (not yet added)", () => {

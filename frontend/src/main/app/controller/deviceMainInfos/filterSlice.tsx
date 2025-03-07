@@ -7,6 +7,7 @@ import ValidationError from "../../model/exception/errors/validationError";
 
 import Filter from "../../model/filters/Filter";
 import { type AppState } from "../store";
+import { NotificationError } from "../utils";
 
 /**
  * Filter slice state
@@ -14,10 +15,7 @@ import { type AppState } from "../store";
 export interface FilterSliceState {
     filters: Filter[]
     selectedFilteredIDS: number[]
-    filterError: {
-        message: string
-        variant: "error" | "default" | "success" | "warning" | "info" | undefined
-    }
+    filterError: NotificationError
 }
 
 /**

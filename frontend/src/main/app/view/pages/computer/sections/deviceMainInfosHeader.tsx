@@ -15,7 +15,7 @@ import { deviceState } from "../../../../controller/deviceMainInfos/loadDeviceSl
  * @returns {React.JSX.Element} rendered component
  */
 export default function DeviceMainInfosHeader (): React.JSX.Element {
-    const { device, deviceError: error, deviceLoading: loading } = useSelector(deviceState)
+    const { device, deviceError, deviceLoading } = useSelector(deviceState)
 
     /**
      * Fetch the correct icon from the mdi labs
@@ -34,7 +34,7 @@ export default function DeviceMainInfosHeader (): React.JSX.Element {
     let deviceTitle;
     let deleteDeviceButton;
 
-    if (!loading && (error === undefined || error.message !== "") && device !== undefined) {
+    if (device !== undefined) {
         deviceOSIcon = <Tooltip title={device.snapshots[0].operatingSystem} placement='top'>
             <div id="OSIcon">
                 <Icon

@@ -74,7 +74,7 @@ describe("Load device infos GraphQL query unit test", () => {
         expect(payloadResult.operatingSystem).toBe("My os!")
         expect(payloadResult.versions).toHaveLength(1)
         expect(payloadResult.versions[0].name).toBe("test software")
-        expect(payloadResult.versions[0].version).toBe("test")
+        expect(payloadResult.versions[0].chosenVersion).toBe("test")
         expect(payloadResult.versions[0].installType).toBe("test version")
         expect(payloadResult.repositories).toHaveLength(0)
     })

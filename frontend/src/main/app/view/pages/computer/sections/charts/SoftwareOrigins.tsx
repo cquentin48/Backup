@@ -110,12 +110,12 @@ export default function SoftwareOrigins (): React.JSX.Element {
     }
 
     useEffect(() => {
-        if (!(operationStatus === "initial" || operationStatus === "loading") && snapshotError === "" && snapshot !== undefined) {
+        if (!(operationStatus === "initial" || operationStatus === "loading") && snapshotError.message === "" && snapshot !== undefined) {
             updatePieChartData(memoFilter)
         }
     }, [operationStatus])
 
-    if (snapshotError === "") {
+    if (snapshotError.message === "") {
         return (
             <Card className="PieChartCard">
                 <CardHeader

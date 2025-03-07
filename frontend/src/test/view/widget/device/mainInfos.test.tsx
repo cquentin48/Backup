@@ -116,13 +116,16 @@ describe("MainInfosFrame unit test suite", () => {
                     device: {
                         device,
                         deviceLoading: operationStatus === "initial" || operationStatus === "loading",
-                        deviceError: operationStatus === "deviceError" ? {
+                        deviceError: {
                             message: operationStatus === "deviceError" ? "Device error raised in test" : "",
                             variant: operationStatus === "deviceError" ? "error" : undefined
-                        } : undefined
+                        }
                     },
                     snapshot: {
-                        snapshotError: operationStatus === "snapshotError" ? "Snapshot error raised here!" : "",
+                        snapshotError: {
+                            message: operationStatus === "snapshotError" ? "Snapshot error raised here!" : "",
+                            variant: operationStatus === "snapshotError" ? "error" : undefined
+                        },
                         operationStatus : operationStatus === "snapshotError" ? "error" : (operationStatus !== "deviceError" ? operationStatus : "initial"),
                         snapshot: operationStatus === "success" ? snapshot : undefined
                     },
@@ -262,7 +265,10 @@ describe("MainInfosFrame unit test suite", () => {
         const preloadedState: MockedPreloadedState = {
             snapshot: {
                 snapshot,
-                snapshotError: "",
+                snapshotError: {
+                    message:"",
+                    variant: undefined
+                },
                 operationStatus: "success"
             },
             device: {
