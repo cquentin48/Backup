@@ -28,7 +28,7 @@ export default function ComputerPage (): React.JSX.Element {
             deviceID: id
         }))
     }, [dispatch, id])
-    
+
     if (deviceError === undefined || (deviceError !== undefined && deviceError.message === "")) {
         if (!deviceLoading && device !== undefined) {
             document.title = `Backup - device ${device.name}`

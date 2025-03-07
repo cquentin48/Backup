@@ -893,7 +893,7 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         // Asserts
         expect(fieldValueInput).not.toBeInTheDocument()
-        expect(mockEnqueueSnackbar).toHaveBeenCalledWith("The comparison <> set is not valid. The only ones accepted are : \"<\", \"<=\", \">\", \">=\", \"!=\", \"==\" or \"includes\".", { variant: "error" })
+        expect(mockEnqueueSnackbar).toHaveBeenCalledWith("The comparison <> set is not valid. The only ones accepted are : \"<\", \"<=\", \">\", \">=\", \"≠\", \"==\" or \"includes\".", { variant: "error" })
     })
 
     test("Adding two filters and pressing enter key", async () => {

@@ -340,7 +340,7 @@ describe("Type of softwares origin chart unit test suite", () => {
         }
 
         const filters = [
-            new Filter("Library", "name", "!=", "b" as unknown as object, 0)
+            new Filter("Library", "name", "≠", "b" as unknown as object, 0)
         ]
 
         initUseSelectorMock("success", snapshot, filters)

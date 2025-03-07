@@ -76,7 +76,7 @@ export class SnapshotData {
      */
     static applyFilterOn = (softwares: SnapshotSoftware[], value: object, operator: FilterComparisonType, fieldName: string): SnapshotSoftware[] => {
         switch (operator) {
-            case "!=":
+            case "≠":
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] !== value)
                 })

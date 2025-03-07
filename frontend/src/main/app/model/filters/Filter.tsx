@@ -17,7 +17,7 @@ interface FilterInputDetails {
 }
 
 export type FilterElementType = "File" | "Library"
-export type FilterComparisonType = "<" | "<=" | ">" | ">=" | "!=" | "==" | "includes" | "startswith" | "endswith"
+export type FilterComparisonType = "<" | "<=" | ">" | ">=" | "≠" | "==" | "includes" | "startswith" | "endswith"
 export type FilterSoftwareFieldName = "name" | "firstUploadDate" | "lastUploadDate" | "size" | "repository" | "version"
 
 /**
@@ -53,14 +53,14 @@ export default class Filter {
      * Constructor method
      * @param {"File" | "Library"} elementType type of element to filter (either ``file`` or ``library``)
      * @param { string } fieldName name of the field to apply the filter on
-     * @param { '<' | '>' | '!=' | '==' } opType filter operation type
+     * @param { '<' | '>' | '≠' | '==' } opType filter operation type
      * @param { object } filterValue value including or not elements with the filter on
      * @param {number} id Filter ID in the device filter table
      */
     constructor (
         elementType: "File" | "Library",
         fieldName: string,
-        opType: '<' | '>' | '!=' | '==' | '<=' | '>=' | "includes" | "startswith" | "endswith",
+        opType: '<' | '>' | '≠' | '==' | '<=' | '>=' | "includes" | "startswith" | "endswith",
         filterValue: object,
         id: number) {
         this.elementType = elementType;
@@ -103,9 +103,9 @@ export default class Filter {
      * @see {@link} Authorized comparison operators
      */
     public static comparisonTypesCheck (comparaison: string): void {
-        const authorizedList = ["<", "<=", ">", ">=", "!=", "==", "includes"];
+        const authorizedList = ["<", "<=", ">", ">=", "≠", "==", "includes"];
         if (!authorizedList.includes(comparaison)) {
-            throw new ValidationError(`The comparison ${comparaison} set is not valid. The only ones accepted are : "<", "<=", ">", ">=", "!=", "==" or "includes".`)
+            throw new ValidationError(`The comparison ${comparaison} set is not valid. The only ones accepted are : "<", "<=", ">", ">=", "≠", "==" or "includes".`)
         }
     }
 
@@ -115,21 +115,21 @@ export default class Filter {
     public static authorizedInputTypes = ["File", "Library"];
 
     /**
-     * Authorized comparison operations : ``<``, ``<=``, ``>``, ``>=``, ``!=``, ``==``
+     * Authorized comparison operations : ``<``, ``<=``, ``>``, ``>=``, ``≠``, ``==``
      *  or ``includes``.
      */
-    public static authorizedComparisonOperationsString = ["<", "<=", ">", ">=", "!=", "==", "includes", "starts with", "ends with"];
+    public static authorizedComparisonOperationsString = ["<", "<=", ">", ">=", "≠", "==", "includes", "starts with", "ends with"];
 
     /**
-     * Authorized comparison operations : ``<``, ``<=``, ``>``, ``>=``, ``!=``, ``==``
+     * Authorized comparison operations : ``<``, ``<=``, ``>``, ``>=``, ``≠``, ``==``
      *  or ``includes``.
      */
-    public static authorizedComparisonOperationsNumber = ["<", "<=", ">", ">=", "!=", "=="];
+    public static authorizedComparisonOperationsNumber = ["<", "<=", ">", ">=", "≠", "=="];
 
     /**
-     * Authorized comparison operations : ``<``, ``<=``, ``>``, ``>=``, ``!=`` or ``==``.
+     * Authorized comparison operations : ``<``, ``<=``, ``>``, ``>=``, ``≠`` or ``==``.
      */
-    public static authorizedComparisonOperationsDate = ["<", "<=", ">", ">=", "!=", "=="];
+    public static authorizedComparisonOperationsDate = ["<", "<=", ">", ">=", "≠", "=="];
 
     /**
      * Based of the ``inputType``, fetch every single field name

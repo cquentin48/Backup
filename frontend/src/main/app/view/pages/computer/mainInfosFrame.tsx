@@ -90,7 +90,7 @@ export default function MainInfosFrame (): React.JSX.Element {
 
 
     if (snapshotError !== "" || (deviceError !== undefined && deviceError.message !== "")) {
-        useEffect(()=>{
+        useEffect(() => {
             if (deviceError !== undefined && deviceError.message !== "") {
                 enqueueSnackbar(
                     deviceError.message, { variant: deviceError.variant }

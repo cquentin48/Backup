@@ -84,12 +84,9 @@ export const filterSlice = createSlice({
         deleteFilter: (state, action: PayloadAction<number[]>) => {
             try {
                 const inputsIDS = action.payload
-                let filterIDS = inputsIDS.map((filterID: unknown) => {
+                const filterIDS = inputsIDS.map((filterID: unknown) => {
                     return filterID as number;
                 });
-                filterIDS = filterIDS.sort((firstID, secondID) => {
-                    return firstID - secondID
-                }).reverse();
 
                 filterIDS.forEach((filterID: number) => {
                     const filters = state.filters.filter((filter) => {

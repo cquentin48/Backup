@@ -66,7 +66,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
         const filter = new Filter(
             inputType as "File" | "Library",
             fieldName,
-            comparison as '<' | '>' | '!=' | '==' | "includes",
+            comparison as '<' | '>' | '≠' | '==' | "includes",
             value as unknown as object,
             filters.filters.length
         )
