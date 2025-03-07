@@ -105,7 +105,7 @@ export default function SoftwareOrigins (): React.JSX.Element {
         const softwaresFilter = filters.filter((filter) =>
             filter.elementType === "Library"
         )
-        const softwares = SnapshotData.fetchFilteredSoftwares((memoSnapshot as SnapshotData),softwaresFilter)
+        const softwares = SnapshotData.fetchFilteredSoftwares((memoSnapshot as SnapshotData), softwaresFilter)
         initPieChartData(softwares)
     }
 

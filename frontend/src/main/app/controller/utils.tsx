@@ -1,11 +1,11 @@
 /**
  * Notification error for message
  */
-export interface NotificationError{
+export interface NotificationError {
     /**
      * Error message
      */
-    message: string;
+    message: string
 
     /**
      * Error type

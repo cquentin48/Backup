@@ -1,12 +1,11 @@
 import React from "react";
 import { BrowserRouter, type LinkProps } from "react-router-dom"
 
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, render } from "@testing-library/react"
 
 import '@testing-library/jest-dom'
 
 import ComputeSideNavBar from "../../../../../main/app/view/pages/computer/navBar/computerSideNavBar";
-import SideNavBarElement from "../../../../../main/app/view/pages/computer/navBar/sideNavBarElement";
 
 jest.mock("react-router-dom", () => {
     const actual = jest.requireActual("react-router-dom")
@@ -96,15 +95,15 @@ describe("Device main infos side nav bar unit test suite", () => {
             fireEvent.click(navBarElement)
 
             rerender(
-            <BrowserRouter>
-                <ComputeSideNavBar
-                    selectedID={index}
-                    updateSelectedID={updateSelectedId}
-                />
-            </BrowserRouter>
+                <BrowserRouter>
+                    <ComputeSideNavBar
+                        selectedID={index}
+                        updateSelectedID={updateSelectedId}
+                    />
+                </BrowserRouter>
             )
 
-            expect(updateSelectedId).toBeCalledTimes(index+1)
+            expect(updateSelectedId).toBeCalledTimes(index + 1)
             expect(updateSelectedId).toBeCalledWith(index)
             expect(navBarElement).toHaveClass("selected")
         })

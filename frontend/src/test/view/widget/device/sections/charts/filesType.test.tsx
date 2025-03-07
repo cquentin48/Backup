@@ -17,6 +17,6 @@ describe("Type of files chart unit test suite", () => {
         )
 
         // Acts
-        expect(asFragment()).toMatchSnapshot
+        expect(asFragment()).toMatchSnapshot()
     })
 })

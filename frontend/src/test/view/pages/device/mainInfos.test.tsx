@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import { type MockedResponse, MockedProvider } from '@apollo/client/testing';
 import '@testing-library/jest-dom'
-import { DataGridProps } from '@mui/x-data-grid';
+import { type DataGridProps } from '@mui/x-data-grid';
 import { configureStore, type EnhancedStore } from "@reduxjs/toolkit";
 import { render, screen, fireEvent, type RenderResult, waitFor } from '@testing-library/react';
 
@@ -21,6 +21,7 @@ import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/c
 
 import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
+import { type OperationStatus } from '../../../../main/app/controller/store';
 
 jest.mock("@mui/x-data-grid", () => {
     const originalModule = jest.requireActual("@mui/x-data-grid")
@@ -105,11 +106,11 @@ describe("Device main Infos unit test suite", () => {
                 deviceLoading: operationStatus === "initial" || operationStatus === "loading"
             },
             snapshot: {
-                operationStatus: operationStatus,
+                operationStatus,
                 snapshot: operationStatus === "success" ? snapshot : undefined,
                 snapshotError: {
                     message: operationStatus === "error" ? "Error" : "",
-                    variant: operationStatus === "error" ? "error" : undefined,
+                    variant: operationStatus === "error" ? "error" : undefined
                 }
             }
         };
@@ -125,11 +126,11 @@ describe("Device main Infos unit test suite", () => {
 
     /**
      * Init the ``useSelector`` Mock for the unit test
+     * @param {OperationStatus} operationStatus Current operation status
      * @param {Device|undefined} device Device fetched from the server. If successful, must be loaded, otherwise could be left blank.
      * @param {SnapshotData} snapshot Preloaded snapshot before the test
-     * @throws {NotFoundError} If the operation is marked as a success and no device is.
      */
-    const initUseSelectorMock = (operationStatus: "initial" | "loading" | "success" | "error", device: Device, snapshot: SnapshotData): void => {
+    const initUseSelectorMock = (operationStatus: OperationStatus, device: Device, snapshot: SnapshotData): void => {
         const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
 
         mockedUseSelector.mockImplementation((selector) =>
@@ -137,14 +138,16 @@ describe("Device main Infos unit test suite", () => {
                 {
                     device: {
                         device: operationStatus === "success" ? device : undefined,
-                        error: operationStatus === "error" ? {
-                            message: operationStatus === "error" ? "Error" : "",
-                            variant: operationStatus === "error" ? "error" : undefined
-                        } : undefined,
+                        error: operationStatus === "error"
+                            ? {
+                                message: operationStatus === "error" ? "Error" : "",
+                                variant: operationStatus === "error" ? "error" : undefined
+                            }
+                            : undefined,
                         deviceLoading: operationStatus === "initial" || operationStatus === "loading"
                     },
                     snapshot: {
-                        operationStatus: operationStatus,
+                        operationStatus,
                         snapshot: operationStatus === "success" ? snapshot : undefined,
                         snapshotError: operationStatus === "error" ? "Error" : ""
                     }

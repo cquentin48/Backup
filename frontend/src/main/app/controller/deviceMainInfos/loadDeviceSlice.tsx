@@ -3,7 +3,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { type AppState } from "../store";
 import type Device from "../../model/device/device";
 import { fetchDeviceInfos } from "../../model/queries/computer/deviceInfos";
-import { NotificationError } from "../utils";
+import { type NotificationError } from "../utils";
 
 /**
  * Device slice state interface
@@ -22,10 +22,10 @@ export interface FetchDeviceSliceState {
     /**
      * Device error
      */
-    deviceError: NotificationError;
+    deviceError: NotificationError
 }
 
-const initialState: FetchDeviceSliceState = {
+export const deviceInitialState: FetchDeviceSliceState = {
     device: undefined,
     deviceLoading: false,
     deviceError: {
@@ -36,7 +36,7 @@ const initialState: FetchDeviceSliceState = {
 
 const loadDeviceSlice = createSlice({
     name: 'device',
-    initialState,
+    initialState: deviceInitialState,
     reducers: {},
     extraReducers: (builder) => {
         builder

@@ -1,0 +1,1918 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Type of softwares origin chart unit test suite Failure in render 1`] = `[Function]`;
+
+exports[`Type of softwares origin chart unit test suite Pending render 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            Loading data…
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (Multiple softwares, other included) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M20.609,-42.796L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-1 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M46.309,-10.57L0,0Z"
+                  fill="#2E96FF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-2 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M37.137,29.616L0,0Z"
+                  fill="#B800D8"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-3 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#60009B"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-4 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M-37.137,29.616L0,0Z"
+                  fill="#2731C8"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-5 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M-37.137,-29.616L0,0Z"
+                  fill="#03008D"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 25)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  0th-type
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-1"
+              transform="translate(505 55)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#2E96FF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  1th-type
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-2"
+              transform="translate(505 85)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#B800D8"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  2th-type
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-3"
+              transform="translate(505 115)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#60009B"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  3th-type
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-4"
+              transform="translate(505 145)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#2731C8"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  4th-type
+                </tspan>
+              </text>
+            </g>
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-6"
+              transform="translate(505 175)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#03008D"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  Other
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (Multiple softwares, same type) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 100)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  type
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (Multiple softwares, same type, filter != applied) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 100)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  type
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (Multiple softwares, same type, filter < applied) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 100)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  type
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (Multiple softwares, same type, filter <= applied) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 100)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  type
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (Multiple softwares, same type, filter == applied) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 100)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  type
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (Multiple softwares, same type, filter > applied) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 100)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  type
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (Multiple softwares, same type, filter >= applied) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 100)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  type
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (Multiple softwares, same type, filter endswith applied) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 100)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  type
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (Multiple softwares, same type, filter includes applied) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 100)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  type
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (Multiple softwares, same type, filter startswith applied) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 100)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  type
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Type of softwares origin chart unit test suite Successful render (single software) 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Software origins
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <path
+                  class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
+                  cursor="unset"
+                  d="M0,47.5L0,0Z"
+                  fill="#02B2AF"
+                  filter="none"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  visibility="hidden"
+                />
+              </g>
+            </g>
+            <g
+              transform="translate(227.5, 100)"
+            >
+              <g>
+                <text
+                  class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
+                  style="opacity: 0; transform: none;"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          >
+            <g
+              class="MuiChartsLegend-series MuiChartsLegend-series-0"
+              transform="translate(505 100)"
+            >
+              <rect
+                class="MuiChartsLegend-itemBackground"
+                fill="transparent"
+                height="24"
+                style="pointer-events: none; cursor: unset;"
+                width="29"
+                x="-2"
+                y="-12"
+              />
+              <rect
+                class="MuiChartsLegend-mark"
+                fill="#02B2AF"
+                height="20"
+                style="pointer-events: none;"
+                width="20"
+                x="0"
+                y="-10"
+              />
+              <text
+                dominant-baseline="central"
+                style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; fill: rgba(0, 0, 0, 0.87);"
+                text-anchor="start"
+                x="25"
+                y="0"
+              >
+                <tspan
+                  dominant-baseline="central"
+                  dy="0px"
+                  x="25"
+                >
+                  test
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -1,13 +1,13 @@
-import React, { ReactNode } from "react"
+import React, { type ReactNode } from "react"
 
 import '@testing-library/jest-dom'
 
 import { MockedProvider, type ResultFunction } from "@apollo/client/testing"
 import { type FetchResult } from "@apollo/client"
-import { DataGridProps } from "@mui/x-data-grid"
+import { type DataGridProps } from "@mui/x-data-grid"
 import { type EnhancedStore, configureStore } from "@reduxjs/toolkit"
 import { fireEvent, render, waitFor, type RenderResult } from "@testing-library/react"
-import { enqueueSnackbar, SnackbarProvider, useSnackbar } from "notistack"
+import { SnackbarProvider, useSnackbar } from "notistack"
 import { useSelector, Provider, useDispatch } from "react-redux"
 
 import Device from "../../../../main/app/model/device/device"
@@ -28,7 +28,7 @@ import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
 import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 
 import { type DeviceInfosQueryResult as FetchDeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos"
-import { AppState } from "../../../../main/app/controller/store"
+import { type AppState } from "../../../../main/app/controller/store"
 
 /**
  * Preloaded state used for the mocks in the tests
@@ -61,9 +61,8 @@ jest.mock("@mui/x-data-grid", () => {
     }
 })
 
-
 jest.mock('@mui/material/Tooltip', () => {
-    return ({ children }: { children: ReactNode }) => children;
+    return async ({ children }: { children: ReactNode }) => await children;
 });
 
 jest.mock("react-redux", () => ({
@@ -92,7 +91,7 @@ describe("MainInfosFrame unit test suite", () => {
         jest.clearAllMocks()
     })
 
-    const initEnqueueSnackbarMock = () => {
+    const initEnqueueSnackbarMock = (): jest.Mock => {
         const mockEnqueueSnackbar = jest.fn();
         (useSnackbar as jest.Mock).mockReturnValue({
             enqueueSnackbar: mockEnqueueSnackbar
@@ -110,7 +109,7 @@ describe("MainInfosFrame unit test suite", () => {
      */
     const initUseSelectorMock = (operationStatus: "initial" | "success" | "deviceError" | "snapshotError" | "loading", device: Device | undefined, snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): void => {
         const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
-        mockedUseSelector.mockImplementation((selector : (state:AppState) => unknown) =>
+        mockedUseSelector.mockImplementation((selector: (state: AppState) => unknown) =>
             selector(
                 {
                     device: {
@@ -126,7 +125,7 @@ describe("MainInfosFrame unit test suite", () => {
                             message: operationStatus === "snapshotError" ? "Snapshot error raised here!" : "",
                             variant: operationStatus === "snapshotError" ? "error" : undefined
                         },
-                        operationStatus : operationStatus === "snapshotError" ? "error" : (operationStatus !== "deviceError" ? operationStatus : "initial"),
+                        operationStatus: operationStatus === "snapshotError" ? "error" : (operationStatus !== "deviceError" ? operationStatus : "initial"),
                         snapshot: operationStatus === "success" ? snapshot : undefined
                     },
                     filter: {
@@ -266,7 +265,7 @@ describe("MainInfosFrame unit test suite", () => {
             snapshot: {
                 snapshot,
                 snapshotError: {
-                    message:"",
+                    message: "",
                     variant: undefined
                 },
                 operationStatus: "success"

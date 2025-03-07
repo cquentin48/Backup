@@ -21,6 +21,7 @@ export default class SnapshotID {
 
     /**
      * Format the snapshot date for display in the web application according to the chosen language
+     * @param {Date} date date used for the localized date
      * @returns {string} Localized snapshot upload date
      */
     static localizedDate (date: Date): string {

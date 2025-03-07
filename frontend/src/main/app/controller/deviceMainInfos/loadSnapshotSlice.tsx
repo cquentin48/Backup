@@ -1,16 +1,16 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { fetchSnapshot } from "../../model/queries/computer/loadSnapshot";
 import { type SnapshotData } from "../../model/snapshot/snapshotData";
-import { type AppState } from "../store";
-import { NotificationError } from "../utils";
+import { type OperationStatus, type AppState } from "../store";
+import { type NotificationError } from "../utils";
 
 export interface SnapshotSliceState {
     snapshot: SnapshotData | undefined
-    operationStatus: "initial" | "loading" | "success" | "error"
+    operationStatus: OperationStatus
     snapshotError: NotificationError
 }
 
-const initialState: SnapshotSliceState = {
+export const snapshotInitialState: SnapshotSliceState = {
     snapshot: undefined,
     operationStatus: "initial",
     snapshotError: {
@@ -21,7 +21,7 @@ const initialState: SnapshotSliceState = {
 
 export const snapshotSlice = createSlice({
     name: 'snapshot',
-    initialState,
+    initialState: snapshotInitialState,
     reducers: {},
     extraReducers (builder) {
         builder.addCase(fetchSnapshot.pending, (state) => {

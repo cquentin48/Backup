@@ -1,9 +1,9 @@
 import React, { type ReactNode } from "react"
 
-import { DocumentNode, type FetchResult } from "@apollo/client"
+import { type DocumentNode, type FetchResult } from "@apollo/client"
 import { type ResultFunction, MockedProvider } from "@apollo/client/testing"
 
-import { DataGridProps } from "@mui/x-data-grid"
+import { type DataGridProps } from "@mui/x-data-grid"
 
 import { type EnhancedStore, configureStore } from "@reduxjs/toolkit"
 
@@ -17,7 +17,7 @@ import { Provider, useDispatch, useSelector } from "react-redux"
 import snapshotReducer from "../../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 import filterReducer from "../../../../../main/app/controller/deviceMainInfos/filterSlice"
 import deviceReducer from "../../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
-import { AppDispatch, AppState } from "../../../../../main/app/controller/store"
+import { type OperationStatus, type AppDispatch, type AppState } from "../../../../../main/app/controller/store"
 
 import Device from "../../../../../main/app/model/device/device"
 import NotFoundError from "../../../../../main/app/model/exception/errors/notFoundError"
@@ -32,9 +32,9 @@ import FETCH_SNAPSHOT from '../../../../../main/res/queries/snapshot.graphql';
 
 interface ApolloMockResult {
     request: {
-        query: DocumentNode;
-    };
-    result: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined;
+        query: DocumentNode
+    }
+    result: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined
 }
 
 jest.mock("@mui/x-data-grid", () => {
@@ -49,7 +49,7 @@ jest.mock("@mui/x-data-grid", () => {
 })
 
 jest.mock('@mui/material/Tooltip', () => {
-    return ({ children }: { children: ReactNode }) => children;
+    return async ({ children }: { children: ReactNode }) => await children;
 });
 
 jest.mock('@mui/material/transitions', () => ({
@@ -79,7 +79,11 @@ describe("Device main infos Filter table render (no filter)", () => {
         jest.clearAllMocks()
     })
 
-    const initEnqueueSnackbarMock = () => {
+    /**
+     * Mock ``enqueueSnackbar`` function
+     * @returns {jest.Mock} Mocked ``enqueueSnackbar`` function
+     */
+    const initEnqueueSnackbarMock = (): jest.Mock => {
         const mockEnqueueSnackbar = jest.fn();
         (useSnackbar as jest.Mock).mockReturnValue({
             enqueueSnackbar: mockEnqueueSnackbar
@@ -90,10 +94,7 @@ describe("Device main infos Filter table render (no filter)", () => {
 
     /**
      * Init the ``useSelector`` mock for the unit test
-     * @param {"init" | "success" | "failure" | "loading"} operationStatus Mocked operation status in the test
-     * @param {SnapshotData} snapshot Snapshot used for the test
-     * @param {Filter[]} filters Filter(s) used for the test
-     * @param {Device} device Device used for the mock used in a test
+     * @param {EnhancedStore<AppState>} store Mocked store for the unit test
      */
     const initUseSelectorMock = (store: EnhancedStore<AppState>): void => {
         const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
@@ -117,7 +118,7 @@ describe("Device main infos Filter table render (no filter)", () => {
                     snapshot: {
                         snapshotError: snapshotState.snapshotError,
                         operationStatus: snapshotState.operationStatus,
-                        snapshot: snapshotState.snapshot !== undefined ? JSON.parse(JSON.stringify(snapshotState.snapshot)) : undefined,
+                        snapshot: snapshotState.snapshot !== undefined ? JSON.parse(JSON.stringify(snapshotState.snapshot)) : undefined
                     },
                     device: {
                         device: deviceState.device !== undefined ? JSON.parse(JSON.stringify(deviceState.device)) : undefined,
@@ -174,9 +175,8 @@ describe("Device main infos Filter table render (no filter)", () => {
 
     /**
      * Render the SoftwaresOrigin component with the Apollo query and store mocks
-     * @param {"success" | "failure" | "loading" | "initial"} operationStatus Fetch snapshot operation stage
-     * @param {SnapshotData | undefined} snapshot Provided snapshot for the success fetch snapshot data
      * @param {EnhancedStore} store Redux mocked store
+     * @param {ApolloMockResult[]} apolloMocks Apollo GraphQL queries result mock
      * @returns {NotFoundError} If the operation is marked as a success and no snapshot is provided.
      */
     const renderMockedComponent = (store: EnhancedStore, apolloMocks: ApolloMockResult[]): RenderResult => {
@@ -193,14 +193,15 @@ describe("Device main infos Filter table render (no filter)", () => {
 
     /**
      * Initialise the test
-     * @param {"success" | "error" | "loading" | "initial"} operationStatus Type of operation mocked for the unit test
+     * @param {OperationStatus} operationStatus Type of operation mocked for the unit test
      * @param {SnapshotData | undefined} snapshot Device snapshot used in the unit test
-     * @param {Filter[]} filters Filters used in the unit test
      * @param {Device |undefined} device device used for the mock
+     * @param {Filter[]} filters Filters used in the unit test
+     * @param {number[]} selectedFiltersIDs Selected filters ids int the unit test
      * @returns {EnhancedStore} Mocked store
      * @throws {Error} If the test stage is not in the list
      */
-    const initStore = (operationStatus: "initial" | "loading" | "success" | "error", snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, filters: Filter[] = [], selectedFiltersIDs: number[] = []): EnhancedStore<AppState> => {
+    const initStore = (operationStatus: OperationStatus, snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, filters: Filter[] = [], selectedFiltersIDs: number[] = []): EnhancedStore<AppState> => {
         if (device === undefined && snapshot === undefined && operationStatus === "success") {
             throw new Error("The snapshot and the device must be defined if the loading snapshot data with a GraphQL query is successful!")
         }
@@ -229,9 +230,9 @@ describe("Device main infos Filter table render (no filter)", () => {
                 snapshot: parsedSnapshot,
                 snapshotError: {
                     message: operationStatus === "error" ? "Device : Error raised here!" : "",
-                    variant: operationStatus === "error" ? "error" : undefined,
+                    variant: operationStatus === "error" ? "error" : undefined
                 },
-                operationStatus: operationStatus
+                operationStatus
             }
         }
 
@@ -349,7 +350,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             )
         ]
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 
@@ -382,7 +383,6 @@ describe("Device main infos Filter table render (no filter)", () => {
             </Provider>
         )
 
-
         // Asserts
         await waitFor(() => {
             expect(screen.getByText("Delete filters")).toBeInTheDocument()
@@ -394,7 +394,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 
@@ -426,7 +426,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 
@@ -462,7 +462,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         const enqueueSnackbarMock = initEnqueueSnackbarMock()
 
@@ -495,7 +495,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 
@@ -534,7 +534,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 
@@ -571,7 +571,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 
@@ -630,7 +630,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 
@@ -670,7 +670,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             )
         ]
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         const mockEnqueueSnackbar = initEnqueueSnackbarMock()
 
@@ -735,7 +735,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             )
         ]
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         const mockEnqueueSnackbar = initEnqueueSnackbarMock()
 
@@ -792,7 +792,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         const mockEnqueueSnackbar = initEnqueueSnackbarMock()
 
@@ -848,7 +848,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         const mockEnqueueSnackbar = initEnqueueSnackbarMock()
 
@@ -912,7 +912,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             )
         ]
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 
@@ -987,10 +987,10 @@ describe("Device main infos Filter table render (no filter)", () => {
                 "<",
                 "test1" as any as object,
                 1
-            ),
+            )
         ]
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 
@@ -1064,10 +1064,10 @@ describe("Device main infos Filter table render (no filter)", () => {
                 "<",
                 "test2" as any as object,
                 2
-            ),
+            )
         ]
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 
@@ -1085,7 +1085,6 @@ describe("Device main infos Filter table render (no filter)", () => {
             type: "filter/updateSelectedFilter",
             payload: [0]
         })
-
 
         rerender(
             <Provider store={store}>
@@ -1131,7 +1130,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 
@@ -1173,7 +1172,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        let store = initStore("success", snapshot, new Device(), filters)
+        const store = initStore("success", snapshot, new Device(), filters)
         initUseSelectorMock(store)
         initEnqueueSnackbarMock()
 

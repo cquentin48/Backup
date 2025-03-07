@@ -1,7 +1,7 @@
-import { DocumentNode, FetchResult } from "@apollo/client";
-import { ResultFunction } from "@apollo/client/testing";
+import { type DocumentNode, type FetchResult } from "@apollo/client";
+import { type ResultFunction } from "@apollo/client/testing";
 
-import { DeviceInfosQueryResult, fetchDeviceInfos } from "../../../../main/app/model/queries/computer/deviceInfos";
+import { type DeviceInfosQueryResult, fetchDeviceInfos } from "../../../../main/app/model/queries/computer/deviceInfos";
 import Device from "../../../../main/app/model/device/device";
 import NotFoundError from "../../../../main/app/model/exception/errors/notFoundError";
 
@@ -9,12 +9,11 @@ import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 import SnapshotID from "../../../../main/app/model/device/snapshotId";
 import gqlClient from "../../../../main/app/model/queries/client";
 
-
 interface ApolloMockResult {
     request: {
-        query: DocumentNode;
-    };
-    result: FetchResult<DeviceInfosQueryResult> | ResultFunction<FetchResult<DeviceInfosQueryResult>, any> | undefined;
+        query: DocumentNode
+    }
+    result: FetchResult<DeviceInfosQueryResult> | ResultFunction<FetchResult<DeviceInfosQueryResult>, any> | undefined
 }
 
 describe("Load device infos GraphQL query unit test", () => {

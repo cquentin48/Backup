@@ -1,8 +1,8 @@
-import filterReducer, { FilterSliceState, deleteFilter } from "../../../main/app/controller/deviceMainInfos/filterSlice"
+import filterReducer, { type FilterSliceState, deleteFilter } from "../../../main/app/controller/deviceMainInfos/filterSlice"
 import Filter from "../../../main/app/model/filters/Filter"
 
-describe("Filter slice test suite", ()=>{
-    test("Delete filter successfully (one filter added, all deleted)", ()=>{
+describe("Filter slice test suite", () => {
+    test("Delete filter successfully (one filter added, all deleted)", () => {
         // Given
         const filter = new Filter("File", "name", "<", "3" as any as object, 0)
         const initialState: FilterSliceState = {
@@ -21,14 +21,14 @@ describe("Filter slice test suite", ()=>{
         expect(slice.filters).toHaveLength(0)
     })
 
-    test("Delete filter successfully (two filters added, all deleted)", ()=>{
+    test("Delete filter successfully (two filters added, all deleted)", () => {
         // Given
         const filters = [
             new Filter("File", "name", "<", "3" as any as object, 0),
-            new Filter("File", "name", "<", "6" as any as object, 1),
+            new Filter("File", "name", "<", "6" as any as object, 1)
         ]
         const initialState: FilterSliceState = {
-            filters: filters,
+            filters,
             selectedFilteredIDS: [],
             filterError: {
                 message: "",
@@ -37,19 +37,19 @@ describe("Filter slice test suite", ()=>{
         }
 
         // Acts
-        const slice = filterReducer(initialState, deleteFilter([0,1]))
+        const slice = filterReducer(initialState, deleteFilter([0, 1]))
 
         // Asserts
         expect(slice.filters).toHaveLength(0)
     })
 
-    test("Failed to delete filter (one filter added, id for deletion not related to filter)", ()=>{
+    test("Failed to delete filter (one filter added, id for deletion not related to filter)", () => {
         // Given
         const filters = [
-            new Filter("File", "name", "<", "3" as any as object, 0),
+            new Filter("File", "name", "<", "3" as any as object, 0)
         ]
         const initialState: FilterSliceState = {
-            filters: filters,
+            filters,
             selectedFilteredIDS: [],
             filterError: {
                 message: "",
@@ -66,14 +66,14 @@ describe("Filter slice test suite", ()=>{
         expect(slice.filterError.variant).toBe("error")
     })
 
-    test("Failed to delete filter (two filters added, same id)", ()=>{
+    test("Failed to delete filter (two filters added, same id)", () => {
         // Given
         const filters = [
             new Filter("File", "name", "<", "3" as any as object, 0),
-            new Filter("File", "name", "<", "6" as any as object, 0),
+            new Filter("File", "name", "<", "6" as any as object, 0)
         ]
         const initialState: FilterSliceState = {
-            filters: filters,
+            filters,
             selectedFilteredIDS: [],
             filterError: {
                 message: "",

@@ -15,7 +15,7 @@ import { deviceState } from "../../../../controller/deviceMainInfos/loadDeviceSl
  * @returns {React.JSX.Element} rendered component
  */
 export default function DeviceMainInfosHeader (): React.JSX.Element {
-    const { device, deviceError, deviceLoading } = useSelector(deviceState)
+    const { device } = useSelector(deviceState)
 
     /**
      * Fetch the correct icon from the mdi labs

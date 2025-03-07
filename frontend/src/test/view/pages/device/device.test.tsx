@@ -1,12 +1,11 @@
-import React, { ReactNode } from "react"
+import React, { type ReactNode } from "react"
 
-
-import { DocumentNode, FetchResult } from "@apollo/client"
-import { MockedProvider, ResultFunction } from "@apollo/client/testing"
-import { DataGridProps } from "@mui/x-data-grid"
-import { configureStore, EnhancedStore } from "@reduxjs/toolkit"
+import { type DocumentNode, type FetchResult } from "@apollo/client"
+import { MockedProvider, type ResultFunction } from "@apollo/client/testing"
+import { type DataGridProps } from "@mui/x-data-grid"
+import { configureStore, type EnhancedStore } from "@reduxjs/toolkit"
 import '@testing-library/jest-dom'
-import { render, RenderResult } from "@testing-library/react"
+import { render, type RenderResult } from "@testing-library/react"
 
 import { Provider, useDispatch, useSelector } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
@@ -15,22 +14,19 @@ import { useSnackbar } from "notistack"
 import { dataManager } from "../../../../main/app/model/AppDataManager"
 import Device from "../../../../main/app/model/device/device"
 import NotFoundError from "../../../../main/app/model/exception/errors/notFoundError"
-import { DeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos"
-import { LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot"
+import { type DeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos"
+import { type LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot"
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData"
-
 
 import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 import filterReducer from "../../../../main/app/controller/deviceMainInfos/filterSlice"
 import deviceReducer, { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
-import { AppState } from "../../../../main/app/controller/store"
+import { type OperationStatus, type AppState } from "../../../../main/app/controller/store"
 
 import ComputerPage from "../../../../main/app/view/pages/computer/computerPage"
 
 import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
-
-
 
 jest.mock("@mui/x-data-grid", () => {
     const originalModule = jest.requireActual("@mui/x-data-grid")
@@ -44,7 +40,7 @@ jest.mock("@mui/x-data-grid", () => {
 })
 
 jest.mock('@mui/material/Tooltip', () => {
-    return ({ children }: { children: ReactNode }) => children;
+    return async ({ children }: { children: ReactNode }) => await children;
 });
 
 jest.mock('@mui/material/transitions', () => ({
@@ -68,7 +64,6 @@ jest.mock("react-redux", () => ({
     useDispatch: jest.fn()
 }))
 
-
 /**
  * Preloaded state used for the mocks in the tests
  */
@@ -83,9 +78,9 @@ interface MockedPreloadedState {
 
 interface ApolloMockResult {
     request: {
-        query: DocumentNode;
-    };
-    result: FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult>, any> | undefined;
+        query: DocumentNode
+    }
+    result: FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult>, any> | undefined
 }
 
 describe("Device page", () => {
@@ -110,14 +105,13 @@ describe("Device page", () => {
 
     /**
      * Initialise the test
-     * @param {"success" | "failure" | "loading" | "initial"} operationStatus Type of operation mocked for the unit test
+     * @param {OperationStatus} operationStatus Type of operation mocked for the unit test
      * @param {SnapshotData | undefined} snapshot Device snapshot used in the unit test
-     * @param {Filter[]} filters Filters used in the unit test
-     * @param {Device |undefined} device device used for the mock
+     * @param {Device | undefined} device device used for the mock
      * @returns {EnhancedStore} Mocked store
      * @throws {Error} If the test stage is not in the list
      */
-    const initStore = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined): EnhancedStore<AppState> => {
+    const initStore = (operationStatus: OperationStatus, snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined): EnhancedStore<AppState> => {
         if (device === undefined && snapshot === undefined && operationStatus === "success") {
             throw new Error("The snapshot and the device must be defined if the operation is supposed to be successful!")
         }
@@ -128,16 +122,16 @@ describe("Device page", () => {
             device: {
                 device: parsedDevice,
                 deviceError: {
-                    message: operationStatus === "failure" ? "Snapshot : Error raised here!" : "",
-                    variant: operationStatus === "failure" ? "error" : undefined
+                    message: operationStatus === "error" ? "Snapshot : Error raised here!" : "",
+                    variant: operationStatus === "error" ? "error" : undefined
                 },
                 deviceLoading: operationStatus === "initial" || operationStatus === "loading"
             },
             snapshot: {
                 snapshot: parsedSnapshot,
                 snapshotError: {
-                    message: operationStatus === "failure" ? "Device : Error raised here!" : "",
-                    variant: operationStatus === "failure" ? "error" : undefined,
+                    message: operationStatus === "error" ? "Device : Error raised here!" : "",
+                    variant: operationStatus === "error" ? "error" : undefined
                 },
                 operationStatus: "success"
             }
@@ -164,7 +158,7 @@ describe("Device page", () => {
         return mockEnqueueSnackbar
     }
 
-    const mockApolloCalls = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined): ApolloMockResult[] => {
+    const mockApolloCalls = (operationStatus: OperationStatus, snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined): ApolloMockResult[] => {
         let snapshotResult: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined;
         let deviceResult: FetchResult<DeviceInfosQueryResult> | ResultFunction<FetchResult<DeviceInfosQueryResult>, any> | undefined;
 
@@ -186,7 +180,7 @@ describe("Device page", () => {
                 }
             }
 
-        } else if (operationStatus === "failure") {
+        } else if (operationStatus === "error") {
             const errorMessage = "Raised error message here!"
             snapshotResult = {
                 errors: [
@@ -221,10 +215,7 @@ describe("Device page", () => {
 
     /**
      * Init the ``useSelector`` mock for the unit test
-     * @param {"init" | "success" | "failure" | "loading"} operationStatus Mocked operation status in the test
-     * @param {SnapshotData} snapshot Snapshot used for the test
-     * @param {Filter[]} filters Filter(s) used for the test
-     * @param {Device} device Device used for the mock used in a test
+     * @param {EnhancedStore<AppState>} store Mocked state
      */
     const initUseSelectorMock = (store: EnhancedStore<AppState>): void => {
         const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
@@ -247,7 +238,7 @@ describe("Device page", () => {
                     snapshot: {
                         snapshotError: snapshotState.snapshotError,
                         operationStatus: snapshotState.operationStatus,
-                        snapshot: snapshotState.snapshot !== undefined ? JSON.parse(JSON.stringify(snapshotState.snapshot)) : undefined,
+                        snapshot: snapshotState.snapshot !== undefined ? JSON.parse(JSON.stringify(snapshotState.snapshot)) : undefined
                     },
                     device: {
                         device: deviceState.device !== undefined ? JSON.parse(JSON.stringify(deviceState.device)) : undefined,
@@ -272,7 +263,7 @@ describe("Device page", () => {
         initEnqueueSnackbarHook()
 
         const apolloMocks = mockApolloCalls("loading")
-        let store = initStore("loading", undefined, undefined)
+        const store = initStore("loading", undefined, undefined)
         initUseSelectorMock(store)
 
         // Acts
@@ -295,9 +286,9 @@ describe("Device page", () => {
             return mockedDispatch
         });
         initEnqueueSnackbarHook()
-        
+
         const apolloMocks = mockApolloCalls("success", snapshot, device)
-        let store = initStore("success", snapshot, device)
+        const store = initStore("success", snapshot, device)
         initUseSelectorMock(store)
 
         // Acts
@@ -319,10 +310,9 @@ describe("Device page", () => {
             return mockedDispatch
         });
         initEnqueueSnackbarHook()
-        
-        
-        const apolloMocks = mockApolloCalls("failure", snapshot, device)
-        let store = initStore("failure", snapshot, device)
+
+        const apolloMocks = mockApolloCalls("error", snapshot, device)
+        const store = initStore("error", snapshot, device)
         initUseSelectorMock(store)
 
         // Acts

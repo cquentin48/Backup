@@ -7,7 +7,7 @@ import ValidationError from "../../model/exception/errors/validationError";
 
 import Filter from "../../model/filters/Filter";
 import { type AppState } from "../store";
-import { NotificationError } from "../utils";
+import { type NotificationError } from "../utils";
 
 /**
  * Filter slice state
@@ -21,7 +21,7 @@ export interface FilterSliceState {
 /**
  * Filter slice initial state
  */
-const initialState: FilterSliceState = {
+export const filterInitialState: FilterSliceState = {
     filters: [],
     selectedFilteredIDS: [],
     filterError: {
@@ -35,7 +35,7 @@ const initialState: FilterSliceState = {
  */
 export const filterSlice = createSlice({
     name: 'filter',
-    initialState,
+    initialState: filterInitialState,
     reducers: {
         /**
          * Adds a new filter
@@ -45,7 +45,7 @@ export const filterSlice = createSlice({
         addFilter: (state, action: PayloadAction<Filter>) => {
             try {
                 const newFilter = action.payload
-                if(state.filters.filter((filter)=>filter.id === newFilter.id).length > 0){
+                if (state.filters.filter((filter) => filter.id === newFilter.id).length > 0) {
                     throw new AlreadyAddedWarning("Another filter has this id!")
                 }
                 Filter.inputTypeAuthorizedList(action.payload.elementType);

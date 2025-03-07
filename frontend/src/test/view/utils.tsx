@@ -1,30 +1,39 @@
 import { configureStore, type EnhancedStore, type Reducer } from "@reduxjs/toolkit"
-import { type AppState } from "../../main/app/controller/store"
-import DeviceReducer, { FetchDeviceSliceState } from "../../main/app/controller/deviceMainInfos/loadDeviceSlice";
-import FilterReducer, { FilterSliceState } from "../../main/app/controller/deviceMainInfos/filterSlice";
-import SnapshotReducer, { SnapshotSliceState } from "../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
+import { type OperationStatus, type AppState } from "../../main/app/controller/store"
+import { deviceInitialState, type FetchDeviceSliceState } from "../../main/app/controller/deviceMainInfos/loadDeviceSlice";
+import { type FilterSliceState } from "../../main/app/controller/deviceMainInfos/filterSlice";
+import { type SnapshotSliceState } from "../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
 import FETCH_SNAPSHOT from '../../main/res/queries/snapshot.graphql';
 import FETCH_DEVICE from '../../main/res/queries/computer_infos.graphql';
-import { DocumentNode, FetchResult } from "@apollo/client";
-import { ResultFunction } from "@apollo/client/testing";
+import { type DocumentNode, type FetchResult } from "@apollo/client";
+import { type ResultFunction } from "@apollo/client/testing";
 import NotFoundError from "../../main/app/model/exception/errors/notFoundError";
-import { LoadSnapshotQueryResult } from "../../main/app/model/queries/computer/loadSnapshot";
-import { SnapshotData } from "../../main/app/model/snapshot/snapshotData";
-import Device from "../../main/app/model/device/device";
-import { DeviceInfosQueryResult } from "../../main/app/model/queries/computer/deviceInfos";
+import { type LoadSnapshotQueryResult } from "../../main/app/model/queries/computer/loadSnapshot";
+import { type SnapshotData } from "../../main/app/model/snapshot/snapshotData";
+import type Device from "../../main/app/model/device/device";
+import { type DeviceInfosQueryResult } from "../../main/app/model/queries/computer/deviceInfos";
 import { useSelector } from "react-redux";
-import Filter from "../../main/app/model/filters/Filter";
-import NotImplementedError from "../../main/app/model/exception/errors/notImplementedError";
+import type Filter from "../../main/app/model/filters/Filter";
 
 /**
  * GraphQL operation status
  */
-type OperationStatus = "initial" | "loadingDevice" | "loadingSnapshot" | "success" | "deviceError" | "snapshotError" | "filterError";
+type MockOperationStatus = "initial" | "loadingDevice" | "loadingSnapshot" | "success" | "deviceError" | "snapshotError" | "filterError";
 type Reducers = FetchDeviceSliceState | FilterSliceState | SnapshotSliceState;
 
-const staticReducer = (initialState: Reducers): Reducer => {
-    return (state = initialState) => state;
+interface GenericAction {
+    type: string
+    payload?: any
+}
+
+/**
+ * Initialise the reducer for a slice based off its initialSate
+ * @param {Reducers} initialState InitialSate
+ * @returns {Reducer<any, GenericAction>} Reducer used for the mock store initialisation
+ */
+const staticReducer = (initialState: Reducers): Reducer<any, GenericAction> => {
+    return (state = initialState ?? {}, action: GenericAction) => state;
 };
 
 /**
@@ -38,34 +47,34 @@ interface ApolloMockResult {
         /**
          * GraphQL query
          */
-        query: DocumentNode;
-    };
+        query: DocumentNode
+    }
     /**
      * GraphQL Query result
      */
-    result: FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult>, any> | undefined;
+    result: FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult>, any> | undefined
 }
 
 /**
  * Create a mock store for unit test
  * @param {Partial<AppState>} mockState Mock state
- * @returns 
+ * @returns {EnhancedStore} Initialised mock store
  */
 export const createMockStore = (mockState: Partial<AppState>): EnhancedStore => {
     const initialState: Partial<AppState> = {};
 
     if (mockState !== undefined) {
-        if (mockState.device != null) {
+        if (mockState.device !== undefined) {
             initialState.device = {
                 ...mockState.device
             }
         }
-        if (mockState.filter != null) {
+        if (mockState.filter !== undefined) {
             initialState.filter = {
                 ...mockState.filter
             }
         }
-        if (mockState.snapshot != null) {
+        if (mockState.snapshot !== undefined) {
             initialState.snapshot = {
                 ...mockState.snapshot
             }
@@ -75,7 +84,7 @@ export const createMockStore = (mockState: Partial<AppState>): EnhancedStore => 
     const reducers: Record<string, Reducer> = {};
 
     if (initialState.device !== null) {
-        reducers.device = staticReducer(initialState.device as FetchDeviceSliceState)
+        reducers.device = staticReducer(initialState.device as FetchDeviceSliceState ?? deviceInitialState)
     }
     if (initialState.filter !== null) {
         reducers.filter = staticReducer(initialState.filter as FilterSliceState)
@@ -90,24 +99,13 @@ export const createMockStore = (mockState: Partial<AppState>): EnhancedStore => 
     })
 }
 
-const filterOperationStatus = (operationStatus: OperationStatus) => {
-    switch(operationStatus){
-        case "loadingDevice":
-        case "loadingSnapshot":
-            return "loading";
-        case "filterError":
-        case "deviceError":
-        case "snapshotError":
-            return "error"
-        case "initial":
-        case "success":
-        default:
-            return operationStatus
-    }
-}
-
-const snapshotOperationStatus = (operationStatus: OperationStatus) => {
-    switch(operationStatus){
+/**
+ * Set the operation status for the snapshot
+ * @param {MockOperationStatus} operationStatus Operation status set in the mock for the mocked redux store
+ * @returns {OperationStatus} Redux store operation status
+ */
+const snapshotOperationStatus = (operationStatus: MockOperationStatus): OperationStatus => {
+    switch (operationStatus) {
         case "loadingSnapshot":
             return "loading";
         case "loadingDevice":
@@ -123,48 +121,64 @@ const snapshotOperationStatus = (operationStatus: OperationStatus) => {
     }
 }
 
-export const initInitialState = (operationStatus: OperationStatus, includedElements:string[], snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, filter: Filter[] = [], selectedFilteredIDS: number[] = []): Partial<AppState> => {
+/**
+ * Initialise the redux initial state
+ * @param {MockOperationStatus} operationStatus Status set in the jest test
+ * @param {string[]} includedElements Elements included for the test
+ * @param {SnapshotData|undefined} snapshot Snapshot set for the test
+ * @param {Device|undefined} device Device set for the test
+ * @param {Filter[]} filters Filters set for the test
+ * @param {number[]} selectedFilteredIDS Selected filter(s) for the test
+ * @returns {Partial<AppState>} Initial state for the redux useSelector mocked function
+ */
+export const initInitialState = (operationStatus: MockOperationStatus, includedElements: string[], snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, filters: Filter[] = [], selectedFilteredIDS: number[] = []): Partial<AppState> => {
     return {
-        device: includedElements.includes("device") ? {
-            device: operationStatus === "success" ? device : undefined,
-            deviceError: {
-                message: operationStatus === "deviceError" ? "Error in device load query" : "",
-                variant: operationStatus === "deviceError" ? "error" : undefined
-            },
-            deviceLoading: operationStatus === "loadingDevice"
-        } : undefined,
-        snapshot: includedElements.includes("snapshot") ? {
-            snapshot: operationStatus === "success" ? snapshot : undefined,
-            snapshotError: {
-                message: operationStatus === "snapshotError" ? "Error in snapshot load query" : "",
-                variant: operationStatus === "snapshotError" ? "error" : undefined
-            },
-            operationStatus: snapshotOperationStatus(operationStatus)
-        } : undefined,
-        filter: includedElements.includes("filter") ? {
-            filters: operationStatus === "success" ? filter : [],
-            filterError: {
-                message: operationStatus === "filterError" ? "Error in filter" : "",
-                variant: operationStatus === "filterError" ? "error" : undefined
-            },
-            selectedFilteredIDS: selectedFilteredIDS,
-        } : undefined,
+        device: includedElements.includes("device")
+            ? {
+                device: operationStatus === "success" ? device : undefined,
+                deviceError: {
+                    message: operationStatus === "deviceError" ? "Error in device load query" : "",
+                    variant: operationStatus === "deviceError" ? "error" : undefined
+                },
+                deviceLoading: operationStatus === "loadingDevice"
+            }
+            : undefined,
+        snapshot: includedElements.includes("snapshot")
+            ? {
+                snapshot: operationStatus === "success" ? snapshot : undefined,
+                snapshotError: {
+                    message: operationStatus === "snapshotError" ? "Error in snapshot load query" : "",
+                    variant: operationStatus === "snapshotError" ? "error" : undefined
+                },
+                operationStatus: snapshotOperationStatus(operationStatus)
+            }
+            : undefined,
+        filter: includedElements.includes("filter")
+            ? {
+                filters: operationStatus === "success" ? filters : [],
+                filterError: {
+                    message: operationStatus === "filterError" ? "Error in filter" : "",
+                    variant: operationStatus === "filterError" ? "error" : undefined
+                },
+                selectedFilteredIDS
+            }
+            : undefined
     }
 }
 
 /**
  * Init apollo mocks for the unit test
- * @param {OperationStatus} operationStatus GraphQL query operation status
+ * @param {MockOperationStatus} operationStatus GraphQL query operation status
  * @param {SnapshotData | undefined} snapshot Snapshot used for test
  * @param {Device | undefined} device Device used for test
- * @param {str[]} queries Queries used for the test
+ * @param {string[]} queries Queries used for the test
  * @returns {Map<string,ApolloMockResult>} Apollo mock queries result
  */
-export const initApolloMock = (operationStatus: OperationStatus, snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, queries: string[]): Map<string, ApolloMockResult> => {
+export const initApolloMock = (operationStatus: MockOperationStatus, snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, queries: string[] = []): Map<string, ApolloMockResult> => {
     const mocks = new Map<string, ApolloMockResult>()
 
     if (operationStatus === "success" && ((device === undefined && queries.includes("device")) || (snapshot === undefined && queries.includes("snapshot")))) {
-        const faultyObject = device === undefined ? "device" : snapshot
+        const faultyObject = device === undefined ? "device" : "snapshot"
         throw new NotFoundError(`Invalid operation : if the test type is a success, the $
             ${faultyObject} must be defined!`)
     }
@@ -173,14 +187,18 @@ export const initApolloMock = (operationStatus: OperationStatus, snapshot: Snaps
             query: FETCH_SNAPSHOT
         },
         result: {
-            data: operationStatus === "success" ? {
-                snapshotInfos: snapshot
-            } : undefined,
-            errors: operationStatus !== "snapshotError" ? [
-                {
-                    message: "Snapshot GraphQL error message here!"
+            data: operationStatus === "success"
+                ? {
+                    snapshotInfos: snapshot
                 }
-            ] : []
+                : undefined,
+            errors: operationStatus !== "snapshotError"
+                ? [
+                    {
+                        message: "Snapshot GraphQL error message here!"
+                    }
+                ]
+                : []
         }
     })
 
@@ -189,25 +207,27 @@ export const initApolloMock = (operationStatus: OperationStatus, snapshot: Snaps
             query: FETCH_DEVICE
         },
         result: {
-            data: operationStatus === "success" ? {
-                deviceInfos: device as Device
-            } : undefined,
-            errors: operationStatus !== "snapshotError" ? [
-                {
-                    message: "Snapshot GraphQL error message here!"
+            data: operationStatus === "success"
+                ? {
+                    deviceInfos: device as Device
                 }
-            ] : []
+                : undefined,
+            errors: operationStatus !== "snapshotError"
+                ? [
+                    {
+                        message: "Snapshot GraphQL error message here!"
+                    }
+                ]
+                : []
         }
     })
 
     return mocks
 }
 
-
 /**
  * Init the ``useSelector`` Mock for the unit test
- * @param {Device|undefined} device Device fetched from the server. If successful, must be loaded, otherwise could be left blank.
- * @param {SnapshotData} snapshot Fetched snapshot from the server.
+ * @param {Partial<AppState>} store Mocked store
  */
 export const initUseSelectorMock = (store: Partial<AppState>): void => {
     const mockedUseSelector = useSelector as jest.MockedFunction<typeof useSelector>;
@@ -218,30 +238,36 @@ export const initUseSelectorMock = (store: Partial<AppState>): void => {
 
         return selector(
             {
-                device: deviceState !== undefined ? {
-                    device: deviceState.device,
-                    deviceError: {
-                        message: deviceState.deviceError.message,
-                        variant: deviceState.deviceError.variant,
-                    },
-                    deviceLoading: deviceState.deviceLoading
-                } : undefined,
-                snapshot: snapshotState !== undefined ? {
-                    operationStatus: snapshotState.operationStatus,
-                    snapshot: snapshotState.snapshot,
-                    snapshotError: {
-                        message: snapshotState.snapshotError.message,
-                        variant: snapshotState.snapshotError.variant,
+                device: deviceState !== undefined
+                    ? {
+                        device: deviceState.device,
+                        deviceError: {
+                            message: deviceState.deviceError !== undefined ? deviceState.deviceError.message : "",
+                            variant: deviceState.deviceError !== undefined ? deviceState.deviceError.variant : undefined
+                        },
+                        deviceLoading: deviceState.deviceLoading
                     }
-                } : undefined,
-                filter: filterState !== undefined ? {
-                    filterError : {
-                        message: filterState.filterError.message,
-                        variant: filterState.filterError.variant,
-                    },
-                    filters: filterState.filters,
-                    selectedFilteredIDS: filterState.selectedFilteredIDS
-                } : undefined
+                    : undefined,
+                snapshot: snapshotState !== undefined
+                    ? {
+                        operationStatus: snapshotState.operationStatus,
+                        snapshot: snapshotState.snapshot,
+                        snapshotError: {
+                            message: snapshotState.snapshotError !== undefined ? snapshotState.snapshotError.message : "",
+                            variant: snapshotState.snapshotError !== undefined ? snapshotState.snapshotError.variant : undefined
+                        }
+                    }
+                    : undefined,
+                filter: filterState !== undefined
+                    ? {
+                        filterError: {
+                            message: filterState.filterError !== undefined ? filterState.filterError.message : "",
+                            variant: filterState.filterError !== undefined ? filterState.filterError.variant : undefined
+                        },
+                        filters: filterState.filters,
+                        selectedFilteredIDS: filterState.selectedFilteredIDS
+                    }
+                    : undefined
             }
         )
     }

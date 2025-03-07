@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Topbar unit test suite Successful render 1`] = `
+<DocumentFragment>
+  <div
+    id="TopBar"
+  >
+    Top bar here!
+  </div>
+</DocumentFragment>
+`;

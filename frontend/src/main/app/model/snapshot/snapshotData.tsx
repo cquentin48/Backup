@@ -22,6 +22,7 @@ export class SnapshotData {
 
     /**
      * Class object constructor method
+     * @param {string} operatingSystem Device snapshot related operating system
      */
     constructor (operatingSystem: string = "") {
         this.versions = [];

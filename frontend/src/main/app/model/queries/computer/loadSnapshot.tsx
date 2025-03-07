@@ -4,7 +4,7 @@ import type BasicQueryParameters from "../basicQueryParameters";
 import { SnapshotData } from "../../snapshot/snapshotData";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { type ApolloQueryResult } from "@apollo/client";
-import { SnapshotSoftware } from "../../snapshot/snapshotLibrary";
+import { type SnapshotSoftware } from "../../snapshot/snapshotLibrary";
 
 export interface LoadSnapshotQueryResult {
     snapshotInfos: SnapshotData | undefined

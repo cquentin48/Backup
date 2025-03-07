@@ -2,7 +2,7 @@ import React from "react"
 
 import { MockedProvider, type MockedResponse } from '@apollo/client/testing'
 
-import { render, type RenderResult, waitFor } from "@testing-library/react"
+import { render, type RenderResult } from "@testing-library/react"
 import '@testing-library/jest-dom'
 
 import { Provider, useDispatch, useSelector } from "react-redux"
@@ -20,7 +20,7 @@ import { type LoadSnapshotQueryResult } from "../../../../../../main/app/model/q
 import Filter from "../../../../../../main/app/model/filters/Filter"
 import { type SnapshotSoftware } from "../../../../../../main/app/model/snapshot/snapshotLibrary"
 import NotFoundError from "../../../../../../main/app/model/exception/errors/notFoundError"
-import { AppDispatch } from "../../../../../../main/app/controller/store"
+import { type AppDispatch } from "../../../../../../main/app/controller/store"
 
 /**
  * Preloaded state used for the mocks in the tests
@@ -77,7 +77,7 @@ describe("Type of softwares origin chart unit test suite", () => {
         )
     }
 
-    const initApolloMock = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined) => {
+    const initApolloMock = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined): Array<MockedResponse<LoadSnapshotQueryResult, any>> => {
         let apolloMocks: Array<MockedResponse<LoadSnapshotQueryResult, any>>;
         if (operationStatus === "success") {
             if (snapshot === undefined) {
@@ -125,10 +125,9 @@ describe("Type of softwares origin chart unit test suite", () => {
 
     /**
      * Render the SoftwaresOrigin component with the Apollo query and store mocks
-     * @param {"success" | "failure" | "loading" | "initial"} operationStatus Fetch snapshot operation stage
-     * @param {SnapshotData | undefined} snapshot Provided snapshot for the success fetch snapshot data
+     * @param {Array<MockedResponse<LoadSnapshotQueryResult, any>>} apolloMocks Apollo GraphQL query mocks
      * @param {EnhancedStore} store Redux mocked store
-     * @returns {NotFoundError} If the operation is marked as a success and no snapshot is provided.
+     * @returns {RenderResult} Rendered mocked component
      */
     const renderMockedComponent = (apolloMocks: Array<MockedResponse<LoadSnapshotQueryResult, any>>, store: EnhancedStore): RenderResult => {
         return render(
@@ -149,19 +148,18 @@ describe("Type of softwares origin chart unit test suite", () => {
      * @throws {Error} If the test stage is not in the list
      */
     const initStore = (operationStatus: "success" | "error" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined, filters: Filter[] = []): EnhancedStore => {
-        let preloadedState: MockedPreloadedState;
+
         if (operationStatus === "success" && snapshot === undefined) {
             throw new Error("The snapshot must be defined if the loading snapshot data with a GraphQL query is successful!")
         }
-
-        preloadedState = {
+        const preloadedState: MockedPreloadedState = {
             snapshot: {
                 snapshot: operationStatus === "success" ? JSON.parse(JSON.stringify(snapshot)) : undefined,
                 snapshotError: {
-                    message: operationStatus === "error" ? "Error raised": "",
-                    variant: operationStatus === "error" ? "error": undefined
+                    message: operationStatus === "error" ? "Error raised" : "",
+                    variant: operationStatus === "error" ? "error" : undefined
                 },
-                operationStatus: operationStatus
+                operationStatus
             },
             filter: {
                 filterError: {

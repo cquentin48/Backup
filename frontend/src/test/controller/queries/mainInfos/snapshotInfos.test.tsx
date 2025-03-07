@@ -1,21 +1,18 @@
-import { DocumentNode, FetchResult } from "@apollo/client";
-import { ResultFunction } from "@apollo/client/testing";
+import { type DocumentNode, type FetchResult } from "@apollo/client";
+import { type ResultFunction } from "@apollo/client/testing";
 
-import { LoadSnapshotQueryResult, fetchSnapshot } from "../../../../main/app/model/queries/computer/loadSnapshot";
-import Device from "../../../../main/app/model/device/device";
+import { type LoadSnapshotQueryResult, fetchSnapshot } from "../../../../main/app/model/queries/computer/loadSnapshot";
 import NotFoundError from "../../../../main/app/model/exception/errors/notFoundError";
 
 import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
-import SnapshotID from "../../../../main/app/model/device/snapshotId";
 import gqlClient from "../../../../main/app/model/queries/client";
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
 
-
 interface ApolloMockResult {
     request: {
-        query: DocumentNode;
-    };
-    result: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined;
+        query: DocumentNode
+    }
+    result: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined
 }
 
 describe("Load device infos GraphQL query unit test", () => {
@@ -57,7 +54,7 @@ describe("Load device infos GraphQL query unit test", () => {
     test("Successful request", async () => {
         // Given
         const snapshot = new SnapshotData("My os!")
-        snapshot.addSoftware("test","test software","test version")
+        snapshot.addSoftware("test", "test software", "test version")
 
         const mockResult = initMockApolloCalls("success", snapshot)
         const dispatch = jest.fn()

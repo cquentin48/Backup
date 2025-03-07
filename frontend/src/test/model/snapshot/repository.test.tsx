@@ -1,7 +1,7 @@
 import Repository from "../../../main/app/model/snapshot/repository"
 
-describe("Repository model class unit test suite", ()=>{
-    test("Correct initialisation", ()=>{
+describe("Repository model class unit test suite", () => {
+    test("Correct initialisation", () => {
         // Given
         const sourceLines = "lines"
         const name = "name"

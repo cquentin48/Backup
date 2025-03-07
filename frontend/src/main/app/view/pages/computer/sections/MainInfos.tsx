@@ -56,7 +56,8 @@ export default function SpecsMainInfos (): React.JSX.Element {
                 label="Device added on"
                 value={
                     firstSnapshot !== undefined
-                        ? SnapshotID.localizedDate(firstSnapshot.date): ""
+                        ? SnapshotID.localizedDate(firstSnapshot.date)
+                        : ""
                 }
             />
             <DeviceStat
