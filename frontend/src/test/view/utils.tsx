@@ -39,7 +39,7 @@ const staticReducer = (initialState: Reducers): Reducer<any, GenericAction> => {
 /**
  * Apollo GraphQL query mock result
  */
-interface ApolloMockResult {
+export interface ApolloMockResult {
     /**
      * GraphQL query request
      */
@@ -131,11 +131,11 @@ const snapshotOperationStatus = (operationStatus: MockOperationStatus): Operatio
  * @param {number[]} selectedFilteredIDS Selected filter(s) for the test
  * @returns {Partial<AppState>} Initial state for the redux useSelector mocked function
  */
-export const initInitialState = (operationStatus: MockOperationStatus, includedElements: string[], snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, filters: Filter[] = [], selectedFilteredIDS: number[] = []): Partial<AppState> => {
+export const initInitialState = (operationStatus: MockOperationStatus, includedElements: string[] = [], snapshot: SnapshotData | undefined = undefined, device: Device | undefined = undefined, filters: Filter[] = [], selectedFilteredIDS: number[] = []): Partial<AppState> => {
     return {
-        device: includedElements.includes("device")
+        device: includedElements.includes("device") || operationStatus === "deviceError"
             ? {
-                device: operationStatus === "success" ? device : undefined,
+                device: operationStatus === "success" ? JSON.parse(JSON.stringify(device)) : undefined,
                 deviceError: {
                     message: operationStatus === "deviceError" ? "Error in device load query" : "",
                     variant: operationStatus === "deviceError" ? "error" : undefined
@@ -143,9 +143,9 @@ export const initInitialState = (operationStatus: MockOperationStatus, includedE
                 deviceLoading: operationStatus === "loadingDevice"
             }
             : undefined,
-        snapshot: includedElements.includes("snapshot")
+        snapshot: includedElements.includes("snapshot") || operationStatus === "snapshotError"
             ? {
-                snapshot: operationStatus === "success" ? snapshot : undefined,
+                snapshot: operationStatus === "success" ? JSON.parse(JSON.stringify(snapshot)) : undefined,
                 snapshotError: {
                     message: operationStatus === "snapshotError" ? "Error in snapshot load query" : "",
                     variant: operationStatus === "snapshotError" ? "error" : undefined
@@ -155,7 +155,7 @@ export const initInitialState = (operationStatus: MockOperationStatus, includedE
             : undefined,
         filter: includedElements.includes("filter")
             ? {
-                filters: operationStatus === "success" ? filters : [],
+                filters: operationStatus === "success" ? JSON.parse(JSON.stringify(filters)) : [],
                 filterError: {
                     message: operationStatus === "filterError" ? "Error in filter" : "",
                     variant: operationStatus === "filterError" ? "error" : undefined

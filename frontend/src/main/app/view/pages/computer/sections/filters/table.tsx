@@ -139,8 +139,6 @@ export default function FilterTable (): React.JSX.Element {
         return updatedRows;
     }
 
-    updateRows(currentRows, filters)
-
     if (filterError.message !== "" && filterError.variant !== undefined) {
         enqueueSnackbar(
             filterError.message,
@@ -151,6 +149,7 @@ export default function FilterTable (): React.JSX.Element {
     }
 
     if (operationStatus === "success") {
+        updateRows(currentRows, filters)
         return (
             <Paper className="FilterTable">
                 <DataGrid

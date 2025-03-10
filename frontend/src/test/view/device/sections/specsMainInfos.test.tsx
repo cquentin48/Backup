@@ -19,20 +19,13 @@ import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
 import { type AppState } from "../../../../main/app/controller/store";
 import { type DocumentNode, type FetchResult } from "@apollo/client";
 
-import { createMockStore, initApolloMock, initInitialState, initUseSelectorMock } from "../../utils";
+import { ApolloMockResult, createMockStore, initApolloMock, initInitialState, initUseSelectorMock } from "../../utils";
 
 jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),
     useSelector: jest.fn(),
     useDispatch: jest.fn()
 }))
-
-interface ApolloMockResult {
-    request: {
-        query: DocumentNode
-    }
-    result: FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult | DeviceInfosQueryResult>, any> | undefined
-}
 
 describe("Device main infos test suite", () => {
     const renderMockedComponent = (store: EnhancedStore<AppState>, apolloMocks: Map<string, ApolloMockResult>): RenderResult => {
