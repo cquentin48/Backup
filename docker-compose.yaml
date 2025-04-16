@@ -14,6 +14,17 @@ services:
       - static:/static
     command: sh -c "cp -r /home/build/static/* /static ; nginx -g 'daemon off;'"
 
+  embeddings:
+    image: elasticsearch:8.8.0
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    env_file:
+      - .env
+
   channels:
     image: redis:7
     healthcheck:

@@ -9,6 +9,7 @@ import TopBar from "./view/pages/computer/topbar";
 import { SnackbarProvider } from "notistack";
 import { Provider } from "react-redux";
 import { store } from "./controller/store";
+import ChatBotButton from "./view/pages/computer/chatbot/button";
 
 /**
  * Web application main function
@@ -50,6 +51,7 @@ function App (): React.JSX.Element {
                             </Routes>
                         </BrowserRouter>
                     </SnackbarProvider>
+                    <ChatBotButton/>
                 </ApolloProvider>
             </Provider>
         </div>

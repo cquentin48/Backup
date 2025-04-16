@@ -61,8 +61,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'data',
+    'chatbot',
     'graphene_django'
 ]
+
+ELASTICSEARCH_URL = "http://embeddings:9200"
 
 VERBOSE = True
 
@@ -120,6 +123,10 @@ TEMPLATES = [
     },
 ]
 
+
+CHATBOT_MODEL = {
+    'ENTITY_RECOGNITION': 'cquentin48/backup_ner'
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
