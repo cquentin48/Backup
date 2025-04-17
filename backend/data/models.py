@@ -1,5 +1,8 @@
 from django.db import models
-from server.settings import LOCALE
+from tools.localisation import Localisation
+
+
+LOCALE = Localisation("en-us")
 
 class Device(models.Model):
     """

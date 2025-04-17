@@ -7,7 +7,6 @@ from channels.generic.websocket import WebsocketConsumer
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Device, Package, ChosenVersion, Snapshot, Repository
 
 
 class BackupImportConsumer(WebsocketConsumer):
@@ -40,6 +39,7 @@ class BackupImportConsumer(WebsocketConsumer):
         )
 
     def append_new_device(self, device_infos: dict):
+        from .models import Device
         """
         Adds a new device to the database (TODO: migrate it towards another class)
         """
@@ -85,6 +85,7 @@ class BackupImportConsumer(WebsocketConsumer):
         return versions
 
     def append_library(self, package_name: str, version: str, package_type: str):
+        from .models import Package, ChosenVersion
         """ Append library alongside the package inside the database
 
         :type package_name: str
@@ -113,12 +114,13 @@ class BackupImportConsumer(WebsocketConsumer):
                 package=package, chosen_version=version)
             return version
 
-    def add_repository(self, repository: dict) -> Repository:
+    def add_repository(self, repository: dict):
         """
         Adds a new repository into the database if not set.
 
         :rtype: Repository
         """
+        from .models import Repository
 
         try:
             return Repository.objects.get(
@@ -131,7 +133,7 @@ class BackupImportConsumer(WebsocketConsumer):
                 sources_lines=repository['lines']
             )
 
-    def init_device(self, device_data: str) -> Device:
+    def init_device(self, device_data: str):
         """ Finds the device linked to the snapshot currently being created.
         If set, returns it. Otherwise, creates a new one and returns it
 
@@ -140,6 +142,7 @@ class BackupImportConsumer(WebsocketConsumer):
 
         :rtype: Device
         """
+        from .models import Device
         try:
             self.send_message(
                 status='info',
@@ -164,7 +167,7 @@ class BackupImportConsumer(WebsocketConsumer):
                               message='No device found! Adding a new one!')
             return device
 
-    def init_snapshot(self, snapshot_data: str, device: Device) -> Snapshot:
+    def init_snapshot(self, snapshot_data: str, device):
         """ Creates a new snapshot object alongside the softwares
 
         :type device_data: str
@@ -175,6 +178,7 @@ class BackupImportConsumer(WebsocketConsumer):
 
         :returns: Snapshot
         """
+        from .models import Snapshot
         snapshot = Snapshot.objects.create(
             related_device=device,
             save_date=timezone.now(),
@@ -189,7 +193,7 @@ class BackupImportConsumer(WebsocketConsumer):
             snapshot.save()
         return snapshot
 
-    def set_repositories(self, snapshot_data: str, snapshot: Snapshot):
+    def set_repositories(self, snapshot_data: str, snapshot):
         """ Add install types to the snapshot if set in the device raw data
 
         :type device_data: str

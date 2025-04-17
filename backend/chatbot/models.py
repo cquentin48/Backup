@@ -5,10 +5,10 @@ from django.core.exceptions import ObjectDoesNotExist, SuspiciousOperation
 from django.db import models
 from pgvector.django import VectorField
 
-from server.settings import LOCALE
+from tools.localisation import Localisation
 
 # Create your models here.
-
+LOCALE = Localisation("en-us")
 
 class ConversationModel(models.Model):
     id = models.AutoField(primary_key=True,

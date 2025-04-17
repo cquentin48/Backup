@@ -37,7 +37,7 @@ services:
       - "6379:6379"
 
   db:
-    image: postgres
+    image: ankane/pgvector
     volumes:
       - postgres_data:/var/lib/postgresql/data
       
