@@ -14,6 +14,7 @@ import { useSelector, Provider, useDispatch } from "react-redux";
 import snapshotReducer from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 import filterReducer from "../../../../main/app/controller/deviceMainInfos/filterSlice"
 import deviceReducer from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
+import chatbotReducer from "../../../../main/app/controller/deviceMainInfos/chatbotSlice"
 import { type AppState } from "../../../../main/app/controller/store";
 
 import Device from "../../../../main/app/model/device/device";
@@ -106,6 +107,10 @@ describe("Device loading modal test suite snapshot", () => {
                             variant: deviceState.deviceError.variant
                         },
                         deviceLoading: store.getState().device.deviceLoading
+                    },
+                    chatbot:{
+                        conversationHeaders: [],
+                        messages: []
                     }
                 }
             )
@@ -236,6 +241,10 @@ describe("Device loading modal test suite snapshot", () => {
                     variant: operationStatus === "error" ? "error" : undefined
                 },
                 operationStatus: operationStatus === "loadingSnapshot" ? "loading" : (operationStatus !== "loadingDevice" ? operationStatus : "loading")
+            },
+            chatbot:{
+                conversationHeaders: [],
+                messages: []
             }
         }
 
@@ -243,7 +252,8 @@ describe("Device loading modal test suite snapshot", () => {
             reducer: {
                 device: deviceReducer,
                 snapshot: snapshotReducer,
-                filter: filterReducer
+                filter: filterReducer,
+                chatbot: chatbotReducer
             },
             preloadedState
         })

@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Literal, List, Union
 
 from django.core.exceptions import ObjectDoesNotExist, SuspiciousOperation
-from django.db.models import AutoField, CharField, DateTimeField, ForeignKey, Model, PROTECT
+from django.db import models
 from pgvector.django import VectorField
 
 from server.settings import LOCALE
@@ -10,8 +10,8 @@ from server.settings import LOCALE
 # Create your models here.
 
 
-class ConversationModel(Model):
-    id = AutoField(primary_key=True,
+class ConversationModel(models.Model):
+    id = models.AutoField(primary_key=True,
                    verbose_name=LOCALE.load_localised_text("CHATBOT_CONV_ID"))
 
     @staticmethod
@@ -62,19 +62,19 @@ class ConversationModel(Model):
         return f"Conversation - {id}"
 
 
-class ChatbotSentence(Model):
+class ChatbotSentence(models.Model):
     AGENTS = {
         "BOT": 'CHATBOT_AGENT',
         "HUMAN": 'USER'
     }
-    id = AutoField(primary_key=True,
+    id = models.AutoField(primary_key=True,
                    verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT_ID"))
-    agent = CharField(
+    agent = models.CharField(
         choices=AGENTS, verbose_name=LOCALE.load_localised_text("CHATBOT_AGENT"))
-    text = CharField(verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT"))
-    conversation = ForeignKey(ConversationModel, on_delete=PROTECT,
+    text = models.CharField(verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT"))
+    conversation = models.ForeignKey(ConversationModel, on_delete=models.PROTECT,
                               verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT_RELATED_CONVERSATION"))
-    timestamp = DateTimeField(
+    timestamp = models.DateTimeField(
         verbose_name=LOCALE.load_localised_text("CHATBOT_TIMESTAMP"))
     datetime.now()
 
@@ -138,9 +138,9 @@ class ChatbotSentence(Model):
         return f"Conversation {related_conv_id} - {self.timestamp}"
 
 
-class Sentence(Model):
-    tags = CharField(verbose_name=LOCALE.load_localised_text("SENTENCE_TAGS"))
-    sentence = CharField(
+class Sentence(models.Model):
+    tags = models.CharField(verbose_name=LOCALE.load_localised_text("SENTENCE_TAGS"))
+    sentence = models.CharField(
         verbose_name=LOCALE.load_localised_text("RELATED_SENTENCE"))
     embedding = VectorField(
         dimensions=1024,
@@ -150,28 +150,25 @@ class Sentence(Model):
     )
 
 
-class SentenceEntityModel(Model):
+class SentenceEntityModel(models.Model):
     """
     Sentence entity found by the model and stored in the database
     """
 
-    id = AutoField(
-        verbose_name=LOCALE.load_localised_text("CHATBOT_ENTITY_ID"))
-    """
-    Primary key
-    """
-
-    input_type = CharField(
+    input_type = models.CharField(
         verbose_name=LOCALE.load_localised_text("CHATBOT_ENTITY_INPUT_TYPE"))
     """
     Entity object type
     """
 
-    input = CharField(
+    input = models.CharField(
         verbose_name=LOCALE.load_localised_text("CHATBOT_ENTITY"))
     """
     Entity found by the model
     """
 
-    sentence = ForeignKey(Sentence, verbose_name=LOCALE.load_localised_text(
-        "CHATBOT_ENTITY_RELATED_SENTENCE"))
+    sentence = models.ForeignKey(
+        Sentence,
+        verbose_name=LOCALE.load_localised_text("CHATBOT_ENTITY_RELATED_SENTENCE"),
+        on_delete=models.PROTECT
+    )

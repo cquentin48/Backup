@@ -3,17 +3,17 @@ import json
 from typing import Literal
 
 import asyncio
-from channels.generic.websocket import WebsocketConsumer
+from asgiref.sync import sync_to_async
+from channels.generic.websocket import AsyncWebsocketConsumer
 
-from models import ConversationModel, ChatbotSentence
-
-
-class ChatbotConsumer(WebsocketConsumer):
+class ChatbotConsumer(AsyncWebsocketConsumer):
     """
     Websocket communication class
     """
 
-    def connect(self):
+    async def connect(self):
+        # pylint: disable=wrong-import-position
+        from .models import ConversationModel
         """ Connect the client to the database.
         Check if user is connected before.
         """
@@ -21,7 +21,7 @@ class ChatbotConsumer(WebsocketConsumer):
         self.dialog = None
         self.sentences = []
         self.timeout_task = asyncio.create_task(self.auto_disconnect())
-        conversation_headers = ConversationModel.load_all_conversation_headers()
+        conversation_headers = await sync_to_async(ConversationModel.load_all_conversation_headers())
         self.send("Connected!")
         self.send_message("info", info=json.dumps({
             'actionType':'CONVERSATION_HEADERS_LOAD',
@@ -54,6 +54,8 @@ class ChatbotConsumer(WebsocketConsumer):
         :type bytes_data: bytes
         :param bytes_data: Bytes sent by the client (Unused here)
         """
+        # pylint: disable=wrong-import-position
+        from models import ConversationModel, ChatbotSentence
         data = json.loads(text_data)
         self.reset_timeout()
         match data['ACTION_TYPE']:

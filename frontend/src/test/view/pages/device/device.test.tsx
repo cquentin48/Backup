@@ -21,6 +21,7 @@ import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData"
 import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 import filterReducer from "../../../../main/app/controller/deviceMainInfos/filterSlice"
 import deviceReducer, { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
+import chatbotReducer, { ChatbotSliceState } from "../../../../main/app/controller/deviceMainInfos/chatbotSlice";
 import { type OperationStatus, type AppState } from "../../../../main/app/controller/store"
 
 import ComputerPage from "../../../../main/app/view/pages/computer/computerPage"
@@ -74,6 +75,8 @@ interface MockedPreloadedState {
     snapshot: SnapshotSliceState
 
     device: FetchDeviceSliceState
+
+    chatbot: ChatbotSliceState;
 }
 
 interface ApolloMockResult {
@@ -134,13 +137,18 @@ describe("Device page", () => {
                     variant: operationStatus === "error" ? "error" : undefined
                 },
                 operationStatus: "success"
+            },
+            chatbot:{
+                conversationHeaders: [],
+                messages: []
             }
         }
         return configureStore({
             reducer: {
                 device: deviceReducer,
                 snapshot: snapshotReducer,
-                filter: filterReducer
+                filter: filterReducer,
+                chatbot: chatbotReducer
             },
             preloadedState
         })
@@ -247,6 +255,10 @@ describe("Device page", () => {
                             variant: deviceState.deviceError.variant
                         },
                         deviceLoading: false
+                    },
+                    chatbot: {
+                        conversationHeaders: [],
+                        messages: []
                     }
                 }
             )

@@ -9,19 +9,30 @@ https://docs.djangoproject.com/en/4.1/howto/deployment/asgi/
 
 from .routing import websocket_urlpatterns
 import os
+import django
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
+django.setup()
 
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.security.websocket import AllowedHostsOriginValidator
-from elasticsearch import Elasticsearch
 from django.core.asgi import get_asgi_application
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 
 django_asgi_app = get_asgi_application()
 
+application = ProtocolTypeRouter({
+    "http": django_asgi_app,
+    "websocket": AllowedHostsOriginValidator(
+        AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
+    )
+})
+
 # pylint: disable=wrong-import-position
+from elasticsearch import Elasticsearch
 # Append the sentences inside the database
+
+# TODO: load the sentence files (unique values only) -> compute the embedding, then compute the similarity with the ner model. If the sentence is not set, it is added!
 es = Elasticsearch("http://embeddings:9200")
 es.indices.create(
     index="sentence_embeddings",
@@ -47,12 +58,3 @@ es.indices.create(
     },
     ignore=400
 )
-
-# TODO: load the sentence files (unique values only) -> compute the embedding, then compute the similarity with the ner model. If the sentence is not set, it is added!
-
-application = ProtocolTypeRouter({
-    "http": django_asgi_app,
-    "websocket": AllowedHostsOriginValidator(
-        AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
-    )
-})

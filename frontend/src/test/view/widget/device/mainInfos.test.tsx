@@ -135,6 +135,10 @@ describe("MainInfosFrame unit test suite", () => {
                             message: operationStatus === "deviceError" || operationStatus === "snapshotError" ? "Error raised in test" : "",
                             variant: operationStatus === "deviceError" || operationStatus === "snapshotError" ? "error" : undefined
                         }
+                    },
+                    chatbot:{
+                        conversationHeaders: [],
+                        messages: []
                     }
                 }
             )
