@@ -1,7 +1,9 @@
 from django.contrib import admin
 
-from .models import ChatbotInput, Conversation
+from .models import ChatbotSentence, ConversationModel, Sentence, SentenceEntityModel
 
 # Register your models here.
-admin.site.register(ChatbotInput)
-admin.site.register(Conversation)
+admin.site.register(ChatbotSentence)
+admin.site.register(ConversationModel)
+admin.site.register(Sentence)
+admin.site.register(SentenceEntityModel)

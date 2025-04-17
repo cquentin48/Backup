@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import deviceReducer from "./deviceMainInfos/loadDeviceSlice";
 import filterReducer from "./deviceMainInfos/filterSlice";
 import snapshotReducer from "./deviceMainInfos/loadSnapshotSlice";
+import chatbotReducer from "./deviceMainInfos/chatbotSlice";
 
 export const store = configureStore({
     reducer: {
         device: deviceReducer,
         filter: filterReducer,
-        snapshot: snapshotReducer
+        snapshot: snapshotReducer,
+        chatbot: chatbotReducer
     }
 })
 

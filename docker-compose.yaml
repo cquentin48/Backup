@@ -24,6 +24,7 @@ services:
       - xpack.security.enabled=false
     env_file:
       - .env
+    mem_limit: 2g
 
   channels:
     image: redis:7

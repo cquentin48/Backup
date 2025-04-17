@@ -7,7 +7,7 @@ For more information on this file, see
 https://docs.djangoproject.com/en/4.1/howto/deployment/asgi/
 """
 
-from data.routing import websocket_urlpatterns
+from .routing import websocket_urlpatterns
 import os
 
 from channels.auth import AuthMiddlewareStack
