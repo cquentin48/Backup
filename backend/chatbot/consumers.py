@@ -1,4 +1,6 @@
 import json
+from json.decoder import JSONDecodeError
+import logging
 
 from typing import Literal
 
@@ -6,10 +8,13 @@ import asyncio
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+
 class ChatbotConsumer(AsyncWebsocketConsumer):
     """
     Websocket communication class
     """
+    logging = logging.basicConfig(
+        level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
     async def connect(self):
         # pylint: disable=wrong-import-position
@@ -17,35 +22,33 @@ class ChatbotConsumer(AsyncWebsocketConsumer):
         """ Connect the client to the database.
         Check if user is connected before.
         """
-        self.accept()
+        await self.accept()
+        client_ip, client_port = self.scope['client']
         self.dialog = None
         self.sentences = []
-        self.timeout_task = asyncio.create_task(self.auto_disconnect())
-        conversation_headers = await sync_to_async(ConversationModel.load_all_conversation_headers())
+        logging.info(
+            f"Connected from ip adress {client_ip} with port {client_port}!")
+
+        conversation_headers = await sync_to_async(ConversationModel.load_all_conversation_headers)()
+        logging.info("Sentences loaded")
         self.send("Connected!")
-        self.send_message("info", info=json.dumps({
-            'actionType':'CONVERSATION_HEADERS_LOAD',
-            'conversationHeaders':conversation_headers
-        }))
-
-    def send_message(self, status: Literal['error', 'info', 'warning', 'success'], **args):
-        """ Sends a message to the connected client
-        :type status: Literal
-        :param status: Operation status (either ``error``, ``warning``, ``info``, ``success``)
-
-        :type **args: dict
-        :param **args: Extra arguments for the message
-        """
-        self.send(
-            json.dumps(
+        logging.info("Message sent!")
+        await self.send(json.dumps(
+            {'status': 'success',
+                'data':
                 {
-                    'status': status,
-                    **args
+                    'actionType': 'CONVERSATION_HEADERS_LOAD',
+                    'conversationHeaders': conversation_headers
                 }
-            )
+             })
         )
+        self.timeout_task = asyncio.create_task(self.auto_disconnect())
 
-    def receive(self, text_data=None, bytes_data=None):
+    def disconnect(self, code):
+        logging.error(f"Disconnect with code {code}")
+        return super().disconnect(code)
+
+    async def receive(self, text_data=None):
         """ Receive data function from the client socket
 
         :type text_data: str
@@ -55,24 +58,45 @@ class ChatbotConsumer(AsyncWebsocketConsumer):
         :param bytes_data: Bytes sent by the client (Unused here)
         """
         # pylint: disable=wrong-import-position
-        from models import ConversationModel, ChatbotSentence
-        data = json.loads(text_data)
-        self.reset_timeout()
-        match data['ACTION_TYPE']:
-            case "INIT_CONVERSATION":
-                self.dialog = ConversationModel.gets_or_create_conversation(
-                    data["dialogID"])
-                self.sentences = ChatbotSentence.get_sentences(self.dialog.id)
-            case "WRITE_ACTION":
-                self.sentences.append(ChatbotSentence.add_new_sentence(
-                    "HUMAN",
-                    data["text"],
-                    self.dialog,
-                    data["timestamp"]
-                ))
-            case _:
-                self.send_message("error", info=json.dumps(
-                    {'message': 'UNSUPPORTED_ACTION'}))
+        from .models import ConversationModel, ChatbotSentence
+        try:
+            data = json.loads(text_data)
+            logging.info(f"Received data : {data}")
+            self.reset_timeout()
+            match data['ACTION_TYPE']:
+                case "INIT_CONVERSATION":
+                    self.dialog = ConversationModel.gets_or_create_conversation(
+                        data["dialogID"])
+                    self.sentences = ChatbotSentence.get_sentences(
+                        self.dialog.id)
+                case "WRITE_ACTION":
+                    self.sentences.append(ChatbotSentence.add_new_sentence(
+                        "HUMAN",
+                        data["text"],
+                        self.dialog,
+                        data["timestamp"]
+                    ))
+                case _:
+                    await self.send(json.dumps(
+                        {
+                            "status": "error",
+                            'data': {
+                                'message': 'UNSUPPORTED_ACTION'
+                            }
+                        }
+                    ))
+        except JSONDecodeError as _:
+            logging.error(f"Invalid received data : {text_data}")
+            await self.send(
+                json.dumps(
+                    {
+                        'status': 'error',
+                        "data": {
+                            "message": "JSON_OBJECT_REQUIRED"
+                        }
+                    }
+                )
+            )
 
     def reset_timeout(self):
         """
@@ -86,5 +110,10 @@ class ChatbotConsumer(AsyncWebsocketConsumer):
         Auto disconnect if the user is not sending any data for 15 minutes
         """
         await asyncio.sleep(15*60)
-        await self.send_message("warning", infos=json.dumps({'message': 'TIMEOUT_DISCONNECT'}))
+        logging.error("Disconnect!")
+        await self.send(
+            json.dumps(
+                {"status": "warning", "data": {'message': 'TIMEOUT_DISCONNECT'}}
+            )
+        )
         await self.close()

@@ -29,11 +29,13 @@ application = ProtocolTypeRouter({
 })
 
 # pylint: disable=wrong-import-position
-from elasticsearch import Elasticsearch
+from .utils import get_es_client, init_es_client
+
 # Append the sentences inside the database
 
 # TODO: load the sentence files (unique values only) -> compute the embedding, then compute the similarity with the ner model. If the sentence is not set, it is added!
-es = Elasticsearch("http://embeddings:9200")
+init_es_client()
+es = get_es_client()
 es.indices.create(
     index="sentence_embeddings",
     body={

@@ -1,18 +1,22 @@
 from datetime import datetime
 from typing import Literal, List, Union
+from uuid import uuid4
 
 from django.core.exceptions import ObjectDoesNotExist, SuspiciousOperation
 from django.db import models
-from pgvector.django import VectorField
+
+from elasticsearch_dsl import Document, DenseVector, Text
+
 
 from tools.localisation import Localisation
 
 # Create your models here.
 LOCALE = Localisation("en-us")
 
+
 class ConversationModel(models.Model):
     id = models.AutoField(primary_key=True,
-                   verbose_name=LOCALE.load_localised_text("CHATBOT_CONV_ID"))
+                          verbose_name=LOCALE.load_localised_text("CHATBOT_CONV_ID"))
 
     @staticmethod
     def gets_or_create_conversation(conversation_id: Union[str, None]) -> "ConversationModel":
@@ -29,24 +33,27 @@ class ConversationModel(models.Model):
             return ConversationModel.objects.get(id=conversation_id)
         except ObjectDoesNotExist as _:
             return ConversationModel.objects.create()
-        
+
     @staticmethod
     def load_all_conversation_headers() -> dict:
         """
         Loads every conversation header
-        
+
         :rtype: dict Every conversation headers
         """
         conversations = list(ConversationModel.objects.all())
         conversation_headers = []
         for conversation in conversations:
-            dialogs = list(ChatbotSentence.objects.filter(conversation=conversation))
+            dialogs = list(ChatbotSentence.objects.filter(
+                conversation=conversation))
             if len(dialogs) > 1:
                 count = f"{len(dialogs)} conversations"
-                last_dialog_timestamp = dialogs[-1].timestamp.strftime("%d %B %Y à %H:%M")
+                last_dialog_timestamp = dialogs[-1].timestamp.strftime(
+                    "%d %B %Y à %H:%M")
             elif len(dialogs) == 1:
                 count = f"{len(dialogs)} conversation"
-                last_dialog_timestamp = dialogs[-1].timestamp.strftime("%d %B %Y à %H:%M")
+                last_dialog_timestamp = dialogs[-1].timestamp.strftime(
+                    "%d %B %Y à %H:%M")
             else:
                 count = "Aucune conversation"
                 last_dialog_timestamp = ""
@@ -68,19 +75,20 @@ class ChatbotSentence(models.Model):
         "HUMAN": 'USER'
     }
     id = models.AutoField(primary_key=True,
-                   verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT_ID"))
+                          verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT_ID"))
     agent = models.CharField(
         choices=AGENTS, verbose_name=LOCALE.load_localised_text("CHATBOT_AGENT"))
-    text = models.CharField(verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT"))
+    text = models.CharField(
+        verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT"))
     conversation = models.ForeignKey(ConversationModel, on_delete=models.PROTECT,
-                              verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT_RELATED_CONVERSATION"))
+                                     verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT_RELATED_CONVERSATION"))
     timestamp = models.DateTimeField(
         verbose_name=LOCALE.load_localised_text("CHATBOT_TIMESTAMP"))
     datetime.now()
 
     @staticmethod
     def add_new_sentence(
-        agent: Literal["HUMAN","AGENT"],
+        agent: Literal["HUMAN", "AGENT"],
         text: str, conversation: ConversationModel, timestamp: datetime
     ) -> "ChatbotSentence":
         """ Description
@@ -138,16 +146,72 @@ class ChatbotSentence(models.Model):
         return f"Conversation {related_conv_id} - {self.timestamp}"
 
 
-class Sentence(models.Model):
-    tags = models.CharField(verbose_name=LOCALE.load_localised_text("SENTENCE_TAGS"))
-    sentence = models.CharField(
-        verbose_name=LOCALE.load_localised_text("RELATED_SENTENCE"))
-    embedding = VectorField(
-        dimensions=1024,
-        help_text=LOCALE.load_localised_text("SENTENCE_EMBEDDING"),
-        null=True,
-        blank=True
-    )
+class Sentence(Document):
+    """
+    Input data for elastic search storage
+    """
+
+    embeddings=DenseVector(dims=1024)
+    """
+    Sentence as embeddings.
+    """
+    
+    sentence=Text()
+    """
+    Templated sentence
+    """
+
+    source = Text()
+    """
+    Source (if it originates from the documentation, ``/`` used as separators).
+    """
+
+    action = Text()
+    """
+    Action type (e.g. ``create``, ``update`` or ``delete``).
+    """
+
+    tags= Text()
+    """
+    Tags to check whether it is an action (and which kind of action).
+    """
+    
+    @staticmethod
+    def validate(inputs: dict[str,str]):
+        """ Description
+        :type inputs: dict[str,str]
+        :param inputs: Properties set for the object creation
+    
+        :raises: AssertionError -> Bad instantiation
+        """
+        ALLOWED_KEYS = [
+            ['action', 'tags'],
+            ['source', 'tags'],
+            []
+        ]
+        if inputs.keys() not in ALLOWED_KEYS:
+            raise AssertionError("You lack enough properties to store in the database. "+
+                                 "You must have either the action and the tags, source and tags, "+
+                                 "or nothing.")
+        for key in inputs.keys():
+            if not isinstance(inputs[key],str):
+                raise AssertionError(f"The value {inputs[key]} located in the {key} is not a string value!")
+        if '//' in inputs['source']:
+            raise AssertionError("You can't have a empty source between two other sources!")
+        if inputs['source'].endswith('/'):
+            raise AssertionError("You can't have a source list ending with an empty value!")
+    
+    class Index:
+        """
+        Index subclass
+        """
+        name = "embeddings"
+    
+    class Meta:
+        """
+        Miscellanous data
+        """
+        id = uuid4()
 
 
 class SentenceEntityModel(models.Model):
@@ -161,14 +225,22 @@ class SentenceEntityModel(models.Model):
     Entity object type
     """
 
-    input = models.CharField(
+    value = models.CharField(
         verbose_name=LOCALE.load_localised_text("CHATBOT_ENTITY"))
     """
     Entity found by the model
     """
 
-    sentence = models.ForeignKey(
-        Sentence,
-        verbose_name=LOCALE.load_localised_text("CHATBOT_ENTITY_RELATED_SENTENCE"),
-        on_delete=models.PROTECT
-    )
+    @staticmethod
+    def create(input_type: str, value: str):
+        """ Create a sentence and saves it
+        :type input_type: str
+        :param input_type: Type of input (documentation or action)
+    
+        :type value: str
+        :param value: Found value
+        """
+        return SentenceEntityModel.objects.create(
+            input_type = input_type,
+            value=value
+        )

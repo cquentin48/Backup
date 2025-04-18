@@ -17,7 +17,7 @@ from pathlib import Path
 
 import mimetypes
 
-from tools.localisation import Localisation
+from elasticsearch import Elasticsearch
 
 mimetypes.add_type("text/css",".css",True)
 
@@ -87,9 +87,7 @@ ASGI_APPLICATION = "server.asgi.application"
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    'DEFAULT_PERMISSION_CLASSES': []
 }
 
 GRAPHENE = {
@@ -102,6 +100,12 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             "hosts": [(os.environ.get("CHANNEL_URL","localhost"), 6379)],
         },
+    },
+}
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': ['embeddings:9200']  # Adresse de ton serveur Elasticsearch
     },
 }
 

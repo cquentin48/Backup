@@ -2,7 +2,7 @@ import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } fro
 import React from "react";
 import { ConversationHeader } from "../../../../controller/deviceMainInfos/chatbotSlice";
 
-interface ChatBotDialogSelectProps{
+interface ChatBotDialogSelectProps {
     /**
      * Currently selected chatbot ID
      */
@@ -24,7 +24,7 @@ interface ChatBotDialogSelectProps{
  * Select form for the chatbot dialog
  * @returns {React.JSX.Element} rendered component
  */
-export default function ChatbotDialogSelect(props: ChatBotDialogSelectProps):React.JSX.Element{
+export default function ChatbotDialogSelect (props: ChatBotDialogSelectProps): React.JSX.Element {
     return <Box>
         <FormControl fullWidth>
             <InputLabel id="chatbotdialog-select-label">Current chabot</InputLabel>
@@ -33,9 +33,9 @@ export default function ChatbotDialogSelect(props: ChatBotDialogSelectProps):Rea
                 id="chatbotdialog-select"
                 value={props.id}
             >
-                <MenuItem value={-1}>Nouveau dialogue...</MenuItem>
+                <MenuItem value={-1}>Nouvelle conversation...</MenuItem>
                 {
-                    props.headers.map((header)=>{
+                    props.headers.map((header) => {
                         return <MenuItem value={header.id}>{header.label}</MenuItem>
                     })
                 }

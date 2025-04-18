@@ -5,5 +5,4 @@ from .models import ChatbotSentence, ConversationModel, Sentence, SentenceEntity
 # Register your models here.
 admin.site.register(ChatbotSentence)
 admin.site.register(ConversationModel)
-admin.site.register(Sentence)
 admin.site.register(SentenceEntityModel)

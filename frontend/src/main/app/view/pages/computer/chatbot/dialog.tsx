@@ -47,7 +47,7 @@ export default function ChatBotDialog(props: ChatBotDialogProps) : React.JSX.Ele
     const [isConnected, setConnectionStatus] = useState(false)
     const { messages, conversationHeaders } = useSelector(chatbotSliceState)
     const dispatch = useDispatch()
-    const webSocket = new WebSocket("ws://backend:8000/chatbot")
+    const webSocket = new WebSocket("ws://backend:8000/backup/chatbot")
 
     useEffect(()=>{
         webSocket.send(JSON.stringify({
