@@ -63,13 +63,13 @@ class ChatbotConsumer(AsyncWebsocketConsumer):
             data = json.loads(text_data)
             logging.info(f"Received data : {data}")
             self.reset_timeout()
-            match data['ACTION_TYPE']:
-                case "INIT_CONVERSATION":
+            match data['actionType']:
+                case "INITCONVERSATION":
                     self.dialog = ConversationModel.gets_or_create_conversation(
                         data["dialogID"])
                     self.sentences = ChatbotSentence.get_sentences(
                         self.dialog.id)
-                case "WRITE_ACTION":
+                case "WRITEACTION":
                     self.sentences.append(ChatbotSentence.add_new_sentence(
                         "HUMAN",
                         data["text"],

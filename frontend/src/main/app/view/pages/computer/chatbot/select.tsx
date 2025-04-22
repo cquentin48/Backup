@@ -1,6 +1,7 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import React from "react";
 import { ConversationHeader } from "../../../../controller/deviceMainInfos/chatbotSlice";
+import { Add } from "@mui/icons-material";
 
 interface ChatBotDialogSelectProps {
     /**
@@ -25,21 +26,18 @@ interface ChatBotDialogSelectProps {
  * @returns {React.JSX.Element} rendered component
  */
 export default function ChatbotDialogSelect (props: ChatBotDialogSelectProps): React.JSX.Element {
-    return <Box>
-        <FormControl fullWidth>
-            <InputLabel id="chatbotdialog-select-label">Current chabot</InputLabel>
-            <Select
-                labelId="chatbotdialog-select-label"
-                id="chatbotdialog-select"
-                value={props.id}
-            >
-                <MenuItem value={-1}>Nouvelle conversation...</MenuItem>
-                {
-                    props.headers.map((header) => {
-                        return <MenuItem value={header.id}>{header.label}</MenuItem>
-                    })
-                }
-            </Select>
-        </FormControl>
+    return <Box
+        sx={{
+            flex: "0 0 auto"
+        }}
+    >
+        <Button variant="outlined" startIcon={<Add />}>
+            Nouvelle conversation...
+        </Button>
+        {
+            props.headers.map((header) => {
+                return <Button variant="text">{header.label}</Button>
+            })
+        }
     </Box>
 }

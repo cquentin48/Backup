@@ -1,20 +1,31 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
-import { AccountCircle, Psychology, PsychologyAlt, SendSharp } from "@mui/icons-material";
-import { Box, Dialog, DialogContent, DialogContentText, DialogTitle, IconButton, SelectChangeEvent, TextField } from "@mui/material";
+import { AccountCircle, PsychologyAlt, SendSharp } from "@mui/icons-material";
+import {
+    Box, Dialog, DialogContent, DialogTitle,
+    Divider,
+    InputAdornment, SelectChangeEvent, TextField,
+    Typography
+} from "@mui/material";
+import { useSnackbar } from "notistack";
+
+
 import ChatbotDialogSelect from "./select";
 import { useDispatch, useSelector } from "react-redux";
-import chatbotSlice, {chatbotSliceState, ChatbotSliceState} from "../../../../controller/deviceMainInfos/chatbotSlice";
+import { chatbotSliceState } from "../../../../controller/deviceMainInfos/chatbotSlice";
 import { addMessage, setConversationsHeaders, setMessages, addConversation } from "../../../../controller/deviceMainInfos/chatbotSlice";
+
+import '../../../../../res/css/Chatbot.css';
+import ChatbotConversation from "./conversation";
 
 /**
  * Props passed from the chatbot toggle button
  */
-interface ChatBotDialogProps{
+interface ChatBotDialogProps {
     /**
      * If the dialog is opened or not
      */
-    isOpened:boolean;
+    isOpened: boolean;
 
     /**
      * Handle close function
@@ -25,16 +36,16 @@ interface ChatBotDialogProps{
 /**
  * Socket message data
  */
-interface SocketData{
+interface SocketData {
     /**
      * Socket message action type
      */
-    actionType:string;
+    actionType: string;
 
     /**
      * Socket message object data
      */
-    [clé:string]:any;
+    [clé: string]: any;
 }
 
 /**
@@ -42,32 +53,49 @@ interface SocketData{
  * @param {ChatBotDialogProps} props Is opened state and close dialog passed from the button
  * @returns {React.JSX.Element} rendered component
  */
-export default function ChatBotDialog(props: ChatBotDialogProps) : React.JSX.Element{
+export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Element {
     const [id, setID] = React.useState(-1)
     const [isConnected, setConnectionStatus] = useState(false)
-    const { messages, conversationHeaders } = useSelector(chatbotSliceState)
+
+    const { conversationHeaders } = useSelector(chatbotSliceState)
     const dispatch = useDispatch()
-    const webSocket = new WebSocket("ws://backend:8000/backup/chatbot")
 
-    useEffect(()=>{
-        webSocket.send(JSON.stringify({
-            'ACTION':'CHANGE_CONVERSATION',
-            'id':id
-        }))
-    },[id])
+    const webSocket = new WebSocket("ws://localhost:80/ws/chatbot")
 
-    useEffect(()=>{
+    /**
+     * Send to the chatbot the message written by the user
+     * @param {string} message Message written by the user
+     */
+    const sendMessage = (message: string) => {
+        webSocket.send(
+            JSON.stringify({
+                actionType: "WRITEACTION",
+                message: message
+            })
+        )
+    }
+
+    useEffect(() => {
+        if (isConnected) {
+            webSocket.send(JSON.stringify({
+                'ACTION': 'CHANGE_CONVERSATION',
+                'id': id
+            }))
+        }
+    }, [id])
+
+    useEffect(() => {
         webSocket.onopen = () => {
             setConnectionStatus(true)
         }
-    
+
         webSocket.onclose = () => {
             setConnectionStatus(false)
         }
-    
+
         webSocket.onmessage = (event) => {
             const messageData = (event.data) as SocketData
-            switch(messageData.actionType){
+            switch (messageData.actionType) {
                 case "CONVERSATION_HEADERS_LOAD":
                     const conversationHeaders = messageData.conversationHeaders
                     dispatch(setConversationsHeaders(conversationHeaders))
@@ -84,7 +112,7 @@ export default function ChatBotDialog(props: ChatBotDialogProps) : React.JSX.Ele
             }
         }
     }, [])
-    
+
     /**
      * Sets the chatbot ID
      * @param event 
@@ -96,36 +124,36 @@ export default function ChatBotDialog(props: ChatBotDialogProps) : React.JSX.Ele
     return <Dialog
         onClose={props.handleClose}
         open={props.isOpened}
+        fullWidth
+        maxWidth={false}
+        sx={{
+            borderRadius: 2,
+            overflow: 'hidden',
+            maxHeight: "calc(100vh-64px)",
+            display: "flex",
+            flexDirection: "column"
+        }}
     >
-        <DialogTitle>Chatbot BackupAI</DialogTitle>
-        <DialogContent>
+        <DialogTitle>
+            <Typography variant="h3">Chatbot BackupAI</Typography>
+        </DialogTitle>
+        <DialogContent
+            sx={{
+                overflowY: "auto",
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "row"
+            }}
+        >
             <ChatbotDialogSelect
                 id={id}
                 handleChange={selectChabotID}
                 headers={conversationHeaders}
             />
-            {
-                messages.map((message)=>{
-                    let icon;
-                    if(message.agent == "USER"){
-                        icon = <AccountCircle/>
-                    }else{
-                        icon = <PsychologyAlt/>
-                    }
-                    return <Box>
-                        {icon}
-                        {message.text}
-                    </Box>
-                })
-            }
-            <TextField
-                id="chatbot-input"
-                label="Question posée"
-                defaultValue="Écrivez votre demande ici..."
+            <Divider orientation="vertical"/>
+            <ChatbotConversation
+                sendMessage={sendMessage}
             />
-            <IconButton>
-                <SendSharp/>
-            </IconButton>
         </DialogContent>
     </Dialog>
 }
