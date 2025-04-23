@@ -28,17 +28,19 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
 
     return (
         <div>
+            <div id="chatbotMessages">
             {
                 messages.map((message) => {
                     return <ChatbotMessage
                         agent={message.agent}
-                        message={message.text}
+                        message={message.message}
                     />
                 })
             }
             {
                 messages.length == 0 && <NewChatbotConversationText/>
             }
+            </div>
             <Box
                 id="userInput"
                 alignItems="center"
@@ -60,7 +62,7 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
                             "Vous ne pouvez pas envoyer un message vide!" :
                             ""
                     }
-                    error={newMessage != "" && !firstUpdate}
+                    error={newMessage == "" && !firstUpdate}
                     onKeyDown={(e) => {
                         if (e.key == "Enter") {
                             if (newMessage == "" && !firstUpdate) {

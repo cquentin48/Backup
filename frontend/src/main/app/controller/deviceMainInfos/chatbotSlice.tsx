@@ -12,9 +12,14 @@ export interface MessageDialog {
     agent: "USER" | "AGENT";
 
     /**
-     * Writtent text
+     * Written text
      */
-    text: string;
+    message: string;
+
+    /**
+     * Message timestamp
+     */
+    timestamp: number;
 }
 
 /**
@@ -73,9 +78,11 @@ export const chatbotSlice = createSlice({
          * @param {PayloadAction<string>} action Dialog header
          */
         addConversation: (state, action: PayloadAction<ConversationHeader>) => {
-            state.conversationHeaders.push(
-                action.payload
-            )
+            console.log(action)
+            state.conversationHeaders.push({
+                id: action.payload.id,
+                label: action.payload.label
+            })
         },
 
         /**
@@ -98,8 +105,11 @@ export const chatbotSlice = createSlice({
          * @param {PayloadAction<MessageDialog>} action New message
          */
         addMessage: (state, action: PayloadAction<MessageDialog>) => {
-            state.messages.push(
-                action.payload
+            state.messages.push({
+                agent: action.payload.agent,
+                message: action.payload.message,
+                timestamp: action.payload.timestamp
+            }
             )
         }
     }

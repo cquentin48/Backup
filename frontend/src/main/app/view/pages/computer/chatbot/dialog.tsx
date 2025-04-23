@@ -56,45 +56,41 @@ interface SocketData {
 export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Element {
     const [id, setID] = React.useState(-1)
     const [isConnected, setConnectionStatus] = useState(false)
+    const [socket, setSocket] = useState<WebSocket|null>(null);
 
     const { conversationHeaders } = useSelector(chatbotSliceState)
     const dispatch = useDispatch()
-
-    const webSocket = new WebSocket("ws://localhost:80/ws/chatbot")
 
     /**
      * Send to the chatbot the message written by the user
      * @param {string} message Message written by the user
      */
     const sendMessage = (message: string) => {
-        webSocket.send(
-            JSON.stringify({
-                actionType: "WRITEACTION",
-                message: message
-            })
-        )
+        if(socket !== null){
+            (socket as WebSocket).send(
+                JSON.stringify({
+                    actionType: "WRITEACTION",
+                    timestamp: Date.now(),
+                    message: message
+                })
+            )
+        }
     }
 
-    useEffect(() => {
-        if (isConnected) {
-            webSocket.send(JSON.stringify({
-                'ACTION': 'CHANGE_CONVERSATION',
-                'id': id
-            }))
-        }
-    }, [id])
-
-    useEffect(() => {
+    useEffect(()=>{
+        const webSocket = new WebSocket("ws://localhost:80/ws/chatbot")
+    
         webSocket.onopen = () => {
             setConnectionStatus(true)
         }
-
+    
         webSocket.onclose = () => {
             setConnectionStatus(false)
         }
-
+    
         webSocket.onmessage = (event) => {
-            const messageData = (event.data) as SocketData
+            const messageData = JSON.parse(event.data) as SocketData
+            console.log(messageData)
             switch (messageData.actionType) {
                 case "CONVERSATION_HEADERS_LOAD":
                     const conversationHeaders = messageData.conversationHeaders
@@ -105,13 +101,26 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
                     break;
                 case "NEW_MESSAGE":
                     dispatch(addMessage(messageData.message))
+                    if(Object.hasOwn(messageData, "conversation")){
+                        dispatch(addConversation(messageData.conversation))
+                    }
                     break;
                 case "LOAD_MESSAGES":
                     dispatch(setMessages(messageData.messages))
                     break;
             }
         }
+        setSocket(webSocket);
     }, [])
+
+    useEffect(() => {
+        if (isConnected && socket !== null) {
+            socket.send(JSON.stringify({
+                'ACTION': 'CHANGE_CONVERSATION',
+                'id': id
+            }))
+        }
+    }, [id])
 
     /**
      * Sets the chatbot ID
@@ -150,7 +159,7 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
                 handleChange={selectChabotID}
                 headers={conversationHeaders}
             />
-            <Divider orientation="vertical"/>
+            <Divider orientation="vertical" />
             <ChatbotConversation
                 sendMessage={sendMessage}
             />

@@ -28,7 +28,9 @@ interface ChatBotDialogSelectProps {
 export default function ChatbotDialogSelect (props: ChatBotDialogSelectProps): React.JSX.Element {
     return <Box
         sx={{
-            flex: "0 0 auto"
+            flex: "0 0 auto",
+            display: "flex",
+            flexDirection: "column"
         }}
     >
         <Button variant="outlined" startIcon={<Add />}>

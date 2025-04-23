@@ -66,7 +66,7 @@ class ConversationModel(models.Model):
         return conversation_headers
 
     def __str__(self):
-        return f"Conversation - {id}"
+        return f"Conversation - {self.id}"
 
 
 class ChatbotSentence(models.Model):
@@ -74,8 +74,10 @@ class ChatbotSentence(models.Model):
         "BOT": 'CHATBOT_AGENT',
         "HUMAN": 'USER'
     }
-    id = models.AutoField(primary_key=True,
-                          verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT_ID"))
+    id = models.AutoField(
+        primary_key=True,
+        verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT_ID")
+    )
     agent = models.CharField(
         choices=AGENTS, verbose_name=LOCALE.load_localised_text("CHATBOT_AGENT"))
     text = models.CharField(
@@ -120,6 +122,8 @@ class ChatbotSentence(models.Model):
                 "You are trying to write again the same sentence at the same time."
             )
         except ObjectDoesNotExist as _:
+            if not conversation:
+                conversation = ConversationModel.objects.create()
             return ChatbotSentence.objects.create(
                 agent=agent,
                 text=text,
@@ -151,12 +155,12 @@ class Sentence(Document):
     Input data for elastic search storage
     """
 
-    embeddings=DenseVector(dims=1024)
+    embeddings = DenseVector(dims=1024)
     """
     Sentence as embeddings.
     """
-    
-    sentence=Text()
+
+    sentence = Text()
     """
     Templated sentence
     """
@@ -171,17 +175,17 @@ class Sentence(Document):
     Action type (e.g. ``create``, ``update`` or ``delete``).
     """
 
-    tags= Text()
+    tags = Text()
     """
     Tags to check whether it is an action (and which kind of action).
     """
-    
+
     @staticmethod
-    def validate(inputs: dict[str,str]):
+    def validate(inputs: dict[str, str]):
         """ Description
         :type inputs: dict[str,str]
         :param inputs: Properties set for the object creation
-    
+
         :raises: AssertionError -> Bad instantiation
         """
         ALLOWED_KEYS = [
@@ -190,23 +194,26 @@ class Sentence(Document):
             []
         ]
         if inputs.keys() not in ALLOWED_KEYS:
-            raise AssertionError("You lack enough properties to store in the database. "+
-                                 "You must have either the action and the tags, source and tags, "+
+            raise AssertionError("You lack enough properties to store in the database. " +
+                                 "You must have either the action and the tags, source and tags, " +
                                  "or nothing.")
         for key in inputs.keys():
-            if not isinstance(inputs[key],str):
-                raise AssertionError(f"The value {inputs[key]} located in the {key} is not a string value!")
+            if not isinstance(inputs[key], str):
+                raise AssertionError(
+                    f"The value {inputs[key]} located in the {key} is not a string value!")
         if '//' in inputs['source']:
-            raise AssertionError("You can't have a empty source between two other sources!")
+            raise AssertionError(
+                "You can't have a empty source between two other sources!")
         if inputs['source'].endswith('/'):
-            raise AssertionError("You can't have a source list ending with an empty value!")
-    
+            raise AssertionError(
+                "You can't have a source list ending with an empty value!")
+
     class Index:
         """
         Index subclass
         """
         name = "embeddings"
-    
+
     class Meta:
         """
         Miscellanous data
@@ -236,11 +243,11 @@ class SentenceEntityModel(models.Model):
         """ Create a sentence and saves it
         :type input_type: str
         :param input_type: Type of input (documentation or action)
-    
+
         :type value: str
         :param value: Found value
         """
         return SentenceEntityModel.objects.create(
-            input_type = input_type,
+            input_type=input_type,
             value=value
         )

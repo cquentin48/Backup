@@ -1,6 +1,8 @@
 import { EditSharp, RemoveSharp, SearchSharp } from "@mui/icons-material";
 import { Box, Button, Paper, Typography } from "@mui/material";
 
+import '../../../../../res/css/Chatbot.css';
+
 export default function NewChatbotConversationText(){
     return(
         <Box>
