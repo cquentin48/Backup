@@ -11,8 +11,8 @@ import NewChatbotConversationText from "./newConversationText";
 /**
  * Send message method passed from the dialog
  */
-interface ChatbotConversationProps{
-    sendMessage: (message:string) => void; 
+interface ChatbotConversationProps {
+    sendMessage: (message: string) => void;
 }
 
 /**
@@ -23,24 +23,26 @@ interface ChatbotConversationProps{
 export default function ChatbotConversation (props: ChatbotConversationProps) {
     const { messages } = useSelector(chatbotSliceState)
     const [newMessage, updateWrittenMessage] = useState("")
-        const [firstUpdate, setFirstUpdate] = useState(true)
-    const {enqueueSnackbar} = useSnackbar();
+    const [firstUpdate, setFirstUpdate] = useState(true)
+    const { enqueueSnackbar } = useSnackbar();
 
     return (
         <div>
-            <div id="chatbotMessages">
-            {
-                messages.map((message) => {
-                    return <ChatbotMessage
-                        agent={message.agent}
-                        message={message.message}
-                    />
-                })
-            }
-            {
-                messages.length == 0 && <NewChatbotConversationText/>
-            }
-            </div>
+            <Box display="flex">
+                <Box sx={{ marginLeft: "auto", display: "flex" }}>
+                    {
+                        messages.map((message) => {
+                            return <ChatbotMessage
+                                agent={message.agent}
+                                message={message.message}
+                            />
+                        })
+                    }
+                    {
+                        messages.length == 0 && <NewChatbotConversationText />
+                    }
+                </Box>
+            </Box>
             <Box
                 id="userInput"
                 alignItems="center"

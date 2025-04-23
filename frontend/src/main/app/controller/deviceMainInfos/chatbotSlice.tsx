@@ -20,6 +20,11 @@ export interface MessageDialog {
      * Message timestamp
      */
     timestamp: number;
+
+    /**
+     * ID of the conversation
+     */
+    conversationID: number;
 }
 
 /**
@@ -43,6 +48,7 @@ export interface ConversationHeader{
 export interface ChatbotSliceState {
     messages: MessageDialog[];
     conversationHeaders: ConversationHeader[];
+    currentConversationID: number;
 }
 
 /**
@@ -50,7 +56,8 @@ export interface ChatbotSliceState {
  */
 export const chatbotInitialState: ChatbotSliceState = {
     messages: [],
-    conversationHeaders: []
+    conversationHeaders: [],
+    currentConversationID: -1
 }
 
 /**
@@ -108,7 +115,8 @@ export const chatbotSlice = createSlice({
             state.messages.push({
                 agent: action.payload.agent,
                 message: action.payload.message,
-                timestamp: action.payload.timestamp
+                timestamp: action.payload.timestamp,
+                conversationID: state.currentConversationID
             }
             )
         }
