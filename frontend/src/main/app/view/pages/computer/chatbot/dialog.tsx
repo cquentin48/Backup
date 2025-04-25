@@ -93,6 +93,7 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
             console.log(messageData)
             switch (messageData.actionType) {
                 case "CONVERSATION_HEADERS_LOAD":
+                    console.log("Conversation loaded!")
                     const conversationHeaders = messageData.conversationHeaders
                     dispatch(setConversationsHeaders(conversationHeaders))
                     break;

@@ -15,13 +15,12 @@ services:
     command: sh -c "cp -r /home/build/static/* /static ; nginx -g 'daemon off;'"
 
   embeddings:
-    image: elasticsearch:8.8.0
+    image: opensearchproject/opensearch:latest
     ports:
       - 9200:9200
-      - 9300:9300
     environment:
       - discovery.type=single-node
-      - xpack.security.enabled=false
+      - plugins.security.disabled=true
     env_file:
       - .env
     mem_limit: 2g

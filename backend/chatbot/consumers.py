@@ -83,6 +83,8 @@ class ChatbotConsumer(WebsocketConsumer):
         """
         # pylint: disable=wrong-import-position
         from .models import ConversationModel, ChatbotSentence
+        from .analysis import ChatbotAnalyser
+        analyser = ChatbotAnalyser()
         try:
             data = json.loads(text_data)
             logging.info(f"Received data : {data}")
@@ -131,6 +133,20 @@ class ChatbotConsumer(WebsocketConsumer):
                     ))
                     self.new_dialog = False
                     logging.info("New message sent!")
+                    logging.info("Bot analysis!")
+                    bot_anwser = analyser.analyse_sentence(
+                        new_message.text, None)
+                    logging.info("Bot analysis done!")
+                    self.send(json.dumps(
+                        {
+                            "actionType": "NEW_MESSAGE",
+                            "message": {
+                                "message": bot_anwser.text_answer,
+                                "agent": "BOT",
+                                "timestamp": new_message.timestamp.timestamp()
+                            }
+                        }
+                    ))
                 case _:
                     self.send(json.dumps(
                         {

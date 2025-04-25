@@ -1,13 +1,13 @@
 from datetime import datetime
 from typing import Literal, List, Union
-from uuid import uuid4
 
 from django.core.exceptions import ObjectDoesNotExist, SuspiciousOperation
 from django.db import models
 
-from elasticsearch_dsl import Document, DenseVector, Text
+from opensearchpy import OpenSearch
+from torch import Tensor
 
-
+from server.utils import get_es_client, init_es_client
 from tools.localisation import Localisation
 
 # Create your models here.
@@ -69,6 +69,24 @@ class ConversationModel(models.Model):
         return f"Conversation - {self.id}"
 
 
+class BotAnswer(models.Model):
+    id = models.AutoField(
+        primary_key=True,
+        verbose_name=LOCALE.load_localised_text("BOT_ANSWER_ID")
+    )
+    understood_data = models.CharField(
+        verbose_name=LOCALE.load_localised_text("BOT_ANSWER_UNDERSTOOD_DATA")
+    )
+    found_data = models.CharField(
+        verbose_name=LOCALE.load_localised_text("BOT_ANSWER_FOUND_DATA")
+    )
+    answer = models.ForeignKey(
+        "ChatbotSentence",
+        verbose_name=LOCALE.load_localised_text("BOT_ANSWER_TEXT"),
+        on_delete=models.CASCADE,
+        null=True
+    )
+
 class ChatbotSentence(models.Model):
     AGENTS = {
         "BOT": 'CHATBOT_AGENT',
@@ -82,8 +100,12 @@ class ChatbotSentence(models.Model):
         choices=AGENTS, verbose_name=LOCALE.load_localised_text("CHATBOT_AGENT"))
     text = models.CharField(
         verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT"))
-    conversation = models.ForeignKey(ConversationModel, on_delete=models.PROTECT,
-                                     verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT_RELATED_CONVERSATION"))
+    conversation = models.ForeignKey(
+        ConversationModel,
+        on_delete=models.PROTECT,
+        verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT_RELATED_CONVERSATION"),
+        null=True
+    )
     timestamp = models.DateTimeField(
         verbose_name=LOCALE.load_localised_text("CHATBOT_TIMESTAMP"))
     datetime.now()
@@ -150,75 +172,63 @@ class ChatbotSentence(models.Model):
         return f"Conversation {related_conv_id} - {self.timestamp}"
 
 
-class Sentence(Document):
+class Sentence:
     """
     Input data for elastic search storage
     """
+    
+    current_length = 0
 
-    embeddings = DenseVector(dims=1024)
+    embedding:str
     """
     Sentence as embeddings.
     """
 
-    sentence = Text()
+    sentence:str
     """
     Templated sentence
     """
 
-    source = Text()
+    source:str
     """
     Source (if it originates from the documentation, ``/`` used as separators).
     """
 
-    action = Text()
+    action:str
     """
     Action type (e.g. ``create``, ``update`` or ``delete``).
     """
 
-    tags = Text()
+    tags = str
     """
     Tags to check whether it is an action (and which kind of action).
     """
 
     @staticmethod
-    def validate(inputs: dict[str, str]):
-        """ Description
-        :type inputs: dict[str,str]
-        :param inputs: Properties set for the object creation
-
-        :raises: AssertionError -> Bad instantiation
-        """
-        ALLOWED_KEYS = [
-            ['action', 'tags'],
-            ['source', 'tags'],
-            []
-        ]
-        if inputs.keys() not in ALLOWED_KEYS:
-            raise AssertionError("You lack enough properties to store in the database. " +
-                                 "You must have either the action and the tags, source and tags, " +
-                                 "or nothing.")
-        for key in inputs.keys():
-            if not isinstance(inputs[key], str):
-                raise AssertionError(
-                    f"The value {inputs[key]} located in the {key} is not a string value!")
-        if '//' in inputs['source']:
-            raise AssertionError(
-                "You can't have a empty source between two other sources!")
-        if inputs['source'].endswith('/'):
-            raise AssertionError(
-                "You can't have a source list ending with an empty value!")
-
-    class Index:
-        """
-        Index subclass
-        """
-        name = "embeddings"
-
-    class Meta:
-        """
-        Miscellanous data
-        """
-        id = uuid4()
+    def add_element(
+        action:str, embedding: Tensor,
+        sentence:str, source:str, tags:str, new_index:int):
+        assert len(embedding) == 1024, "The embedding must have 1024 inputs"+\
+            f", here it has {len(embedding)} inputs."
+        client = get_es_client()
+        if not client:
+            client = OpenSearch(
+            "http://embeddings:9200",
+            use_ssl=False,
+            verify_certs=False
+        )
+        client.index(
+            "sentence_embeddings",
+            body={
+                "action":action,
+                "sentence":sentence,
+                "source":source,
+                "tags":tags,
+                "embedding": embedding.tolist()
+            },
+            id=new_index
+        )
+        
 
 
 class SentenceEntityModel(models.Model):
@@ -251,3 +261,4 @@ class SentenceEntityModel(models.Model):
             input_type=input_type,
             value=value
         )
+

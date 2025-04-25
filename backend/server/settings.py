@@ -105,7 +105,7 @@ CHANNEL_LAYERS = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': ['embeddings:9200']  # Adresse de ton serveur Elasticsearch
+        'hosts': [ELASTICSEARCH_URL]
     },
 }
 

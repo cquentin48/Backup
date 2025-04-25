@@ -139,6 +139,7 @@ describe("Device page", () => {
                 operationStatus: "success"
             },
             chatbot:{
+                currentConversationID: -1,
                 conversationHeaders: [],
                 messages: []
             }
@@ -257,6 +258,7 @@ describe("Device page", () => {
                         deviceLoading: false
                     },
                     chatbot: {
+                        currentConversationID: -1,
                         conversationHeaders: [],
                         messages: []
                     }

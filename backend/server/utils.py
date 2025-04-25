@@ -1,5 +1,5 @@
-from elasticsearch import Elasticsearch
-from django.conf import settings
+from opensearchpy import OpenSearch
+from .settings import ELASTICSEARCH_URL
 
 ELASTICSEARCH_CLIENT = None
 def init_es_client():
@@ -7,7 +7,11 @@ def init_es_client():
     Initialize the client to manage elastic search inputs
     """
     global ELASTICSEARCH_CLIENT
-    ELASTICSEARCH_CLIENT = Elasticsearch(settings.ELASTICSEARCH_URL)
+    ELASTICSEARCH_CLIENT = OpenSearch(
+        "http://embeddings:9200",
+        use_ssl=False,
+        verify_certs=False
+    )
     print(ELASTICSEARCH_CLIENT.ping())
 
 

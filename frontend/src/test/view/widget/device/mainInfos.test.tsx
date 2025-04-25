@@ -137,6 +137,7 @@ describe("MainInfosFrame unit test suite", () => {
                         }
                     },
                     chatbot:{
+                        currentConversationID: -1,
                         conversationHeaders: [],
                         messages: []
                     }
