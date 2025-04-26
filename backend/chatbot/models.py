@@ -7,7 +7,7 @@ from django.db import models
 from opensearchpy import OpenSearch
 from torch import Tensor
 
-from server.utils import get_es_client, init_es_client
+from server.utils import get_es_client
 from tools.localisation import Localisation
 
 # Create your models here.
@@ -228,7 +228,7 @@ class Sentence:
             },
             id=new_index
         )
-        
+        client.indices.refresh(index="sentence_embeddings")
 
 
 class SentenceEntityModel(models.Model):

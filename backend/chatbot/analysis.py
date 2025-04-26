@@ -1,10 +1,10 @@
 import json
+import logging
 import regex as re
 from datetime import datetime
 from typing import Callable, List, Dict, Tuple
 
-from elasticsearch import NotFoundError
-import numpy as np
+from opensearchpy.exceptions import RequestError
 from sentence_transformers import SentenceTransformer
 from spacy import load
 from text_to_num import alpha2digit
@@ -23,6 +23,7 @@ class ValuePattern:
 class ChatbotAnalyser:
     def __init__(self):
         init_es_client()
+        self.logger = logging.getLogger(self.__class__.__name__)
         self.nlp = load("fr_core_news_sm")
         self.es = get_es_client()
         self.embedding_model = \
@@ -61,14 +62,10 @@ class ChatbotAnalyser:
         entities = {}
         sentence = alpha2digit(sentence, lang="fr")
         sentence = sentence.lower()
-        done = False
         for pattern in self.REGEX_PATTERNS.values():
             search_result = re.search(pattern.regex_pattern, sentence)
             while search_result:
                 entities, sentence = pattern.regex_method(search_result, sentence, entities)
-                if not done:
-                    print(sentence)
-                    done=True
                 search_result = re.search(pattern.regex_pattern, sentence)
         sentence, entities = self.replace_count(sentence, entities)
         return sentence, entities
@@ -153,16 +150,16 @@ class ChatbotAnalyser:
 
         :rtype: str
         """
-        embeddings_sentence = model.encode(sentence, convert_to_tensor=True).tolist()
+        embedding = model.encode(sentence, convert_to_tensor=True)
         res = self.es.search(
             index="embeddings",
-            body={
-                "size":1,
-                "query":{
-                    "knn":{
-                        "embedding":{
-                            "vector": embeddings_sentence,
-                            "k":1
+            body = {
+                "size": 1,
+                "query": {
+                    "knn": {
+                        "embedding": {
+                            "vector": embedding.tolist(),
+                            "k": 1
                         }
                     }
                 }
@@ -172,7 +169,7 @@ class ChatbotAnalyser:
             best_hit = res["hits"]["hits"][0]
             return best_hit['_source']['action']
         else:
-            raise NotFoundError(404, {"error":"No action similar to the one asked."}, {})
+            raise RequestError(404, "No action similar to the one asked.")
 
     def analyse_sentence(self,
                          sentence: str,
@@ -180,10 +177,11 @@ class ChatbotAnalyser:
         templatized_sentence, entities = self.find_values(sentence)
         most_similar_sentence = self.find_similar_sentence(
             self.embedding_model, templatized_sentence)
+        self.logger(f"Sentence found : {most_similar_sentence}")
         if most_similar_sentence["queries"].startswith("QUERY"):
             query_args = {}
             for query_arg in most_similar_sentence["queries"].split(", ")[1:]:
-                print(query_arg)
+                self.logger.info(query_arg)
                 op_type, data = query_arg.split(' ')
                 data = data.lower()
                 match(op_type):

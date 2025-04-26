@@ -179,7 +179,7 @@ class ChatbotConsumer(WebsocketConsumer):
                     }
                 })
             )
-        except _:
+        except Exception:
             self.send(
                 json.dumps({
                     'status': 'error',

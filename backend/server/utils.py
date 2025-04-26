@@ -1,5 +1,4 @@
 from opensearchpy import OpenSearch
-from .settings import ELASTICSEARCH_URL
 
 ELASTICSEARCH_CLIENT = None
 def init_es_client():

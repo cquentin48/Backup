@@ -1,8 +1,6 @@
 import os
 
 from django.core.management.base import BaseCommand
-from elasticsearch_dsl.connections import connections
-from elasticsearch.exceptions import ConnectionError
 from sentence_transformers import SentenceTransformer
 import numpy as np
 import pandas as pd
@@ -19,7 +17,6 @@ class Command(BaseCommand):
         parser.add_argument("--sentence_filepath", type=str, help="Sentence filepath")
     
     def handle(self, *args, **kwargs):
-        connections.create_connection(alias='default', hosts=['http://embeddings:9200'])
         if not kwargs['sentence_filepath'] and not kwargs['conditions_filepath']:
             raise AssertionError("⛔ No filepath given to add any element! Skipping operation.")
         try:
@@ -44,7 +41,7 @@ class Command(BaseCommand):
             )
 
     def load_sentences(self, filepath:str):
-        """ Import sentences from file into the elasticsearch database
+        """ Import sentences from file into the opensearch database
         :type filepath: str
         :param filepath: Path of the located file
         

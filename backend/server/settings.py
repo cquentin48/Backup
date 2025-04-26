@@ -17,8 +17,6 @@ from pathlib import Path
 
 import mimetypes
 
-from elasticsearch import Elasticsearch
-
 mimetypes.add_type("text/css",".css",True)
 
 logging.basicConfig(
