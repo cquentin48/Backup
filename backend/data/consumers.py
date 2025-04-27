@@ -14,6 +14,10 @@ class BackupImportConsumer(WebsocketConsumer):
     Websocket communication class
     """
 
+    """
+    Websocket communication class
+    """
+
     def connect(self):
         """ Connect the client to the database.
         Check if user is connected before.

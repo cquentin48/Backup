@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "homepage": ".",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.12.2",
@@ -40,12 +41,18 @@
     "lint_fix": "eslint src/main src/test --fix",
     "babel": "babel src -d build",
     "prod": "webpack -- --env mode=production"
+    "lint_fix": "eslint src/main src/test --fix",
+    "babel": "babel src -d build",
+    "prod": "webpack -- --env mode=production"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
+  },
+  "jest": {
+    "coverageDirectory": "<rootDir>/coverage"
   },
   "jest": {
     "coverageDirectory": "<rootDir>/coverage"
@@ -70,8 +77,20 @@
     "@testing-library/react": "^16.2.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@graphql-tools/jest-transform": "^2.0.0",
+    "@graphql-tools/webpack-loader": "^7.0.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.2.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "cross-fetch": "^4.1.0",
+    "css-loader": "^7.1.2",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
@@ -83,6 +102,7 @@
     "eslint-config-xo": "^0.43.1",
     "eslint-config-xo-typescript": "^0.56.0",
     "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsdoc": "^50.6.2",
     "eslint-plugin-jsdoc": "^50.6.2",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-n": "^15.6.1",
