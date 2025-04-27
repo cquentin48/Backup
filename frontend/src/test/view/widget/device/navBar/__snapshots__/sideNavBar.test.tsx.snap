@@ -1,0 +1,132 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Device main infos side nav bar unit test suite Check render 1`] = `
+<DocumentFragment>
+  <div
+    id="computerSideNav"
+  >
+    <div
+      class="sidebarNavElement selected"
+      id="sideNavBarElement0"
+    >
+      <a
+        href="#"
+        style="text-decoration: none; display: flex; padding: 6px 0px; align-items: center;"
+      >
+        <div
+          id="mainInformationsIcon"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+            data-testid="InfoIcon"
+            focusable="false"
+            style="display: inline-block; vertical-align: middle; color: black;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+            />
+          </svg>
+        </div>
+        <span
+          class="navBarLabel"
+        >
+          Main informations
+        </span>
+      </a>
+    </div>
+    <div
+      class="sidebarNavElement"
+      id="sideNavBarElement1"
+    >
+      <a
+        href="#"
+        style="text-decoration: none; display: flex; padding: 6px 0px; align-items: center;"
+      >
+        <div
+          id="librariesIcon"
+        >
+          <svg
+            role="presentation"
+            style="display: inline-block; vertical-align: middle; color: black; width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12,3C7.58,3 4,4.79 4,7C4,9.21 7.58,11 12,11C16.42,11 20,9.21 20,7C20,4.79 16.42,3 12,3M4,9V12C4,14.21 7.58,16 12,16C16.42,16 20,14.21 20,12V9C20,11.21 16.42,13 12,13C7.58,13 4,11.21 4,9M4,14V17C4,19.21 7.58,21 12,21C16.42,21 20,19.21 20,17V14C20,16.21 16.42,18 12,18C7.58,18 4,16.21 4,14Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+        <span
+          class="navBarLabel"
+        >
+          Libraries
+        </span>
+      </a>
+    </div>
+    <div
+      class="sidebarNavElement"
+      id="sideNavBarElement2"
+    >
+      <a
+        href="#"
+        style="text-decoration: none; display: flex; padding: 6px 0px; align-items: center;"
+      >
+        <div
+          id="softwareConfigurationsIcon"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+            data-testid="SettingsIcon"
+            focusable="false"
+            style="display: inline-block; vertical-align: middle; color: black;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6"
+            />
+          </svg>
+        </div>
+        <span
+          class="navBarLabel"
+        >
+          Software configurations
+        </span>
+      </a>
+    </div>
+    <div
+      class="sidebarNavElement"
+      id="sideNavBarElement3"
+    >
+      <a
+        href="#"
+        style="text-decoration: none; display: flex; padding: 6px 0px; align-items: center;"
+      >
+        <div
+          id="folderStorageIcon"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+            data-testid="FolderIcon"
+            focusable="false"
+            style="display: inline-block; vertical-align: middle; color: black;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8z"
+            />
+          </svg>
+        </div>
+        <span
+          class="navBarLabel"
+        >
+          Folder storage
+        </span>
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;

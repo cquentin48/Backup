@@ -1,16 +1,21 @@
 from django.db import models
-from server.settings import LOCALE
+from tools.localisation import Localisation
 
+
+LOCALE = Localisation("en-us")
 
 class Device(models.Model):
     """
     Device containing list of libraries
     """
 
-    id = models.AutoField(primary_key=True)
+    id = models.AutoField(
+        primary_key=True
+    )
     """
     Database Device ID
     """
+
 
     name = models.CharField(
         verbose_name=LOCALE.load_localised_text("DEVICE_NAME"),
@@ -20,6 +25,7 @@ class Device(models.Model):
     Device name
     """
 
+
     processor = models.CharField(
         verbose_name=LOCALE.load_localised_text("DEVICE_PROCESSOR"),
         max_length=64
@@ -27,6 +33,7 @@ class Device(models.Model):
     """
     Device processor model
     """
+
 
     cores = models.IntegerField(
         verbose_name=LOCALE.load_localised_text("DEVICE_CORES_COUNT")
@@ -36,22 +43,16 @@ class Device(models.Model):
     """
 
     memory = models.BigIntegerField(
+
+    memory = models.BigIntegerField(
         verbose_name=LOCALE.load_localised_text("DEVICE_MEMORY_VALUE")
     )
     """
     RAM size
     """
 
-    operating_system = models.CharField(
-        verbose_name=LOCALE.load_localised_text("DEVICE_OPERATING_SYSTEM"),
-        max_length=64
-    )
-    """
-    OS name
-    """
-
     def __str__(self) -> str:
-        return f"{self.name} ({self.operating_system})"
+        return f"{self.name}"
 
 
 class Package(models.Model):
@@ -82,6 +83,7 @@ class Package(models.Model):
         blank=True
     )
     """
+    Lines to run before installing the package
     Lines to run before installing the package
     """
 
@@ -115,7 +117,36 @@ class Repository(models.Model):
         return f"{self.id} - {self.name}"
 
 
+class Repository(models.Model):
+    """
+    Ubuntu repositories
+    """
+
+    id = models.AutoField(primary_key=True, help_text="Primary key")
+    """
+    Database Primary key
+    """
+
+    sources_lines = models.TextField(help_text="sources.list lines to add")
+    """
+    Instruction lines for the repository found in the file ``/etc/apt/sources.list``
+    """
+
+    name = models.CharField(
+        verbose_name=LOCALE.load_localised_text("REPOSITORY_NAME"),
+        max_length=128,
+        null=False,
+        default="My repository"
+    )
+
+    def __str__(self) -> str:
+        return f"{self.id} - {self.name}"
+
+
 class ChosenVersion(models.Model):
+    """
+    Chosen version of a software
+    """
     """
     Chosen version of a software
     """
@@ -164,8 +195,10 @@ class Shell(models.Model):
 
     def __str__(self):
         # How many lines are there in the history and configuration lines
-        history_lines_count = CommandHistory.objects.filter(related_shell=self).count()
-        configuration_lines_count = Command.objects.filter(related_shell=self).count()
+        history_lines_count = CommandHistory.objects.filter(
+            related_shell=self).count()
+        configuration_lines_count = Command.objects.filter(
+            related_shell=self).count()
 
         # Format the counts
         history_lines_format = f"{history_lines_count}" +\
@@ -197,7 +230,7 @@ class Command(models.Model):
     """
     Arguments of the command (e.g ``-ltr`` for ``ls -ltr``)
     """
-    
+
     related_shell = models.ForeignKey(
         to=Shell,
         on_delete=models.PROTECT,
@@ -234,7 +267,7 @@ class CommandHistory(models.Model):
     """
     Timestamp of the command
     """
-    
+
     related_shell = models.ForeignKey(
         to=Shell,
         on_delete=models.PROTECT,
@@ -259,6 +292,7 @@ class Snapshot(models.Model):
     related_device = models.ForeignKey(
         to=Device,
         verbose_name=LOCALE.load_localised_text(
+            "SAVE_RELATED_DEVICE"
             "SAVE_RELATED_DEVICE"
         ),
         on_delete=models.PROTECT,
@@ -295,6 +329,16 @@ class Snapshot(models.Model):
     Repositories within the save
     """
 
+    operating_system = models.CharField(
+        verbose_name=LOCALE.load_localised_text("DEVICE_OPERATING_SYSTEM"),
+        max_length=64,
+        null=False,
+        default=""
+    )
+    """
+    OS name
+    """
+
     repositories_list = models.TextField(
         verbose_name=LOCALE.load_localised_text("SAVE_REPOSITORIES"),
         default=""
@@ -304,4 +348,5 @@ class Snapshot(models.Model):
     """
 
     def __str__(self) -> str:
+        return f"{str(self.related_device)} : {str(self.save_date)}"
         return f"{str(self.related_device)} : {str(self.save_date)}"

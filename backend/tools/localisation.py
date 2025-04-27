@@ -1,6 +1,8 @@
 import yaml
 from . import PROJECT_ROOT_FOLDER
 
+LANGUAGE_CODE = 'en-us'
+
 class Localisation:
     """Localisation class
     """

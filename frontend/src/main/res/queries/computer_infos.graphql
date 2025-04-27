@@ -1,0 +1,13 @@
+query getDeviceInfos($deviceID:BigInt!){
+  deviceInfos(deviceId:$deviceID){
+    cores
+    memory
+    name
+    processor
+    snapshots{
+      key
+      date
+      operatingSystem
+    }
+  }
+}

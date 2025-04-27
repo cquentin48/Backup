@@ -1,0 +1,53 @@
+.newElementDialog{
+    display: flex;
+    flex-direction: row;
+
+    >*:first-child{
+        margin: 8px 0px 8px 8px;
+    }
+
+    >*:last-child{
+        margin: 8px 8px 8px 0px;
+    }
+
+    >*:not(:first-child):not(:last-child){
+        margin: 1px 0px 8px 0px;
+    }
+}
+
+.newElementDialog #MuiInputBase-root {
+    margin: 8px 0px 8px 0px;
+}
+
+#datePicker{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+
+    > * {
+        flex-grow: 0;
+    }
+
+    > MuiFormControl-root {
+        width: 52%;
+        > MuiInputBase-root > MuiInputAdornment-root {
+            margin-right: 16px;
+        }
+    }
+
+    > input {
+        width: 85px;
+    }
+
+    > .MuiInputAdornment-root {
+        margin-left: 16px;
+    }
+}
+
+#GridFooterContent{
+    padding: 1px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 8px;
+}

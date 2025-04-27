@@ -1,0 +1,136 @@
+#DeviceMainInfosPage {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+}
+
+#deviceMainInfos {
+    margin-top: 16px;
+    margin-left: 40px;
+    flex: 0 0 auto;
+}
+
+#FilterToolbar{
+    margin: 1px 0px;
+    min-width: 120px;
+}
+
+.DeviceSpecsCard{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.avatarIcon {
+    margin-right: 16px;
+}
+
+#OSIcon {
+    margin: 0px 16px 0px 8px;
+}
+
+.DeviceStatCard{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#deviceMainInfosSpecs{
+    padding: 0em 1em 0em 1em
+}
+
+#mainInfosTable {
+    flex: 1 1 auto;
+    margin: 0px 16px 8px 56px;
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100%;
+    overflow: hidden;
+}
+
+#deviceMainInfosHeader {
+    display: flex;
+    margin-top: 8px;
+}
+
+#deleteDeviceButton {
+    margin-left: auto;
+    margin-right: 16px;
+}
+
+#computerName {
+    text-align: left;
+    align-items: center;
+    display: flex;
+}
+
+#mainInfosSelectForm {
+    padding-left: 8px;
+    min-width: 256px;
+    max-width: 512px;
+}
+
+#deviceElementsPage {
+    display: flex;
+    flex: 1 1 auto;
+}
+
+#mainInfosTableSelectHeader {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: rgb(194, 194, 194);
+    border-radius: 6.25px;
+    flex: 0 0 auto;
+}
+
+#detailsContainer {
+    height: 100%;
+}
+
+.deviceInfosMainHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#mainInfosFiles {
+    margin: 8px 0px;
+    padding: 8px;
+    background-color: rgb(194, 194, 194);
+    border-radius: 6.25px;
+    flex: 1 1 auto;
+}
+
+#detailsContainer {
+    background-color: rgb(194, 194, 194);
+    margin-top: 16px;
+    padding: 16px;
+}
+
+.DisplayedPieChart {
+    width: fit-content;
+    flex-direction: column;
+    display: flex
+}
+
+#NewFilterPaperDialog {
+    position: absolute;
+    top: 40px;
+    z-index: 1;
+    left: 0px;
+    display: block;
+    margin-left: 4px;
+}
+
+.PieChartCard {
+    width: 100%;
+}
+
+#pieCharts {
+    padding: 1em 0em 0em 0em;
+}
+
+.AvatarIcon {
+    background-color: #c2c2c2;
+}

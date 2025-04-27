@@ -14,6 +14,17 @@ services:
       - static:/static
     command: sh -c "cp -r /home/build/static/* /static ; nginx -g 'daemon off;'"
 
+  embeddings:
+    image: opensearchproject/opensearch:latest
+    ports:
+      - 9200:9200
+    environment:
+      - discovery.type=single-node
+      - plugins.security.disabled=true
+    env_file:
+      - .env
+    mem_limit: 2g
+
   channels:
     image: redis:7
     healthcheck:
@@ -28,7 +39,6 @@ services:
     image: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      
     env_file:
       - .env
     ports:
@@ -39,11 +49,12 @@ services:
     command: sh -c "make migrate ; make run"
     volumes:
       - static:/backend/static/
-      - ./backend:/backup
+      - ./backend:/backend
     ports:
       - "8000:8000"
     depends_on:
       - db
+      - embeddings
     environment:
       - DB_HOST=db
     env_file:

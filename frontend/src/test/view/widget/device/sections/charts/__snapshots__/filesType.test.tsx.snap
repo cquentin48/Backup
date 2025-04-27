@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Type of files chart unit test suite Successful render 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root PieChartCard css-1j74uew-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+      >
+        <div
+          arial-labels="recipe"
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault AvatarIcon css-18k2bs-MuiAvatar-root"
+        >
+          <svg
+            role="presentation"
+            style="width: 1.5rem; height: 1.5rem;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"
+              style="fill: currentColor;"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Types of files
+        </h5>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            Loading data…
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

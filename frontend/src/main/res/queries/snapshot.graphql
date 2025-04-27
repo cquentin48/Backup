@@ -1,0 +1,14 @@
+query getSaveInfos($snapshotID:BigInt!){
+  snapshotInfos(snapshotId: $snapshotID) {
+    versions{
+      chosenVersion
+      name
+      installType
+    }
+    repositories{
+      sourcesLines
+      name
+    }
+    operatingSystem
+  }
+}
