@@ -30,6 +30,7 @@ password = raw_password[:password_char_count] # Generated password
 with open('.env','w') as file:
     file.write(f'POSTGRES_USER={username}\n')
     file.write(f'POSTGRES_PASSWORD={password}\n')
+    file.write(f'OPENSEARCH_INITIAL_ADMIN={password}\n')
     file.write(f'POSTGRES_DB={db_name}\n')
     file.write('CHANNEL_URL=channels')
 
