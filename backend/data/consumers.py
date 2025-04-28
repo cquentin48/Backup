@@ -14,10 +14,6 @@ class BackupImportConsumer(WebsocketConsumer):
     Websocket communication class
     """
 
-    """
-    Websocket communication class
-    """
-
     def connect(self):
         """ Connect the client to the database.
         Check if user is connected before.
@@ -43,10 +39,10 @@ class BackupImportConsumer(WebsocketConsumer):
         )
 
     def append_new_device(self, device_infos: dict):
-        from .models import Device
         """
         Adds a new device to the database (TODO: migrate it towards another class)
         """
+        from .models import Device # pylint: disable=import-outside-toplevel
         return Device.objects.create(
             **device_infos
         )
@@ -89,7 +85,6 @@ class BackupImportConsumer(WebsocketConsumer):
         return versions
 
     def append_library(self, package_name: str, version: str, package_type: str):
-        from .models import Package, ChosenVersion
         """ Append library alongside the package inside the database
 
         :type package_name: str
@@ -104,6 +99,8 @@ class BackupImportConsumer(WebsocketConsumer):
         :type device: Device
         :param device: Related package
         """
+        from .models import Package, ChosenVersion # pylint: disable=import-outside-toplevel
+
         try:
             package = Package.objects.get(name=package_name, type=package_type)
         except ObjectDoesNotExist as _:
@@ -124,7 +121,7 @@ class BackupImportConsumer(WebsocketConsumer):
 
         :rtype: Repository
         """
-        from .models import Repository
+        from .models import Repository # pylint: disable=import-outside-toplevel
 
         try:
             return Repository.objects.get(
@@ -146,7 +143,7 @@ class BackupImportConsumer(WebsocketConsumer):
 
         :rtype: Device
         """
-        from .models import Device
+        from .models import Device # pylint: disable=import-outside-toplevel
         try:
             self.send_message(
                 status='info',
@@ -182,7 +179,7 @@ class BackupImportConsumer(WebsocketConsumer):
 
         :returns: Snapshot
         """
-        from .models import Snapshot
+        from .models import Snapshot # pylint: disable=import-outside-toplevel
         snapshot = Snapshot.objects.create(
             related_device=device,
             save_date=timezone.now(),

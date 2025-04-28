@@ -115,36 +115,7 @@ class Repository(models.Model):
         return f"{self.id} - {self.name}"
 
 
-class Repository(models.Model):
-    """
-    Ubuntu repositories
-    """
-
-    id = models.AutoField(primary_key=True, help_text="Primary key")
-    """
-    Database Primary key
-    """
-
-    sources_lines = models.TextField(help_text="sources.list lines to add")
-    """
-    Instruction lines for the repository found in the file ``/etc/apt/sources.list``
-    """
-
-    name = models.CharField(
-        verbose_name=LOCALE.load_localised_text("REPOSITORY_NAME"),
-        max_length=128,
-        null=False,
-        default="My repository"
-    )
-
-    def __str__(self) -> str:
-        return f"{self.id} - {self.name}"
-
-
 class ChosenVersion(models.Model):
-    """
-    Chosen version of a software
-    """
     """
     Chosen version of a software
     """
@@ -345,5 +316,4 @@ class Snapshot(models.Model):
     """
 
     def __str__(self) -> str:
-        return f"{str(self.related_device)} : {str(self.save_date)}"
         return f"{str(self.related_device)} : {str(self.save_date)}"

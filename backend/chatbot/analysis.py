@@ -9,7 +9,7 @@ from sentence_transformers import SentenceTransformer
 from spacy import load
 from text_to_num import alpha2digit
 
-from server.utils import init_es_client, get_es_client
+from server.utils import init_embedding_client, get_embeddings_client
 
 from .models import BotAnswer, ConversationModel, ChatbotSentence
 from data.models import Device
@@ -22,10 +22,10 @@ class ValuePattern:
 
 class ChatbotAnalyser:
     def __init__(self):
-        init_es_client()
+        init_embedding_client()
         self.logger = logging.getLogger(self.__class__.__name__)
         self.nlp = load("fr_core_news_sm")
-        self.es = get_es_client()
+        self.es = get_embeddings_client()
         self.embedding_model = \
             SentenceTransformer("dangvantuan/sentence-camembert-large")
         self.REGEX_PATTERNS = {

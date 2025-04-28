@@ -19,6 +19,7 @@ class ChatbotConsumer(WebsocketConsumer):
     def connect(self):
         # pylint: disable=wrong-import-position
         from .models import ConversationModel
+        # pylint: enable=wrong-import-position
         """ Connect the client to the database.
         Check if user is connected before.
         """
@@ -60,6 +61,7 @@ class ChatbotConsumer(WebsocketConsumer):
     def load_conversation_headers(self):
         # pylint: disable=wrong-import-position
         from models import ConversationModel, ChatbotSentence
+        # pylint: enable=wrong-import-position
         conversations = ConversationModel.objects.all()
         headers = []
         for conversation in conversations:
@@ -84,6 +86,7 @@ class ChatbotConsumer(WebsocketConsumer):
         # pylint: disable=wrong-import-position
         from .models import ConversationModel, ChatbotSentence
         from .analysis import ChatbotAnalyser
+        # pylint: enable=wrong-import-position
         analyser = ChatbotAnalyser()
         try:
             data = json.loads(text_data)

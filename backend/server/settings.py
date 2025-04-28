@@ -14,8 +14,6 @@ import os
 
 import logging
 
-import logging
-
 from pathlib import Path
 
 import mimetypes
@@ -40,10 +38,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-4y+$6b7z!!@%bv^+k$p$#7ws9tjkg=duh0(oimu9&-js*j+771'
+SECRET_KEY = os.environ.get('POSTGRES_PASSWORD','')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DEBUG_MODE','DEBUG'))
 DEBUG = bool(os.environ.get('DEBUG_MODE','DEBUG'))
 
 ALLOWED_HOSTS = [
@@ -52,8 +49,6 @@ ALLOWED_HOSTS = [
     'backend',
     'localhost'
 ]
-
-SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
@@ -108,7 +103,6 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(os.environ.get("CHANNEL_URL","localhost"), 6379)],
             "hosts": [(os.environ.get("CHANNEL_URL","localhost"), 6379)],
         },
     },
@@ -176,32 +170,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_logger': False,
-    'handlers':{
-        'console': {
-            'class': 'logging.StreamHandler'
-        },
-    },
-    'loggers':{
-        'django':{
-            'handlers': ['console'],
-            'level': 'DEBUG'
-        },
-        'daphne':{
-            'handlers': ['console'],
-            'level': 'DEBUG'
-        },
-        'django.db.backends':{
-            'handlers':['console'],
-            'level':'WARNING',
-            'propagate':False
-        }
-    }
-}
-
 LOGGING = {
     'version': 1,
     'disable_existing_logger': False,
@@ -241,9 +209,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 MEDIA_URL = '/media/'
@@ -252,9 +218,6 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-DOCS_ACCESS = 'public'
-DOCS_ROOT = os.path.join(BASE_DIR, 'docs/build/html')
 
 DOCS_ACCESS = 'public'
 DOCS_ROOT = os.path.join(BASE_DIR, 'docs/build/html')

@@ -7,7 +7,7 @@ from django.db import models
 from opensearchpy import OpenSearch
 from torch import Tensor
 
-from server.utils import get_es_client
+from server.utils import get_embeddings_client
 from tools.localisation import Localisation
 
 # Create your models here.
@@ -87,6 +87,7 @@ class BotAnswer(models.Model):
         null=True
     )
 
+
 class ChatbotSentence(models.Model):
     AGENTS = {
         "BOT": 'CHATBOT_AGENT',
@@ -103,7 +104,8 @@ class ChatbotSentence(models.Model):
     conversation = models.ForeignKey(
         ConversationModel,
         on_delete=models.PROTECT,
-        verbose_name=LOCALE.load_localised_text("CHATBOT_INPUT_RELATED_CONVERSATION"),
+        verbose_name=LOCALE.load_localised_text(
+            "CHATBOT_INPUT_RELATED_CONVERSATION"),
         null=True
     )
     timestamp = models.DateTimeField(
@@ -176,25 +178,25 @@ class Sentence:
     """
     Input data for elastic search storage
     """
-    
+
     current_length = 0
 
-    embedding:str
+    embedding: str
     """
     Sentence as embeddings.
     """
 
-    sentence:str
+    sentence: str
     """
     Templated sentence
     """
 
-    source:str
+    source: str
     """
     Source (if it originates from the documentation, ``/`` used as separators).
     """
 
-    action:str
+    action: str
     """
     Action type (e.g. ``create``, ``update`` or ``delete``).
     """
@@ -206,29 +208,41 @@ class Sentence:
 
     @staticmethod
     def add_element(
-        action:str, embedding: Tensor,
-        sentence:str, source:str, tags:str, new_index:int):
-        assert len(embedding) == 1024, "The embedding must have 1024 inputs"+\
+            action: str, embedding: Tensor,
+            sentence: str, source: str, tags: str, new_index: int):
+        assert len(embedding) == 1024, "The embedding must have 1024 inputs" +\
             f", here it has {len(embedding)} inputs."
-        client = get_es_client()
+        client = get_embeddings_client()
         if not client:
             client = OpenSearch(
-            "http://embeddings:9200",
-            use_ssl=False,
-            verify_certs=False
-        )
+                "http://embeddings:9200",
+                use_ssl=False,
+                verify_certs=False
+            )
         client.index(
             "sentence_embeddings",
             body={
-                "action":action,
-                "sentence":sentence,
-                "source":source,
-                "tags":tags,
+                "action": action,
+                "sentence": sentence,
+                "source": source,
+                "tags": tags,
                 "embedding": embedding.tolist()
             },
             id=new_index
         )
         client.indices.refresh(index="sentence_embeddings")
+
+    @staticmethod
+    def count():
+        client = get_embeddings_client()
+        if not client:
+            client = OpenSearch(
+                "http://embeddings:9200",
+                use_ssl=False,
+                verify_certs=False
+            )
+        index_name = "sentence_embeddings"
+        return client.count(index=index_name)['count']
 
 
 class SentenceEntityModel(models.Model):
@@ -261,4 +275,3 @@ class SentenceEntityModel(models.Model):
             input_type=input_type,
             value=value
         )
-

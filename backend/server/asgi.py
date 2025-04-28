@@ -19,7 +19,7 @@ from channels.auth import AuthMiddlewareStack
 from opensearchpy.exceptions import RequestError
 
 from .routing import websocket_urlpatterns
-from .utils import get_es_client, init_es_client
+from .utils import get_embeddings_client, init_embedding_client
 
 # Logging object
 logging = logging.getLogger("Backup initialisation")
@@ -38,9 +38,10 @@ application = ProtocolTypeRouter({
     )
 })
 
-# Append the sentences inside the database similarity with the ner model. If the sentence is not set, it is added!
-init_es_client()
-client = get_es_client()
+# Append the sentences inside the database similarity with the ner model.
+# If the sentence is not set, it is added!
+init_embedding_client()
+client = get_embeddings_client()
 try:
     mapping = {
         "settings": {
