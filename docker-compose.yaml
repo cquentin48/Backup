@@ -21,6 +21,12 @@ services:
     environment:
       - discovery.type=single-node
       - plugins.security.disabled=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     env_file:
       - .env
     mem_limit: 2g
@@ -41,6 +47,12 @@ services:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
     ports:
       - "5432:5432"
 
@@ -53,8 +65,10 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
-      - embeddings
+      embeddings:
+        condition: service_healthy
+      db:
+        condition: service_healthy
     environment:
       - DB_HOST=db
     env_file:
