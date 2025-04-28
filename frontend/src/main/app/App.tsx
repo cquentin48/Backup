@@ -3,10 +3,6 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import gqlClient from "./model/queries/client";
 
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { ApolloProvider } from "@apollo/client";
-import gqlClient from "./model/queries/client";
-
 import "../res/css/App.css";
 import ComputerPage from "./view/pages/computer/computerPage";
 import TopBar from "./view/pages/computer/topbar";

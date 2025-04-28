@@ -102,7 +102,6 @@ REST_FRAMEWORK = {
 
 GRAPHENE = {
     "SCHEMA": "data.schemas.schema.schema"
-    "SCHEMA": "data.schemas.schema.schema"
 }
 
 CHANNEL_LAYERS = {
@@ -149,12 +148,6 @@ CHATBOT_MODEL = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST','localhost'),
-        'PORT': 5432
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('POSTGRES_DB'),
         'USER': os.environ.get('POSTGRES_USER'),

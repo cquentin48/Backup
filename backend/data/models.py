@@ -43,8 +43,6 @@ class Device(models.Model):
     """
 
     memory = models.BigIntegerField(
-
-    memory = models.BigIntegerField(
         verbose_name=LOCALE.load_localised_text("DEVICE_MEMORY_VALUE")
     )
     """
@@ -292,7 +290,6 @@ class Snapshot(models.Model):
     related_device = models.ForeignKey(
         to=Device,
         verbose_name=LOCALE.load_localised_text(
-            "SAVE_RELATED_DEVICE"
             "SAVE_RELATED_DEVICE"
         ),
         on_delete=models.PROTECT,
