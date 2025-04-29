@@ -17,78 +17,11 @@ LOCALE = Localisation("en-us")
 class ConversationModel(models.Model):
     id = models.AutoField(primary_key=True,
                           verbose_name=LOCALE.load_localised_text("CHATBOT_CONV_ID"))
-
-    @staticmethod
-    def gets_or_create_conversation(conversation_id: Union[str, None]) -> "ConversationModel":
-        """ Returns the conversation with the id given in the database. If not exists,
-        creates a new one.
-        :type conversation_id: Union[str,None]
-        :param conversation_id: ID of the conversation stored in the database.
-
-        :rtype: ConversationModel
-        """
-        if not conversation_id:
-            return ConversationModel.objects.create()
-        try:
-            return ConversationModel.objects.get(id=conversation_id)
-        except ObjectDoesNotExist as _:
-            return ConversationModel.objects.create()
-
-    @staticmethod
-    def load_all_conversation_headers() -> dict:
-        """
-        Loads every conversation header
-
-        :rtype: dict Every conversation headers
-        """
-        conversations = list(ConversationModel.objects.all())
-        conversation_headers = []
-        for conversation in conversations:
-            dialogs = list(ChatbotSentence.objects.filter(
-                conversation=conversation))
-            if len(dialogs) > 1:
-                count = f"{len(dialogs)} conversations"
-                last_dialog_timestamp = dialogs[-1].timestamp.strftime(
-                    "%d %B %Y à %H:%M")
-            elif len(dialogs) == 1:
-                count = f"{len(dialogs)} conversation"
-                last_dialog_timestamp = dialogs[-1].timestamp.strftime(
-                    "%d %B %Y à %H:%M")
-            else:
-                count = "Aucune conversation"
-                last_dialog_timestamp = ""
-            conversation_headers.append(
-                {
-                    "id": conversation.id,
-                    "text": f"Dialog #{conversation.id} - {count} - (dernière maj : {last_dialog_timestamp})"
-                }
-            )
-        return conversation_headers
-
-    def __str__(self):
-        return f"Conversation - {self.id}"
+    created_at = models.DateTimeField(default=datetime.now(), verbose_name=LOCALE.load_localised_text("CHATBOT_CONV_CREATED_AT"))
+    title = models.CharField(max_length=255, default="", verbose_name=LOCALE.load_localised_text("CHATBOT_CONV_TITLE"))
 
 
-class BotAnswer(models.Model):
-    id = models.AutoField(
-        primary_key=True,
-        verbose_name=LOCALE.load_localised_text("BOT_ANSWER_ID")
-    )
-    understood_data = models.CharField(
-        verbose_name=LOCALE.load_localised_text("BOT_ANSWER_UNDERSTOOD_DATA")
-    )
-    found_data = models.CharField(
-        verbose_name=LOCALE.load_localised_text("BOT_ANSWER_FOUND_DATA")
-    )
-    answer = models.ForeignKey(
-        "ChatbotSentence",
-        verbose_name=LOCALE.load_localised_text("BOT_ANSWER_TEXT"),
-        on_delete=models.CASCADE,
-        null=True
-    )
-
-
-class ChatbotSentence(models.Model):
+class Message(models.Model):
     AGENTS = {
         "BOT": 'CHATBOT_AGENT',
         "HUMAN": 'USER'
@@ -109,65 +42,9 @@ class ChatbotSentence(models.Model):
         null=True
     )
     timestamp = models.DateTimeField(
-        verbose_name=LOCALE.load_localised_text("CHATBOT_TIMESTAMP"))
-    datetime.now()
-
-    @staticmethod
-    def add_new_sentence(
-        agent: Literal["HUMAN", "AGENT"],
-        text: str, conversation: ConversationModel, timestamp: datetime
-    ) -> "ChatbotSentence":
-        """ Description
-        :type agent: Literal["HUMAN","AGENT"]
-        :param agent: User or the bot
-
-        :type text: str
-        :param text: Sentence written by the agent
-
-        :type conversation: ConversationModel
-        :param conversation: Current conversation
-
-        :type timestamp: datetime
-        :param timestamp: Timestamp of the written message
-
-        :raises: SuspiciousOperation Suspicious operation
-        (multiple load at the same time)
-
-        :rtype: ChatbotSentence
-        """
-        try:
-            _ = ChatbotSentence.objects.get(
-                agent=agent,
-                text=text,
-                conversation=conversation,
-                timestamp=timestamp
-            )
-            raise SuspiciousOperation(
-                "You are trying to write again the same sentence at the same time."
-            )
-        except ObjectDoesNotExist as _:
-            if not conversation:
-                conversation = ConversationModel.objects.create()
-            return ChatbotSentence.objects.create(
-                agent=agent,
-                text=text,
-                conversation=conversation,
-                timestamp=timestamp
-            )
-
-    @staticmethod
-    def get_sentences(chatbot_id: int) -> List["ChatbotSentence"]:
-        """ Loads every sentences written both by the agent and the user
-        :type chatbot_id: int
-        :param chatbot_id: ID of the chatbot sentence
-
-        :rtype: List[ChatbotSentence]
-        """
-        try:
-            conversation = ConversationModel.objects.get(id=chatbot_id)
-            return ChatbotSentence.objects.filter(conversation=conversation)
-        except ObjectDoesNotExist as _:
-            return []
+        verbose_name=LOCALE.load_localised_text("CHATBOT_TIMESTAMP"),
+        default=datetime.now()
+    )
 
     def __str__(self):
         related_conv_id = self.conversation.id

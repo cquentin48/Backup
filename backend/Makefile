@@ -16,6 +16,9 @@ migrate: ## Migrate model data
 super_user: ## Creates a root user
 	./manage.py createsuperuser
 
+add_sentence_embeddings: ## Adds base sentence embeddings:
+	./manage.py init_base_embeddings --sentence_filepath res/sentences/sentences.jsonl
+
 app_shell: ## Launch django app shell
 	./manage.py shell
 

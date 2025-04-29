@@ -57,6 +57,16 @@ services:
     ports:
       - "5432:5432"
 
+  ollama:
+    build: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_MODELS="llama2"
+    restart: unless-stopped
+
   backend:
     build: backend
     command: sh -c "make migrate ; make run"
@@ -85,3 +95,4 @@ services:
 volumes:
   postgres_data:
   static:
+  ollama_data:

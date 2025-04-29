@@ -60,12 +60,12 @@ class ChatbotConsumer(WebsocketConsumer):
 
     def load_conversation_headers(self):
         # pylint: disable=wrong-import-position
-        from models import ConversationModel, ChatbotSentence
+        from models import ConversationModel, Message
         # pylint: enable=wrong-import-position
         conversations = ConversationModel.objects.all()
         headers = []
         for conversation in conversations:
-            last_message = ChatbotSentence.objects.filter(
+            last_message = Message.objects.filter(
                 conversation=conversation).order_by('-timestamp')[0]
             headers.append({
                 'id': conversation.id,
@@ -84,7 +84,7 @@ class ChatbotConsumer(WebsocketConsumer):
         :param bytes_data: Bytes sent by the client (Unused here)
         """
         # pylint: disable=wrong-import-position
-        from .models import ConversationModel, ChatbotSentence
+        from .models import ConversationModel, Message
         from .analysis import ChatbotAnalyser
         # pylint: enable=wrong-import-position
         analyser = ChatbotAnalyser()
@@ -96,7 +96,7 @@ class ChatbotConsumer(WebsocketConsumer):
                 case "INITCONVERSATION":
                     self.dialog = ConversationModel.gets_or_create_conversation(
                         data["dialogID"])
-                    self.sentences = ChatbotSentence.get_sentences(
+                    self.sentences = Message.get_sentences(
                         self.dialog.id)
                     self.send(json.dumps(
                         {
@@ -106,7 +106,7 @@ class ChatbotConsumer(WebsocketConsumer):
                     ))
                     logging.info("Messages header sent!")
                 case "WRITEACTION":
-                    new_message = ChatbotSentence.add_new_sentence(
+                    new_message = Message.add_new_sentence(
                         "USER",
                         data["message"],
                         self.dialog,
