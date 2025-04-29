@@ -1,5 +1,8 @@
 FROM ollama/ollama:latest
 
+RUN apt update -y
+RUN apt install jq curl -y
+
 RUN mkdir -p /root/.ollama
 
 EXPOSE 11434

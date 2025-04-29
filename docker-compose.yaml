@@ -65,6 +65,15 @@ services:
       - ollama_data:/root/.ollama
     environment:
       - OLLAMA_MODELS="llama2"
+    healthcheck:
+      test: >
+        curl -s -X POST http://localhost:11434/api/generate
+        -H "Content-Type: application/json"
+        -d '{"model":"llama3.1","prompt":"ping","stream":false}' |
+        jq -e ".response | select(length > 0)" > /dev/null || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 20
     restart: unless-stopped
 
   backend:
@@ -81,6 +90,8 @@ services:
       db:
         condition: service_healthy
       channels:
+        condition: service_healthy
+      ollama:
         condition: service_healthy
     environment:
       - DB_HOST=db

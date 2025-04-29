@@ -1,12 +1,11 @@
 import os
 
-from django.shortcuts import get_object_or_404
-
-from langchain.agents import initialize_agent, AgentType, Tool
+from langchain.agents import initialize_agent, AgentType, Tool, create_sql_agent
 from langchain_experimental.sql.base import SQLDatabaseChain
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
-from langchain_community.llms import Ollama
+from langchain_community.tools.sql_database.tool import SQLD
+from langchain_ollama import OllamaLLM
 from langchain_community.utilities.sql_database import SQLDatabase
 
 from .models import ConversationModel, Message
@@ -25,7 +24,7 @@ def singleton(class__):
 @singleton
 class ChatbotAgent:
     def __init__(self):
-        self.llm = Ollama(
+        self.llm = OllamaLLM(
             base_url=os.environ.get("OLLAMA_URL", "http://ollama:11434"),
             model="llama3.1"
         )
@@ -44,32 +43,9 @@ class ChatbotAgent:
         self.sql_prompt = PromptTemplate(
             input_variables=["question"],
             template="""
-            Voici une question sur une base de données SQL. Si la question concerne une recherche sur un équipement informatique (ordinateur, smartphone, ...) génère une requête pour la table data_device.
-            Voici à quoi correspond les attributs des composants :
-            | Nom de l'attribut dans la table | Description |
-            | ------------------------------- | ----------- |
-            | id | Identifiant de l'objet |
-            | name | Nom de l'ordinateur |
-            | processor | Modèle du processeur |
-            | cores | Nombre de coeurs |
-            | memory | Mémoire vive stockée au format valeur + unité (e.g. 8 Go)|
-            La mémoire doit garder sa valeur: ex. 4 Go doit rester 4 Go.
-    
-            Les questions de snapshots et de sauvegarde sont liées à la table repositories.
-            Voici à quoi correspond les attributs des composants:
-            | Nom de l'attribut dans la table | Description |
-            | ------------------------------- | ----------- |
-            | id | Identifiant de l'objet |
-            | save_date | Date de création du snapshot |
-            | related_device_id | Identifiant de l'appareil réalisant la sauvegarde |
-            | repositories_list | List de tout répository (ignoré ici) |
-            | Operating system | Nom du système d'exploitation |
-            
-            Toute question avec un notion de nombre lié aux objets présentés ci-haut doivent passer par une requête SQL.
-            
-            S'il s'agit d'une requête SQL, exécute là et génère une réponse au format texte.
-            
-            Sinon, retourne une réponse comme "Je ne peux pas répondre".
+            Tu es un agent SQL chargé de réaliser des requêtes sur des tables SQL.
+            Les données des ordinateurs sont stockées dans une table nommée data_device.
+            La taille mémoire est au format {value} {unit}.
             
             Question: {question}
             """
@@ -86,7 +62,12 @@ class ChatbotAgent:
         db_host = os.environ.get('DB_HOST', 'localhost')
         db_uri = f"postgresql+psycopg2://{db_username}:{db_password}@{db_host}/{db_name}"
         db = SQLDatabase.from_uri(db_uri)
-        sql_chain = SQLDatabaseChain(llm=self.llm, database=db, verbose=True)
+        sql_chain = create_sql_agent(
+            llm=self.llm,
+            database=db,
+            agent_type="zero-shot-react-description",
+            verbose=True
+        )
         return Tool(
             name="Django database query managment",
             func=sql_chain.run,
@@ -94,13 +75,5 @@ class ChatbotAgent:
         )
 
     def ask_agent(self, user_input: str, session_id: int):
-        """
-        session = get_object_or_404(ConversationModel, id=session_id)
-        _ = Message.objects.create(
-            agent="USER",
-            text=user_input,
-            conversation=session
-        )
-        """
         prompt = self.sql_prompt.format(question=user_input)
-        bot_response = self.agent.run(user_input)
+        bot_response = self.agent.invoke({"input":user_input})
