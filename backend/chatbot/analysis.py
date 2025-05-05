@@ -1,10 +1,9 @@
 import os
 
 from langchain.agents import initialize_agent, AgentType, Tool, create_sql_agent
-from langchain_experimental.sql.base import SQLDatabaseChain
+from langchain.chains.llm import LLMChain
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
-from langchain_community.tools.sql_database.tool import SQLD
 from langchain_ollama import OllamaLLM
 from langchain_community.utilities.sql_database import SQLDatabase
 
@@ -26,7 +25,7 @@ class ChatbotAgent:
     def __init__(self):
         self.llm = OllamaLLM(
             base_url=os.environ.get("OLLAMA_URL", "http://ollama:11434"),
-            model="llama3.1"
+            model="mistral"
         )
         tools = [
             self.init_sql_agent()
@@ -45,11 +44,57 @@ class ChatbotAgent:
             template="""
             Tu es un agent SQL chargé de réaliser des requêtes sur des tables SQL.
             Les données des ordinateurs sont stockées dans une table nommée data_device.
-            La taille mémoire est au format {value} {unit}.
+            La taille mémoire est au format float.
+            
+            Utilise uniquement les informations de la base de données.
             
             Question: {question}
             """
         )
+        
+    def init_ner_agent(self):
+        template = PromptTemplate(
+            input_variables=["text"],
+            template="""
+            Identifie les entités nommées dans ce texte : {text}.
+
+            Les éléments à identifier sont les suivants :
+            | Type de données | Libellée | Entrée à ajouter dans le tableau retourné |
+            | --------------- | -------- | ----------------------------------------- |
+            | Mémoire vive | La RAM présente dans la machine | memory |
+            | Nombre de coeurs | Le nombre de coeurs dans la machine | cores |
+            | Processeur | Modèle de processeur | processor |
+            | Système d'exploitation | Le système d'exploitation présent sur la machine | os |
+            
+            Go correctement à une unité mémoire (Giga-octets).
+            
+            La phrase "Quel ordinateur a plus de 8 Go, 4 coeurs et Windows comme OS?" doit retourner :
+            ```json
+            {{
+                "memory": 8.00,
+                "cores": 4,
+                "os": "windows"
+            }}
+            ```
+            
+            Si la valeur pour les éléments n'est pas présente dans la phrase, ne l'ajoute pas.
+            N'ajoute pas de null dans le tableau.
+            
+            Réponds sous forme de liste JSON.
+            """
+        )
+        chain = LLMChain(
+            llm=self.llm,
+            prompt=template,
+        )
+        return Tool(
+            name="llm_ner",
+            func=lambda text: chain.run(text),
+            description="""
+            Extraction d'entités à partir du text en utilisant un LLM. Répond sous forme de Liste.
+            """
+        )
+        
 
     def init_sql_agent(self) -> Tool:
         """ Init the SQL query agent for the chatbot.
@@ -64,7 +109,7 @@ class ChatbotAgent:
         db = SQLDatabase.from_uri(db_uri)
         sql_chain = create_sql_agent(
             llm=self.llm,
-            database=db,
+            db=db,
             agent_type="zero-shot-react-description",
             verbose=True
         )

@@ -68,9 +68,9 @@ services:
     healthcheck:
       test: >
         curl -s -X POST http://localhost:11434/api/generate
-        -H "Content-Type: application/json"
-        -d '{"model":"llama3.1","prompt":"ping","stream":false}' |
-        jq -e ".response | select(length > 0)" > /dev/null || exit 1
+                -H "Content-Type: application/json"
+                -d '{"model":"mistral","prompt":"ping","stream":false}' |
+                jq -e ".response | select(length > 0)"
       interval: 10s
       timeout: 10s
       retries: 20

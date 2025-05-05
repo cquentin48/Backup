@@ -6,6 +6,6 @@ OLLAMA_PID=$!
 
 sleep 10
 
-ollama pull llama3.1 &
+ollama pull mistral &
 
 wait $OLLAMA_PID

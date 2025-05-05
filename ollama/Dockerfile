@@ -1,7 +1,7 @@
 FROM ollama/ollama:latest
 
 RUN apt update -y
-RUN apt install jq curl -y
+RUN apt install jq curl bash -y
 
 RUN mkdir -p /root/.ollama
 
