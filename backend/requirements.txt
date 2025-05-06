@@ -40,7 +40,7 @@ elastic-transport==8.17.1
 Events==0.5
 exceptiongroup==1.2.2
 filelock==3.18.0
-fr_core_news_sm @ https://github.com/explosion/spacy-models/releases/download/fr_core_news_sm-3.8.0/fr_core_news_sm-3.8.0-py3-none-any.whl#sha256=7d6ad14cd5078e53147bfbf70fb9d433c6a3865b695fda2657140bbc59a27e29
+fr_core_news_lg @ https://github.com/explosion/spacy-models/releases/download/fr_core_news_lg-3.8.0/fr_core_news_lg-3.8.0-py3-none-any.whl#sha256=da5bf7fc860af64293d88638b4416b3de3a29005b785bfff67d09b06c77345de
 frozenlist==1.5.0
 fsspec==2025.3.2
 graphene==3.3

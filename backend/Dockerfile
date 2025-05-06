@@ -14,7 +14,6 @@ RUN pip install pylint pylint-django
 RUN make generate_static_auto
 
 # Exposing backend port
-# Exposing backend port
 EXPOSE 8000
 
 # Generates static and creating the migrations
