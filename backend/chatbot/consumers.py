@@ -23,36 +23,41 @@ class ChatbotConsumer(WebsocketConsumer):
         """ Connect the client to the database.
         Check if user is connected before.
         """
-        self.accept()
-        client_ip, client_port = self.scope['client']
-        self.dialog = None
-        self.sentences = []
-        self.new_dialog = True
-        logging.info(
-            f"Connected from ip adress {client_ip} with port {client_port}!")
+        try:
+            self.accept()
+            client_ip, client_port = self.scope['client']
+            self.dialog = None
+            self.sentences = []
+            self.new_dialog = True
+            logging.info(
+                f"Connected from ip adress {client_ip} with port {client_port}!")
 
-        conversation_headers = ConversationModel.load_all_conversation_headers()
-        logging.info("Sentences loaded")
-        self.send(
-            json.dumps(
-                {
-                    "status": "success",
-                    "actionType": "CONNECT"
-                }
+            #conversation_headers = ConversationModel.load_all_conversation_headers()
+            conversation_headers = []
+            logging.info("Sentences loaded")
+            self.send(
+                json.dumps(
+                    {
+                        "status": "success",
+                        "actionType": "CONNECT"
+                    }
+                )
             )
-        )
-        logging.info("Message sent!")
-        self.send(json.dumps(
-            {'status': 'success',
-                'data':
-                {
-                    'actionType': 'CONVERSATION_HEADERS_LOAD',
-                    'conversationHeaders': conversation_headers
-                }
-             })
-        )
-        self.timeout_task = Timer(60*15, self.auto_disconnect)
-        self.timeout_task.start()
+            logging.info("Message sent!")
+            self.send(json.dumps(
+                {'status': 'success',
+                    'data':
+                    {
+                        'actionType': 'CONVERSATION_HEADERS_LOAD',
+                        'conversationHeaders': conversation_headers
+                    }
+                })
+            )
+            self.timeout_task = Timer(60*15, self.auto_disconnect)
+            self.timeout_task.start()
+        except Exception as e:
+            logging.error(traceback.format_exc())
+            raise e
 
     def disconnect(self, code):
         logging.error(f"Disconnect with code {code}")
@@ -85,9 +90,9 @@ class ChatbotConsumer(WebsocketConsumer):
         """
         # pylint: disable=wrong-import-position
         from .models import ConversationModel, Message
-        from .analysis import ChatbotAnalyser
+        from .analysis.chatbot import ChatbotAgent
         # pylint: enable=wrong-import-position
-        analyser = ChatbotAnalyser()
+        analyser = ChatbotAgent()
         try:
             data = json.loads(text_data)
             logging.info(f"Received data : {data}")
@@ -106,11 +111,10 @@ class ChatbotConsumer(WebsocketConsumer):
                     ))
                     logging.info("Messages header sent!")
                 case "WRITEACTION":
-                    new_message = Message.add_new_sentence(
-                        "USER",
-                        data["message"],
-                        self.dialog,
-                        datetime.fromtimestamp(data["timestamp"]/1e3)
+                    new_message = Message.objects.create(
+                        agent="USER",
+                        text=data["message"],
+                        timestamp = datetime.fromtimestamp(data["timestamp"]/1e3)
                     )
                     self.sentences.append(new_message)
                     if self.dialog is None:
@@ -127,7 +131,7 @@ class ChatbotConsumer(WebsocketConsumer):
                             ** (
                                 {
                                     "conversation": {
-                                        "id": self.dialog.id,
+                                        "id": 0,
                                         "label": "Device manager"
                                     }
                                 } if self.new_dialog else {}
@@ -137,16 +141,21 @@ class ChatbotConsumer(WebsocketConsumer):
                     self.new_dialog = False
                     logging.info("New message sent!")
                     logging.info("Bot analysis!")
-                    bot_anwser = analyser.analyse_sentence(
-                        new_message.text, None)
+                    bot_anwser = analyser.interpret_question(
+                        new_message.text)
                     logging.info("Bot analysis done!")
+                    Message.objects.create(
+                        agent = "BOT",
+                        text = json.dumps(bot_anwser),
+                        timestamp = datetime.fromtimestamp(data["timestamp"]/1e3)
+                    )
                     self.send(json.dumps(
                         {
                             "actionType": "NEW_MESSAGE",
                             "message": {
-                                "message": bot_anwser.text_answer,
+                                "message": bot_anwser,
                                 "agent": "BOT",
-                                "timestamp": new_message.timestamp.timestamp()
+                                "timestamp": datetime.now().timestamp()
                             }
                         }
                     ))
@@ -182,7 +191,8 @@ class ChatbotConsumer(WebsocketConsumer):
                     }
                 })
             )
-        except Exception:
+        except Exception as e:
+            logging.error(traceback.format_exc())
             self.send(
                 json.dumps({
                     'status': 'error',

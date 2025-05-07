@@ -73,7 +73,7 @@ ELASTICSEARCH_URL = "http://embeddings:9200"
 
 VERBOSE = True
 
-GRAPHQL_URL = "http://0.0.0.0:8000/api/v1/data/graphql/"
+GRAPHQL_URL = "http://0.0.0.0:8000/api/v1/graphql/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

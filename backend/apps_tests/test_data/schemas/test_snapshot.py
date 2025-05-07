@@ -15,7 +15,7 @@ class SnapshotSchemaQueryTest(GraphQLTestCase):
     """
 
     databases = '__all__'
-    GRAPHQL_URL = 'http://0.0.0.0:8000/api/v1/data/graphql/'
+    GRAPHQL_URL = 'http://0.0.0.0:8000/api/v1/graphql/'
 
     def tearDown(self) -> None:
         """After each test function

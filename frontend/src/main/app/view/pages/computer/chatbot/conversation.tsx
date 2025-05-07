@@ -29,7 +29,11 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
     return (
         <div>
             <Box display="flex">
-                <Box sx={{ marginLeft: "auto", display: "flex" }}>
+                <Box sx={{
+                        marginLeft: "auto",
+                        display: "flex",
+                        flexDirection: "column"
+                        }}>
                     {
                         messages.map((message) => {
                             return <ChatbotMessage
@@ -76,6 +80,8 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
                                 )
                             }
                             props.sendMessage(newMessage)
+                            updateWrittenMessage("")
+                            setFirstUpdate(true)
                             e.preventDefault()
                         }
                     }}

@@ -29,7 +29,6 @@
     flex-direction: row;
     right: 0;
     margin-right: 16px;
-    position: absolute;
     justify-content: center;
     align-items: center;
     .messageBox{
@@ -58,9 +57,24 @@
     margin-left: 16px;
     left: 0;
     .messageBox{
-        display: inline-block;
         padding: 6px;
-        background-color: #FDD835;
+        min-height: "28px";
+        display: "flex";
+        flex-direction: "column";
+        justify-content: "center";
+        border-radius: 25px;
+    }
+    .user{
+        background-color: black;
+        color: white;       
+    }
+    .botSuccess{
+        background-color: green;
+        color: white;
+    }
+    .botError{
+        background-color: #B00020;
+        color: white;
     }
     .messageBox:before{
         content: "";
