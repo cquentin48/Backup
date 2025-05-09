@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import { AccountCircle, SendSharp, SmartToy } from "@mui/icons-material";
-import { Box, TextField, InputAdornment } from "@mui/material";
+import { SendSharp } from "@mui/icons-material";
+import { Box, TextField, InputAdornment, Divider } from "@mui/material";
 
 import { chatbotSliceState } from "../../../../controller/deviceMainInfos/chatbotSlice";
 import { useState } from "react";
@@ -27,18 +27,23 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
     const { enqueueSnackbar } = useSnackbar();
 
     return (
-        <div>
-            <Box display="flex">
+        <Box>
+            <Box
+                display="flex"
+                flexDirection="column"
+            >
                 <Box sx={{
                         marginLeft: "auto",
                         display: "flex",
-                        flexDirection: "column"
+                        flexDirection: "column",
+                        flex: "1"
                         }}>
                     {
                         messages.map((message) => {
                             return <ChatbotMessage
                                 agent={message.agent}
                                 message={message.message}
+                                timestamp={message.timestamp}
                             />
                         })
                     }
@@ -52,14 +57,15 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
                 alignItems="center"
                 gap={1}
                 sx={{
-                    flex: "1 1 0%"
+                    mb: "0",
+                    height: "100",
                 }}
             >
+            <Divider/>
                 <TextField
                     id="chatbot-input"
-                    label="Question posée"
                     variant="standard"
-                    defaultValue="Écrivez votre demande ici..."
+                    placeholder="Écrivez votre demande ici..."
                     value={newMessage}
                     autoFocus
                     multiline
@@ -103,11 +109,10 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
                     sx={{
                         margin: "16px",
                         bottom: "16px",
-                        position: "absolute",
-                        width: "calc(100% - 32px)"
+                        position: "absolute"
                     }}
                 />
             </Box>
-        </div>
+        </Box>
     )
 }

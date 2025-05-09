@@ -1,11 +1,14 @@
-import { PersonSharp, SmartToySharp } from "@mui/icons-material";
-import { Avatar, Paper, Typography } from "@mui/material";
+import { PersonSharp, ScheduleSharp, SmartToySharp } from "@mui/icons-material";
+import { Avatar, Chip, Tooltip, Typography } from "@mui/material";
 
 import '../../../../../res/css/Chatbot.css';
+import Icon from "@mdi/react";
+import { mdiCheck } from "@mdi/js";
 
 interface ChatbotMessageProps {
     message: string;
     agent: "USER" | "AGENT";
+    timestamp: number;
 }
 
 export default function ChatbotMessage (props: ChatbotMessageProps) {
@@ -16,41 +19,55 @@ export default function ChatbotMessage (props: ChatbotMessageProps) {
         avatar = <PersonSharp />
         messageBoxClass = "user"
     } else {
-        const response = JSON.parse(props.message);
-        message = response[Object.keys(response)[1]]
-        operationStatus = response[Object.keys(response)[0]] as string
-        if (operationStatus !== "SUCCESS") {
-            messageBoxClass = "botError"
-        } else {
-            messageBoxClass = "botSuccess"
+        try {
+            const response = JSON.parse(props.message);
+            message = response[Object.keys(response)[1]]
+            operationStatus = response[Object.keys(response)[0]] as string
+            if (operationStatus !== "SUCCESS") {
+                messageBoxClass = "botError"
+            } else {
+                messageBoxClass = "botSuccess"
+            }
+            avatar = <SmartToySharp />
+        } catch (e) {
+            console.error(props.message)
         }
-
-        avatar = <SmartToySharp />
     }
     return (
         <div className={`${props.agent.toLowerCase()}Message`}>
-            <Paper className={`messageBox ${messageBoxClass}`} sx={{
-                minHeight: "28px",
+            <div style={{
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "center"
+                flexDirection: "row",
+                alignItems: "center"
             }}>
-                {message}
-                <br />
-                <Typography variant="overline">
-                    Écrit le {new Date(Date.now()).toLocaleDateString("fr-FR", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    })}
-                </Typography>
-            </Paper>
-            <Avatar>
-                {avatar}
-            </Avatar>
+                <Chip className={`messageBox ${messageBoxClass}`} sx={{
+                    minHeight: "28px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center"
+                }}
+                    label={message}
+                />
+                <Avatar>
+                    {avatar}
+                </Avatar>
+            </div>
+            <div style={{
+                margin: "-12px auto 0px 16px",
+                width: "100%",
+                display: "flex",
+                flexDirection: "row"
+            }}
+            >
+            <Tooltip title="Envoyé au serveur">
+                <Icon path={mdiCheck} color="green" size={5/6} style={{
+                    marginTop: "4px"
+                }}/>
+            </Tooltip>
+            <Typography variant="overline">
+                {new Date(props.timestamp).toTimeString().slice(0, 5)}
+            </Typography>
+            </div>
         </div>
     )
 }

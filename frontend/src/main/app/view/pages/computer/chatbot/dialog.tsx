@@ -90,10 +90,8 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
     
         webSocket.onmessage = (event) => {
             const messageData = JSON.parse(event.data) as SocketData
-            console.log(messageData)
             switch (messageData.actionType) {
                 case "CONVERSATION_HEADERS_LOAD":
-                    console.log("Conversation loaded!")
                     const conversationHeaders = messageData.conversationHeaders
                     dispatch(setConversationsHeaders(conversationHeaders))
                     break;

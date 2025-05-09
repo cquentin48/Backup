@@ -47,7 +47,10 @@ class Message(models.Model):
     )
 
     def __str__(self):
-        related_conv_id = self.conversation.id
+        if not self.conversation:
+            related_conv_id = -1
+        else:
+            related_conv_id = self.conversation.id
         return f"Conversation {related_conv_id} - {self.timestamp}"
 
 

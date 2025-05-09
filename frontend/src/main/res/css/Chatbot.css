@@ -19,16 +19,17 @@
 
 .chatbotActions{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     margin: 0 16px;
+    gap: 16px;
 }
 
 .userMessage{
     display: flex;
-    flex-direction: row;
-    right: 0;
-    margin-right: 16px;
+    flex-direction: column;
+    margin-right: 0px;
+    margin-left: auto;
     justify-content: center;
     align-items: center;
     .messageBox{
@@ -51,7 +52,7 @@
 
 .botMessage{
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-left: 16px;
@@ -66,7 +67,8 @@
     }
     .user{
         background-color: black;
-        color: white;       
+        color: white;
+        margin-right: 0px;
     }
     .botSuccess{
         background-color: green;

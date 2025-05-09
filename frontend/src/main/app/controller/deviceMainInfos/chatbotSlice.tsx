@@ -85,7 +85,6 @@ export const chatbotSlice = createSlice({
          * @param {PayloadAction<string>} action Dialog header
          */
         addConversation: (state, action: PayloadAction<ConversationHeader>) => {
-            console.log(action)
             state.conversationHeaders.push({
                 id: action.payload.id,
                 label: action.payload.label

@@ -55,7 +55,7 @@ class ChatbotAgent:
             | Équipement informatique (ordinateur, ordinateur portable, serveur) | Device |
             | Sauvegarde informatique | Snapshot |
             
-            En fonction du type de données, prends le nom associé dans la colonne `Nom de la donnée` pour la variable `dataType`.
+            À partir du type de tâche présent dans la colonne `Type de données`, récupère le nom de la donnée associée dans la colonne `Nom de la donnée` pour la variable `dataType`.
             
             Le type de donnée récupérée doit être 
             
@@ -160,9 +160,11 @@ class ChatbotAgent:
 
             Voici la liste des status présent dans la donnée status (dans le tableau, clé est associé à un identifiant passé par la liste des identifiants ``ids``):
             | Nom | Type de status | Type de réponse générée |
-            | SUCCESS | Opération réussie | Phrase positive (variée et naturelle) et affichage la liste des IDS avec des balises sous la forme <id>clé</id>.
+            | SUCCESS | Opération réussie | Phrase positive (variée et naturelle). Déclare qu'après la recherche des équipements informatiques ont été trouvés. Affiche la liste des IDS avec des balises sous la forme <id>clé</id>.
             | NOT_ENOUGH_ELEMENTS | Pas assez d'éléments | Phrase négative indiquant que tout n'a pas été trouvé, mais qu'une partie, échec de recherche ou problème dans l'opération. La phrase doit inclure la liste d'identifiant sous forme de hashtag <id>id/<id>
-            | NOTHING_FOUND | Pas assez d'éléments trouvés | Phrase négative expliquant que la recherche à échouée, ou quelque chose s'est mal passé.
+            | NOTHING_FOUND | Pas assez d'éléments trouvés | Phrase négative expliquant que la recherche à échouée, ou quelque chose s'est mal passé. |
+            | SYSTEM_ERROR | Le serveur n'a pas réussi à réaliser l'opération, d'où un problème serveur. |
+            | NO_ELEMENT_ADDED | Aucun objet ajouté | Phrase négative expliquant qu'aucun équipement informatique n'a encore été ajouté. |
 
             Entrée :
             Statut : {status}
@@ -181,8 +183,6 @@ class ChatbotAgent:
         )
         return chain
     
-    
-    
     def has_ner_gotten_the_data(self, ner_result: str, model_name: str) -> bool:
         """ Check if the entities had been correctly seeked.
         :type ner_result: str
@@ -193,29 +193,46 @@ class ChatbotAgent:
 
         :rtype: bool
         """
+        data = json.loads(ner_result)
+        Model = apps.get_model('data', model_name)
+        fields = [field.column for field in Model._meta.fields]
+        suffixes = ['eq','ne','gt','gte','lt','lte','in','nin','contains','startswith','endswith','isnull','notnull','regex']
+        input_fields = list(product(fields, suffixes))
+        input_fields = [f"{field}__{suffix}" for field, suffix in input_fields]
+        return len([element for element in data.keys() if element not in input_fields]) > 0
+
+    def validate_answer(self, answer:str) -> bool:
+        """ Validate answer : check if it is a JSON and contains the correct entries
+    
+        :type answer: str
+        :param answer: Answer returned from the bot
+    
+        :rtype: bool
+        """
         try:
-            data = json.loads(ner_result)
-            Model = apps.get_model('data', model_name)
-            fields = [field.column for field in Model._meta.fields]
-            suffixes = ['eq','ne','gt','gte','lt','lte','in','nin','contains','startswith','endswith','isnull','notnull','regex']
-            input_fields = list(product(fields, suffixes))
-            input_fields = [f"{field}__{suffix}" for field, suffix in input_fields]
-            return len([element for element in data.keys() if element not in input_fields]) > 0
+            response_data = json.loads(answer)
+            return 'status' in response_data and 'generated_code' in response_data
         except JSONDecodeError as _:
             return False
-
+        
+    def validate_question_interpretation(self, result:str) -> bool:
+        try:
+            question_data = json.loads(result.replace("\n",""))
+            ModelClass = [apps.get_model('data', model) for model in question_data['dataType']]
+            if len(ModelClass) == 1:
+                _ = [apps.get_model('data', model) for model in question_data['dataType']]
+            return True
+        except (JSONDecodeError, LookupError) as _:
+            return False
        
     def interpret_question(self, question: str):
         try:
-            models = [model.__name__ for model in apps.get_app_config('data').get_models()]
-            question_data = json.loads(self.tools["question_analysis"].invoke({"question":question}).replace("\n",""))
-            self.logger.debug(question_data)
+            question_data = self.tools["question_analysis"].invoke({"question":question})
+            while not self.validate_question_interpretation(question_data):
+                question_data = self.tools["question_analysis"].invoke({"question":question})
+            question_data = json.loads(question_data.replace('\n',''))
             
             ModelClass = [apps.get_model('data', model) for model in question_data['dataType']]
-            while len(ModelClass) != 1 and ModelClass[0] not in models:
-                question_data = json.loads(self.tools["question_analysis"].invoke({"question":question}).replace("\n",""))
-                ModelClass = [apps.get_model('data', model) for model in question_data['dataType']]
-            
             ModelClass = ModelClass[0]
             
             ner_data = self.tools["ner"].invoke({"question":question}).replace("\n","")
@@ -224,23 +241,34 @@ class ChatbotAgent:
             ner_data = json.loads(ner_data)
             ner_data = {k:v for k,v in ner_data.items() if v}
             
-            result = ModelClass.objects.filter(**ner_data)
-            
-            expected_ids = question_data["objectCount"]
-            expected_ids = int(expected_ids)
-            
-            ids = [object.id for object in result]
-            if len(ids) == expected_ids:
-                return self.tools["text_generation"].invoke({
-                    "status":"SUCCESS",
-                    "ids":[ids]
-                })
+            if len(ModelClass.objects.all()) == 0:
+                status = "NO_ELEMENT_ADDED"
+                ids = []
             else:
-                return self.tools["text_generation"].invoke({
-                    "status":"NOT_ENOUGH_ELEMENTS",
-                    "ids":[ids]
+                result = ModelClass.objects.filter(**ner_data)
+                
+                expected_ids = question_data["objectCount"]
+                expected_ids = int(expected_ids)
+                
+                ids = [object.id for object in result]
+                if len(ids) == expected_ids:
+                    status = "SUCCESS"
+                else:
+                    status = "NOT_ENOUGH_ELEMENTS"
+
+            answer = self.tools["text_generation"].invoke({
+                "status":status,
+                "ids":ids
+            })
+            while self.validate_answer(answer):
+                answer = self.tools["text_generation"].invoke({
+                    "status":"SYSTEM_ERROR",
+                    "ids":ids
                 })
+            return answer
             
         except (JSONDecodeError, AttributeError, LookupError) as e:
-            self.logger.error(e)
-            return self.tools["text_generation"].invoke({"status":"NOTHING_FOUND","ids":[]})
+            self.logger.info("Error")
+            #self.logger.error(traceback.format_exc())
+            raise e
+            #return self.tools["text_generation"].invoke({"status":"NOTHING_FOUND","ids":[]})

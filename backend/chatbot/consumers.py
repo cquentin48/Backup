@@ -95,7 +95,7 @@ class ChatbotConsumer(WebsocketConsumer):
         analyser = ChatbotAgent()
         try:
             data = json.loads(text_data)
-            logging.info(f"Received data : {data}")
+            logging.info("Received data")
             self.reset_timeout()
             match data['actionType']:
                 case "INITCONVERSATION":
