@@ -1,6 +1,6 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Box, Button, SelectChangeEvent } from "@mui/material";
 import React from "react";
-import { ConversationHeader } from "../../../../controller/deviceMainInfos/chatbotSlice";
+import { ConversationHeader } from "../../../../controller/chatbot/chatbotSlice";
 import { Add } from "@mui/icons-material";
 
 interface ChatBotDialogSelectProps {

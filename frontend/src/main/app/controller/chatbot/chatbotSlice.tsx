@@ -19,7 +19,7 @@ export interface MessageDialog {
     /**
      * Message timestamp
      */
-    timestamp: number;
+    timestamp: Date;
 
     /**
      * ID of the conversation
@@ -30,7 +30,7 @@ export interface MessageDialog {
 /**
  * Conversation header
  */
-export interface ConversationHeader{
+export interface ConversationHeader {
     /**
      * Conversation header label
      */
@@ -74,7 +74,7 @@ export const chatbotSlice = createSlice({
          */
         setConversationsHeaders: (state, action: PayloadAction<ConversationHeader[]>) => {
             state.conversationHeaders = []
-            action.payload.forEach((header)=>{
+            action.payload.forEach((header) => {
                 state.conversationHeaders.push()
             })
         },
@@ -111,16 +111,30 @@ export const chatbotSlice = createSlice({
          * @param {PayloadAction<MessageDialog>} action New message
          */
         addMessage: (state, action: PayloadAction<MessageDialog>) => {
+            console.log(action)
             state.messages.push({
                 agent: action.payload.agent,
                 message: action.payload.message,
-                timestamp: action.payload.timestamp,
+                timestamp: new Date(action.payload.timestamp),
                 conversationID: state.currentConversationID
             }
             )
         }
     }
 })
+
+export interface PackedMessagesByInterval {
+    label: string;
+    messages: Array<MessageDialog>;
+}
+
+export interface FormattedDates {
+    today: PackedMessagesByInterval;
+    lastWeek: PackedMessagesByInterval;
+    lastMonth: PackedMessagesByInterval;
+    lastYear: PackedMessagesByInterval;
+    before: PackedMessagesByInterval;
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const chatbotSliceState = (state: AppState) => state.chatbot;

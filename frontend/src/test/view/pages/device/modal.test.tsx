@@ -14,7 +14,7 @@ import { useSelector, Provider, useDispatch } from "react-redux";
 import snapshotReducer from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 import filterReducer from "../../../../main/app/controller/deviceMainInfos/filterSlice"
 import deviceReducer from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
-import chatbotReducer from "../../../../main/app/controller/deviceMainInfos/chatbotSlice"
+import chatbotReducer from "../../../../main/app/controller/chatbot/chatbotSlice"
 import { type AppState } from "../../../../main/app/controller/store";
 
 import Device from "../../../../main/app/model/device/device";

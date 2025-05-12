@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 
-import { AccountCircle, PsychologyAlt, SendSharp } from "@mui/icons-material";
 import {
     Box, Dialog, DialogContent, DialogTitle,
     Divider,
-    InputAdornment, SelectChangeEvent, TextField,
+    SelectChangeEvent,
     Typography
 } from "@mui/material";
-import { useSnackbar } from "notistack";
 
 
 import ChatbotDialogSelect from "./select";
 import { useDispatch, useSelector } from "react-redux";
-import { chatbotSliceState } from "../../../../controller/deviceMainInfos/chatbotSlice";
-import { addMessage, setConversationsHeaders, setMessages, addConversation } from "../../../../controller/deviceMainInfos/chatbotSlice";
+import { chatbotSliceState } from "../../../../controller/chatbot/chatbotSlice";
+import { addMessage, setConversationsHeaders, setMessages, addConversation } from "../../../../controller/chatbot/chatbotSlice";
 
 import '../../../../../res/css/Chatbot.css';
 import ChatbotConversation from "./conversation";
@@ -56,7 +54,7 @@ interface SocketData {
 export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Element {
     const [id, setID] = React.useState(-1)
     const [isConnected, setConnectionStatus] = useState(false)
-    const [socket, setSocket] = useState<WebSocket|null>(null);
+    const [socket, setSocket] = useState<WebSocket | null>(null);
 
     const { conversationHeaders } = useSelector(chatbotSliceState)
     const dispatch = useDispatch()
@@ -66,7 +64,7 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
      * @param {string} message Message written by the user
      */
     const sendMessage = (message: string) => {
-        if(socket !== null){
+        if (socket !== null) {
             (socket as WebSocket).send(
                 JSON.stringify({
                     actionType: "WRITEACTION",
@@ -77,17 +75,17 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         const webSocket = new WebSocket("ws://localhost:80/ws/chatbot")
-    
+
         webSocket.onopen = () => {
             setConnectionStatus(true)
         }
-    
+
         webSocket.onclose = () => {
             setConnectionStatus(false)
         }
-    
+
         webSocket.onmessage = (event) => {
             const messageData = JSON.parse(event.data) as SocketData
             switch (messageData.actionType) {
@@ -100,7 +98,7 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
                     break;
                 case "NEW_MESSAGE":
                     dispatch(addMessage(messageData.message))
-                    if(Object.hasOwn(messageData, "conversation")){
+                    if (Object.hasOwn(messageData, "conversation")) {
                         dispatch(addConversation(messageData.conversation))
                     }
                     break;
@@ -145,23 +143,30 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
         <DialogTitle>
             <Typography variant="h3">Chatbot BackupAI</Typography>
         </DialogTitle>
-        <DialogContent
-            sx={{
-                overflowY: "auto",
-                flexGrow: 1,
-                display: "flex",
-                flexDirection: "row"
-            }}
-        >
-            <ChatbotDialogSelect
-                id={id}
-                handleChange={selectChabotID}
-                headers={conversationHeaders}
-            />
-            <Divider orientation="vertical" />
-            <ChatbotConversation
-                sendMessage={sendMessage}
-            />
+        <DialogContent sx={{
+            p:"0px"
+        }}>
+            <Box
+                sx={{
+                    overflowY: "auto",
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "row",
+                    p: "0px",
+                    gap: "6px",
+                    height: "100%"
+                }}
+            >
+                <ChatbotDialogSelect
+                    id={id}
+                    handleChange={selectChabotID}
+                    headers={conversationHeaders}
+                />
+                <Divider orientation="vertical" />
+                <ChatbotConversation
+                    sendMessage={sendMessage}
+                />
+            </Box>
         </DialogContent>
     </Dialog>
 }

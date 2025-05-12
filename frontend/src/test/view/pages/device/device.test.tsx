@@ -21,7 +21,7 @@ import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData"
 import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 import filterReducer from "../../../../main/app/controller/deviceMainInfos/filterSlice"
 import deviceReducer, { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
-import chatbotReducer, { ChatbotSliceState } from "../../../../main/app/controller/deviceMainInfos/chatbotSlice";
+import chatbotReducer, { ChatbotSliceState } from "../../../../main/app/controller/chatbot/chatbotSlice";
 import { type OperationStatus, type AppState } from "../../../../main/app/controller/store"
 
 import ComputerPage from "../../../../main/app/view/pages/computer/computerPage"

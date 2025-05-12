@@ -126,7 +126,7 @@ class ChatbotConsumer(WebsocketConsumer):
                             "message": {
                                 "message": new_message.text,
                                 "agent": new_message.agent,
-                                "timestamp": new_message.timestamp.timestamp()
+                                "timestamp": new_message.timestamp.timestamp()*1e3
                             },
                             ** (
                                 {
