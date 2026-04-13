@@ -63,8 +63,8 @@ describe("Device main infos side nav bar unit test suite", () => {
 
         // Asserts
         textElements.forEach((textElement, index) => {
-            const navBarElement = document.querySelector(`#sideNavBarElement${index}`) as HTMLElement
-            fireEvent.mouseOver(navBarElement)
+            const navBarElement = document.querySelector(`#sideNavBarElement${index}`)
+            fireEvent.mouseOver(navBarElement!)
             expect(container).toHaveTextContent(textElement)
         })
     })
@@ -91,8 +91,8 @@ describe("Device main infos side nav bar unit test suite", () => {
 
         // Asserts
         textElements.forEach((_, index) => {
-            const navBarElement = document.querySelector(`#sideNavBarElement${index}`) as HTMLElement
-            fireEvent.click(navBarElement)
+            const navBarElement = document.querySelector(`#sideNavBarElement${index}`)
+            fireEvent.click(navBarElement!)
 
             rerender(
                 <BrowserRouter>

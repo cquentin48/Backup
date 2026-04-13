@@ -1,35 +1,26 @@
 import React, { type ReactNode } from "react"
 
-import { type DocumentNode, type FetchResult } from "@apollo/client"
-import { type ResultFunction, MockedProvider } from "@apollo/client/testing"
+import { MockedProvider } from "@apollo/client/testing"
 
 import { type DataGridProps } from "@mui/x-data-grid"
 
-import { type EnhancedStore, configureStore } from "@reduxjs/toolkit"
+import { type EnhancedStore } from "@reduxjs/toolkit"
 
 import '@testing-library/jest-dom'
 import { fireEvent, screen, render, waitFor, type RenderResult } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
 
 import { SnackbarProvider, useSnackbar } from "notistack"
-import { Provider, useDispatch, useSelector } from "react-redux"
+import { Provider, useDispatch } from "react-redux"
 
-import snapshotReducer from "../../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
-import filterReducer from "../../../../../main/app/controller/deviceMainInfos/filterSlice"
-import deviceReducer from "../../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
-import { type OperationStatus, type AppDispatch, type AppState } from "../../../../../main/app/controller/store"
+import { type AppDispatch } from "../../../../../main/app/controller/store"
 
 import Device from "../../../../../main/app/model/device/device"
-import NotFoundError from "../../../../../main/app/model/exception/errors/notFoundError"
 import Filter from "../../../../../main/app/model/filters/Filter"
-import gqlClient from "../../../../../main/app/model/queries/client"
-import { type LoadSnapshotQueryResult } from "../../../../../main/app/model/queries/computer/loadSnapshot"
 import { SnapshotData } from "../../../../../main/app/model/snapshot/snapshotData"
 
 import FilterTable from "../../../../../main/app/view/pages/computer/sections/filters/table"
 
-import FETCH_SNAPSHOT from '../../../../../main/res/queries/snapshot.graphql';
-import { ApolloMockResult, createMockStore, initApolloMock, initInitialState, initUseSelectorMock } from "../../../utils"
+import { type ApolloMockResult, createMockStore, initApolloMock, initInitialState, initUseSelectorMock } from "../../../utils"
 
 jest.mock("@mui/x-data-grid", () => {
     const originalModule = jest.requireActual("@mui/x-data-grid")
@@ -43,7 +34,7 @@ jest.mock("@mui/x-data-grid", () => {
 })
 
 jest.mock('@mui/material/Tooltip', () => {
-    return ({ children }: { children: ReactNode }) => children;
+    return async ({ children }: { children: ReactNode }) => await children;
 });
 
 jest.mock('@mui/material/transitions', () => ({
@@ -88,7 +79,7 @@ describe("Device main infos Filter table render (no filter)", () => {
      * Render the SoftwaresOrigin component with the Apollo query and store mocks
      * @param {EnhancedStore} store Redux mocked store
      * @param {ApolloMockResult[]} apolloMocks Apollo GraphQL queries result mock
-     * @returns {NotFoundError} If the operation is marked as a success and no snapshot is provided.
+     * @returns {RenderResult} Mocked table for unit test rendered
      */
     const renderMockedComponent = (store: EnhancedStore, apolloMocks: Map<string, ApolloMockResult>): RenderResult => {
         return render(
@@ -1043,5 +1034,5 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Asserts
         expect(inputField.getAttribute("placeholder")).toBe("MM/DD/YYYY")
         expect(newDate).toBe("01/10/2020")
-    })*/
+    }) */
 })

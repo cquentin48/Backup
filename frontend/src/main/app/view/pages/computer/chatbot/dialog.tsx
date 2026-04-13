@@ -3,15 +3,13 @@ import React, { useEffect, useState } from "react";
 import {
     Box, Dialog, DialogContent, DialogTitle,
     Divider,
-    SelectChangeEvent,
+    type SelectChangeEvent,
     Typography
 } from "@mui/material";
 
-
 import ChatbotDialogSelect from "./select";
 import { useDispatch, useSelector } from "react-redux";
-import { chatbotSliceState } from "../../../../controller/chatbot/chatbotSlice";
-import { addMessage, setConversationsHeaders, setMessages, addConversation } from "../../../../controller/chatbot/chatbotSlice";
+import { chatbotSliceState, addMessage, setConversationsHeaders, setMessages, addConversation } from "../../../../controller/chatbot/chatbotSlice";
 
 import '../../../../../res/css/Chatbot.css';
 import ChatbotConversation from "./conversation";
@@ -23,12 +21,12 @@ interface ChatBotDialogProps {
     /**
      * If the dialog is opened or not
      */
-    isOpened: boolean;
+    isOpened: boolean
 
     /**
      * Handle close function
      */
-    handleClose: () => void;
+    handleClose: () => void
 }
 
 /**
@@ -38,12 +36,12 @@ interface SocketData {
     /**
      * Socket message action type
      */
-    actionType: string;
+    actionType: string
 
     /**
      * Socket message object data
      */
-    [clé: string]: any;
+    [clé: string]: any
 }
 
 /**
@@ -63,13 +61,13 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
      * Send to the chatbot the message written by the user
      * @param {string} message Message written by the user
      */
-    const sendMessage = (message: string) => {
+    const sendMessage = (message: string): void => {
         if (socket !== null) {
-            (socket as WebSocket).send(
+            (socket).send(
                 JSON.stringify({
                     actionType: "WRITEACTION",
                     timestamp: Date.now(),
-                    message: message
+                    message
                 })
             )
         }
@@ -90,21 +88,29 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
             const messageData = JSON.parse(event.data) as SocketData
             switch (messageData.actionType) {
                 case "CONVERSATION_HEADERS_LOAD":
+                {
                     const conversationHeaders = messageData.conversationHeaders
                     dispatch(setConversationsHeaders(conversationHeaders))
                     break;
+                }
                 case "NEW_CONVERSATION":
+                {
                     dispatch(addConversation(messageData.conversationHeader))
                     break;
+                }
                 case "NEW_MESSAGE":
+                {
                     dispatch(addMessage(messageData.message))
                     if (Object.hasOwn(messageData, "conversation")) {
                         dispatch(addConversation(messageData.conversation))
                     }
                     break;
+                }
                 case "LOAD_MESSAGES":
+                {
                     dispatch(setMessages(messageData.messages))
                     break;
+                }
             }
         }
         setSocket(webSocket);
@@ -113,17 +119,17 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
     useEffect(() => {
         if (isConnected && socket !== null) {
             socket.send(JSON.stringify({
-                'ACTION': 'CHANGE_CONVERSATION',
-                'id': id
+                ACTION: 'CHANGE_CONVERSATION',
+                id
             }))
         }
     }, [id])
 
     /**
      * Sets the chatbot ID
-     * @param event 
+     * @param {SelectChangeEvent} event event trigger when a user select a conversation
      */
-    const selectChabotID = (event: SelectChangeEvent) => {
+    const selectChabotID = (event: SelectChangeEvent): void => {
         setID(event.target.value as unknown as number)
     }
 
@@ -144,7 +150,7 @@ export default function ChatBotDialog (props: ChatBotDialogProps): React.JSX.Ele
             <Typography variant="h3">Chatbot BackupAI</Typography>
         </DialogTitle>
         <DialogContent sx={{
-            p:"0px"
+            p: "0px"
         }}>
             <Box
                 sx={{

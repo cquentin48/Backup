@@ -108,7 +108,7 @@ describe("Device loading modal test suite snapshot", () => {
                         },
                         deviceLoading: store.getState().device.deviceLoading
                     },
-                    chatbot:{
+                    chatbot: {
                         currentConversationID: -1,
                         conversationHeaders: [],
                         messages: []
@@ -129,12 +129,12 @@ describe("Device loading modal test suite snapshot", () => {
             }
             snapshotResult = {
                 data: {
-                    snapshotInfos: snapshot as SnapshotData
+                    snapshotInfos: snapshot
                 }
             }
             deviceResult = {
                 data: {
-                    deviceInfos: device as Device
+                    deviceInfos: device!
                 }
             }
 
@@ -243,7 +243,7 @@ describe("Device loading modal test suite snapshot", () => {
                 },
                 operationStatus: operationStatus === "loadingSnapshot" ? "loading" : (operationStatus !== "loadingDevice" ? operationStatus : "loading")
             },
-            chatbot:{
+            chatbot: {
                 currentConversationID: -1,
                 conversationHeaders: [],
                 messages: []

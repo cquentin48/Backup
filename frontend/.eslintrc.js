@@ -10,7 +10,6 @@ module.exports = {
     'standard-with-typescript'
   ],
   ignorePatterns: [
-  ignorePatterns: [
     "setupTests.ts",
     "index.tsx",
     "react-app-env.d.ts",
@@ -49,8 +48,10 @@ module.exports = {
   rules: {
     '@typescript-eslint/quotes': 'off',
     '@typescript-eslint/semi': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
     "@typescript-eslint/indent": ["error", 4],
     'padded-blocks': 'off', "jsdoc/check-access": 1,
+    "react-redux/no-unused-prop-types":"warn",
     "jsdoc/check-alignment": 1,
     "jsdoc/check-param-names": 1,
     "jsdoc/check-property-names": 1,
@@ -78,7 +79,7 @@ module.exports = {
     "jsdoc/require-yields": 1,
     "jsdoc/require-yields-check": 1,
     "jsdoc/tag-lines": 1,
-    "jsdoc/valid-types": 1
+    "jsdoc/valid-types": 1,
     '@typescript-eslint/quotes': 'off',
     '@typescript-eslint/semi': 'off',
     "@typescript-eslint/indent": ["error", 4],

@@ -5,21 +5,18 @@ import { render, type RenderResult } from "@testing-library/react"
 import '@testing-library/jest-dom'
 
 import { Provider } from "react-redux";
-import { MockedProvider, type ResultFunction } from "@apollo/client/testing";
+import { MockedProvider } from "@apollo/client/testing";
 
 import Device from "../../../../main/app/model/device/device"
 import SnapshotID from "../../../../main/app/model/device/snapshotId"
-import { type DeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos";
 import { type EnhancedStore } from "@reduxjs/toolkit";
 
 import SpecsMainInfos from "../../../../main/app/view/pages/computer/sections/MainInfos";
 
-import { type LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot";
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
 import { type AppState } from "../../../../main/app/controller/store";
-import { type DocumentNode, type FetchResult } from "@apollo/client";
 
-import { ApolloMockResult, createMockStore, initApolloMock, initInitialState, initUseSelectorMock } from "../../utils";
+import { type ApolloMockResult, createMockStore, initApolloMock, initInitialState, initUseSelectorMock } from "../../utils";
 
 jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),

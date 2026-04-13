@@ -1,11 +1,11 @@
+import React, { useEffect, useState } from "react";
+
 import { useSelector } from "react-redux";
 import { SendSharp } from "@mui/icons-material";
-import { Box, TextField, InputAdornment, Divider } from "@mui/material";
+import { Box, TextField, InputAdornment } from "@mui/material";
 
-import { chatbotSliceState, FormattedDates as PackedMessages, MessageDialog } from "../../../../controller/chatbot/chatbotSlice";
-import { useEffect, useState } from "react";
+import { chatbotSliceState, type FormattedDates as PackedMessages, type MessageDialog } from "../../../../controller/chatbot/chatbotSlice";
 import { useSnackbar } from "notistack";
-import ChatbotMessage from "./message";
 import NewChatbotConversationText from "./newConversationText";
 import Messages from "./messages";
 
@@ -13,25 +13,29 @@ import Messages from "./messages";
  * Send message method passed from the dialog
  */
 interface ChatbotConversationProps {
-    sendMessage: (message: string) => void;
+    /**
+     * Send a message to the server triggering a chatbot respond
+     * @param {string} message Message sent by the user
+     */
+    sendMessage: (message: string) => void
 }
 
 /**
- * 
- * @param props 
- * @returns 
+ * Chatbot conversation dialog
+ * @param {ChatbotConversationProps} props function to send message
+ * @returns {React.JSX.Element} Rendered DOM component
  */
-export default function ChatbotConversation (props: ChatbotConversationProps) {
+export default function ChatbotConversation (props: ChatbotConversationProps): React.JSX.Element {
     const { messages } = useSelector(chatbotSliceState)
     const [newMessage, updateWrittenMessage] = useState("")
     const [firstUpdate, setFirstUpdate] = useState(true)
     const { enqueueSnackbar } = useSnackbar();
-    let [packedMessages, setPackedMessages] = useState<PackedMessages>({
-        before: {label: "Avant", messages: []},
-        lastMonth: {label: "Mois dernier", messages: []},
-        lastWeek: {label: "Semaine dernière", messages: []},
-        lastYear: {label: "Année dernière", messages: []},
-        today: {label: "Aujourd'hui", messages: []}
+    const [packedMessages, setPackedMessages] = useState<PackedMessages>({
+        before: { label: "Avant", messages: [] },
+        lastMonth: { label: "Mois dernier", messages: [] },
+        lastWeek: { label: "Semaine dernière", messages: [] },
+        lastYear: { label: "Année dernière", messages: [] },
+        today: { label: "Aujourd'hui", messages: [] }
     });
 
     /**
@@ -39,9 +43,9 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
      * @param {Array<MessageDialog>} messages Loaded messages from the server
      * @returns {PackedMessages} Messages packed into lists
      */
-    const packMessages = (messages: Array<MessageDialog>): PackedMessages => {
+    const packMessages = (messages: MessageDialog[]): PackedMessages => {
         const currentDate = new Date(Date.now())
-        let formatDates: PackedMessages = {
+        const formatDates: PackedMessages = {
             today: {
                 label: "Aujourd'hui",
                 messages: []
@@ -68,11 +72,9 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
             const messageDate = message.timestamp
             if (messageDate.toLocaleDateString() === currentDate.toLocaleDateString()) {
                 formatDates.today.messages.push(message)
-            }
-            else if ((messageDate.getTime() - currentDate.getTime()) / (3600 * 1000 * 24) <= 7) {
+            } else if ((messageDate.getTime() - currentDate.getTime()) / (3600 * 1000 * 24) <= 7) {
                 formatDates.lastWeek.messages.push(message)
-            }
-            else if ((messageDate.getMonth() + 1) % 12 === currentDate.getMonth()) {
+            } else if ((messageDate.getMonth() + 1) % 12 === currentDate.getMonth()) {
                 formatDates.lastMonth.messages.push(message)
             } else if (messageDate.getFullYear() - 1 === currentDate.getFullYear()) {
                 formatDates.lastYear.messages.push(message)
@@ -102,7 +104,7 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
                     width: "100%"
                 }}>
                     {
-                        messages.length == 0 && <NewChatbotConversationText/>
+                        messages.length === 0 && <NewChatbotConversationText/>
                     }
                     {
                         packedMessages.before.messages.length > 0 &&
@@ -132,7 +134,7 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
                 gap={1}
                 sx={{
                     mb: "0",
-                    height: "100",
+                    height: "100"
                 }}
             >
                 <Box>
@@ -144,14 +146,14 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
                         autoFocus
                         multiline
                         helperText={
-                            (newMessage == "" && !firstUpdate) ?
-                                "Vous ne pouvez pas envoyer un message vide!" :
-                                ""
+                            (newMessage === "" && !firstUpdate)
+                                ? "Vous ne pouvez pas envoyer un message vide!"
+                                : ""
                         }
-                        error={newMessage == "" && !firstUpdate}
+                        error={newMessage === "" && !firstUpdate}
                         onKeyDown={(e) => {
-                            if (e.key == "Enter") {
-                                if (newMessage == "" && !firstUpdate) {
+                            if (e.key === "Enter") {
+                                if (newMessage === "" && !firstUpdate) {
                                     enqueueSnackbar(
                                         "Vous ne pouvez pas envoyer de message vide!",
                                         {
@@ -178,7 +180,7 @@ export default function ChatbotConversation (props: ChatbotConversationProps) {
                                         <SendSharp />
                                     </InputAdornment>
                                 )
-                            },
+                            }
                         }}
                         sx={{
                             m: "16px 0px",

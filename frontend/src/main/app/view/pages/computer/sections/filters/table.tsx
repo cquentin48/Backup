@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React, { createRef, type RefObject } from "react";
 
 import { Box, Paper, Skeleton, Typography } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
@@ -91,7 +91,7 @@ export default function FilterTable (): React.JSX.Element {
     /**
      * Filter table manager
      */
-    const tableManager = createRef<GridApiCommunity>() as React.RefObject<GridApiCommunity> | undefined
+    const tableManager = createRef<GridApiCommunity>()
 
     /**
      * Between the update filter list and the current filter list, compute
@@ -127,9 +127,9 @@ export default function FilterTable (): React.JSX.Element {
             }
         })
 
-        if ((tableManager as React.RefObject<GridApiCommunity>).current != null) {
+        if ((tableManager).current != null) {
             filters.forEach((row: UpdateRow) => {
-                (tableManager as React.RefObject<GridApiCommunity>).current.updateRows(
+                (tableManager).current!.updateRows(
                     [row]
                 )
             })
@@ -164,7 +164,7 @@ export default function FilterTable (): React.JSX.Element {
                         const values = Array.from(new Set(event.values())) as number[]
                         dispatch(updateSelectedFilter(values))
                     }}
-                    apiRef={tableManager}
+                    apiRef={tableManager as RefObject<GridApiCommunity>}
                 />
             </Paper>
         )
@@ -192,7 +192,7 @@ export default function FilterTable (): React.JSX.Element {
                             hidden: true
                         }
                     }}
-                    apiRef={tableManager}
+                    apiRef={tableManager as RefObject<GridApiCommunity>}
                 />
             </Skeleton>
         </Box>

@@ -255,7 +255,7 @@ export default class Filter {
         if (filterInputType === undefined) {
             throw new NotFoundError(`No input ${inputType} found`)
         }
-        const filterInputTypeName = filterInputType.get(inputName) as FilterInputDetails
+        const filterInputTypeName = filterInputType.get(inputName)!
         return filterInputTypeName.inputType
     }
 }

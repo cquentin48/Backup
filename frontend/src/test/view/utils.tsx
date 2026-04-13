@@ -84,13 +84,13 @@ export const createMockStore = (mockState: Partial<AppState>): EnhancedStore => 
     const reducers: Record<string, Reducer> = {};
 
     if (initialState.device !== null) {
-        reducers.device = staticReducer(initialState.device as FetchDeviceSliceState ?? deviceInitialState)
+        reducers.device = staticReducer(initialState.device ?? deviceInitialState)
     }
     if (initialState.filter !== null) {
-        reducers.filter = staticReducer(initialState.filter as FilterSliceState)
+        reducers.filter = staticReducer(initialState.filter!)
     }
     if (initialState.snapshot !== null) {
-        reducers.snapshot = staticReducer(initialState.snapshot as SnapshotSliceState)
+        reducers.snapshot = staticReducer(initialState.snapshot!)
     }
 
     return configureStore({
@@ -209,7 +209,7 @@ export const initApolloMock = (operationStatus: MockOperationStatus, snapshot: S
         result: {
             data: operationStatus === "success"
                 ? {
-                    deviceInfos: device as Device
+                    deviceInfos: device!
                 }
                 : undefined,
             errors: operationStatus !== "snapshotError"

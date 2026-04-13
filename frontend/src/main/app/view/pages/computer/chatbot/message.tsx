@@ -1,3 +1,5 @@
+import React from "react";
+
 import { PersonSharp, SmartToySharp } from "@mui/icons-material";
 import { Avatar, Chip, Tooltip, Typography } from "@mui/material";
 
@@ -5,28 +7,47 @@ import '../../../../../res/css/Chatbot.css';
 import Icon from "@mdi/react";
 import { mdiCheck } from "@mdi/js";
 
+/**
+ * Chat message props data component
+ */
 interface ChatbotMessageProps {
-    message: string;
-    agent: "USER" | "AGENT";
-    timestamp: number;
+    /**
+     * Written message
+     */
+    message: string
+
+    /**
+     * Owner of the message
+     */
+    agent: "USER" | "AGENT"
+
+    /**
+     * Written message timestamp
+     */
+    timestamp: number
 }
 
-export default function ChatbotMessage (props: ChatbotMessageProps) {
+/**
+ * DOM message in a conversation box
+ * @param {ChatbotMessageProps} props Message content, owner of the message and timestamp
+ * @returns {React.JSX.Element} Rendered DOM component
+ */
+export default function ChatbotMessage (props: ChatbotMessageProps): React.JSX.Element {
     let avatar, message, operationStatus, messageBoxClass;
 
-    if (props.agent == "USER") {
+    if (props.agent === "USER") {
         message = props.message
         avatar = <PersonSharp />
-        messageBoxClass = "user"
+        messageBoxClass = "user" as string
     } else {
         try {
             const response = JSON.parse(props.message);
             message = response[Object.keys(response)[1]]
             operationStatus = response[Object.keys(response)[0]] as string
             if (operationStatus !== "SUCCESS") {
-                messageBoxClass = "botError"
+                messageBoxClass = "botError" as string
             } else {
-                messageBoxClass = "botSuccess"
+                messageBoxClass = "botSuccess" as string
             }
             avatar = <SmartToySharp />
         } catch (e) {
@@ -40,13 +61,13 @@ export default function ChatbotMessage (props: ChatbotMessageProps) {
                 flexDirection: "row",
                 alignItems: "center"
             }}>
-                <Chip className={`messageBox ${messageBoxClass}`} sx={{
+                <Chip className={`messageBox ${messageBoxClass as string}`} sx={{
                     minHeight: "28px",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center"
                 }}
-                    label={message}
+                label={message}
                 />
                 <Avatar>
                     {avatar}
@@ -59,14 +80,14 @@ export default function ChatbotMessage (props: ChatbotMessageProps) {
                 flexDirection: "row"
             }}
             >
-            <Tooltip title="Envoyé au serveur">
-                <Icon path={mdiCheck} color="green" size={5/6} style={{
-                    marginTop: "4px"
-                }}/>
-            </Tooltip>
-            <Typography variant="overline">
-                {new Date(props.timestamp).toTimeString().slice(0, 5)}
-            </Typography>
+                <Tooltip title="Envoyé au serveur">
+                    <Icon path={mdiCheck} color="green" size={5 / 6} style={{
+                        marginTop: "4px"
+                    }}/>
+                </Tooltip>
+                <Typography variant="overline">
+                    {new Date(props.timestamp).toTimeString().slice(0, 5)}
+                </Typography>
             </div>
         </div>
     )

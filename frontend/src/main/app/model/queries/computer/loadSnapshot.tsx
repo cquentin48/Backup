@@ -22,9 +22,9 @@ export const fetchSnapshot = createAsyncThunk(
         if (result.errors != null) {
             return rejectWithValue("The snapshot you try to seek doesn't exist!")
         }
-        const rawSnapshotData = result.data.snapshotInfos as SnapshotData;
-        const rawSoftwares = rawSnapshotData.versions;
-        const operatingSystem = rawSnapshotData.operatingSystem
+        const rawSnapshotData = result.data.snapshotInfos;
+        const rawSoftwares = rawSnapshotData!.versions;
+        const operatingSystem = rawSnapshotData!.operatingSystem
         const snapshot = new SnapshotData(operatingSystem);
         rawSoftwares.forEach((softwareRaw: SnapshotSoftware) => {
             const chosenVersion = softwareRaw.chosenVersion;

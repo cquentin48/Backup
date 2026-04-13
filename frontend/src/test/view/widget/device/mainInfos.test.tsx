@@ -136,7 +136,7 @@ describe("MainInfosFrame unit test suite", () => {
                             variant: operationStatus === "deviceError" || operationStatus === "snapshotError" ? "error" : undefined
                         }
                     },
-                    chatbot:{
+                    chatbot: {
                         currentConversationID: -1,
                         conversationHeaders: [],
                         messages: []
@@ -166,12 +166,12 @@ describe("MainInfosFrame unit test suite", () => {
             }
             deviceResult = {
                 data: {
-                    deviceInfos: device as Device
+                    deviceInfos: device!
                 }
             }
             snapshotResult = {
                 data: {
-                    snapshotInfos: snapshot as SnapshotData
+                    snapshotInfos: snapshot
                 }
             }
 
@@ -212,7 +212,7 @@ describe("MainInfosFrame unit test suite", () => {
                     {
                         result: {
                             data: {
-                                snapshotInfos: snapshot as SnapshotData
+                                snapshotInfos: snapshot
                             }
                         }
                     }
@@ -222,7 +222,7 @@ describe("MainInfosFrame unit test suite", () => {
                     {
                         result: {
                             data: {
-                                deviceInfos: device as Device
+                                deviceInfos: device
                             }
                         }
                     }
@@ -276,7 +276,7 @@ describe("MainInfosFrame unit test suite", () => {
                 operationStatus: "success"
             },
             device: {
-                device: operationStatus === "success" ? device as Device : undefined,
+                device: operationStatus === "success" ? device : undefined,
                 deviceError: {
                     message: operationStatus === "failure" ? "Device error raised in test" : "",
                     variant: operationStatus === "failure" ? "error" : undefined
@@ -488,8 +488,8 @@ describe("MainInfosFrame unit test suite", () => {
         // Acts
         const { container, getByText } = renderMockedComponent("success", snapshot, device, store)
 
-        const snapshotSelect = container.querySelector(".MuiSelect-nativeInput") as Element
-        fireEvent.change(snapshotSelect, { target: { value: device.snapshots[1].key } })
+        const snapshotSelect = container.querySelector(".MuiSelect-nativeInput")
+        fireEvent.change(snapshotSelect!, { target: { value: device.snapshots[1].key } })
 
         // Asserts
         await waitFor(() => {

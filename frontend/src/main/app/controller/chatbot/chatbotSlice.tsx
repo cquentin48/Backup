@@ -9,22 +9,22 @@ export interface MessageDialog {
     /**
      * Whether it is a user or the bot
      */
-    agent: "USER" | "AGENT";
+    agent: "USER" | "AGENT"
 
     /**
      * Written text
      */
-    message: string;
+    message: string
 
     /**
      * Message timestamp
      */
-    timestamp: Date;
+    timestamp: Date
 
     /**
      * ID of the conversation
      */
-    conversationID: number;
+    conversationID: number
 }
 
 /**
@@ -34,21 +34,21 @@ export interface ConversationHeader {
     /**
      * Conversation header label
      */
-    label: string;
+    label: string
 
     /**
      * ID of the conversation stored in the database
      */
-    id: number;
+    id: number
 }
 
 /**
  * Filter slice state
  */
 export interface ChatbotSliceState {
-    messages: MessageDialog[];
-    conversationHeaders: ConversationHeader[];
-    currentConversationID: number;
+    messages: MessageDialog[]
+    conversationHeaders: ConversationHeader[]
+    currentConversationID: number
 }
 
 /**
@@ -124,16 +124,16 @@ export const chatbotSlice = createSlice({
 })
 
 export interface PackedMessagesByInterval {
-    label: string;
-    messages: Array<MessageDialog>;
+    label: string
+    messages: MessageDialog[]
 }
 
 export interface FormattedDates {
-    today: PackedMessagesByInterval;
-    lastWeek: PackedMessagesByInterval;
-    lastMonth: PackedMessagesByInterval;
-    lastYear: PackedMessagesByInterval;
-    before: PackedMessagesByInterval;
+    today: PackedMessagesByInterval
+    lastWeek: PackedMessagesByInterval
+    lastMonth: PackedMessagesByInterval
+    lastYear: PackedMessagesByInterval
+    before: PackedMessagesByInterval
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

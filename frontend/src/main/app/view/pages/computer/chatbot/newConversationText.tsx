@@ -1,19 +1,25 @@
+import React from "react";
+
 import { EditSharp, RemoveSharp, SearchSharp } from "@mui/icons-material";
-import { Box, Button, Card, Paper, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { mdiDevices } from "@mdi/js";
 import Icon from "@mdi/react";
 
 import '../../../../../res/css/Chatbot.css';
 import ChabotActionCard from "./action";
 
-export default function NewChatbotConversationText () {
+/**
+ * Chatbot when a new conversation will be set
+ * @returns {React.JSX.Element} rendered div component
+ */
+export default function NewChatbotConversationText (): React.JSX.Element {
     return (
         <Box>
             Bienvenu dans le chatbot conversationnel de Backup!
             <br /><br /><br />
-            Que souhaitez vous réaliser aujourd'hui?
+            Que souhaitez vous réaliser aujourd&apos;hui?
 
-            <Typography variant="h5"><Icon path={mdiDevices} size={1}></Icon>Gestion d'équipements informatiques</Typography>
+            <Typography variant="h5"><Icon path={mdiDevices} size={1}></Icon>Gestion d&apos;équipements informatiques</Typography>
             <div className="chatbotActions">
                 <ChabotActionCard
                     avatarColor="white"
