@@ -43,7 +43,7 @@ services:
       - "6379:6379"
 
   db:
-    image: postgres
+    image: postgres:16
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -67,13 +67,14 @@ services:
       - OLLAMA_MODELS="llama2"
     healthcheck:
       test: >
-        curl -s -X POST http://localhost:11434/api/generate
-                -H "Content-Type: application/json"
-                -d '{"model":"mistral","prompt":"ping","stream":false}' |
-                jq -e ".response | select(length > 0)"
+        curl -s -X GET http://localhost:11434/api/ps
+        -H "Content-Type: application/json" |
+        jq -e ".models[0] |
+        select(.name == \"mistral:latest\")"
       interval: 10s
       timeout: 10s
-      retries: 20
+      retries: 10
+      start_period: 110s
     restart: unless-stopped
 
   backend:
