@@ -46,7 +46,9 @@ export default function DeviceStat (props: DeviceStatProps): React.JSX.Element {
         avatar = props.avatar;
         value = props.value;
         label = props.label;
-    } else if (deviceError.message !== "" || snapshotError.message !== "") {
+    } else if (deviceError.message === undefined ||
+        deviceError.message !== "" || snapshotError.message === undefined ||
+        snapshotError.message !== "") {
         avatar = props.avatar
         label = props.label
         value = "Error in loading data"

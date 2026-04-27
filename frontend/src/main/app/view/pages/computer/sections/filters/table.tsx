@@ -1,7 +1,7 @@
-import React, { createRef, type RefObject } from "react";
+import React, { useEffect, useRef, type RefObject } from "react";
 
 import { Box, Paper, Skeleton, Typography } from "@mui/material";
-import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import { DataGrid, type GridColDef, useGridApiRef } from "@mui/x-data-grid";
 import { type GridApiCommunity } from "@mui/x-data-grid/internals";
 
 import { useSnackbar } from "notistack";
@@ -78,11 +78,13 @@ const filterTableColumns: GridColDef[] = [
  * @returns {React.JSX.Element} Rendered component
  */
 export default function FilterTable (): React.JSX.Element {
-    const { filters, filterError } = useSelector(deviceMainInfosFilterState)
+
+    const { filters, filterError } = useSelector(deviceMainInfosFilterState);
 
     const { operationStatus } = useSelector(snapshotState)
 
-    const [currentRows, setViewRows] = React.useState<Filter[]>([])
+    const [currentFilters, setFilters] = React.useState<Filter[]>([]);
+    const [currentRows, setViewRows] = React.useState<UpdateRow[]>([]);
 
     const { enqueueSnackbar } = useSnackbar()
 
@@ -91,16 +93,15 @@ export default function FilterTable (): React.JSX.Element {
     /**
      * Filter table manager
      */
-    const tableManager = createRef<GridApiCommunity>()
+    const apiRef = useGridApiRef();
 
     /**
      * Between the update filter list and the current filter list, compute
      * the differences done.
      * @param { Filter[] } currentRows Current filter list set in the datagrid
      * @param { Filter[] } newRows New filter list computed in the recently done operation
-     * @returns { UpdateRow[] } Row updated list ready for the transaction
      */
-    const updateRows = (currentRows: Filter[], newRows: Filter[]): UpdateRow[] => {
+    const updateRows = (currentRows: Filter[], newRows: Filter[]): void => {
         const updatedRows: UpdateRow[] = [];
 
         // Fetch the deleted rows
@@ -127,16 +128,7 @@ export default function FilterTable (): React.JSX.Element {
             }
         })
 
-        if ((tableManager).current != null) {
-            filters.forEach((row: UpdateRow) => {
-                (tableManager).current!.updateRows(
-                    [row]
-                )
-            })
-
-            setViewRows(filters)
-        }
-        return updatedRows;
+        setViewRows(updatedRows);
     }
 
     if (filterError.message !== "" && filterError.variant !== undefined) {
@@ -148,13 +140,15 @@ export default function FilterTable (): React.JSX.Element {
         )
     }
 
-    if (operationStatus === "success") {
-        updateRows(currentRows, filters)
+    if (operationStatus === "success"/* && Object.keys(apiRef.current).length > 0*/) {
+        useEffect(()=>{
+            updateRows(currentFilters, filters)
+        },[])
         return (
             <Paper className="FilterTable">
                 <DataGrid
                     columns={filterTableColumns}
-                    rows={filters}
+                    rows={currentRows}
                     checkboxSelection
                     slots={{
                         toolbar: FilterGridToolbar,
@@ -164,7 +158,7 @@ export default function FilterTable (): React.JSX.Element {
                         const values = Array.from(new Set(event.values())) as number[]
                         dispatch(updateSelectedFilter(values))
                     }}
-                    apiRef={tableManager as RefObject<GridApiCommunity>}
+                    //apiRef={apiRef}
                 />
             </Paper>
         )
@@ -192,7 +186,7 @@ export default function FilterTable (): React.JSX.Element {
                             hidden: true
                         }
                     }}
-                    apiRef={tableManager as RefObject<GridApiCommunity>}
+                    apiRef={apiRef as RefObject<GridApiCommunity>}
                 />
             </Skeleton>
         </Box>

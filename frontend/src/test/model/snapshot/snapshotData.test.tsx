@@ -31,7 +31,7 @@ describe("Snapshot data", () => {
 
         // Acts & asserts
         snapshotData.addSoftware(newSoftwareVersion, newSoftwareName, newSoftwareInstallType)
-        expect(() => { snapshotData.addSoftware(newSoftwareVersion, newSoftwareName, newSoftwareInstallType); }).toThrowError(AlreadyAddedWarning)
+        expect(() => { snapshotData.addSoftware(newSoftwareVersion, newSoftwareName, newSoftwareInstallType); }).toThrow(AlreadyAddedWarning)
     })
 
     test("Get sofware (added before)", () => {
@@ -58,6 +58,6 @@ describe("Snapshot data", () => {
         const snapshotData = new SnapshotData()
 
         // Acts & Asserts
-        expect(() => snapshotData.getSoftware(0)).toThrowError(NotFoundError)
+        expect(() => snapshotData.getSoftware(0)).toThrow(NotFoundError)
     })
 })

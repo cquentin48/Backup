@@ -1,6 +1,11 @@
-import { configureStore, type EnhancedStore, type Reducer } from "@reduxjs/toolkit"
-import { type OperationStatus, type AppState } from "../../main/app/controller/store"
-import { deviceInitialState, type FetchDeviceSliceState } from "../../main/app/controller/deviceMainInfos/loadDeviceSlice";
+
+import { PropsWithChildren } from "react";
+import { Provider, useSelector } from "react-redux";
+import { render, RenderOptions } from "@testing-library/react";
+import { type Reducer } from "@reduxjs/toolkit"
+
+import { type OperationStatus, type AppState, setupStore, AppStore, PreloadedState } from "../../main/app/controller/store"
+import { type FetchDeviceSliceState } from "../../main/app/controller/deviceMainInfos/loadDeviceSlice";
 import { type FilterSliceState } from "../../main/app/controller/deviceMainInfos/filterSlice";
 import { type SnapshotSliceState } from "../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
@@ -13,7 +18,6 @@ import { type LoadSnapshotQueryResult } from "../../main/app/model/queries/compu
 import { type SnapshotData } from "../../main/app/model/snapshot/snapshotData";
 import type Device from "../../main/app/model/device/device";
 import { type DeviceInfosQueryResult } from "../../main/app/model/queries/computer/deviceInfos";
-import { useSelector } from "react-redux";
 import type Filter from "../../main/app/model/filters/Filter";
 
 /**
@@ -35,6 +39,11 @@ interface GenericAction {
 const staticReducer = (initialState: Reducers): Reducer<any, GenericAction> => {
     return (state = initialState ?? {}, action: GenericAction) => state;
 };
+
+interface ExtendedRenderOptions extends Omit<RenderOptions, 'wrapper'> {
+    preloadedState: PreloadedState
+    store: AppStore
+}
 
 /**
  * Apollo GraphQL query mock result
@@ -60,7 +69,28 @@ export interface ApolloMockResult {
  * @param {Partial<AppState>} mockState Mock state
  * @returns {EnhancedStore} Initialised mock store
  */
-export const createMockStore = (mockState: Partial<AppState>): EnhancedStore => {
+export const renderWithProvideers = async (
+    mockState: Partial<AppState>,
+    ui?: React.ReactElement,
+    extendedRenderOptions?: ExtendedRenderOptions
+) => {
+    const {
+        preloadedState = mockState,
+        store = setupStore(mockState),
+        ...renderOptions
+    } = extendedRenderOptions!
+
+    const Wrapper = ({ children }: PropsWithChildren) => (
+        <Provider store={store}>{children}</Provider>
+    )
+
+    const screen = await render(ui, {wrapper: Wrapper, ...renderOptions})
+
+    return{
+        store,
+        ...screen
+    }
+    /*
     const initialState: Partial<AppState> = {};
 
     if (mockState !== undefined) {
@@ -96,7 +126,7 @@ export const createMockStore = (mockState: Partial<AppState>): EnhancedStore => 
     return configureStore({
         preloadedState: initialState,
         reducer: reducers
-    })
+    })*/
 }
 
 /**
@@ -162,7 +192,14 @@ export const initInitialState = (operationStatus: MockOperationStatus, includedE
                 },
                 selectedFilteredIDS
             }
-            : undefined
+            : {
+                filters: [],
+                filterError: {
+                    message: "",
+                    variant: undefined
+                },
+                selectedFilteredIDS
+            }
     }
 }
 

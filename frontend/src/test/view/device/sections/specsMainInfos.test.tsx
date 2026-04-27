@@ -16,7 +16,7 @@ import SpecsMainInfos from "../../../../main/app/view/pages/computer/sections/Ma
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
 import { type AppState } from "../../../../main/app/controller/store";
 
-import { type ApolloMockResult, createMockStore, initApolloMock, initInitialState, initUseSelectorMock } from "../../utils";
+import { type ApolloMockResult, renderWithProvideers, initApolloMock, initInitialState, initUseSelectorMock } from "../../utils";
 
 jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),
@@ -55,7 +55,7 @@ describe("Device main infos test suite", () => {
         const apolloMocks = initApolloMock("success", snapshot, device, ["snapshot", "device"])
 
         const initialState = initInitialState("success", ["snapshot", "device"], snapshot, device)
-        const store = createMockStore(initialState)
+        const store = renderWithProvideers(initialState)
         initUseSelectorMock(store.getState())
 
         // Acts
@@ -83,7 +83,7 @@ describe("Device main infos test suite", () => {
         snapshot.addSoftware("test", "test software", "1.0")
 
         const initialState = initInitialState("snapshotError", ["snapshot", "device"], snapshot, device)
-        const store = createMockStore(initialState)
+        const store = renderWithProvideers(initialState)
         initUseSelectorMock(store.getState())
 
         const apolloMocks = initApolloMock("snapshotError", snapshot, device, ["snapshot", "device"])
@@ -101,7 +101,7 @@ describe("Device main infos test suite", () => {
         snapshot.addSoftware("test", "test software", "1.0")
 
         const initialState = initInitialState("loadingSnapshot", [])
-        const store = createMockStore(initialState)
+        const store = renderWithProvideers(initialState)
         initUseSelectorMock(store.getState())
 
         const apolloMocks = initApolloMock("loadingSnapshot")
