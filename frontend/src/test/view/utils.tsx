@@ -2,10 +2,10 @@
 import { PropsWithChildren } from "react";
 import { Provider, useSelector } from "react-redux";
 import { render, RenderOptions } from "@testing-library/react";
-import { type Reducer } from "@reduxjs/toolkit"
+import { configureStore, type Reducer } from "@reduxjs/toolkit"
 
 import { type OperationStatus, type AppState, setupStore, AppStore, PreloadedState } from "../../main/app/controller/store"
-import { type FetchDeviceSliceState } from "../../main/app/controller/deviceMainInfos/loadDeviceSlice";
+import { deviceInitialState, type FetchDeviceSliceState } from "../../main/app/controller/deviceMainInfos/loadDeviceSlice";
 import { type FilterSliceState } from "../../main/app/controller/deviceMainInfos/filterSlice";
 import { type SnapshotSliceState } from "../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
@@ -69,28 +69,9 @@ export interface ApolloMockResult {
  * @param {Partial<AppState>} mockState Mock state
  * @returns {EnhancedStore} Initialised mock store
  */
-export const renderWithProvideers = async (
-    mockState: Partial<AppState>,
-    ui?: React.ReactElement,
-    extendedRenderOptions?: ExtendedRenderOptions
+export const renderWithProvideers = (
+    mockState: Partial<AppState>
 ) => {
-    const {
-        preloadedState = mockState,
-        store = setupStore(mockState),
-        ...renderOptions
-    } = extendedRenderOptions!
-
-    const Wrapper = ({ children }: PropsWithChildren) => (
-        <Provider store={store}>{children}</Provider>
-    )
-
-    const screen = await render(ui, {wrapper: Wrapper, ...renderOptions})
-
-    return{
-        store,
-        ...screen
-    }
-    /*
     const initialState: Partial<AppState> = {};
 
     if (mockState !== undefined) {
@@ -126,7 +107,7 @@ export const renderWithProvideers = async (
     return configureStore({
         preloadedState: initialState,
         reducer: reducers
-    })*/
+    })
 }
 
 /**
@@ -216,7 +197,7 @@ export const initApolloMock = (operationStatus: MockOperationStatus, snapshot: S
 
     if (operationStatus === "success" && ((device === undefined && queries.includes("device")) || (snapshot === undefined && queries.includes("snapshot")))) {
         const faultyObject = device === undefined ? "device" : "snapshot"
-        throw new NotFoundError(`Invalid operation : if the test type is a success, the $
+        throw new NotFoundError(`Invalid operation : if the test type is a success, the 
             ${faultyObject} must be defined!`)
     }
     mocks.set("fetchSnapshot", {

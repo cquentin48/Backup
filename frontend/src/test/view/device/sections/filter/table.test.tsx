@@ -1,11 +1,11 @@
-import React, { type ReactNode } from "react"
+import React, { ReactElement, type ReactNode } from "react"
 
 import { MockedProvider } from "@apollo/client/testing"
 
 import { type EnhancedStore } from "@reduxjs/toolkit"
 
 import '@testing-library/jest-dom'
-import { fireEvent, screen, render, waitFor, type RenderResult } from "@testing-library/react"
+import { fireEvent, screen, render, waitFor, type RenderResult, act } from "@testing-library/react"
 
 import { SnackbarProvider, useSnackbar } from "notistack"
 import { Provider, useDispatch } from "react-redux"
@@ -19,17 +19,25 @@ import { SnapshotData } from "../../../../../main/app/model/snapshot/snapshotDat
 import FilterTable from "../../../../../main/app/view/pages/computer/sections/filters/table"
 
 import { type ApolloMockResult, renderWithProvideers as renderWithProviders, initApolloMock, initInitialState, initUseSelectorMock } from "../../../utils"
+import { DataGridProps } from "@mui/x-data-grid"
+import MockedDataGrid from "../../../../mocks/x-data-grid/mockedDataGrid"
 
-/*jest.mock("@mui/x-data-grid", () => {
+jest.mock("@mui/x-data-grid", () => {
     const originalModule = jest.requireActual("@mui/x-data-grid")
     return {
         ...originalModule,
-        /*
-        DataGrid: ({ apiRef, ...props }: DataGridProps & { apiRef: React.RefObject<any> }) => {
-            return <originalModule.DataGrid {...props} />
+        DataGrid: ({ rows, columns, onRowSelectionModelChange, ...props }: DataGridProps & { apiRef: React.RefObject<any> }) => {
+            const slots = props.slots;
+            slots?.toolbar
+
+            return <MockedDataGrid
+                columns={columns}
+                rows={rows}
+                toolbar={slots?.toolbar as ReactNode}
+            />
         }
     }
-})*/
+})
 
 jest.mock('@mui/material/Tooltip', () => {
     return async ({ children }: { children: ReactNode }) => await children;
@@ -80,20 +88,19 @@ describe("Device main infos Filter table render (no filter)", () => {
      * @returns {RenderResult} Mocked table for unit test rendered
      */
     const renderMockedComponent = (store: EnhancedStore, apolloMocks: Map<string, ApolloMockResult>): RenderResult => {
-        const table = <FilterTable />
-        const mockedProvider = <MockedProvider
-            mocks={Array.from(apolloMocks.values())}>
-            {table}
-        </MockedProvider>
-        const renderedComponent = render(
+        return render(
             <Provider store={store}>
-                {mockedProvider}
+                <div style={{ height: 400, width: '100%' }}>
+                    <MockedProvider
+                        mocks={Array.from(apolloMocks.values())}>
+                        <FilterTable />
+                    </MockedProvider>
+                </div>
             </Provider>
         )
-        return renderedComponent
     }
 
-    /*test.skip("Pending data render", async () => {
+    test("Pending data render", async () => {
         // Before
         initApolloMock("loadingDevice")
         const mockedDispatch = jest.fn();
@@ -114,39 +121,35 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()
-    })*/
+    })
 
     test("Successful render", async () => {
         // Before
+        const device = new Device();
+        const snapshot = new SnapshotData();
+
+        initApolloMock("success")
         const mockedDispatch = jest.fn();
         (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
             return mockedDispatch
         });
-        initEnqueueSnackbarMock();
+        initEnqueueSnackbarMock()
 
         // Given
-        const snapshot = new SnapshotData();
-        snapshot.addSoftware("test", "test software", "1.0");
-        const initialState = initInitialState(
-            "success", ["device", "snapshot", "filter"],
-            snapshot, new Device());
+        const initialState = initInitialState("success", ["device", "snapshot"], snapshot, device)
+        const store = renderWithProviders(initialState)
 
-        const store = renderWithProviders(initialState, <FilterTable />);
-        /*initUseSelectorMock(store.getState());
-
-        const apolloMocks = initApolloMock("success", snapshot, new Device())
-        let renderElement: () => DocumentFragment;
+        initUseSelectorMock(store.getState())
+        const apolloMocks = initApolloMock("success", undefined, device)
 
         // Acts
         const { asFragment } = renderMockedComponent(store, apolloMocks)
-        renderElement = asFragment;*/
 
         // Asserts
-        expect(1).toBe(1)
-        //expect(renderElement!()).toMatchSnapshot()
+        expect(asFragment()).toMatchSnapshot()
     })
 
-    /*test.skip("Unsuccessful render", async () => {
+    test("Unsuccessful render", async () => {
         // Before
         const mockedDispatch = jest.fn();
         (useDispatch as jest.MockedFunction<typeof useDispatch>).mockImplementation(() => {
@@ -167,7 +170,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(asFragment()).toMatchSnapshot()
     })
 
-    test.skip("Row selected : footer displayed", async () => {
+    test("Row selected : footer displayed", async () => {
         // Given
         const snapshot = new SnapshotData()
         snapshot.addSoftware("test", "test software", "1.0")
@@ -200,6 +203,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         // Acts
         const { container, rerender } = renderMockedComponent(store, apolloMocks)
         const rowFileCell = container.querySelector(".MuiDataGrid-row")
+
         if (rowFileCell === null) {
             throw new Error("No row : test fail!")
         }

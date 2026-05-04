@@ -39,7 +39,7 @@ type UpdateRow = DeleteRow | Filter;
 /**
  * Columns set for the filter table below
  */
-const filterTableColumns: GridColDef[] = [
+const filterTableColumns: GridColDef<UpdateRow>[] = [
     {
         field: 'id',
         headerName: 'ID',
@@ -141,9 +141,9 @@ export default function FilterTable (): React.JSX.Element {
     }
 
     if (operationStatus === "success"/* && Object.keys(apiRef.current).length > 0*/) {
-        useEffect(()=>{
+        useEffect(() => {
             updateRows(currentFilters, filters)
-        },[])
+        }, [filters])
         return (
             <Paper className="FilterTable">
                 <DataGrid
