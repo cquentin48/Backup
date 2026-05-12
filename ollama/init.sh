@@ -6,6 +6,8 @@ OLLAMA_PID=$!
 
 sleep 10
 
-ollama pull mistral &
+echo "Pulling mistral model"
+
+ollama run mistral &
 
 wait $OLLAMA_PID
