@@ -2,8 +2,10 @@ import React, { ReactNode, useEffect } from "react";
 
 import { GridCallbackDetails, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { Delete } from "@mui/icons-material";
-import { useSelector, useDispatch } from "react-redux";
-import { deviceMainInfosFilterState, updateSelectedFilter } from "../../../main/app/controller/deviceMainInfos/filterSlice";
+import { useSelector } from "react-redux";
+import { deviceMainInfosFilterState } from "../../../main/app/controller/deviceMainInfos/filterSlice";
+import MockedDataGridToolbar from "./mockedDataGridToolbar";
+import MockedDataGridNewFilterDialog from "./mockedDataGridNewFilterDialog";
 
 /**
  * Mocked data grid footer, toolbar, rows, event change
@@ -87,10 +89,12 @@ export default function MockedDataGrid (props: MockedDataGridProps): React.JSX.E
         } else {
             footerText = "sélectionné"
         }
-    },[selectedFilteredIDS])
+    }, [selectedFilteredIDS])
+    
 
     return (
         <div data-testid="mock-datagrid">
+            <MockedDataGridToolbar/>
             <table>
                 <thead>
                     <tr className="MuiDataGrid-topContainer" onClick={(e) => {

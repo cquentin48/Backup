@@ -1,11 +1,14 @@
-import React, { ReactElement, type ReactNode } from "react"
+import React, { type ReactNode } from "react"
 
 import { MockedProvider } from "@apollo/client/testing"
+
+import { DataGridProps } from "@mui/x-data-grid"
+import userEvent from "@testing-library/user-event"
 
 import { type EnhancedStore } from "@reduxjs/toolkit"
 
 import '@testing-library/jest-dom'
-import { fireEvent, screen, render, waitFor, type RenderResult, act } from "@testing-library/react"
+import { fireEvent, screen, render, waitFor, type RenderResult } from "@testing-library/react"
 
 import { SnackbarProvider, useSnackbar } from "notistack"
 import { Provider, useDispatch } from "react-redux"
@@ -19,8 +22,9 @@ import { SnapshotData } from "../../../../../main/app/model/snapshot/snapshotDat
 import FilterTable from "../../../../../main/app/view/pages/computer/sections/filters/table"
 
 import { type ApolloMockResult, renderWithProvideers as renderWithProviders, initApolloMock, initInitialState, initUseSelectorMock } from "../../../utils"
-import { DataGridProps } from "@mui/x-data-grid"
 import MockedDataGrid from "../../../../mocks/x-data-grid/mockedDataGrid"
+import { filterSlice } from "../../../../../main/app/controller/deviceMainInfos/filterSlice"
+import ValidationError from "../../../../../main/app/model/exception/errors/validationError"
 
 jest.mock("@mui/x-data-grid", () => {
     const originalModule = jest.requireActual("@mui/x-data-grid")
@@ -185,10 +189,6 @@ describe("Device main infos Filter table render (no filter)", () => {
         ]
         initEnqueueSnackbarMock()
 
-        const mockedDispatch: AppDispatch = jest.fn();
-
-        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
-
         const initialState = initInitialState(
             "success",
             ["device", "snapshot", "filter"],
@@ -198,6 +198,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         )
         const store = renderWithProviders(initialState)
         initUseSelectorMock(store.getState())
+
         const apolloMocks = initApolloMock("success", snapshot, new Device())
 
         // Acts
@@ -209,10 +210,8 @@ describe("Device main infos Filter table render (no filter)", () => {
         }
 
         fireEvent.click(rowFileCell)
-        store.dispatch({
-            type: "filter/updateSelectedFilter",
-            payload: [0]
-        })
+
+        store.getState().filter.selectedFilteredIDS = [0]
 
         rerender(
             <Provider store={store}>
@@ -230,17 +229,17 @@ describe("Device main infos Filter table render (no filter)", () => {
         }, { timeout: 2500 })
     })
 
-    /*
-    test.skip("New filter button should render form successfully", async () => {
+    test("New filter button should render form successfully", async () => {
         // Given
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        const store = initStore("success", snapshot, new Device(), filters)
-        initUseSelectorMock(store)
+        const initialState = initInitialState("success", ["snapshot", "device", "filter"], snapshot, new Device(), filters)
+        const store = renderWithProviders(initialState)
+        initUseSelectorMock(initialState)
         initEnqueueSnackbarMock()
 
-        const mockedDispatch: AppDispatch = jest.fn();
+        const mockedDispatch: AppDispatch = jest.fn(()=>{throw new ValidationError("")});
 
         (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
 
@@ -248,19 +247,21 @@ describe("Device main infos Filter table render (no filter)", () => {
         renderMockedComponent(store, apolloMocks)
 
         // Acts
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+        const newFilterButton = screen.getByRole('button', { name: "New filter" }) as Element
         fireEvent.click(newFilterButton)
 
         // Asserts
-        const selectedElement = screen.getByText("File")
-        let newFilterDialogRootNode = selectedElement?.parentElement
-        while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
-            newFilterDialogRootNode = newFilterDialogRootNode.parentElement
-        }
-        expect(newFilterDialogRootNode).toBeInTheDocument()
+        await waitFor(() => {
+            const selectedElement = screen.getByText("File")
+            let newFilterDialogRootNode = selectedElement?.parentElement
+            while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
+                newFilterDialogRootNode = newFilterDialogRootNode.parentElement
+            }
+            expect(newFilterDialogRootNode).toBeInTheDocument()
+        }, { timeout: 2500 })
     })
 
-    test.skip("When the user changes the type of filter, the input type should be updated", async () => {
+    test("When the user changes the type of filter, the input type should be updated", async () => {
         // Before
         jest.useFakeTimers().setSystemTime(new Date('2000-01-01'))
 
@@ -268,8 +269,9 @@ describe("Device main infos Filter table render (no filter)", () => {
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        const store = initStore("success", snapshot, new Device(), filters)
-        initUseSelectorMock(store)
+        const initialState = initInitialState("success", ["snapshot", "device", "filter"], snapshot, new Device(), filters)
+        const store = renderWithProviders(initialState)
+        initUseSelectorMock(initialState)
         initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
@@ -289,23 +291,30 @@ describe("Device main infos Filter table render (no filter)", () => {
             newFilterDialogRootNode = newFilterDialogRootNode.parentElement
         }
 
-        const fieldNameSelect = (newFilterDialogRootNode as HTMLElement).childNodes.item(1).childNodes.item(1).childNodes.item(1)
-        fireEvent.change(fieldNameSelect, { target: { value: "creationDate" } })
-        const fieldInput = (container.querySelector("#datePicker") as HTMLInputElement).querySelector("input") as HTMLDivElement
+        const fieldNameSelect = (
+            (newFilterDialogRootNode as HTMLElement).children[1] as HTMLSelectElement
+        )
+        expect(fieldNameSelect).toBeInTheDocument()
+        await userEvent.selectOptions(fieldNameSelect, "creationDate")
+
+        const fieldInput = (container.querySelector('[data-testid="datePicker"]') as HTMLInputElement) as HTMLDivElement
 
         // Asserts
         expect(fieldInput).toBeInTheDocument()
         expect(fieldInput.getAttribute("placeholder")).toBe("MM/DD/YYYY")
-        expect(fieldInput.getAttribute("value")).toBe("01/01/2000")
+        expect(fieldInput.getAttribute("value")).toBe("2000-01-01")
     })
 
-    test.skip("Trying to add new filter without setting value should launch console.log (button click)", async () => {
+    test("Trying to add new filter without setting value should launch console.log (button click)", async () => {
         // Given
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        const store = initStore("success", snapshot, new Device(), filters)
-        initUseSelectorMock(store)
+
+        const initialState = initInitialState("success", ["snapshot", "device", "filter"], snapshot, new Device(), filters)
+        const store = renderWithProviders(initialState)
+        initUseSelectorMock(initialState)
+
         const enqueueSnackbarMock = initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
@@ -332,14 +341,164 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(enqueueSnackbarMock).toHaveBeenCalled()
     })
 
-    test.skip("Trying to add new filter without setting value should launch console.log", async () => {
+    test("Trying to add new filter without setting value should trigger a notification display",
+        async () => {
+            // Given
+            const snapshot = new SnapshotData()
+            const filters: Filter[] = []
+            snapshot.addSoftware("test", "test software", "1.0")
+
+            const initialState = initInitialState("success", ["snapshot", "device", "filter"], snapshot, new Device(), filters)
+            const store = renderWithProviders(initialState)
+            initUseSelectorMock(initialState)
+            initEnqueueSnackbarMock()
+
+            const mockedDispatch: AppDispatch = jest.fn();
+
+            (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+            const apolloMocks = initApolloMock("success", snapshot)
+            const { container } = renderMockedComponent(store, apolloMocks)
+
+            // Acts
+            const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+            fireEvent.click(newFilterButton)
+
+            const selectedElement = screen.getByText("File")
+            let newFilterDialogRootNode = selectedElement?.parentElement
+            while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
+                newFilterDialogRootNode = newFilterDialogRootNode.parentElement
+            }
+
+            const addFilterButton = newFilterDialogRootNode?.childNodes.item(4)
+
+            fireEvent.keyDown(addFilterButton as ChildNode, {
+                key: "Enter",
+                code: "Enter"
+            })
+
+            // Asserts
+            const newFilterForm = container.querySelector(".newElementDialog")
+            expect(newFilterForm).toBeInTheDocument()
+            expect(useSnackbar).toHaveBeenCalled()
+        })
+
+    /*test("Pressing tab key should focus other element", async () => {
         // Given
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
         snapshot.addSoftware("test", "test software", "1.0")
-        const store = initStore("success", snapshot, new Device(), filters)
-        initUseSelectorMock(store)
+
+        const initialState = initInitialState("success", ["snapshot", "device", "filter"], snapshot, new Device(), filters)
+        const store = renderWithProviders(initialState)
+        initUseSelectorMock(initialState)
         initEnqueueSnackbarMock()
+
+        const mockedDispatch: AppDispatch = jest.fn();
+
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const apolloMocks = initApolloMock("success", snapshot)
+        renderMockedComponent(store, apolloMocks)
+
+        // Acts
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+        fireEvent.click(newFilterButton)
+
+        const selectedElement = screen.getByText("File")
+        let newFilterDialogRootNode = selectedElement?.parentElement
+        while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
+            newFilterDialogRootNode = newFilterDialogRootNode.parentElement
+        }
+
+        const elementTypeSelect = newFilterDialogRootNode?.childNodes.item(0) as HTMLElement;
+        const fieldNameSelect = newFilterDialogRootNode?.childNodes.item(1) as HTMLElement;
+        const comparisonSelect = newFilterDialogRootNode?.childNodes.item(2) as HTMLElement;
+        const fieldValueInput = newFilterDialogRootNode?.childNodes.item(3) as HTMLElement;
+
+        fireEvent.keyDown(fieldValueInput, {
+            key: "Tab",
+            code: "Tab"
+        })
+
+        // Asserts
+        expect(fieldValueInput).not.toHaveFocus()
+        expect(fieldNameSelect).not.toHaveFocus()
+        expect(comparisonSelect).not.toHaveFocus()
+        expect(elementTypeSelect).toHaveFocus()
+    })*/
+
+
+    test("Adding element (no filter yet added!) and pressing enter key", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        const filters: Filter[] = []
+        snapshot.addSoftware("test", "test software", "1.0")
+
+        const initialState = initInitialState("success", ["snapshot", "device", "filter"], snapshot, new Device(), filters)
+        const store = renderWithProviders(initialState)
+
+        initUseSelectorMock(initialState)
+        initEnqueueSnackbarMock()
+
+        const mockedDispatch: AppDispatch = jest.fn();
+
+        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
+
+        const apolloMocks = initApolloMock("success", snapshot)
+        const { container, rerender } = renderMockedComponent(store, apolloMocks)
+
+        // Acts
+        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+        fireEvent.click(newFilterButton)
+
+        const fieldValueInput = container.querySelector('[data-testid="deviceMainInfosFilterValueField"]') as HTMLInputElement
+        const newElementDialog = container.querySelector(".newElementDialog")
+
+        await userEvent.type(fieldValueInput, "Test value")
+
+        fireEvent.keyDown(fieldValueInput, {
+            key: "Enter",
+            code: "Enter"
+        })
+
+        store.getState().filter.filters.push(new Filter(
+            "File",
+            "name",
+            "<",
+            "Test value" as unknown as object,
+            1
+        ))
+
+        rerender(
+            <Provider store={store}>
+                <MockedProvider mocks={Array.from(apolloMocks.values())}>
+                    <SnackbarProvider>
+                        <FilterTable />
+                    </SnackbarProvider>
+                </MockedProvider>
+            </Provider>
+        )
+
+        // Asserts
+        expect(newElementDialog).not.toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText("Test value")).toBeInTheDocument()
+        }, { timeout: 2500 })
+    })
+
+
+    test("Entering value and emptying it should display toast notification (empty value)", async () => {
+        // Given
+        const snapshot = new SnapshotData()
+        const filters: Filter[] = []
+        snapshot.addSoftware("test", "test software", "1.0")
+
+        const initialState = initInitialState("success", ["snapshot", "device", "filter"], snapshot, new Device(), filters)
+        const store = renderWithProviders(initialState)
+
+        initUseSelectorMock(initialState)
+        const mockedSnackbar = initEnqueueSnackbarMock()
 
         const mockedDispatch: AppDispatch = jest.fn();
 
@@ -352,154 +511,20 @@ describe("Device main infos Filter table render (no filter)", () => {
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
         fireEvent.click(newFilterButton)
 
-        const selectedElement = screen.getByText("File")
-        let newFilterDialogRootNode = selectedElement?.parentElement
-        while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
-            newFilterDialogRootNode = newFilterDialogRootNode.parentElement
-        }
+        const fieldValueInput = container.querySelector('[data-testid="deviceMainInfosFilterValueField"]') as HTMLInputElement
 
-        const addFilterButton = newFilterDialogRootNode?.childNodes.item(4)
+        await userEvent.type(fieldValueInput, "t")
 
-        fireEvent.keyDown(addFilterButton as ChildNode, {
-            key: "Enter",
-            code: "Enter"
-        })
+        expect(fieldValueInput).toHaveValue("t")
 
-        // Asserts
-        const newFilterForm = container.querySelector(".newElementDialog")
-        expect(newFilterForm).toBeInTheDocument()
-        expect(useSnackbar).toHaveBeenCalled()
-    })
-
-    test.skip("Pressing tab key should focus other element", async () => {
-        // Given
-        const snapshot = new SnapshotData()
-        const filters: Filter[] = []
-        snapshot.addSoftware("test", "test software", "1.0")
-        const store = initStore("success", snapshot, new Device(), filters)
-        initUseSelectorMock(store)
-        initEnqueueSnackbarMock()
-
-        const mockedDispatch: AppDispatch = jest.fn();
-
-        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
-
-        const apolloMocks = initApolloMock("success", snapshot)
-        renderMockedComponent(store, apolloMocks)
-
-        // Acts
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
-        fireEvent.click(newFilterButton)
-
-        const selectedElement = screen.getByText("File")
-        let newFilterDialogRootNode = selectedElement?.parentElement
-        while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
-            newFilterDialogRootNode = newFilterDialogRootNode.parentElement
-        }
-
-        const fieldValueInput = newFilterDialogRootNode?.childNodes.item(3).childNodes.item(1).childNodes.item(0) as HTMLElement
-
-        fireEvent.keyDown(fieldValueInput, {
-            key: "Tab",
-            code: "Tab"
-        })
-
-        // Asserts
-        expect(fieldValueInput).toHaveFocus()
-    })
-
-    test.skip("Adding element (no filter yet added!) and pressing enter key", async () => {
-        // Given
-        const snapshot = new SnapshotData()
-        const filters: Filter[] = []
-        snapshot.addSoftware("test", "test software", "1.0")
-        const store = initStore("success", snapshot, new Device(), filters)
-        initUseSelectorMock(store)
-        initEnqueueSnackbarMock()
-
-        const mockedDispatch: AppDispatch = jest.fn();
-
-        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
-
-        const apolloMocks = initApolloMock("success", snapshot)
-        const { rerender } = renderMockedComponent(store, apolloMocks)
-
-        // Acts
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
-        fireEvent.click(newFilterButton)
-
-        const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
-
-        fireEvent.change(fieldValueInput, { target: { value: "Test value" } })
-
-        fireEvent.keyDown(fieldValueInput, {
-            key: "Enter",
-            code: "Enter"
-        })
-
-        store.dispatch({
-            type: "filter/addFilter",
-            payload: JSON.parse(JSON.stringify(
-                new Filter(
-                    "File",
-                    "name",
-                    "<",
-                    "Test value" as unknown as object,
-                    1
-                )
-            ))
-        })
-
-        rerender(
-            <Provider store={store}>
-                <MockedProvider mocks={apolloMocks} addTypename={false}>
-                    <SnackbarProvider>
-                        <FilterTable />
-                    </SnackbarProvider>
-                </MockedProvider>
-            </Provider>
-        )
-
-        // Asserts
-        expect(fieldValueInput).not.toBeInTheDocument()
-        await waitFor(() => {
-            expect(screen.getByText("Test value")).toBeInTheDocument()
-        }, { timeout: 2500 })
-    })
-
-    test.skip("Entering value and emptying it should display toast notification (empty value)", async () => {
-        // Given
-        const snapshot = new SnapshotData()
-        const filters: Filter[] = []
-        snapshot.addSoftware("test", "test software", "1.0")
-        const store = initStore("success", snapshot, new Device(), filters)
-        initUseSelectorMock(store)
-        initEnqueueSnackbarMock()
-
-        const mockedDispatch: AppDispatch = jest.fn();
-
-        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
-
-        const apolloMocks = initApolloMock("success", snapshot)
-        renderMockedComponent(store, apolloMocks)
-
-        // Acts
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
-        fireEvent.click(newFilterButton)
-
-        const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
-
-        fireEvent.change(fieldValueInput, { target: { value: "Test value" } })
-        fireEvent.change(fieldValueInput, { target: { value: "" } })
+        await userEvent.clear(fieldValueInput)
 
         // Asserts
         expect(fieldValueInput).toBeInTheDocument()
-        await waitFor(() => {
-            expect(screen.getByText("You must enter a value here!")).toBeInTheDocument()
-        }, { timeout: 2500 })
+        expect(mockedSnackbar).toHaveBeenCalledWith("You must enter a value here!", { variant: "error" })
     })
 
-    test.skip("Adding two identical filter and pressing enter key", async () => {
+    test("Adding two identical filter and pressing enter key", async () => {
         // Given
         const snapshot = new SnapshotData()
         const filters: Filter[] = [
@@ -512,22 +537,21 @@ describe("Device main infos Filter table render (no filter)", () => {
             )
         ]
         snapshot.addSoftware("test", "test software", "1.0")
-        const store = initStore("success", snapshot, new Device(), filters)
-        initUseSelectorMock(store)
+
+        const initialState = initInitialState("success", ["snapshot", "device", "filter"], snapshot, new Device(), filters)
+        const store = renderWithProviders(initialState)
+
+        initUseSelectorMock(initialState)
         const mockEnqueueSnackbar = initEnqueueSnackbarMock()
 
-        const mockedDispatch: AppDispatch = jest.fn();
-
-        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
-
         const apolloMocks = initApolloMock("success", snapshot)
-        const { rerender } = renderMockedComponent(store, apolloMocks)
+        const { container, rerender } = renderMockedComponent(store, apolloMocks)
 
         // Acts
         const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
-        fireEvent.click(newFilterButton)
+        await userEvent.click(newFilterButton)
 
-        const fieldValueInput = (screen.getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
+        const fieldValueInput = container.querySelector('[data-testid="deviceMainInfosFilterValueField"]') as HTMLInputElement
 
         fireEvent.change(fieldValueInput, { target: { value: "Test value!" } })
 
@@ -535,6 +559,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             key: "Enter",
             code: "Enter"
         })
+
         store.dispatch({
             type: "filter/addFilter",
             payload: JSON.parse(JSON.stringify(
@@ -550,7 +575,7 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         rerender(
             <Provider store={store}>
-                <MockedProvider mocks={apolloMocks} addTypename={false}>
+                <MockedProvider mocks={Array.from(apolloMocks.values())}>
                     <SnackbarProvider>
                         <FilterTable />
                     </SnackbarProvider>
@@ -564,7 +589,8 @@ describe("Device main infos Filter table render (no filter)", () => {
 
     })
 
-    test.skip("Adding two filters with same ID", async () => {
+    /*
+    test("Adding two filters with same ID", async () => {
         // Given
         const snapshot = new SnapshotData()
         const filters: Filter[] = [
@@ -629,7 +655,7 @@ describe("Device main infos Filter table render (no filter)", () => {
 
     })
 
-    test.skip("Adding filter with invalid element type", async () => {
+    test("Adding filter with invalid element type", async () => {
         // Given
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
@@ -685,7 +711,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(mockEnqueueSnackbar).toHaveBeenCalledWith("The input type file set is not valid. The only ones accepted are : \"File\" or \"Library\".", { variant: "error" })
     })
 
-    test.skip("Adding filter with invalid comparison operator", async () => {
+    test("Adding filter with invalid comparison operator", async () => {
         // Given
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
@@ -741,7 +767,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(mockEnqueueSnackbar).toHaveBeenCalledWith("The comparison <> set is not valid. The only ones accepted are : \"<\", \"<=\", \">\", \">=\", \"≠\", \"==\" or \"includes\".", { variant: "error" })
     })
 
-    test.skip("Adding two filters and pressing enter key", async () => {
+    test("Adding two filters and pressing enter key", async () => {
         // Given
         const snapshot = new SnapshotData()
         const filters: Filter[] = [
@@ -812,7 +838,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         }, { timeout: 2500 })
     })
 
-    test.skip("Selecting two added filters", async () => {
+    test("Selecting two added filters", async () => {
         // Given
         const snapshot = new SnapshotData()
         const filters = [
@@ -882,7 +908,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         }, { timeout: 2500 })
     })
 
-    test.skip("Delete one filter from three previously added", async () => {
+    test("Delete one filter from three previously added", async () => {
         // Given
         const snapshot = new SnapshotData()
         const filters = [
@@ -959,7 +985,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(screen.queryAllByText("File")).toHaveLength(2)
     })
 
-    test.skip("Selecting date in the input field name from the new filter Form", async () => {
+    test("Selecting date in the input field name from the new filter Form", async () => {
         // Before
         jest.useFakeTimers().setSystemTime(new Date('2020-01-13'))
         jest.mock("@mui/material/Select", () => (...rest: any) => {
@@ -1006,7 +1032,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(updatedDate).toBe("01/11/2020")
     })
 
-    test.skip("Typing date directly in the input field name from the new filter Form", async () => {
+    test("Typing date directly in the input field name from the new filter Form", async () => {
         // Before
         jest.useFakeTimers().setSystemTime(new Date('2020-01-01'))
 

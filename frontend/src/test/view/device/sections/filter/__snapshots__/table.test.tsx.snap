@@ -15,6 +15,16 @@ exports[`Device main infos Filter table render (no filter) Pending data render 1
         <div
           data-testid="mock-datagrid"
         >
+          <div
+            data-testid="mock-datagridheader"
+          >
+            <button
+              name="New filter"
+              type="button"
+            >
+              New filter
+            </button>
+          </div>
           <table>
             <thead>
               <tr
@@ -42,6 +52,16 @@ exports[`Device main infos Filter table render (no filter) Successful render 1`]
       <div
         data-testid="mock-datagrid"
       >
+        <div
+          data-testid="mock-datagridheader"
+        >
+          <button
+            name="New filter"
+            type="button"
+          >
+            New filter
+          </button>
+        </div>
         <table>
           <thead>
             <tr
