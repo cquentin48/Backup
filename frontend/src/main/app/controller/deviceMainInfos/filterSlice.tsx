@@ -43,35 +43,23 @@ export const filterSlice = createSlice({
          * @param {PayloadAction<Filter>} action New filter yet to be added
          */
         addFilter: (state, action: PayloadAction<Filter>) => {
-            try {
-                const newFilter = action.payload
-                if (state.filters.filter((filter) => filter.id === newFilter.id).length > 0) {
-                    throw new AlreadyAddedWarning("Another filter has this id!")
-                }
-                Filter.inputTypeAuthorizedList(action.payload.elementType);
-                Filter.comparisonTypesCheck(newFilter.opType);
-                if (state.filters.filter((filter) =>
-                    Filter.isEqual(filter, newFilter)
-                ).length > 0) {
-                    throw new AlreadyAddedWarning("The filter is already set! It will be ignored!")
-                }
+            const newFilter = action.payload
 
-                state.filters.push(
-                    newFilter
-                )
-            } catch (e) {
-                if (e instanceof AlreadyAddedWarning) {
-                    state.filterError = {
-                        variant: "warning",
-                        message: e.message
-                    }
-                } else if (e instanceof ValidationError) {
-                    state.filterError = {
-                        variant: "error",
-                        message: e.message
-                    }
-                }
+            Filter.inputTypeAuthorizedList(action.payload.elementType);
+            Filter.comparisonTypesCheck(newFilter.opType);
+            
+            if (state.filters.filter((filter) =>
+                Filter.isEqual(filter, newFilter)
+            ).length > 0) {
+                throw new AlreadyAddedWarning("The filter is already set! It will be ignored!")
             }
+            if (state.filters.filter((filter) => filter.id === newFilter.id).length > 0) {
+                throw new AlreadyAddedWarning("Another filter has this id!")
+            }
+
+            state.filters.push(
+                newFilter
+            )
         },
 
         /**

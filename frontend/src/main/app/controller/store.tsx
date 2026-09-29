@@ -1,4 +1,4 @@
-import { combineReducers, configureStore, EnhancedStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore, type EnhancedStore } from "@reduxjs/toolkit";
 
 import deviceReducer from "./deviceMainInfos/loadDeviceSlice";
 import filterReducer from "./deviceMainInfos/filterSlice";
@@ -17,7 +17,7 @@ const appReducer = combineReducers({
  * @param {AppState | Partial<AppState>} preloadedState Application preloaded state
  * @returns {EnhancedStore} Redux store with preloaded state
  */
-export function setupStore(preloadedState: AppState | Partial<AppState>): EnhancedStore{
+export function setupStore (preloadedState: AppState | Partial<AppState>): EnhancedStore {
     return configureStore({
         reducer: appReducer,
         preloadedState

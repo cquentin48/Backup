@@ -1,11 +1,7 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode } from "react";
 
-import { GridCallbackDetails, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
-import { Delete } from "@mui/icons-material";
-import { useSelector } from "react-redux";
-import { deviceMainInfosFilterState } from "../../../main/app/controller/deviceMainInfos/filterSlice";
-import MockedDataGridToolbar from "./mockedDataGridToolbar";
-import MockedDataGridNewFilterDialog from "./mockedDataGridNewFilterDialog";
+import { GridSlotProps, GridSlotsComponentsProps, GridToolbarProps, ToolbarPropsOverrides, type GridColDef } from "@mui/x-data-grid";
+import { type UpdateRow } from "../../../main/app/view/pages/computer/sections/filters/table";
 
 /**
  * Mocked data grid footer, toolbar, rows, event change
@@ -13,33 +9,35 @@ import MockedDataGridNewFilterDialog from "./mockedDataGridNewFilterDialog";
 interface MockedDataGridProps {
 
     /**
-     * Toolbar
-     */
-    toolbar: ReactNode | undefined;
-
-    /**
      * Cell data
      */
-    rows: readonly any[] | undefined;
+    rows: readonly any[] | undefined
 
     /**
      * Cell columns
      */
-    columns: readonly GridColDef<any>[];
+    columns: ReadonlyArray<GridColDef<any>>
 
     /**
      * If the data grid has checkbox at the beginning (`undefined` means no checkbox)
      */
-    checkboxSelection?: boolean | undefined;
+    checkboxSelection: boolean;
 
     /**
-     * Event listener for checkbox selection change
+     * Toolbar set in the datagrid
      */
-    onRowSelectionModelChange?: ((rowSelectionModel: GridRowSelectionModel, details: GridCallbackDetails) => void);
+    toolbar?: React.JSXElementConstructor<GridToolbarProps & ToolbarPropsOverrides> | null | undefined
+
+    /**
+     * 
+     */
+    footer?: React.JSXElementConstructor<GridSlotProps['footer']> | null
+
+    slotsProps? : GridSlotsComponentsProps
 }
 
 /**
- * 
+ *
  * @param {MockedDataGridProps} props Component data (columns, rows, toolbar & footer, row selection change event)
  * @returns {React.JSX.Element} Rendered mocked data grid
  */
@@ -47,54 +45,57 @@ export default function MockedDataGrid (props: MockedDataGridProps): React.JSX.E
     /**
      * Checkboxes checked status for each row (if the option is set)
      */
-    const [checkboxSelections, updateSelectionList] = React.useState<Array<boolean>>(
+    const [checkboxSelections, updateSelectionList] = React.useState<boolean[]>(
         Array(props.columns.length).fill(false)
     )
-
-    const { selectedFilteredIDS } = useSelector(deviceMainInfosFilterState)
 
     /**
      * Mocker for the function `onRowSelectionModelChange`
      * @param {HTMLTableRowElement} row Row clicked by the user
      * @param {number} index position in the table (`-1` for the header)
      */
-    const handleClickEvent = (row: HTMLTableRowElement, index: number) => {
-        let checkbox = row.children[0] as HTMLInputElement;
+    const handleClickEvent = (row: HTMLTableRowElement, index: number): void => {
+        const checkbox = row.children[0] as HTMLInputElement;
         checkbox.checked = !checkbox.checked;
 
-        let updatedSelectedIDs: Array<boolean>;
+        let updatedSelectedIDs: boolean[];
         if (props.rows === undefined && index !== -1) {
             throw new RangeError("No row has been set!")
         }
-        if (props.rows && index > props.columns.length - 1) {
-            let rowIndexes = props.rows.map((row) => row.id ? row.id : undefined)
+        if ((props.rows != null) && index > props.columns.length - 1) {
+            const rowIndexes = props.rows.map((row) => (row as UpdateRow).id === null ? row.id : undefined)
             throw new RangeError(`The index ${index} has no columns related. The only valid columns are : "${rowIndexes.toString()}"`)
-        }
-        else if (index == -1) {
+        } else if (index === -1) {
             updatedSelectedIDs = new Array(props.columns.length).fill(checkbox.checked)
         } else {
             updatedSelectedIDs = checkboxSelections;
             updatedSelectedIDs[index] = checkbox.checked;
         }
+        updateSelectionList(checkboxSelections)
     }
-    /**
-     * Selected rows
-     */
-    const selectedIDs = checkboxSelections.filter(isSelected => isSelected === true)
-    let footerText = `${selectedIDs} filtre`;
 
-    useEffect(() => {
-        if (selectedIDs.length > 1) {
-            footerText += "s sélectionnés"
-        } else {
-            footerText = "sélectionné"
-        }
-    }, [selectedFilteredIDS])
+    const toolbar:ReactNode = React.createElement(
+        'div',
+        {
+            'data-testid':'datagrid-mock-toolbar',
+            ...(props.slotsProps?.toolbar ?? {})
+        },
+        props.toolbar ? React.createElement(props.toolbar):null
+    )
+    const footer:ReactNode = React.createElement(
+        'div',
+        {
+            'data-testid':'datagrid-mock-footer',
+            ...(props.slotsProps?.footer ?? {})
+        },
+        props.footer ? React.createElement(props.footer, {}):null
+    )
     
+    //let element = (props.toolbar as React.JSXElementConstructor<GridSlotProps['toolbar']>).render()
 
     return (
         <div data-testid="mock-datagrid">
-            <MockedDataGridToolbar/>
+            {toolbar}
             <table>
                 <thead>
                     <tr className="MuiDataGrid-topContainer" onClick={(e) => {
@@ -102,7 +103,9 @@ export default function MockedDataGrid (props: MockedDataGridProps): React.JSX.E
                             handleClickEvent(e.currentTarget, -1);
                         }
                     }}>
-                        {props.checkboxSelection && <input type="checkbox" />}
+                        {props.checkboxSelection &&
+                            <td><input type="checkbox" /></td>
+                        }
                         {props.columns?.map((column) => (
                             <th key={column.field}>{column.headerName}</th>
                         ))}
@@ -113,7 +116,7 @@ export default function MockedDataGrid (props: MockedDataGridProps): React.JSX.E
                         <tr key={rowIndex} className="MuiDataGrid-row" onClick={(e) => {
                             handleClickEvent(e.currentTarget, rowIndex);
                         }} >
-                            {props.checkboxSelection && <input type="checkbox" />}
+                            {props.checkboxSelection && <td><input type="checkbox" /></td>}
                             {props.columns?.map((column) => (
                                 <td key={`${rowIndex}-${column.field}`}>
                                     {row[column.field]}
@@ -124,10 +127,7 @@ export default function MockedDataGrid (props: MockedDataGridProps): React.JSX.E
                 </tbody>
             </table>
             {
-                selectedFilteredIDS.length > 0 && <div>
-                    <p>{footerText}!</p>
-                    <button><Delete />Delete filters</button>
-                </div>
+                footer
             }
         </div >)
 }

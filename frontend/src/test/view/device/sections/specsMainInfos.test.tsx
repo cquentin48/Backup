@@ -16,7 +16,7 @@ import SpecsMainInfos from "../../../../main/app/view/pages/computer/sections/Ma
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
 import { type AppState } from "../../../../main/app/controller/store";
 
-import { type ApolloMockResult, renderWithProvideers, initApolloMock, initInitialState, initUseSelectorMock } from "../../utils";
+import { type ApolloMockResult, renderWithProvideers, initApolloMock, initInitialState, initUseSelectorMock } from "../../utils/utils";
 
 jest.mock("react-redux", () => ({
     ...jest.requireActual('react-redux'),

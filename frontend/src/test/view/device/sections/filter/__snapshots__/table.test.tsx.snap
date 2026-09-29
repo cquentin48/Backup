@@ -16,15 +16,9 @@ exports[`Device main infos Filter table render (no filter) Pending data render 1
           data-testid="mock-datagrid"
         >
           <div
-            data-testid="mock-datagridheader"
-          >
-            <button
-              name="New filter"
-              type="button"
-            >
-              New filter
-            </button>
-          </div>
+            data-testid="datagrid-mock-toolbar"
+            hidden=""
+          />
           <table>
             <thead>
               <tr
@@ -33,6 +27,9 @@ exports[`Device main infos Filter table render (no filter) Pending data render 1
             </thead>
             <tbody />
           </table>
+          <div
+            data-testid="datagrid-mock-footer"
+          />
         </div>
       </span>
     </div>
@@ -53,20 +50,44 @@ exports[`Device main infos Filter table render (no filter) Successful render 1`]
         data-testid="mock-datagrid"
       >
         <div
-          data-testid="mock-datagridheader"
+          data-testid="datagrid-mock-toolbar"
         >
-          <button
-            name="New filter"
-            type="button"
+          <div
+            data-testid="toolbar-container"
           >
-            New filter
-          </button>
+            <div>
+              Colonnes
+            </div>
+            <div>
+              Filtres
+            </div>
+            <div>
+              Densité
+            </div>
+            <div
+              id="NewDeviceFilterButton"
+            >
+              <div
+                class="newFilterButton"
+              >
+                New filter
+              </div>
+            </div>
+            <div>
+              Exporter
+            </div>
+          </div>
         </div>
         <table>
           <thead>
             <tr
               class="MuiDataGrid-topContainer"
             >
+              <td>
+                <input
+                  type="checkbox"
+                />
+              </td>
               <th>
                 ID
               </th>
@@ -86,6 +107,13 @@ exports[`Device main infos Filter table render (no filter) Successful render 1`]
           </thead>
           <tbody />
         </table>
+        <div
+          data-testid="datagrid-mock-footer"
+        >
+          <div
+            id="GridFooterNoContent"
+          />
+        </div>
       </div>
     </div>
   </div>

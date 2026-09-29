@@ -1,49 +1,28 @@
 
-import { PropsWithChildren } from "react";
-import { Provider, useSelector } from "react-redux";
-import { render, RenderOptions } from "@testing-library/react";
-import { configureStore, type Reducer } from "@reduxjs/toolkit"
+import { useSelector } from "react-redux";
+import { configureStore, type EnhancedStore, type Reducer } from "@reduxjs/toolkit"
 
-import { type OperationStatus, type AppState, setupStore, AppStore, PreloadedState } from "../../main/app/controller/store"
-import { deviceInitialState, type FetchDeviceSliceState } from "../../main/app/controller/deviceMainInfos/loadDeviceSlice";
-import { type FilterSliceState } from "../../main/app/controller/deviceMainInfos/filterSlice";
-import { type SnapshotSliceState } from "../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
+import { type OperationStatus, type AppState } from "../../../main/app/controller/store"
 
-import FETCH_SNAPSHOT from '../../main/res/queries/snapshot.graphql';
-import FETCH_DEVICE from '../../main/res/queries/computer_infos.graphql';
+import FETCH_SNAPSHOT from '../../../main/res/queries/snapshot.graphql';
+import FETCH_DEVICE from '../../../main/res/queries/computer_infos.graphql';
 import { type DocumentNode, type FetchResult } from "@apollo/client";
 import { type ResultFunction } from "@apollo/client/testing";
-import NotFoundError from "../../main/app/model/exception/errors/notFoundError";
-import { type LoadSnapshotQueryResult } from "../../main/app/model/queries/computer/loadSnapshot";
-import { type SnapshotData } from "../../main/app/model/snapshot/snapshotData";
-import type Device from "../../main/app/model/device/device";
-import { type DeviceInfosQueryResult } from "../../main/app/model/queries/computer/deviceInfos";
-import type Filter from "../../main/app/model/filters/Filter";
+import NotFoundError from "../../../main/app/model/exception/errors/notFoundError";
+import { type LoadSnapshotQueryResult } from "../../../main/app/model/queries/computer/loadSnapshot";
+import { type SnapshotData } from "../../../main/app/model/snapshot/snapshotData";
+import type Device from "../../../main/app/model/device/device";
+import { type DeviceInfosQueryResult } from "../../../main/app/model/queries/computer/deviceInfos";
+import type Filter from "../../../main/app/model/filters/Filter";
+
+import deviceReducer from "../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
+import filterReducer from "../../../main/app/controller/deviceMainInfos/filterSlice";
+import snapshotReducer from "../../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
 /**
  * GraphQL operation status
  */
 type MockOperationStatus = "initial" | "loadingDevice" | "loadingSnapshot" | "success" | "deviceError" | "snapshotError" | "filterError";
-type Reducers = FetchDeviceSliceState | FilterSliceState | SnapshotSliceState;
-
-interface GenericAction {
-    type: string
-    payload?: any
-}
-
-/**
- * Initialise the reducer for a slice based off its initialSate
- * @param {Reducers} initialState InitialSate
- * @returns {Reducer<any, GenericAction>} Reducer used for the mock store initialisation
- */
-const staticReducer = (initialState: Reducers): Reducer<any, GenericAction> => {
-    return (state = initialState ?? {}, action: GenericAction) => state;
-};
-
-interface ExtendedRenderOptions extends Omit<RenderOptions, 'wrapper'> {
-    preloadedState: PreloadedState
-    store: AppStore
-}
 
 /**
  * Apollo GraphQL query mock result
@@ -71,7 +50,7 @@ export interface ApolloMockResult {
  */
 export const renderWithProvideers = (
     mockState: Partial<AppState>
-) => {
+): EnhancedStore<Partial<AppState>> => {
     const initialState: Partial<AppState> = {};
 
     if (mockState !== undefined) {
@@ -95,13 +74,13 @@ export const renderWithProvideers = (
     const reducers: Record<string, Reducer> = {};
 
     if (initialState.device !== null) {
-        reducers.device = staticReducer(initialState.device ?? deviceInitialState)
+        reducers.device = deviceReducer;
     }
     if (initialState.filter !== null) {
-        reducers.filter = staticReducer(initialState.filter!)
+        reducers.filter = filterReducer;
     }
     if (initialState.snapshot !== null) {
-        reducers.snapshot = staticReducer(initialState.snapshot!)
+        reducers.snapshot = snapshotReducer;
     }
 
     return configureStore({

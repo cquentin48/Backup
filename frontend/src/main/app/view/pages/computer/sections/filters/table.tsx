@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, type RefObject } from "react";
+import React, { useEffect } from "react";
 
 import { Box, Paper, Skeleton, Typography } from "@mui/material";
 import { DataGrid, type GridColDef, useGridApiRef } from "@mui/x-data-grid";
-import { type GridApiCommunity } from "@mui/x-data-grid/internals";
 
 import { useSnackbar } from "notistack";
 
@@ -34,12 +33,12 @@ interface DeleteRow {
 /**
  * Update row type used for the row update transaction
  */
-type UpdateRow = DeleteRow | Filter;
+export type UpdateRow = DeleteRow | Filter;
 
 /**
  * Columns set for the filter table below
  */
-const filterTableColumns: GridColDef<UpdateRow>[] = [
+const filterTableColumns: Array<GridColDef<UpdateRow>> = [
     {
         field: 'id',
         headerName: 'ID',
@@ -103,6 +102,7 @@ export default function FilterTable (): React.JSX.Element {
      */
     const updateRows = (currentRows: Filter[], newRows: Filter[]): void => {
         const updatedRows: UpdateRow[] = [];
+        setFilters(currentFilters)
 
         // Fetch the deleted rows
         currentRows.forEach((currentRow: Filter, index: number) => {
@@ -140,7 +140,7 @@ export default function FilterTable (): React.JSX.Element {
         )
     }
 
-    if (operationStatus === "success"/* && Object.keys(apiRef.current).length > 0*/) {
+    if (operationStatus === "success") {
         useEffect(() => {
             updateRows(currentFilters, filters)
         }, [filters])
@@ -158,7 +158,7 @@ export default function FilterTable (): React.JSX.Element {
                         const values = Array.from(new Set(event.values())) as number[]
                         dispatch(updateSelectedFilter(values))
                     }}
-                    //apiRef={apiRef}
+                    // apiRef={apiRef}
                 />
             </Paper>
         )
@@ -186,7 +186,7 @@ export default function FilterTable (): React.JSX.Element {
                             hidden: true
                         }
                     }}
-                    apiRef={apiRef as RefObject<GridApiCommunity>}
+                    apiRef={apiRef }
                 />
             </Skeleton>
         </Box>
