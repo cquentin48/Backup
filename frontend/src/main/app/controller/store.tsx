@@ -20,6 +20,10 @@ const appReducer = combineReducers({
 export function setupStore (preloadedState: AppState | Partial<AppState>): EnhancedStore {
     return configureStore({
         reducer: appReducer,
+        middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware({
+                serializableCheck: false
+            }),
         preloadedState
     })
 }

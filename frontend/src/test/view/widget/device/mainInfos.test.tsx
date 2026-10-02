@@ -16,9 +16,9 @@ import MainInfosFrame from "../../../../main/app/view/pages/computer/mainInfosFr
 
 import gqlClient from "../../../../main/app/model/queries/client"
 
-import deviceReducer, { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
-import filterReducer, { type FilterSliceState } from "../../../../main/app/controller/deviceMainInfos/filterSlice"
-import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
+import { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
+import { type FilterSliceState } from "../../../../main/app/controller/deviceMainInfos/filterSlice"
+import { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 import NotFoundError from "../../../../main/app/model/exception/errors/notFoundError"
 import type Filter from "../../../../main/app/model/filters/Filter"
 import { type LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot"
@@ -292,14 +292,10 @@ describe("MainInfosFrame unit test suite", () => {
                 selectedFilteredIDS: []
             }
         }
-        return configureStore({
-            reducer: {
-                snapshot: snapshotReducer,
-                device: deviceReducer,
-                filter: filterReducer
-            },
+
+        return setupStore(
             preloadedState
-        })
+        )
     }
 
     /**
@@ -497,3 +493,7 @@ describe("MainInfosFrame unit test suite", () => {
         }, { timeout: 500 })
     })
 })
+function setupStore (preloadedState: MockedPreloadedState): import("redux").Store<any, import("redux").UnknownAction, unknown> {
+    throw new Error("Function not implemented.")
+}
+

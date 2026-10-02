@@ -85,7 +85,10 @@ export const renderWithProvideers = (
 
     return configureStore({
         preloadedState: initialState,
-        reducer: reducers
+        reducer: reducers,
+        middleware: (getDefaultMiddleware)=>getDefaultMiddleware({
+            serializableCheck: false
+        })
     })
 }
 

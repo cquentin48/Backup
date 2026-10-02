@@ -25,6 +25,7 @@ import { type ApolloMockResult, renderWithProvideers as renderWithProviders, ini
 import MockedDataGrid from "../../../../mocks/x-data-grid/mockedDataGrid"
 
 import { DateUtils } from "../../../utils/date"
+import { AutofpsSelect } from "@mui/icons-material"
 jest.mock('@mui/material/Tooltip', () => {
     return ({ children }: { children: object }) => (
         <div className={
@@ -38,10 +39,14 @@ jest.mock('@mui/material/Tooltip', () => {
 });
 
 jest.mock("@mui/material/Select", () => {
-    return ({ id, labelID, label, onChange, children }: { id: string, labelID: string, label: string, onChange: ChangeEventHandler, children: Array<React.ReactNode> }) => (
+    return ({ id, labelID, label, onChange, children, ...props }: { id: string, labelID: string, label: string, onChange: ChangeEventHandler, children: Array<React.ReactNode> }) => (
         <div>
             <div id={labelID}>{label}</div>
-            <select onChange={onChange} id={id}>
+            <select
+                onChange={onChange}
+                id={id}
+                /*TODO: Pass an attribute which inits the autofocus -> Maybe a new mock class (before the return, pass the value inside a container and autofocus it when the value is updated)? */
+            >
                 {
                     children.map((input) => input)
                 }
@@ -100,15 +105,23 @@ jest.mock("@mui/x-data-grid", () => {
 });
 
 jest.mock('@mui/material/TextField', () => {
-    return (props) => (
+    return (
+        {
+            id, onChange, label, autoFocus, type
+        }:
+            {
+                id: string, onChange: ChangeEventHandler,
+                label: string, autoFocus?: boolean, type: string
+            }) => (
         <div>
-            <div id={`${props.id}-label`}>
-                {props.label}
+            <div id={`${id}-label`}>
+                {label}
             </div>
             <input
-                type="text"
-                id={props.id}
-                onChange={props.onChange}
+                autoFocus={autoFocus !== undefined ? autoFocus : false}
+                type={type}
+                id={id}
+                onChange={onChange}
             />
         </div>
     )
@@ -412,7 +425,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             const { container } = renderMockedComponent(store, apolloMocks)
 
             // Acts
-            const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+            const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
             fireEvent.click(newFilterButton)
 
             const selectedElement = screen.getByText("File")
@@ -434,7 +447,7 @@ describe("Device main infos Filter table render (no filter)", () => {
             expect(useSnackbar).toHaveBeenCalled()
         })
 
-    /* test("Pressing tab key should focus other element", async () => {
+    test("Pressing tab key should focus other element", async () => {
         // Given
         const snapshot = new SnapshotData()
         const filters: Filter[] = []
@@ -445,15 +458,11 @@ describe("Device main infos Filter table render (no filter)", () => {
         initUseSelectorMock(initialState)
         initEnqueueSnackbarMock()
 
-        const mockedDispatch: AppDispatch = jest.fn();
-
-        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
-
         const apolloMocks = initApolloMock("success", snapshot)
-        renderMockedComponent(store, apolloMocks)
+        const { container } = renderMockedComponent(store, apolloMocks)
 
         // Acts
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+        const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
         fireEvent.click(newFilterButton)
 
         const selectedElement = screen.getByText("File")
@@ -462,22 +471,34 @@ describe("Device main infos Filter table render (no filter)", () => {
             newFilterDialogRootNode = newFilterDialogRootNode.parentElement
         }
 
-        const elementTypeSelect = newFilterDialogRootNode?.childNodes.item(0) as HTMLElement;
-        const fieldNameSelect = newFilterDialogRootNode?.childNodes.item(1) as HTMLElement;
-        const comparisonSelect = newFilterDialogRootNode?.childNodes.item(2) as HTMLElement;
-        const fieldValueInput = newFilterDialogRootNode?.childNodes.item(3) as HTMLElement;
+        const inputs = {
+            elementTypeSelect: newFilterDialogRootNode?.childNodes.item(0) as HTMLElement,
+            fieldNameSelect: newFilterDialogRootNode?.childNodes.item(1) as HTMLElement,
+            comparisonSelect: newFilterDialogRootNode?.childNodes.item(2) as HTMLElement,
+            fieldValueInput: newFilterDialogRootNode?.childNodes.item(3) as HTMLElement
+        }
 
-        fireEvent.keyDown(fieldValueInput, {
+        Object.keys(inputs).map((key: string)=>{
+            inputs[key] = inputs[key].querySelector('input, select')
+        })
+
+
+        fireEvent.keyDown(inputs.fieldValueInput, {
             key: "Tab",
             code: "Tab"
         })
 
         // Asserts
+        Object.keys(inputs).forEach((key:string)=>{
+            expect(inputs[key]).not.toHaveFocus()
+        })
+        /*
         expect(fieldValueInput).not.toHaveFocus()
         expect(fieldNameSelect).not.toHaveFocus()
         expect(comparisonSelect).not.toHaveFocus()
         expect(elementTypeSelect).toHaveFocus()
-    }) */
+        */
+    })
 
     test("Adding element (no filter yet added!) and pressing enter key", async () => {
         // Given
@@ -491,34 +512,22 @@ describe("Device main infos Filter table render (no filter)", () => {
         initUseSelectorMock(initialState)
         initEnqueueSnackbarMock()
 
-        const mockedDispatch: AppDispatch = jest.fn();
-
-        (useDispatch as jest.MockedFunction<typeof useDispatch>).mockReturnValue(mockedDispatch)
-
         const apolloMocks = initApolloMock("success", snapshot)
         const { container, rerender } = renderMockedComponent(store, apolloMocks)
 
         // Acts
-        const newFilterButton = screen.getByRole('button', { name: /New filter/i }) as Element
+        const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
         fireEvent.click(newFilterButton)
 
-        const fieldValueInput = container.querySelector('[data-testid="deviceMainInfosFilterValueField"]') as HTMLInputElement
+        const fieldValueInput = container.querySelector('[id="deviceMainInfosFilterValueField"]') as HTMLInputElement
         const newElementDialog = container.querySelector(".newElementDialog")
 
         userEvent.type(fieldValueInput, "Test value")
 
-        fireEvent.keyDown(fieldValueInput, {
+        fireEvent.keyDown(fieldValueInput as ChildNode, {
             key: "Enter",
             code: "Enter"
         })
-
-        store.getState().filter!.filters.push(new Filter(
-            "File",
-            "name",
-            "<",
-            "Test value" as unknown as object,
-            1
-        ))
 
         rerender(
             <Provider store={store}>

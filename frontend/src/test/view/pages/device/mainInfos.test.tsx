@@ -3,7 +3,7 @@ import React from 'react';
 import { type MockedResponse, MockedProvider } from '@apollo/client/testing';
 import '@testing-library/jest-dom'
 import { type DataGridProps } from '@mui/x-data-grid';
-import { configureStore, type EnhancedStore } from "@reduxjs/toolkit";
+import { type EnhancedStore } from "@reduxjs/toolkit";
 import { render, screen, fireEvent, type RenderResult, waitFor } from '@testing-library/react';
 
 import { Provider, useSelector } from 'react-redux';
@@ -16,12 +16,12 @@ import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
 
 import { type DeviceInfosQueryResult } from "../../../../main/app/model/queries/computer/deviceInfos";
 
-import deviceReducer, { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
-import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
+import { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
+import { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
 import FETCH_DEVICE from '../../../../main/res/queries/computer_infos.graphql';
 import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
-import { type OperationStatus } from '../../../../main/app/controller/store';
+import { setupStore, type OperationStatus } from '../../../../main/app/controller/store';
 
 jest.mock("@mui/x-data-grid", () => {
     const originalModule = jest.requireActual("@mui/x-data-grid")
@@ -115,13 +115,10 @@ describe("Device main Infos unit test suite", () => {
             }
         };
 
-        return configureStore({
-            reducer: {
-                device: deviceReducer,
-                snapshot: snapshotReducer
-            },
+
+        return setupStore(
             preloadedState
-        })
+        )
     }
 
     /**

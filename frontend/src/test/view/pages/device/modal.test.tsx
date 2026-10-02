@@ -3,7 +3,7 @@ import React from "react";
 import { type DocumentNode, type FetchResult } from "@apollo/client";
 import { type ResultFunction, MockedProvider } from "@apollo/client/testing";
 
-import { type EnhancedStore, configureStore } from "@reduxjs/toolkit";
+import { type EnhancedStore } from "@reduxjs/toolkit";
 
 import { type RenderResult, render } from "@testing-library/react";
 
@@ -11,10 +11,10 @@ import { SnackbarProvider, useSnackbar } from "notistack";
 
 import { useSelector, Provider, useDispatch } from "react-redux";
 
-import snapshotReducer from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
-import filterReducer from "../../../../main/app/controller/deviceMainInfos/filterSlice"
-import deviceReducer from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
-import chatbotReducer from "../../../../main/app/controller/chatbot/chatbotSlice"
+import { SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
+import { FilterSliceState } from "../../../../main/app/controller/deviceMainInfos/filterSlice"
+import { FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
+import { ChatbotSliceState } from "../../../../main/app/controller/chatbot/chatbotSlice"
 import { type AppState } from "../../../../main/app/controller/store";
 
 import Device from "../../../../main/app/model/device/device";
@@ -250,15 +250,10 @@ describe("Device loading modal test suite snapshot", () => {
             }
         }
 
-        return configureStore({
-            reducer: {
-                device: deviceReducer,
-                snapshot: snapshotReducer,
-                filter: filterReducer,
-                chatbot: chatbotReducer
-            },
+
+        return setupStore(
             preloadedState
-        })
+        )
     }
 
     /**
@@ -378,3 +373,7 @@ describe("Device loading modal test suite snapshot", () => {
         expect(asFragment()).toMatchSnapshot()
     })
 })
+function setupStore (preloadedState: { device: FetchDeviceSliceState; filter: FilterSliceState; snapshot: SnapshotSliceState; chatbot: ChatbotSliceState; }): import("redux").Store<{ device: import("../../../../main/app/controller/deviceMainInfos/loadDeviceSlice").FetchDeviceSliceState; filter: import("../../../../main/app/controller/deviceMainInfos/filterSlice").FilterSliceState; snapshot: import("../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice").SnapshotSliceState; chatbot: import("../../../../main/app/controller/chatbot/chatbotSlice").ChatbotSliceState; }, import("redux").UnknownAction, unknown> {
+    throw new Error("Function not implemented.");
+}
+
