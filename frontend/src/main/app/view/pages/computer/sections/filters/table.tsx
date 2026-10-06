@@ -142,8 +142,9 @@ export default function FilterTable (): React.JSX.Element {
 
     if (operationStatus === "success") {
         useEffect(() => {
+            console.log("refresh!")
             updateRows(currentFilters, filters)
-        }, [filters])
+        }, [JSON.stringify(filters)])
         return (
             <Paper className="FilterTable">
                 <DataGrid
