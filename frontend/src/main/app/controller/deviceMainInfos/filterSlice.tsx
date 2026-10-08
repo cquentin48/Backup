@@ -59,6 +59,7 @@ export const filterSlice = createSlice({
             state.filters.push(
                 newFilter
             )
+            return state
         },
 
         /**

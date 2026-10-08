@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-import { GridSlotProps, GridSlotsComponentsProps, GridToolbarProps, ToolbarPropsOverrides, type GridColDef } from "@mui/x-data-grid";
+import { GridCallbackDetails, GridRowId, GridRowSelectionModel, GridSlotProps, GridSlotsComponentsProps, GridToolbarProps, ToolbarPropsOverrides, type GridColDef } from "@mui/x-data-grid";
 import { type UpdateRow } from "../../../main/app/view/pages/computer/sections/filters/table";
 
 /**
@@ -29,11 +29,22 @@ interface MockedDataGridProps {
     toolbar?: React.JSXElementConstructor<GridToolbarProps & ToolbarPropsOverrides> | null | undefined
 
     /**
-     * 
+     * Table footer
      */
     footer?: React.JSXElementConstructor<GridSlotProps['footer']> | null
 
+    /**
+     * Table toolbar and footer props
+     */
     slotsProps? : GridSlotsComponentsProps
+
+    /**
+     * Actions tiggered when the user selects a row or a checkbox
+     */
+    updateSelectedRows?:(
+        (rowSelectionModel: GridRowSelectionModel) => void
+    )
+
 }
 
 /**
@@ -42,6 +53,7 @@ interface MockedDataGridProps {
  * @returns {React.JSX.Element} Rendered mocked data grid
  */
 export default function MockedDataGrid (props: MockedDataGridProps): React.JSX.Element {
+
     /**
      * Checkboxes checked status for each row (if the option is set)
      */
@@ -115,6 +127,8 @@ export default function MockedDataGrid (props: MockedDataGridProps): React.JSX.E
                     {props.rows?.map((row, rowIndex) => (
                         <tr key={rowIndex} className="MuiDataGrid-row" onClick={(e) => {
                             handleClickEvent(e.currentTarget, rowIndex);
+                            const selectedIndexes = Array.from(checkboxSelections.filter((row)=>row).keys())
+                            props.updateSelectedRows!(selectedIndexes as readonly GridRowId[])
                         }} >
                             {props.checkboxSelection && <td><input type="checkbox" /></td>}
                             {props.columns?.map((column) => (

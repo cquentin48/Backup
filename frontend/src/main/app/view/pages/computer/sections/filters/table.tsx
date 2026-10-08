@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import DeviceMainInfosGridFooter from "./footer/GridFooter";
 import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 
-import { deviceMainInfosFilterState, updateSelectedFilter } from "../../../../../controller/deviceMainInfos/filterSlice";
+import { updateSelectedFilter, FilterSliceState } from "../../../../../controller/deviceMainInfos/filterSlice";
+import { AppState } from "../../../../../controller/store";
 
 import { snapshotState } from "../../../../../controller/deviceMainInfos/loadSnapshotSlice";
 import type Filter from "../../../../../model/filters/Filter";
@@ -78,7 +79,7 @@ const filterTableColumns: Array<GridColDef<UpdateRow>> = [
  */
 export default function FilterTable (): React.JSX.Element {
 
-    const { filters, filterError } = useSelector(deviceMainInfosFilterState);
+    const state = useSelector((state:AppState)=>state)
 
     const { operationStatus } = useSelector(snapshotState)
 
@@ -131,7 +132,9 @@ export default function FilterTable (): React.JSX.Element {
         setViewRows(updatedRows);
     }
 
-    if (filterError.message !== "" && filterError.variant !== undefined) {
+
+    const filterError = useSelector((state:AppState)=>state.filter.filterError);
+    if (filterError !== undefined && filterError.message !== "" && filterError.variant !== undefined) {
         enqueueSnackbar(
             filterError.message,
             {
@@ -141,10 +144,10 @@ export default function FilterTable (): React.JSX.Element {
     }
 
     if (operationStatus === "success") {
+        const filters = useSelector((state:AppState)=>state.filter.filters);
         useEffect(() => {
-            console.log("refresh!")
-            updateRows(currentFilters, filters)
-        }, [JSON.stringify(filters)])
+            updateRows(currentFilters, filters);
+        }, [filters]);
         return (
             <Paper className="FilterTable">
                 <DataGrid
@@ -159,7 +162,7 @@ export default function FilterTable (): React.JSX.Element {
                         const values = Array.from(new Set(event.values())) as number[]
                         dispatch(updateSelectedFilter(values))
                     }}
-                    // apiRef={apiRef}
+                // apiRef={apiRef}
                 />
             </Paper>
         )
@@ -187,7 +190,7 @@ export default function FilterTable (): React.JSX.Element {
                             hidden: true
                         }
                     }}
-                    apiRef={apiRef }
+                    apiRef={apiRef}
                 />
             </Skeleton>
         </Box>

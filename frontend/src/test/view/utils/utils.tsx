@@ -1,5 +1,6 @@
 
 import { useSelector } from "react-redux";
+import * as redux from 'react-redux';
 import { configureStore, type EnhancedStore, type Reducer } from "@reduxjs/toolkit"
 
 import { type OperationStatus, type AppState } from "../../../main/app/controller/store"
@@ -86,7 +87,7 @@ export const renderWithProvideers = (
     return configureStore({
         preloadedState: initialState,
         reducer: reducers,
-        middleware: (getDefaultMiddleware)=>getDefaultMiddleware({
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({
             serializableCheck: false
         })
     })
