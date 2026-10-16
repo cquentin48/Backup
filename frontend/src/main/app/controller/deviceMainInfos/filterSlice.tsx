@@ -88,6 +88,7 @@ export const filterSlice = createSlice({
                 state.filters.forEach((filter, id) => {
                     filter.id = id
                 })
+                state.selectedFilteredIDS = []
             } catch (error) {
                 if (error instanceof NotFoundError || error instanceof ConflictError) {
                     state.filterError = {
