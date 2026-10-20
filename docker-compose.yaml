@@ -43,7 +43,7 @@ services:
       - "6379:6379"
 
   db:
-    image: postgres
+    image: postgres:16
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -56,6 +56,26 @@ services:
       start_period: 30s
     ports:
       - "5432:5432"
+
+  ollama:
+    build: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_MODELS="llama2"
+    healthcheck:
+      test: >
+        curl -s -X GET http://localhost:11434/api/ps
+        -H "Content-Type: application/json" |
+        jq -e ".models[0] |
+        select(.name == \"mistral:latest\")"
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 110s
+    restart: unless-stopped
 
   backend:
     build: backend
@@ -72,6 +92,8 @@ services:
         condition: service_healthy
       channels:
         condition: service_healthy
+      ollama:
+        condition: service_healthy
     environment:
       - DB_HOST=db
     healthcheck:
@@ -85,3 +107,4 @@ services:
 volumes:
   postgres_data:
   static:
+  ollama_data:

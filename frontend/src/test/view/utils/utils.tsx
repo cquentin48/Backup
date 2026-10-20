@@ -1,40 +1,29 @@
-import { configureStore, type EnhancedStore, type Reducer } from "@reduxjs/toolkit"
-import { type OperationStatus, type AppState } from "../../main/app/controller/store"
-import { deviceInitialState, type FetchDeviceSliceState } from "../../main/app/controller/deviceMainInfos/loadDeviceSlice";
-import { type FilterSliceState } from "../../main/app/controller/deviceMainInfos/filterSlice";
-import { type SnapshotSliceState } from "../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
-import FETCH_SNAPSHOT from '../../main/res/queries/snapshot.graphql';
-import FETCH_DEVICE from '../../main/res/queries/computer_infos.graphql';
+import { useSelector } from "react-redux";
+import * as redux from 'react-redux';
+import { configureStore, type EnhancedStore, type Reducer } from "@reduxjs/toolkit"
+
+import { type OperationStatus, type AppState } from "../../../main/app/controller/store"
+
+import FETCH_SNAPSHOT from '../../../main/res/queries/snapshot.graphql';
+import FETCH_DEVICE from '../../../main/res/queries/computer_infos.graphql';
 import { type DocumentNode, type FetchResult } from "@apollo/client";
 import { type ResultFunction } from "@apollo/client/testing";
-import NotFoundError from "../../main/app/model/exception/errors/notFoundError";
-import { type LoadSnapshotQueryResult } from "../../main/app/model/queries/computer/loadSnapshot";
-import { type SnapshotData } from "../../main/app/model/snapshot/snapshotData";
-import type Device from "../../main/app/model/device/device";
-import { type DeviceInfosQueryResult } from "../../main/app/model/queries/computer/deviceInfos";
-import { useSelector } from "react-redux";
-import type Filter from "../../main/app/model/filters/Filter";
+import NotFoundError from "../../../main/app/model/exception/errors/notFoundError";
+import { type LoadSnapshotQueryResult } from "../../../main/app/model/queries/computer/loadSnapshot";
+import { type SnapshotData } from "../../../main/app/model/snapshot/snapshotData";
+import type Device from "../../../main/app/model/device/device";
+import { type DeviceInfosQueryResult } from "../../../main/app/model/queries/computer/deviceInfos";
+import type Filter from "../../../main/app/model/filters/Filter";
+
+import deviceReducer from "../../../main/app/controller/deviceMainInfos/loadDeviceSlice";
+import filterReducer from "../../../main/app/controller/deviceMainInfos/filterSlice";
+import snapshotReducer from "../../../main/app/controller/deviceMainInfos/loadSnapshotSlice";
 
 /**
  * GraphQL operation status
  */
 type MockOperationStatus = "initial" | "loadingDevice" | "loadingSnapshot" | "success" | "deviceError" | "snapshotError" | "filterError";
-type Reducers = FetchDeviceSliceState | FilterSliceState | SnapshotSliceState;
-
-interface GenericAction {
-    type: string
-    payload?: any
-}
-
-/**
- * Initialise the reducer for a slice based off its initialSate
- * @param {Reducers} initialState InitialSate
- * @returns {Reducer<any, GenericAction>} Reducer used for the mock store initialisation
- */
-const staticReducer = (initialState: Reducers): Reducer<any, GenericAction> => {
-    return (state = initialState ?? {}, action: GenericAction) => state;
-};
 
 /**
  * Apollo GraphQL query mock result
@@ -60,7 +49,9 @@ export interface ApolloMockResult {
  * @param {Partial<AppState>} mockState Mock state
  * @returns {EnhancedStore} Initialised mock store
  */
-export const createMockStore = (mockState: Partial<AppState>): EnhancedStore => {
+export const renderWithProvideers = (
+    mockState: Partial<AppState>
+): EnhancedStore<Partial<AppState>> => {
     const initialState: Partial<AppState> = {};
 
     if (mockState !== undefined) {
@@ -84,18 +75,21 @@ export const createMockStore = (mockState: Partial<AppState>): EnhancedStore => 
     const reducers: Record<string, Reducer> = {};
 
     if (initialState.device !== null) {
-        reducers.device = staticReducer(initialState.device as FetchDeviceSliceState ?? deviceInitialState)
+        reducers.device = deviceReducer;
     }
     if (initialState.filter !== null) {
-        reducers.filter = staticReducer(initialState.filter as FilterSliceState)
+        reducers.filter = filterReducer;
     }
     if (initialState.snapshot !== null) {
-        reducers.snapshot = staticReducer(initialState.snapshot as SnapshotSliceState)
+        reducers.snapshot = snapshotReducer;
     }
 
     return configureStore({
         preloadedState: initialState,
-        reducer: reducers
+        reducer: reducers,
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+            serializableCheck: false
+        })
     })
 }
 
@@ -162,7 +156,14 @@ export const initInitialState = (operationStatus: MockOperationStatus, includedE
                 },
                 selectedFilteredIDS
             }
-            : undefined
+            : {
+                filters: [],
+                filterError: {
+                    message: "",
+                    variant: undefined
+                },
+                selectedFilteredIDS
+            }
     }
 }
 
@@ -179,7 +180,7 @@ export const initApolloMock = (operationStatus: MockOperationStatus, snapshot: S
 
     if (operationStatus === "success" && ((device === undefined && queries.includes("device")) || (snapshot === undefined && queries.includes("snapshot")))) {
         const faultyObject = device === undefined ? "device" : "snapshot"
-        throw new NotFoundError(`Invalid operation : if the test type is a success, the $
+        throw new NotFoundError(`Invalid operation : if the test type is a success, the 
             ${faultyObject} must be defined!`)
     }
     mocks.set("fetchSnapshot", {
@@ -209,7 +210,7 @@ export const initApolloMock = (operationStatus: MockOperationStatus, snapshot: S
         result: {
             data: operationStatus === "success"
                 ? {
-                    deviceInfos: device as Device
+                    deviceInfos: device!
                 }
                 : undefined,
             errors: operationStatus !== "snapshotError"

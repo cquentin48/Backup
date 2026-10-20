@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
+    "useUnknownInCatchVariables": false,
     "target": "es2015",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "strictNullChecks": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -14,7 +16,6 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
     "noEmit": false,
@@ -30,7 +31,8 @@
     "src/test",
     "src/test/*.tsx",
     "src/test/*.test.tsx",
-    "src/test/**/*.tsx"
+    "src/test/**/*.tsx",
+    "custom.d.ts"
   ],
   "files": [
     "src/@types/graphql.d.ts"

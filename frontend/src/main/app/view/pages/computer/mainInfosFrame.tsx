@@ -57,8 +57,8 @@ export default function MainInfosFrame (): React.JSX.Element {
             if (!snapshotLists.has(snapshot.operatingSystem)) {
                 snapshotLists.set(snapshot.operatingSystem, new Map())
             }
-            const snapshotEntry = snapshotLists.get(snapshot.operatingSystem) as Map<string, React.JSX.Element>;
-            snapshotEntry.set(
+            const snapshotEntry = snapshotLists.get(snapshot.operatingSystem);
+            snapshotEntry!.set(
                 snapshot.key,
                 <MenuItem key={snapshot.key} value={(snapshot).key}>
                     {SnapshotID.localizedDate(snapshot.date)}

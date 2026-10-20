@@ -69,7 +69,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             comparison as '<' | '>' | '≠' | '==' | "includes",
             value as unknown as object,
             filters.filters.length
-        )
+        );
 
         if (value.length > 0) {
             dispatch(
@@ -120,7 +120,7 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
      * TODO: move towards an utils file
      */
     const initError = (error: Error): DataError => {
-        let variant: "warning" | "error" | "default" | "success" | "info" | undefined = "default";
+        let variant: "warning" | "error" | "default" | "success" | "info" | undefined = "error";
         let message = "";
         if (error instanceof AlreadyAddedWarning) {
             variant = "warning"
@@ -172,7 +172,12 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
             />
             <DeviceMainInfosFilterCreationButton
                 addNewFilter={() => {
-                    addsNewFilter()
+                    try {
+                        addsNewFilter()
+                    } catch (rawError) {
+                        const error = initError(rawError as Error)
+                        enqueueSnackbar((error as any).message, { variant: (error as any).variant })
+                    }
                 }}
             />
         </div>

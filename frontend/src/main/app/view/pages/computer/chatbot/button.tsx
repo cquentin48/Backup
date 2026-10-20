@@ -6,17 +6,24 @@ import ChatBotDialog from "./dialog";
 
 import '../../../../../res/css/Chatbot.css'
 
+/**
+ * Chatbot quick launch button
+ * @returns {React.JSX.Element} Rendered DOM component
+ */
 export default function ChatBotButton (): React.JSX.Element {
     const [isOpened, open] = useState(false);
 
-    const handleClose = () => {
+    /**
+     * Handle close dialog event
+     */
+    const handleClose = (): void => {
         open(false)
     }
 
     return (<div id="chatbotButton">
         <Tooltip title={"Launch the chatbot"}>
             <IconButton
-                onClick={() => open(true)}
+                onClick={() => { open(true); }}
                 sx={{
 
                 }}

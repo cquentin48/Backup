@@ -29,7 +29,7 @@ describe("Load device infos GraphQL query unit test", () => {
             }
             queryResult = {
                 data: {
-                    snapshotInfos: snapshot as SnapshotData
+                    snapshotInfos: snapshot
                 }
             }
 

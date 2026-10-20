@@ -27,9 +27,7 @@ export const FilterGridToolbar = React.forwardRef<HTMLDivElement, GridToolbarPro
                 <GridToolbarColumnsButton />
                 <GridToolbarFilterButton />
                 <GridToolbarDensitySelector />
-                <Tooltip title={"Add new filter"}>
-                    <GridToolbarAdd/>
-                </Tooltip>
+                <GridToolbarAdd />
                 <GridToolbarExport />
             </GridToolbarContainer>
         )

@@ -18,11 +18,10 @@ import { type DeviceInfosQueryResult } from "../../../../main/app/model/queries/
 import { type LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot"
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData"
 
-import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
-import filterReducer from "../../../../main/app/controller/deviceMainInfos/filterSlice"
-import deviceReducer, { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
-import chatbotReducer, { ChatbotSliceState } from "../../../../main/app/controller/deviceMainInfos/chatbotSlice";
-import { type OperationStatus, type AppState } from "../../../../main/app/controller/store"
+import { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
+import { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
+import { type ChatbotSliceState } from "../../../../main/app/controller/chatbot/chatbotSlice";
+import { type OperationStatus, type AppState, setupStore } from "../../../../main/app/controller/store"
 
 import ComputerPage from "../../../../main/app/view/pages/computer/computerPage"
 
@@ -76,7 +75,7 @@ interface MockedPreloadedState {
 
     device: FetchDeviceSliceState
 
-    chatbot: ChatbotSliceState;
+    chatbot: ChatbotSliceState
 }
 
 interface ApolloMockResult {
@@ -138,21 +137,15 @@ describe("Device page", () => {
                 },
                 operationStatus: "success"
             },
-            chatbot:{
+            chatbot: {
                 currentConversationID: -1,
                 conversationHeaders: [],
                 messages: []
             }
         }
-        return configureStore({
-            reducer: {
-                device: deviceReducer,
-                snapshot: snapshotReducer,
-                filter: filterReducer,
-                chatbot: chatbotReducer
-            },
+        return setupStore(
             preloadedState
-        })
+        )
     }
 
     /**
@@ -177,7 +170,7 @@ describe("Device page", () => {
             }
             snapshotResult = {
                 data: {
-                    snapshotInfos: snapshot as SnapshotData
+                    snapshotInfos: snapshot
                 }
             }
             if (device === undefined && operationStatus !== "success") {
@@ -185,7 +178,7 @@ describe("Device page", () => {
             }
             deviceResult = {
                 data: {
-                    deviceInfos: device as Device
+                    deviceInfos: device!
                 }
             }
 

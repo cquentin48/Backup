@@ -30,7 +30,7 @@ export default function DeviceMainInfosFilterCreationButton
                     try {
                         props.addNewFilter()
                     } catch (error) {
-                        enqueueSnackbar((error as any).message, { variant: (error as any).variant })
+                        enqueueSnackbar((error).message, { variant: (error).variant })
                     }
                 }}
             >

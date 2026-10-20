@@ -9,46 +9,46 @@ export interface MessageDialog {
     /**
      * Whether it is a user or the bot
      */
-    agent: "USER" | "AGENT";
+    agent: "USER" | "AGENT"
 
     /**
      * Written text
      */
-    message: string;
+    message: string
 
     /**
      * Message timestamp
      */
-    timestamp: number;
+    timestamp: Date
 
     /**
      * ID of the conversation
      */
-    conversationID: number;
+    conversationID: number
 }
 
 /**
  * Conversation header
  */
-export interface ConversationHeader{
+export interface ConversationHeader {
     /**
      * Conversation header label
      */
-    label: string;
+    label: string
 
     /**
      * ID of the conversation stored in the database
      */
-    id: number;
+    id: number
 }
 
 /**
  * Filter slice state
  */
 export interface ChatbotSliceState {
-    messages: MessageDialog[];
-    conversationHeaders: ConversationHeader[];
-    currentConversationID: number;
+    messages: MessageDialog[]
+    conversationHeaders: ConversationHeader[]
+    currentConversationID: number
 }
 
 /**
@@ -74,7 +74,7 @@ export const chatbotSlice = createSlice({
          */
         setConversationsHeaders: (state, action: PayloadAction<ConversationHeader[]>) => {
             state.conversationHeaders = []
-            action.payload.forEach((header)=>{
+            action.payload.forEach((header) => {
                 state.conversationHeaders.push()
             })
         },
@@ -85,7 +85,6 @@ export const chatbotSlice = createSlice({
          * @param {PayloadAction<string>} action Dialog header
          */
         addConversation: (state, action: PayloadAction<ConversationHeader>) => {
-            console.log(action)
             state.conversationHeaders.push({
                 id: action.payload.id,
                 label: action.payload.label
@@ -112,16 +111,30 @@ export const chatbotSlice = createSlice({
          * @param {PayloadAction<MessageDialog>} action New message
          */
         addMessage: (state, action: PayloadAction<MessageDialog>) => {
+            console.log(action)
             state.messages.push({
                 agent: action.payload.agent,
                 message: action.payload.message,
-                timestamp: action.payload.timestamp,
+                timestamp: new Date(action.payload.timestamp),
                 conversationID: state.currentConversationID
             }
             )
         }
     }
 })
+
+export interface PackedMessagesByInterval {
+    label: string
+    messages: MessageDialog[]
+}
+
+export interface FormattedDates {
+    today: PackedMessagesByInterval
+    lastWeek: PackedMessagesByInterval
+    lastMonth: PackedMessagesByInterval
+    lastYear: PackedMessagesByInterval
+    before: PackedMessagesByInterval
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const chatbotSliceState = (state: AppState) => state.chatbot;

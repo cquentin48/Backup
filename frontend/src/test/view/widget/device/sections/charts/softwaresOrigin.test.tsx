@@ -6,14 +6,14 @@ import { render, type RenderResult } from "@testing-library/react"
 import '@testing-library/jest-dom'
 
 import { Provider, useDispatch, useSelector } from "react-redux"
-import { configureStore, type EnhancedStore } from "@reduxjs/toolkit"
+import { type EnhancedStore } from "@reduxjs/toolkit"
 
 import gqlClient from "../../../../../../main/app/model/queries/client"
 import SoftwareOrigins from "../../../../../../main/app/view/pages/computer/sections/charts/SoftwareOrigins"
 
 import { SnapshotData } from "../../../../../../main/app/model/snapshot/snapshotData"
-import filterReducer, { type FilterSliceState } from "../../../../../../main/app/controller/deviceMainInfos/filterSlice";
-import snapshotReducer, { type SnapshotSliceState } from "../../../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
+import { type FilterSliceState } from "../../../../../../main/app/controller/deviceMainInfos/filterSlice";
+import { type SnapshotSliceState } from "../../../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 
 import FETCH_SNAPSHOT from '../../../../../../main/res/queries/snapshot.graphql';
 import { type LoadSnapshotQueryResult } from "../../../../../../main/app/model/queries/computer/loadSnapshot"
@@ -170,13 +170,10 @@ describe("Type of softwares origin chart unit test suite", () => {
                 selectedFilteredIDS: []
             }
         }
-        return configureStore({
-            reducer: {
-                snapshot: snapshotReducer,
-                filter: filterReducer
-            },
+
+        return setupStore(
             preloadedState
-        })
+        )
     }
 
     /**
@@ -636,3 +633,7 @@ describe("Type of softwares origin chart unit test suite", () => {
         expect(asFragment).toMatchSnapshot()
     })
 })
+function setupStore (preloadedState: MockedPreloadedState): import("redux").Store<any, import("redux").UnknownAction, unknown> {
+    throw new Error("Function not implemented.")
+}
+

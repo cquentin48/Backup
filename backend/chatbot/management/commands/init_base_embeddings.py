@@ -58,9 +58,13 @@ class Command(BaseCommand):
 
         df = pd.read_json(filepath)
         embeddings = []
-        for sentence in df["sentence"].values.tolist():
-            embeddings.append(self.embedding_model.encode(sentence))
-        df["embeddings"] = embeddings
-        df.apply(lambda row: self.add_sentence(row), axis=1)
-        
-        print(f"✅ {len(df)} sentences added")
+        sentences_count = len(df)
+        if sentences_count == Sentence.count():
+            print("No new sentences to add.")
+        else:
+            for sentence in df["sentence"].values.tolist():
+                embeddings.append(self.embedding_model.encode(sentence))
+            df["embeddings"] = embeddings
+            df.apply(lambda row: self.add_sentence(row), axis=1)
+            
+            print(f"✅ {sentences_count} sentences added")

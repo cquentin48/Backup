@@ -16,9 +16,9 @@ import MainInfosFrame from "../../../../main/app/view/pages/computer/mainInfosFr
 
 import gqlClient from "../../../../main/app/model/queries/client"
 
-import deviceReducer, { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
-import filterReducer, { type FilterSliceState } from "../../../../main/app/controller/deviceMainInfos/filterSlice"
-import snapshotReducer, { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
+import { type FetchDeviceSliceState } from "../../../../main/app/controller/deviceMainInfos/loadDeviceSlice"
+import { type FilterSliceState } from "../../../../main/app/controller/deviceMainInfos/filterSlice"
+import { type SnapshotSliceState } from "../../../../main/app/controller/deviceMainInfos/loadSnapshotSlice"
 import NotFoundError from "../../../../main/app/model/exception/errors/notFoundError"
 import type Filter from "../../../../main/app/model/filters/Filter"
 import { type LoadSnapshotQueryResult } from "../../../../main/app/model/queries/computer/loadSnapshot"
@@ -136,7 +136,7 @@ describe("MainInfosFrame unit test suite", () => {
                             variant: operationStatus === "deviceError" || operationStatus === "snapshotError" ? "error" : undefined
                         }
                     },
-                    chatbot:{
+                    chatbot: {
                         currentConversationID: -1,
                         conversationHeaders: [],
                         messages: []
@@ -166,12 +166,12 @@ describe("MainInfosFrame unit test suite", () => {
             }
             deviceResult = {
                 data: {
-                    deviceInfos: device as Device
+                    deviceInfos: device!
                 }
             }
             snapshotResult = {
                 data: {
-                    snapshotInfos: snapshot as SnapshotData
+                    snapshotInfos: snapshot
                 }
             }
 
@@ -212,7 +212,7 @@ describe("MainInfosFrame unit test suite", () => {
                     {
                         result: {
                             data: {
-                                snapshotInfos: snapshot as SnapshotData
+                                snapshotInfos: snapshot
                             }
                         }
                     }
@@ -222,7 +222,7 @@ describe("MainInfosFrame unit test suite", () => {
                     {
                         result: {
                             data: {
-                                deviceInfos: device as Device
+                                deviceInfos: device
                             }
                         }
                     }
@@ -276,7 +276,7 @@ describe("MainInfosFrame unit test suite", () => {
                 operationStatus: "success"
             },
             device: {
-                device: operationStatus === "success" ? device as Device : undefined,
+                device: operationStatus === "success" ? device : undefined,
                 deviceError: {
                     message: operationStatus === "failure" ? "Device error raised in test" : "",
                     variant: operationStatus === "failure" ? "error" : undefined
@@ -292,14 +292,10 @@ describe("MainInfosFrame unit test suite", () => {
                 selectedFilteredIDS: []
             }
         }
-        return configureStore({
-            reducer: {
-                snapshot: snapshotReducer,
-                device: deviceReducer,
-                filter: filterReducer
-            },
+
+        return setupStore(
             preloadedState
-        })
+        )
     }
 
     /**
@@ -488,8 +484,8 @@ describe("MainInfosFrame unit test suite", () => {
         // Acts
         const { container, getByText } = renderMockedComponent("success", snapshot, device, store)
 
-        const snapshotSelect = container.querySelector(".MuiSelect-nativeInput") as Element
-        fireEvent.change(snapshotSelect, { target: { value: device.snapshots[1].key } })
+        const snapshotSelect = container.querySelector(".MuiSelect-nativeInput")
+        fireEvent.change(snapshotSelect!, { target: { value: device.snapshots[1].key } })
 
         // Asserts
         await waitFor(() => {
@@ -497,3 +493,7 @@ describe("MainInfosFrame unit test suite", () => {
         }, { timeout: 500 })
     })
 })
+function setupStore (preloadedState: MockedPreloadedState): import("redux").Store<any, import("redux").UnknownAction, unknown> {
+    throw new Error("Function not implemented.")
+}
+
