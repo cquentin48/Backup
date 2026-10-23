@@ -3,18 +3,16 @@ import React, { useEffect } from "react";
 import { Box, Paper, Skeleton, Typography } from "@mui/material";
 import { DataGrid, type GridColDef, useGridApiRef } from "@mui/x-data-grid";
 
-import { useSnackbar } from "notistack";
-
 import { useDispatch, useSelector } from "react-redux";
 
 import DeviceMainInfosGridFooter from "./footer/GridFooter";
 import { FilterGridToolbar } from "./toolbar/filterGridToolbar";
 
-import { updateSelectedFilter, FilterSliceState } from "../../../../../controller/deviceMainInfos/filterSlice";
+import { updateSelectedFilter, deviceMainInfosFilterState } from "../../../../../controller/deviceMainInfos/filterSlice";
 import { AppState } from "../../../../../controller/store";
 
 import { snapshotState } from "../../../../../controller/deviceMainInfos/loadSnapshotSlice";
-import type Filter from "../../../../../model/filters/Filter";
+import Filter from "../../../../../model/filters/Filter";
 
 /**
  * Deleted filter row interface
@@ -79,9 +77,9 @@ const filterTableColumns: Array<GridColDef<UpdateRow>> = [
  */
 export default function FilterTable (): React.JSX.Element {
 
-    const { operationStatus } = useSelector(snapshotState)
+    const { operationStatus } = useSelector(snapshotState);
+    const { filters } = useSelector(deviceMainInfosFilterState);
 
-    const [currentFilters, setFilters] = React.useState<Filter[]>([]);
     const [currentRows, setViewRows] = React.useState<UpdateRow[]>([]);
 
     const dispatch = useDispatch()
@@ -101,24 +99,18 @@ export default function FilterTable (): React.JSX.Element {
          * @param { Filter[] } currentRows Current filter list set in the datagrid
          * @param { Filter[] } newRows New filter list computed in the recently done operation
          */
-        const updateRows = (currentRows: Filter[], newRows: Filter[]): void => {
+        const updateRows = (newRows: Filter[]): void => {
             const updatedRows: UpdateRow[] = [];
-            setFilters(currentFilters)
 
-            // Fetch the deleted rows
-            currentRows.forEach((currentRow: Filter, index: number) => {
-                const hasRowBeenDeleted = newRows.find(
-                    (newRow: Filter) => { return newRow === currentRow })
-                if ((hasRowBeenDeleted == null) === undefined) {
-                    updatedRows.push({ id: index, _action: 'delete' })
-                }
-            })
-
-            // Fetch the created rows
+            // Fetch the created and deleted rows
             newRows.forEach((newRow: Filter, index: number) => {
-                const hasRowBeenCreated = currentRows.find(
-                    (currentRow: Filter) => { return newRow === currentRow });
-                if (hasRowBeenCreated === undefined) {
+                const isRowInTheFilters = filters.filter(filter=>Filter.isEqual(filter as Filter, newRow)).length === 0
+                const hasRowBeenDeleted = currentRows.filter(
+                    filter=>Filter.isEqual(filter as Filter, newRow)
+                ).length === 1
+                if (hasRowBeenDeleted && isRowInTheFilters) {
+                    updatedRows.push({ id: index, _action: 'delete' })
+                } else {
                     updatedRows.push({
                         id: index,
                         opType: newRow.opType,
@@ -133,7 +125,7 @@ export default function FilterTable (): React.JSX.Element {
         }
 
         useEffect(() => {
-            updateRows(currentFilters, filters);
+            updateRows(filters);
         }, [filters]);
 
         return (
