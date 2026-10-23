@@ -97,7 +97,6 @@ export default function FieldValue (props: FieldValueProps): React.JSX.Element {
                 <div id="datePicker">
                     <DatePicker
                         label="Field value"
-                        onAccept={(pickedDateEvent: any) => { updateFieldValue(pickedDateEvent); }}
                         onChange={(typedDateEvent) => { updateFieldValue(typedDateEvent); }}
                         defaultValue={
                             dayjs(new Date())

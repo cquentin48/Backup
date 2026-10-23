@@ -49,10 +49,12 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
     const [fieldName, updateFieldName] = React.useState(Filter.inputFieldName(
         Filter.authorizedInputTypes[0] as "File" | "Library"
     )[0]);
-    const [focusedInput, updateFocusedInput] = React.useState(3)
-    const inputRefs = useRef<Array<() => undefined>>([]);
-    const [firstTime, updateFirstTime] = React.useState(true);
 
+    const [focusedInput, updateFocusedInput] = React.useState(3);
+    const [changedFocus, setChangedFocusStatus] = React.useState(false);
+    const inputRefs = useRef<Array<() => undefined>>([]);
+
+    const [firstTime, updateFirstTime] = React.useState(true);
     const filters = useSelector(deviceMainInfosFilterState)
 
     const dispatch = useDispatch()
@@ -82,33 +84,46 @@ export default function NewFilterForm (props: NewFilterFormProps): React.JSX.Ele
         }
         props.closesDialog(false);
     }
-
-    useEffect(() => {
-        /**
-         * Key pressed handling method
-         * @param {KeyboardEvent} pressedKey pressed event
-         */
-        const handlePressedKey = (pressedKey: KeyboardEvent): void => {
-            if (pressedKey.key === "Tab") {
-                pressedKey.preventDefault();
-                updateFocusedInput((focusedInput + 1) % 4);
-                (inputRefs.current[focusedInput] as any).focus();
-            }
-            if (pressedKey.key === "Enter") {
-                try {
-                    addsNewFilter()
-                } catch (rawError) {
-                    const error = initError(rawError as Error)
-                    enqueueSnackbar((error as any).message, { variant: (error as any).variant })
-                }
+    /**
+     * Key pressed handling method
+     * @param {KeyboardEvent} pressedKey pressed event
+     */
+    const handlePressedKey = (pressedKey: KeyboardEvent): void => {
+        if (pressedKey.key === "Tab") {
+            pressedKey.preventDefault();
+            updateFocusedInput(newInputID => (newInputID + 1)%4);
+            if(!changedFocus){
+                setChangedFocusStatus(true);
             }
         }
+        if (pressedKey.key === "Enter") {
+            try {
+                addsNewFilter()
+            } catch (rawError) {
+                const error = initError(rawError as Error)
+                enqueueSnackbar((error as any).message, { variant: (error as any).variant })
+            }
+        }
+    }
 
-        document.addEventListener("keydown", handlePressedKey)
+    useEffect(() => {
+        window.addEventListener("keydown", handlePressedKey)
 
-        return () => { document.removeEventListener("keydown", handlePressedKey); }
+        return () => window.removeEventListener("keydown", handlePressedKey);
     }, [filters, value])
 
+
+    useEffect(() => {
+        if(changedFocus){
+            (inputRefs.current[focusedInput] as any).focus();
+        }
+    }, [focusedInput])
+
+    /**
+     * Initialise input references (for the focus switch with the presed `Tab` key)
+     * @param input DOM element
+     * @param {number} i reference index
+     */
     const initInputRef = (input: never, i: number): void => {
         inputRefs.current[i] = input;
     }

@@ -25,6 +25,7 @@ import MockedDataGrid from "../../../../mocks/x-data-grid/mockedDataGrid"
 
 import { DateUtils } from "../../../utils/date"
 
+
 jest.mock('@mui/material/Tooltip', () => {
     return ({ children }: { children: object }) => (
         <div className={
@@ -110,7 +111,7 @@ jest.mock("@mui/x-data-grid", () => {
 jest.mock('@mui/material/TextField', () => {
     return (
         {
-            id, onChange, label, autoFocus, type, ref, inputRef, helperText, ...props
+            id, onChange, label, autoFocus, type, ref, inputRef, helperText
         }:
             {
                 id: string, onChange: ChangeEventHandler,
@@ -142,7 +143,7 @@ jest.mock('@mui/material/transitions', () => ({
 jest.mock("@mui/x-date-pickers", () => {
     return {
         ...jest.requireActual("@mui/x-date-pickers"),
-        DatePicker: ({ label, defaultValue, maxDate, onChange, onAccept, slotProps, autoFocus }) => (
+        DatePicker: ({ label, defaultValue, maxDate, onChange, onAccept, slotProps, autoFocus, ref, inputRef }) => (
             <div>
                 <div id={slotProps['textField']['id']}>{label}</div>
                 <input
@@ -160,9 +161,8 @@ jest.mock("@mui/x-date-pickers", () => {
                             onAccept?.(dayjs(e.target.value));
                         }
                     }}
+                    ref={ref ?? inputRef}
                     autoFocus={autoFocus}
-                //max={`${maxDate["year"]()}-${maxDate["month"]()}-${maxDate["day"]()}`}
-                //defaultValue={`${defaultValue["year"]()}-${defaultValue["month"]()}-${defaultValue["day"]()}`}
                 />
             </div>
         )
@@ -468,29 +468,28 @@ describe("Device main infos Filter table render (no filter)", () => {
         }
 
         const inputs = {
+            fieldValueInput: newFilterDialogRootNode?.childNodes.item(3) as HTMLElement,
             elementTypeSelect: newFilterDialogRootNode?.childNodes.item(0) as HTMLElement,
             fieldNameSelect: newFilterDialogRootNode?.childNodes.item(1) as HTMLElement,
             comparisonSelect: newFilterDialogRootNode?.childNodes.item(2) as HTMLElement,
-            fieldValueInput: newFilterDialogRootNode?.childNodes.item(3) as HTMLElement
         }
 
         Object.keys(inputs).map((key: string) => {
             inputs[key] = inputs[key].querySelector('input, select')
         })
 
-
-        fireEvent.keyDown(inputs.fieldValueInput, {
-            key: "Tab",
-            code: "Tab"
-        })
-
         // Asserts
-        Object.keys(inputs).forEach((key: string) => {
-            if (key === "fieldValueInput") {
-                expect(inputs[key]).toHaveFocus()
-            } else {
-                expect(inputs[key]).not.toHaveFocus()
-            }
+        Object.keys(inputs).forEach((fieldName: string, index:number) => {
+            const currentProperty = inputs[fieldName];
+            const otherProperties = Object.keys(inputs).filter((property) => property !== fieldName)
+
+            expect(currentProperty).toHaveFocus();
+            otherProperties.forEach((property) => expect(inputs[property]).not.toHaveFocus());
+
+            fireEvent.keyDown(inputs.fieldValueInput, {
+                key: "Tab",
+                code: "Tab"
+            })
         })
     })
 
@@ -593,7 +592,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         userEvent.click(newFilterButton)
 
         const fieldValueInput = container.querySelector('[id="deviceMainInfosFilterValueField"]') as HTMLInputElement;
-        fireEvent.change(fieldValueInput, { target: { value: "Test value!" } });
+        fireEvent.change(fieldValueInput, { target: { value: "New filter !" } });
 
         fireEvent.keyDown(fieldValueInput, {
             key: "Enter",
