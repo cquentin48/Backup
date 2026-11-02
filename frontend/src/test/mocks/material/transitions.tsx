@@ -7,3 +7,5 @@ const mockedTransitions = ({
     ...jest.requireActual('@mui/material/transitions'),
     useTransitionProps: () => ({ timeout: 0 })
 });
+
+export default mockedTransitions;

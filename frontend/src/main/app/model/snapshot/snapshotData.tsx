@@ -16,8 +16,6 @@ export class SnapshotData {
      */
     versions: SnapshotSoftware[];
 
-    repositories: Repositories[];
-
     operatingSystem: string;
 
     /**
@@ -26,7 +24,6 @@ export class SnapshotData {
      */
     constructor (operatingSystem: string = "") {
         this.versions = [];
-        this.repositories = [];
         this.operatingSystem = operatingSystem;
     }
 

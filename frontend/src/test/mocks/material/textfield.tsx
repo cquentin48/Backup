@@ -1,14 +1,11 @@
 import { ChangeEventHandler, forwardRef } from "react"
 
 // Jest Material.UI `TextField` mock function
-//jest.mock('@mui/material/TextField', () => {
-const mockedTextField = forwardRef(({
-    id, onChange, label, autoFocus, type, inputRef, helperText
-}: {
-    id: string, onChange: ChangeEventHandler, label: string,
+const mockedTextField = forwardRef((
+    {id, onChange, label, autoFocus, type, inputRef, helperText}:
+    { id: string, onChange: ChangeEventHandler, label: string,
     autoFocus?: boolean, type: string, inputRef: (ref: never) => void,
-    helperText: boolean | string
-}, ref: any) => (
+    helperText: boolean | string}, ref: any) => (
     <div>
         <div id={`${id}-label`}>
             {label}

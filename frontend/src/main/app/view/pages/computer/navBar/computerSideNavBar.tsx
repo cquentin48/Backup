@@ -1,7 +1,6 @@
 import React from "react";
-import { mdiDatabase } from "@mdi/js";
 import { Info, Settings, Folder } from "@mui/icons-material";
-import Icon from '@mdi/react';
+import { Server } from "iconoir-react";
 import SideNavBarElement from "./sideNavBarElement";
 
 import '../../../../../res/css/NavBar.css';
@@ -51,9 +50,7 @@ export default function ComputeSideNavBar (props: ComputerSideNavProps): React.J
                 navBarLabel="Libraries"
                 classId="libraries"
                 image={
-                    <Icon
-                        path={mdiDatabase}
-                        size={1}
+                    <Server
                         style={{
                             display: "inline-block",
                             verticalAlign: "middle",

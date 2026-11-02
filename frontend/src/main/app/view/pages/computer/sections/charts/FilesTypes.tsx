@@ -1,8 +1,5 @@
 import React from "react";
 
-import { mdiFileOutline } from "@mdi/js";
-import Icon from "@mdi/react";
-
 import { Avatar, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { PieChart, type PieSeriesType, type PieValueType } from "@mui/x-charts";
 import { type MakeOptional } from "@mui/x-charts/internals";
@@ -11,6 +8,7 @@ import { useSelector } from "react-redux";
 
 import { snapshotState } from "../../../../../controller/deviceMainInfos/loadSnapshotSlice";
 import '../../../../../../res/css/ComputerMainInfos.css';
+import { EmptyPage } from "iconoir-react";
 
 /**
  *  Files types pie chart view component
@@ -37,7 +35,7 @@ export default function FilesTypes (): React.JSX.Element {
                     <Avatar
                         className="AvatarIcon"
                         arial-labels="recipe">
-                        <Icon path={mdiFileOutline} size={1} />
+                        <EmptyPage />
                     </Avatar>
                 }
                 title={

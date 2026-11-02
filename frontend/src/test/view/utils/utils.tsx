@@ -49,7 +49,7 @@ export interface ApolloMockResult {
  * @param {Partial<AppState>} mockState Mock state
  * @returns {EnhancedStore} Initialised mock store
  */
-export const renderWithProvideers = (
+export const renderWithProviders = (
     mockState: Partial<AppState>
 ): EnhancedStore<Partial<AppState>> => {
     const initialState: Partial<AppState> = {};
@@ -193,7 +193,7 @@ export const initApolloMock = (operationStatus: MockOperationStatus, snapshot: S
                     snapshotInfos: snapshot
                 }
                 : undefined,
-            errors: operationStatus !== "snapshotError"
+            errors: operationStatus === "deviceError"
                 ? [
                     {
                         message: "Snapshot GraphQL error message here!"
@@ -213,7 +213,7 @@ export const initApolloMock = (operationStatus: MockOperationStatus, snapshot: S
                     deviceInfos: device!
                 }
                 : undefined,
-            errors: operationStatus !== "snapshotError"
+            errors: operationStatus === "deviceError"
                 ? [
                     {
                         message: "Snapshot GraphQL error message here!"

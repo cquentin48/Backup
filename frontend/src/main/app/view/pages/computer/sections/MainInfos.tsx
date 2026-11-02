@@ -1,7 +1,5 @@
 import React from "react";
 
-import Icon from "@mdi/react";
-import { mdiCpu64Bit, mdiCalendarPlusOutline, mdiCalendarSync } from "@mdi/js";
 
 import { Memory, Storage } from "@mui/icons-material";
 import { Grid2 } from "@mui/material";
@@ -14,6 +12,7 @@ import { deviceState } from "../../../../controller/deviceMainInfos/loadDeviceSl
 import '../../../../../res/css/ComputerMainInfos.css';
 import Device from "../../../../model/device/device";
 import SnapshotID from "../../../../model/device/snapshotId";
+import { Calendar, CalendarCheck, Cpu } from "iconoir-react";
 
 /**
  * Accordion containing the device main informations
@@ -28,7 +27,7 @@ export default function SpecsMainInfos (): React.JSX.Element {
         <Grid2 container spacing={2} id="deviceMainInfosSpecs">
             <DeviceStat
                 avatar={
-                    <Icon path={mdiCpu64Bit} size={1} />
+                    <Cpu/>
                 }
                 label="Processor"
                 value={device !== undefined ? device.processor : ""}
@@ -51,7 +50,7 @@ export default function SpecsMainInfos (): React.JSX.Element {
             />
             <DeviceStat
                 avatar={
-                    <Icon path={mdiCalendarPlusOutline} size={1} />
+                    <Calendar/>
                 }
                 label="Device added on"
                 value={
@@ -62,7 +61,7 @@ export default function SpecsMainInfos (): React.JSX.Element {
             />
             <DeviceStat
                 avatar={
-                    <Icon path={mdiCalendarSync} size={1} />
+                    <CalendarCheck/>
                 }
                 label="Last update"
                 value={

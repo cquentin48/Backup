@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo } from "react";
 
-import { mdiCodeNotEqualVariant } from "@mdi/js";
-import Icon from "@mdi/react";
 
 import { Avatar, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
@@ -17,6 +15,7 @@ import type Filter from "../../../../../model/filters/Filter";
 
 import { snapshotState } from "../../../../../controller/deviceMainInfos/loadSnapshotSlice";
 import { deviceMainInfosFilterState } from "../../../../../controller/deviceMainInfos/filterSlice";
+import { Code } from "iconoir-react";
 
 /**
  * Pie chart series data
@@ -123,7 +122,7 @@ export default function SoftwareOrigins (): React.JSX.Element {
                         <Avatar
                             className="PieChartIcon"
                             arial-labels="recipe">
-                            <Icon path={mdiCodeNotEqualVariant} size={1} />
+                            <Code />
                         </Avatar>
                     }
                     title={
@@ -151,7 +150,7 @@ export default function SoftwareOrigins (): React.JSX.Element {
                         <Avatar
                             className="PieChartIcon"
                             arial-labels="recipe">
-                            <Icon path={mdiCodeNotEqualVariant} size={1} />
+                            <Code />
                         </Avatar>
                     }
                     title={

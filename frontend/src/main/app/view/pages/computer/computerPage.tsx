@@ -18,16 +18,18 @@ import { deviceState } from '../../../controller/deviceMainInfos/loadDeviceSlice
  */
 export default function ComputerPage (): React.JSX.Element {
     const dispatch = useDispatch<AppDispatch>();
-    const { deviceLoading, device, deviceError } = useSelector(deviceState)
+    const { deviceLoading, device, deviceError } = useSelector(deviceState);
 
-    const { id } = useParams()
+    const { id } = useParams();
 
     useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        dispatch(fetchDeviceInfos({
-            deviceID: id
-        }))
-    }, [dispatch, id])
+        if (id !== undefined) {
+            // eslint-disable-next-line @typescript-eslint/no-floating-promises
+            dispatch(fetchDeviceInfos({
+                deviceID: id
+            }))
+        }
+    }, [id]);
 
     if (deviceError === undefined || (deviceError !== undefined && deviceError.message === "")) {
         if (!deviceLoading && device !== undefined) {
@@ -42,10 +44,9 @@ export default function ComputerPage (): React.JSX.Element {
                 <DeviceElements />
             </div>
         )
-    } else {
-        document.title = "Backup - unknown device"
-        return (
-            <DeviceNotFound />
-        )
     }
+    document.title = "Backup - unknown device"
+    return (
+        <DeviceNotFound />
+    )
 }

@@ -4,8 +4,8 @@ import { PersonSharp, SmartToySharp } from "@mui/icons-material";
 import { Avatar, Chip, Tooltip, Typography } from "@mui/material";
 
 import '../../../../../res/css/Chatbot.css';
-import Icon from "@mdi/react";
-import { mdiCheck } from "@mdi/js";
+import { DoubleCheck } from "iconoir-react";
+
 
 /**
  * Chat message props data component
@@ -81,7 +81,7 @@ export default function ChatbotMessage (props: ChatbotMessageProps): React.JSX.E
             }}
             >
                 <Tooltip title="Envoyé au serveur">
-                    <Icon path={mdiCheck} color="green" size={5 / 6} style={{
+                    <DoubleCheck style={{
                         marginTop: "4px"
                     }}/>
                 </Tooltip>
