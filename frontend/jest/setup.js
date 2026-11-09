@@ -23,6 +23,10 @@ jest.mock('@mui/material/MenuItem', () => ({
     __esModule: true,
     default: require(`${mockRootDir}/material/menuItem`).default
 }));
+jest.mock('@mui/material/Button', ()=>({
+    __esModule: true,
+    default: require(`${mockRootDir}/material/button`).default
+}))
 jest.mock('@mui/material/TextField', () => ({
     __esModule: true,
     default: require(`${mockRootDir}/material/textfield`).default
@@ -54,12 +58,3 @@ jest.mock("notistack", () => {
         useSnackbar: jest.fn()
     };
 });
-
-// * React-redux
-
-/*
-jest.mock("react-redux", () => ({
-    ...jest.requireActual('react-redux'),
-    useSelector: jest.fn(),
-    useDispatch: jest.fn()
-}))*/

@@ -2,8 +2,6 @@
 
 exports[`Device loading modal test suite snapshot After loading 1`] = `<DocumentFragment />`;
 
-exports[`Device loading modal test suite snapshot Before loading 1`] = `<DocumentFragment />`;
-
 exports[`Device loading modal test suite snapshot Loading device 1`] = `<DocumentFragment />`;
 
 exports[`Device loading modal test suite snapshot Loading snapshot 1`] = `<DocumentFragment />`;

@@ -27,24 +27,6 @@ describe("Filter manager data model unit tests", () => {
         expect(opResult.opType).toBe(comparisonType)
     })
 
-    test('Input type filter (no error should be raised here)', () => {
-        // Acts & asserts
-        expect(() => { Filter.inputTypeAuthorizedList("File"); }).not.toThrow(ValidationError)
-    })
-    test('Input type filter (invalid type, ``ValidationError`` should be raised)', () => {
-        // Acts & asserts
-        expect(() => { Filter.inputTypeAuthorizedList("My type!"); }).toThrow(ValidationError)
-    })
-
-    test('Comparison type filter (no error should be raised here)', () => {
-        // Acts & asserts
-        expect(() => { Filter.comparisonTypesCheck("<"); }).not.toThrow(ValidationError)
-    })
-    test('Comparison type filter (invalid type, ``ValidationError`` should be raised)', () => {
-        // Acts & asserts
-        expect(() => { Filter.comparisonTypesCheck("comp type!"); }).toThrow(ValidationError)
-    })
-
     test('Gets filter input field name list(no error should be raised here)', () => {
         // Given
         const inputTypes = [

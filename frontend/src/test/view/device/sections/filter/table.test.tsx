@@ -4,10 +4,8 @@ import { MockedProvider } from "@apollo/client/testing"
 
 import userEvent from "@testing-library/user-event"
 
-import { type EnhancedStore } from "@reduxjs/toolkit"
-
 import '@testing-library/jest-dom'
-import { fireEvent, render, waitFor, type RenderResult } from "@testing-library/react"
+import { fireEvent, act, waitFor } from "@testing-library/react"
 
 import { SnackbarProvider, useSnackbar } from "notistack"
 import { Provider } from "react-redux"
@@ -18,45 +16,13 @@ import { SnapshotData } from "../../../../../main/app/model/snapshot/snapshotDat
 
 import FilterTable from "../../../../../main/app/view/pages/computer/sections/filters/table"
 
-import { type ApolloMockResult, renderWithProviders, initApolloMock, initInitialState } from "../../../utils/utils"
+import { renderWithProviders, initApolloMock, initInitialState, initEnqueueSnackbarMock, renderMockedComponent } from "../../../utils/utils"
 
-describe("Device main infos Filter table render (no filter)", () => {
+describe("Device main infos Filter table render", () => {
 
     afterEach(() => {
         jest.clearAllMocks()
     })
-
-    /**
-     * Mock ``enqueueSnackbar`` function
-     * @returns {jest.Mock} Mocked ``enqueueSnackbar`` function
-     */
-    const initEnqueueSnackbarMock = (): jest.Mock => {
-        const mockEnqueueSnackbar = jest.fn((message: string, variants) => "");
-        (useSnackbar as jest.Mock).mockReturnValue({
-            enqueueSnackbar: mockEnqueueSnackbar
-        });
-
-        return mockEnqueueSnackbar
-    }
-
-    /**
-     * Render the `SoftwaresOrigin` component with the Apollo query and store mocks
-     * @param {EnhancedStore} store Redux mocked store
-     * @param {ApolloMockResult[]} apolloMocks Apollo GraphQL queries result mock
-     * @returns {RenderResult} Mocked table for unit test rendered
-     */
-    const renderMockedComponent = (store: EnhancedStore, apolloMocks: Map<string, ApolloMockResult>): RenderResult => {
-        return render(
-            <Provider store={store}>
-                <div style={{ height: 400, width: '100%' }}>
-                    <MockedProvider
-                        mocks={Array.from(apolloMocks.values())}>
-                        <FilterTable />
-                    </MockedProvider>
-                </div>
-            </Provider>
-        )
-    }
 
     test("Pending data render", async () => {
         // Before
@@ -70,7 +36,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const apolloMocks = initApolloMock("loadingSnapshot")
 
         // Acts
-        const { asFragment } = renderMockedComponent(store, apolloMocks)
+        const { asFragment } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()
@@ -91,7 +57,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         const apolloMocks = initApolloMock("success", snapshot, device);
 
         // Acts
-        const { asFragment } = renderMockedComponent(store, apolloMocks)
+        const { asFragment } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()
@@ -107,7 +73,7 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         // Acts
         const apolloMocks = initApolloMock("snapshotError")
-        const { asFragment } = renderMockedComponent(store, apolloMocks)
+        const { asFragment } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()
@@ -127,7 +93,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         initEnqueueSnackbarMock()
 
         const apolloMocks = initApolloMock("success", snapshot)
-        const { container, getByText, rerender } = renderMockedComponent(store, apolloMocks)
+        const { container, getByText, rerender } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Acts
         const rowFileCell = container.querySelector(".MuiDataGrid-row")
@@ -165,13 +131,13 @@ describe("Device main infos Filter table render (no filter)", () => {
         initEnqueueSnackbarMock()
 
         const apolloMocks = initApolloMock("success", snapshot)
-        const { container } = renderMockedComponent(store, apolloMocks)
+        const { container } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Acts
-        const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
+        const newFilterButton = container.querySelector('.newFilterButton') as HTMLButtonElement
         fireEvent.click(newFilterButton)
 
-        const newFilterForm = container.querySelector('[class="newElementDialog"]') as HTMLDivElement
+        const newFilterForm = container.querySelector('.newElementDialog') as HTMLDivElement
         expect(newFilterForm).toBeInTheDocument()
     })
 
@@ -191,10 +157,10 @@ describe("Device main infos Filter table render (no filter)", () => {
         initEnqueueSnackbarMock()
 
         const apolloMocks = initApolloMock("success", snapshot)
-        const { container, getByText } = renderMockedComponent(store, apolloMocks)
+        const { container, getByText } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Acts
-        const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
+        const newFilterButton = container.querySelector('.newFilterButton') as HTMLButtonElement
         fireEvent.click(newFilterButton)
 
         const selectedElement = getByText("File")
@@ -216,38 +182,6 @@ describe("Device main infos Filter table render (no filter)", () => {
         expect(fieldInput.getAttribute("value")).toBe("2000-01-01")
     })
 
-    test("Trying to add new filter without setting value should launch console.log (button click)", async () => {
-        // Given
-        const snapshot = new SnapshotData()
-        const filters: Filter[] = []
-        snapshot.addSoftware("test", "test software", "1.0")
-
-        const initialState = initInitialState("success", ["snapshot", "device", "filter"], snapshot, new Device(), filters)
-        const store = renderWithProviders(initialState)
-
-
-        const enqueueSnackbarMock = initEnqueueSnackbarMock()
-
-        const apolloMocks = initApolloMock("success", snapshot)
-        const { container, getByText } = renderMockedComponent(store, apolloMocks)
-
-        // Acts
-        const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
-        fireEvent.click(newFilterButton)
-
-        const selectedElement = getByText("File")
-        let newFilterDialogRootNode = selectedElement?.parentElement
-        while (newFilterDialogRootNode !== null && newFilterDialogRootNode.className !== "newElementDialog") {
-            newFilterDialogRootNode = newFilterDialogRootNode.parentElement
-        }
-
-        const addFilterButton = newFilterDialogRootNode?.childNodes.item(4)
-        fireEvent.click(addFilterButton as ChildNode)
-
-        // Asserts
-        expect(enqueueSnackbarMock).toHaveBeenCalledWith("You must enter a value for the filter to create it!", { variant: "error" })
-    })
-
     test("Trying to add new filter without setting value should trigger a notification display",
         async () => {
             // Given
@@ -261,10 +195,10 @@ describe("Device main infos Filter table render (no filter)", () => {
             initEnqueueSnackbarMock()
 
             const apolloMocks = initApolloMock("success", snapshot)
-            const { container, getByText } = renderMockedComponent(store, apolloMocks)
+            const { container, getByText } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
             // Acts
-            const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
+            const newFilterButton = container.querySelector('.newFilterButton') as HTMLButtonElement
             fireEvent.click(newFilterButton)
 
             const selectedElement = getByText("File")
@@ -298,10 +232,10 @@ describe("Device main infos Filter table render (no filter)", () => {
         initEnqueueSnackbarMock()
 
         const apolloMocks = initApolloMock("success", snapshot)
-        const { container, getByText } = renderMockedComponent(store, apolloMocks)
+        const { container, getByText } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Acts
-        const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
+        const newFilterButton = container.querySelector('.newFilterButton') as HTMLButtonElement
         fireEvent.click(newFilterButton)
 
         const selectedElement = getByText("File")
@@ -322,7 +256,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         })
 
         // Asserts
-        Object.keys(inputs).forEach((fieldName: string, index:number) => {
+        Object.keys(inputs).forEach((fieldName: string, index: number) => {
             const currentProperty = inputs[fieldName];
             const otherProperties = Object.keys(inputs).filter((property) => property !== fieldName)
 
@@ -348,10 +282,10 @@ describe("Device main infos Filter table render (no filter)", () => {
         initEnqueueSnackbarMock()
 
         const apolloMocks = initApolloMock("success", snapshot)
-        const { container, getByText } = renderMockedComponent(store, apolloMocks)
+        const { container, getByText } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Acts
-        const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
+        const newFilterButton = container.querySelector('.newFilterButton') as HTMLButtonElement
         fireEvent.click(newFilterButton)
 
         const fieldValueInput = container.querySelector('[id="deviceMainInfosFilterValueField"]') as HTMLInputElement
@@ -387,10 +321,10 @@ describe("Device main infos Filter table render (no filter)", () => {
         const store = renderWithProviders(initialState)
 
         const apolloMocks = initApolloMock("success", snapshot)
-        const { container } = renderMockedComponent(store, apolloMocks)
+        const { container } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Acts
-        const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
+        const newFilterButton = container.querySelector('.newFilterButton') as HTMLButtonElement
         fireEvent.click(newFilterButton)
 
         const fieldValueInput = container.querySelector('[id="deviceMainInfosFilterValueField"]') as HTMLInputElement
@@ -428,19 +362,20 @@ describe("Device main infos Filter table render (no filter)", () => {
         const mockEnqueueSnackbar = initEnqueueSnackbarMock()
 
         const apolloMocks = initApolloMock("success", snapshot)
-        const { container } = renderMockedComponent(store, apolloMocks)
+        const { container } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Acts
-        const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
+        const newFilterButton = container.querySelector('.newFilterButton') as HTMLButtonElement
         userEvent.click(newFilterButton)
 
-        const fieldValueInput = container.querySelector('[id="deviceMainInfosFilterValueField"]') as HTMLInputElement;
+        const fieldValueInput = container.querySelector('#deviceMainInfosFilterValueField') as HTMLInputElement;
+
         fireEvent.change(fieldValueInput, { target: { value: "New filter !" } });
 
         fireEvent.keyDown(fieldValueInput, {
             key: "Enter",
             code: "Enter"
-        })
+        });
 
         // Asserts
         expect(mockEnqueueSnackbar).toHaveBeenCalledWith("The filter is already set! It will be ignored!", { variant: "warning" })
@@ -466,10 +401,10 @@ describe("Device main infos Filter table render (no filter)", () => {
         const mockEnqueueSnackbar = initEnqueueSnackbarMock()
 
         const apolloMocks = initApolloMock("success", snapshot)
-        const { container, getByText } = renderMockedComponent(store, apolloMocks)
+        const { container, getByText } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Acts
-        const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
+        const newFilterButton = container.querySelector('.newFilterButton') as HTMLButtonElement
         fireEvent.click(newFilterButton)
 
         const fieldValueInput = (getByText("Field value").parentElement as HTMLElement).querySelector("input") as HTMLInputElement
@@ -513,12 +448,12 @@ describe("Device main infos Filter table render (no filter)", () => {
 
         initEnqueueSnackbarMock()
 
-        const { container, rerender } = renderMockedComponent(store, apolloMocks)
+        const { container, rerender } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
 
         // Acts
         filters.forEach((filter) => {
-            const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
+            const newFilterButton = container.querySelector('.newFilterButton') as HTMLButtonElement
             fireEvent.click(newFilterButton)
 
             const fieldValueInput = container.querySelector("#deviceMainInfosFilterValueField") as HTMLInputElement;
@@ -584,7 +519,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         initEnqueueSnackbarMock()
 
         const apolloMocks = initApolloMock("success", snapshot)
-        const { container, rerender } = renderMockedComponent(store, apolloMocks)
+        const { container, rerender } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
 
         // Acts
@@ -626,7 +561,7 @@ describe("Device main infos Filter table render (no filter)", () => {
         initEnqueueSnackbarMock()
 
         const apolloMocks = initApolloMock("success", snapshot)
-        const { container, getByText } = renderMockedComponent(store, apolloMocks)
+        const { container, getByText } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
         // Acts
         const displayedFiltersCount = Array.from(container.querySelectorAll('.MuiDataGrid-row')).length;
@@ -654,11 +589,11 @@ describe("Device main infos Filter table render (no filter)", () => {
         const store = renderWithProviders(initialState)
 
         const apolloMocks = initApolloMock("success", snapshot)
-        const { container } = renderMockedComponent(store, apolloMocks)
+        const { container } = renderMockedComponent(store, apolloMocks, <FilterTable />);
 
 
         // Acts
-        const newFilterButton = container.querySelector('[class="newFilterButton"]') as HTMLButtonElement
+        const newFilterButton = container.querySelector('.newFilterButton') as HTMLButtonElement
 
         fireEvent.click(newFilterButton)
         const fieldNameInput = container.querySelector('#fieldName') as HTMLSelectElement

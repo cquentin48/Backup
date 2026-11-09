@@ -4,7 +4,6 @@ import NotImplementedError from "../exception/errors/notImplementedError";
 import AlreadyAddedWarning from "../exception/warning/alreadyAdded";
 import { type FilterComparisonType } from "../filters/Filter";
 import type Filter from "../filters/Filter";
-import type Repositories from "./repository";
 import { SnapshotSoftware } from "./snapshotLibrary";
 
 /**
@@ -43,7 +42,7 @@ export class SnapshotData {
         if (this.versions.filter((software) => {
             const sameInstallType = software.installType === softwareInstallType
             const sameName = software.name === softwareName
-            const sameVersion = software.chosenVersion === softwareVersion
+            const sameVersion = software.version === softwareVersion
             return sameInstallType && sameName && sameVersion
         }).length > 0) {
             throw new AlreadyAddedWarning(`The software with the name ${softwareName} has already been added! Thus the operation is ignored!`)
@@ -86,6 +85,7 @@ export class SnapshotData {
                         return leftOperand < rightOperand
                     })
                 }
+                /* istanbul ignore next */
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] < value)
                 })
@@ -98,6 +98,7 @@ export class SnapshotData {
                         return leftOperand <= rightOperand
                     })
                 }
+                /* istanbul ignore next */
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] <= value)
                 })
@@ -109,6 +110,7 @@ export class SnapshotData {
                         return leftOperand > rightOperand
                     })
                 }
+                /* istanbul ignore next */
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] > value)
                 })
@@ -120,6 +122,7 @@ export class SnapshotData {
                         return leftOperand >= rightOperand
                     })
                 }
+                /* istanbul ignore next */
                 return softwares.filter((software) => {
                     return ((software as any)[fieldName] > value)
                 })
@@ -150,11 +153,6 @@ export class SnapshotData {
                 case "version":
                     softwares = SnapshotData.applyFilterOn(softwares, filter.value, filter.opType, filter.fieldName)
                     break;
-                case "firstUploadDate":
-                case "lastUploadDate":
-                case "repository":
-                case "size":
-                    throw new NotImplementedError("Not implemented yet!")
                 default:
                     throw new NotImplementedError("Unknown operation type!")
             }

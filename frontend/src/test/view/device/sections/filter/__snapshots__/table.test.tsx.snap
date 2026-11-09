@@ -1,140 +1,141 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`Device main infos Filter table render (no filter) Pending data render 1`] = `
+exports[`Device main infos Filter table render Pending data render 1`] = `
 <DocumentFragment>
   <div
-    style="height: 400px; width: 100%;"
+    class="FilterTable MuiBox-root css-0"
   >
-    <div
-      class="FilterTable MuiBox-root css-0"
-    >
-      <span
-        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse MuiSkeleton-withChildren css-doyfti-MuiSkeleton-root"
-        style="width: 100%; height: 203px;"
-      >
-        <div
-          data-testid="mock-datagrid"
-        >
-          <div
-            data-testid="datagrid-mock-toolbar"
-            hidden=""
-          />
-          <table>
-            <thead>
-              <tr
-                class="MuiDataGrid-topContainer"
-              />
-            </thead>
-            <tbody />
-          </table>
-          <div
-            data-testid="datagrid-mock-footer"
-          />
-        </div>
-      </span>
-    </div>
-  </div>
-</DocumentFragment>
-`;
-
-exports[`Device main infos Filter table render (no filter) Successful render 1`] = `
-<DocumentFragment>
-  <div
-    style="height: 400px; width: 100%;"
-  >
-    <div
-      class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 FilterTable css-1gtchvp-MuiPaper-root"
-      style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+    <span
+      class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse MuiSkeleton-withChildren css-doyfti-MuiSkeleton-root"
+      style="width: 100%; height: 203px;"
     >
       <div
         data-testid="mock-datagrid"
       >
         <div
           data-testid="datagrid-mock-toolbar"
-        >
-          <div
-            data-testid="toolbar-container"
-          >
-            <div>
-              Colonnes
-            </div>
-            <div>
-              Filtres
-            </div>
-            <div>
-              Densité
-            </div>
-            <div
-              id="NewDeviceFilterButton"
-            >
-              <div
-                class="newFilterButton"
-              >
-                New filter
-              </div>
-            </div>
-            <div>
-              Exporter
-            </div>
-          </div>
-        </div>
+          hidden=""
+        />
         <table>
           <thead>
             <tr
               class="MuiDataGrid-topContainer"
-            >
-              <td>
-                <input
-                  type="checkbox"
-                />
-              </td>
-              <th>
-                ID
-              </th>
-              <th>
-                Element type
-              </th>
-              <th>
-                Field name
-              </th>
-              <th>
-                Condition type
-              </th>
-              <th>
-                Filter value
-              </th>
-            </tr>
+            />
           </thead>
           <tbody />
         </table>
         <div
           data-testid="datagrid-mock-footer"
+        />
+      </div>
+    </span>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Device main infos Filter table render Successful render 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 FilterTable css-1gtchvp-MuiPaper-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      data-testid="mock-datagrid"
+    >
+      <div
+        data-testid="datagrid-mock-toolbar"
+      >
+        <div
+          data-testid="toolbar-container"
         >
+          <div>
+            Colonnes
+          </div>
+          <div>
+            Filtres
+          </div>
+          <div>
+            Densité
+          </div>
           <div
-            id="GridFooterNoContent"
-          />
+            id="NewDeviceFilterButton"
+          >
+            <div>
+              <button
+                class="newFilterButton"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+                  data-testid="AddIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"
+                  />
+                </svg>
+                New filter
+              </button>
+            </div>
+          </div>
+          <div>
+            Exporter
+          </div>
         </div>
+      </div>
+      <table>
+        <thead>
+          <tr
+            class="MuiDataGrid-topContainer"
+          >
+            <td>
+              <input
+                type="checkbox"
+              />
+            </td>
+            <th>
+              ID
+            </th>
+            <th>
+              Element type
+            </th>
+            <th>
+              Field name
+            </th>
+            <th>
+              Condition type
+            </th>
+            <th>
+              Filter value
+            </th>
+          </tr>
+        </thead>
+        <tbody />
+      </table>
+      <div
+        data-testid="datagrid-mock-footer"
+      >
+        <div
+          id="GridFooterNoContent"
+        />
       </div>
     </div>
   </div>
 </DocumentFragment>
 `;
 
-exports[`Device main infos Filter table render (no filter) Unsuccessful render 1`] = `
+exports[`Device main infos Filter table render Unsuccessful render 1`] = `
 <DocumentFragment>
   <div
-    style="height: 400px; width: 100%;"
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 FilterTable css-1gtchvp-MuiPaper-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
   >
-    <div
-      class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 FilterTable css-1gtchvp-MuiPaper-root"
-      style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+    <h1
+      class="MuiTypography-root MuiTypography-h1 css-10l7o3s-MuiTypography-root"
     >
-      <h1
-        class="MuiTypography-root MuiTypography-h1 css-10l7o3s-MuiTypography-root"
-      >
-        Error in rendering the table : the snapshot can't be loaded!
-      </h1>
-    </div>
+      Error in rendering the table : the snapshot can't be loaded!
+    </h1>
   </div>
 </DocumentFragment>
 `;

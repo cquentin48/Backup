@@ -6,7 +6,7 @@ export class SnapshotSoftware {
     /**
      * Software version used in the snapshot
      */
-    chosenVersion: string;
+    version: string;
 
     /**
      * Software name
@@ -25,7 +25,7 @@ export class SnapshotSoftware {
      * @param {string} softwareInstallType Software installation source (e.g. apt, microsoft store, appstore, ...)
      */
     constructor (softwareVersion: string, softwareName: string, softwareInstallType: string) {
-        this.chosenVersion = softwareVersion;
+        this.version = softwareVersion;
         this.name = softwareName;
         this.installType = softwareInstallType;
     }

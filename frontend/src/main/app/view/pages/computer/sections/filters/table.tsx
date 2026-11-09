@@ -78,7 +78,7 @@ const filterTableColumns: Array<GridColDef<UpdateRow>> = [
 export default function FilterTable (): React.JSX.Element {
 
     const { operationStatus } = useSelector(snapshotState);
-    const { filters } = useSelector(deviceMainInfosFilterState);
+    const filters = useSelector((state: AppState) => state.filter.filters);
 
     const [currentRows, setViewRows] = React.useState<UpdateRow[]>([]);
 
@@ -89,45 +89,43 @@ export default function FilterTable (): React.JSX.Element {
      */
     const apiRef = useGridApiRef();
 
+    /**
+     * Between the update filter list and the current filter list, compute
+     * the differences done.
+     * @param { Filter[] } currentRows Current filter list set in the datagrid
+     * @param { Filter[] } newRows New filter list computed in the recently done operation
+     */
+    const updateRows = (newRows: Filter[]): void => {
+        const updatedRows: UpdateRow[] = [];
+
+        // Fetch the created and deleted rows
+        newRows.forEach((newRow: Filter, index: number) => {
+            const isRowInTheFilters = filters.filter(filter => Filter.isEqual(filter as Filter, newRow)).length === 0
+            const hasRowBeenDeleted = currentRows.filter(
+                filter => Filter.isEqual(filter as Filter, newRow)
+            ).length === 1
+            if (hasRowBeenDeleted && isRowInTheFilters) {
+                updatedRows.push({ id: index, _action: 'delete' })
+            } else {
+                updatedRows.push({
+                    id: index,
+                    opType: newRow.opType,
+                    fieldName: newRow.fieldName,
+                    elementType: newRow.elementType,
+                    value: newRow.value
+                })
+            }
+        })
+
+        setViewRows(updatedRows);
+    }
+
+    useEffect(() => {
+        updateRows(filters);
+    }, [filters]);
+
 
     if (operationStatus === "success") {
-        const filters = useSelector((state: AppState) => state.filter.filters);
-
-        /**
-         * Between the update filter list and the current filter list, compute
-         * the differences done.
-         * @param { Filter[] } currentRows Current filter list set in the datagrid
-         * @param { Filter[] } newRows New filter list computed in the recently done operation
-         */
-        const updateRows = (newRows: Filter[]): void => {
-            const updatedRows: UpdateRow[] = [];
-
-            // Fetch the created and deleted rows
-            newRows.forEach((newRow: Filter, index: number) => {
-                const isRowInTheFilters = filters.filter(filter=>Filter.isEqual(filter as Filter, newRow)).length === 0
-                const hasRowBeenDeleted = currentRows.filter(
-                    filter=>Filter.isEqual(filter as Filter, newRow)
-                ).length === 1
-                if (hasRowBeenDeleted && isRowInTheFilters) {
-                    updatedRows.push({ id: index, _action: 'delete' })
-                } else {
-                    updatedRows.push({
-                        id: index,
-                        opType: newRow.opType,
-                        fieldName: newRow.fieldName,
-                        elementType: newRow.elementType,
-                        value: newRow.value
-                    })
-                }
-            })
-
-            setViewRows(updatedRows);
-        }
-
-        useEffect(() => {
-            updateRows(filters);
-        }, [filters]);
-
         return (
             <Paper className="FilterTable">
                 <DataGrid

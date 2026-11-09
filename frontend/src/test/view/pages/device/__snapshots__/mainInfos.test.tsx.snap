@@ -1,5 +1,864 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
+exports[`Device main Infos unit test suite Failure in rendering : error 1`] = `
+<DocumentFragment>
+  <div
+    id="deviceMainInfos"
+  >
+    <div
+      class="MuiGrid2-root MuiGrid2-container MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-2 css-ubb9a5-MuiGrid2-root"
+      id="deviceMainInfosSpecs"
+    >
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <svg
+                  color="currentColor"
+                  fill="none"
+                  height="1.5em"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="1.5em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8 15.4V8.6C8 8.26863 8.26863 8 8.6 8H15.4C15.7314 8 16 8.26863 16 8.6V15.4C16 15.7314 15.7314 16 15.4 16H8.6C8.26863 16 8 15.7314 8 15.4Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M20 4.6V19.4C20 19.7314 19.7314 20 19.4 20H4.6C4.26863 20 4 19.7314 4 19.4V4.6C4 4.26863 4.26863 4 4.6 4H19.4C19.7314 4 20 4.26863 20 4.6Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M17 4V2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12 4V2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7 4V2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7 20V22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12 20V22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M17 20V22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M20 17H22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M20 12H22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M20 7H22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M4 17H2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M4 12H2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M4 7H2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                Processor
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            Error in loading data
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+                  data-testid="MemoryIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M15 9H9v6h6zm-2 4h-2v-2h2zm8-2V9h-2V7c0-1.1-.9-2-2-2h-2V3h-2v2h-2V3H9v2H7c-1.1 0-2 .9-2 2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2zm-4 6H7V7h10z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                Computer cores
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            Error in loading data
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+                  data-testid="StorageIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M2 20h20v-4H2zm2-3h2v2H4zM2 4v4h20V4zm4 3H4V5h2zm-4 7h20v-4H2zm2-3h2v2H4z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                RAM
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            Error in loading data
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <svg
+                  color="currentColor"
+                  fill="none"
+                  height="1.5em"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="1.5em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15 4V2M15 4V6M15 4H10.5M3 10V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V10H3Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M3 10V6C3 4.89543 3.89543 4 5 4H7"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7 2V6"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M21 10V6C21 4.89543 20.1046 4 19 4H18.5"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                Device added on
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            Error in loading data
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <svg
+                  color="currentColor"
+                  fill="none"
+                  height="1.5em"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="1.5em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13 21H5C3.89543 21 3 20.1046 3 19V10H21V15M15 4V2M15 4V6M15 4H10.5"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M3 10V6C3 4.89543 3.89543 4 5 4H7"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7 2V6"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M21 10V6C21 4.89543 20.1046 4 19 4H18.5"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M16 20L18 22L22 18"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                Last update
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            Error in loading data
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+                  data-testid="StorageIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M2 20h20v-4H2zm2-3h2v2H4zM2 4v4h20V4zm4 3H4V5h2zm-4 7h20v-4H2zm2-3h2v2H4z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                Storage
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            Error in loading data
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="deviceMainInfosHeader"
+    >
+      <div
+        id="computerName"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1epbneo-MuiSkeleton-root"
+          id="OSIcon"
+          style="width: 40px; height: 40px;"
+        />
+        <span
+          class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse MuiSkeleton-withChildren MuiSkeleton-fitContent MuiSkeleton-heightAuto css-1o2htdh-MuiSkeleton-root"
+        >
+          <h4
+            class="MuiTypography-root MuiTypography-h4 css-f84ov1-MuiTypography-root"
+          >
+            Device name
+          </h4>
+        </span>
+      </div>
+      <span
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse MuiSkeleton-withChildren css-1el3wyp-MuiSkeleton-root"
+        id="deleteDeviceButton"
+        style="width: 172px; height: 51px;"
+      >
+        <button />
+      </span>
+    </div>
+    <br />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Device main Infos unit test suite Pending render 1`] = `
+<DocumentFragment>
+  <div
+    id="deviceMainInfos"
+  >
+    <div
+      class="MuiGrid2-root MuiGrid2-container MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-2 css-ubb9a5-MuiGrid2-root"
+      id="deviceMainInfosSpecs"
+    >
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse MuiSkeleton-withChildren MuiSkeleton-fitContent MuiSkeleton-heightAuto css-ptefya-MuiSkeleton-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiAvatar-fallback css-1mo2pzk-MuiSvgIcon-root-MuiAvatar-fallback"
+                      data-testid="PersonIcon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-kkcbhd-MuiSkeleton-root"
+                  style="width: 100%;"
+                />
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1q505s5-MuiSkeleton-root"
+              style="width: 100%; height: 72px;"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse MuiSkeleton-withChildren MuiSkeleton-fitContent MuiSkeleton-heightAuto css-ptefya-MuiSkeleton-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiAvatar-fallback css-1mo2pzk-MuiSvgIcon-root-MuiAvatar-fallback"
+                      data-testid="PersonIcon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-kkcbhd-MuiSkeleton-root"
+                  style="width: 100%;"
+                />
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1q505s5-MuiSkeleton-root"
+              style="width: 100%; height: 72px;"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse MuiSkeleton-withChildren MuiSkeleton-fitContent MuiSkeleton-heightAuto css-ptefya-MuiSkeleton-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiAvatar-fallback css-1mo2pzk-MuiSvgIcon-root-MuiAvatar-fallback"
+                      data-testid="PersonIcon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-kkcbhd-MuiSkeleton-root"
+                  style="width: 100%;"
+                />
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1q505s5-MuiSkeleton-root"
+              style="width: 100%; height: 72px;"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse MuiSkeleton-withChildren MuiSkeleton-fitContent MuiSkeleton-heightAuto css-ptefya-MuiSkeleton-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiAvatar-fallback css-1mo2pzk-MuiSvgIcon-root-MuiAvatar-fallback"
+                      data-testid="PersonIcon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-kkcbhd-MuiSkeleton-root"
+                  style="width: 100%;"
+                />
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1q505s5-MuiSkeleton-root"
+              style="width: 100%; height: 72px;"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse MuiSkeleton-withChildren MuiSkeleton-fitContent MuiSkeleton-heightAuto css-ptefya-MuiSkeleton-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiAvatar-fallback css-1mo2pzk-MuiSvgIcon-root-MuiAvatar-fallback"
+                      data-testid="PersonIcon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-kkcbhd-MuiSkeleton-root"
+                  style="width: 100%;"
+                />
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1q505s5-MuiSkeleton-root"
+              style="width: 100%; height: 72px;"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-md-2 css-nzvigo-MuiGrid2-root"
+      >
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root DeviceSpecsCard css-1j74uew-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardHeader-root css-149tc0y-MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-avatar css-1r9wl67-MuiCardHeader-avatar"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse MuiSkeleton-withChildren MuiSkeleton-fitContent MuiSkeleton-heightAuto css-ptefya-MuiSkeleton-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiAvatar-fallback css-1mo2pzk-MuiSvgIcon-root-MuiAvatar-fallback"
+                      data-testid="PersonIcon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div
+              class="MuiCardHeader-content css-1jkp9bu-MuiCardHeader-content"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-body2 MuiCardHeader-title css-7ctihp-MuiTypography-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-kkcbhd-MuiSkeleton-root"
+                  style="width: 100%;"
+                />
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1q505s5-MuiSkeleton-root"
+              style="width: 100%; height: 72px;"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="deviceMainInfosHeader"
+    >
+      <div
+        id="computerName"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1epbneo-MuiSkeleton-root"
+          id="OSIcon"
+          style="width: 40px; height: 40px;"
+        />
+        <span
+          class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse MuiSkeleton-withChildren MuiSkeleton-fitContent MuiSkeleton-heightAuto css-1o2htdh-MuiSkeleton-root"
+        >
+          <h4
+            class="MuiTypography-root MuiTypography-h4 css-f84ov1-MuiTypography-root"
+          >
+            Device name
+          </h4>
+        </span>
+      </div>
+      <span
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse MuiSkeleton-withChildren css-1el3wyp-MuiSkeleton-root"
+        id="deleteDeviceButton"
+        style="width: 172px; height: 51px;"
+      >
+        <button />
+      </span>
+    </div>
+    <br />
+  </div>
+</DocumentFragment>
+`;
+
 exports[`Device main Infos unit test suite Successful render 1`] = `
 <DocumentFragment>
   <div
@@ -26,13 +885,97 @@ exports[`Device main Infos unit test suite Successful render 1`] = `
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
               >
                 <svg
-                  role="presentation"
-                  style="width: 1.5rem; height: 1.5rem;"
+                  color="currentColor"
+                  fill="none"
+                  height="1.5em"
+                  stroke-width="1.5"
                   viewBox="0 0 24 24"
+                  width="1.5em"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M9,3V5H7A2,2 0 0,0 5,7V9H3V11H5V13H3V15H5V17A2,2 0 0,0 7,19H9V21H11V19H13V21H15V19H17A2,2 0 0,0 19,17V15H21V13H19V11H21V9H19V7A2,2 0 0,0 17,5H15V3H13V5H11V3M8,9H11.5V10.5H8.5V11.25H10.5A1,1 0 0,1 11.5,12.25V14A1,1 0 0,1 10.5,15H8A1,1 0 0,1 7,14V10A1,1 0 0,1 8,9M12.5,9H14V11H15.5V9H17V15H15.5V12.5H12.5M8.5,12.75V13.5H10V12.75"
-                    style="fill: currentColor;"
+                    d="M8 15.4V8.6C8 8.26863 8.26863 8 8.6 8H15.4C15.7314 8 16 8.26863 16 8.6V15.4C16 15.7314 15.7314 16 15.4 16H8.6C8.26863 16 8 15.7314 8 15.4Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M20 4.6V19.4C20 19.7314 19.7314 20 19.4 20H4.6C4.26863 20 4 19.7314 4 19.4V4.6C4 4.26863 4.26863 4 4.6 4H19.4C19.7314 4 20 4.26863 20 4.6Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M17 4V2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12 4V2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7 4V2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7 20V22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12 20V22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M17 20V22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M20 17H22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M20 12H22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M20 7H22"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M4 17H2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M4 12H2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M4 7H2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
                 </svg>
               </div>
@@ -163,13 +1106,37 @@ exports[`Device main Infos unit test suite Successful render 1`] = `
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
               >
                 <svg
-                  role="presentation"
-                  style="width: 1.5rem; height: 1.5rem;"
+                  color="currentColor"
+                  fill="none"
+                  height="1.5em"
+                  stroke-width="1.5"
                   viewBox="0 0 24 24"
+                  width="1.5em"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M13 13H16V15H13V18H11V15H8V13H11V10H13V13M21 5V19C21 20.11 20.11 21 19 21H5C3.89 21 3 20.1 3 19V5C3 3.89 3.89 3 5 3H6V1H8V3H16V1H18V3H19C20.11 3 21 3.9 21 5M5 5V7H19V5H5M19 19V9H5V19H19Z"
-                    style="fill: currentColor;"
+                    d="M15 4V2M15 4V6M15 4H10.5M3 10V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V10H3Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M3 10V6C3 4.89543 3.89543 4 5 4H7"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7 2V6"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M21 10V6C21 4.89543 20.1046 4 19 4H18.5"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
                 </svg>
               </div>
@@ -208,13 +1175,43 @@ exports[`Device main Infos unit test suite Successful render 1`] = `
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-18k2bs-MuiAvatar-root"
               >
                 <svg
-                  role="presentation"
-                  style="width: 1.5rem; height: 1.5rem;"
+                  color="currentColor"
+                  fill="none"
+                  height="1.5em"
+                  stroke-width="1.5"
                   viewBox="0 0 24 24"
+                  width="1.5em"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M18,11V12.5C21.19,12.5 23.09,16.05 21.33,18.71L20.24,17.62C21.06,15.96 19.85,14 18,14V15.5L15.75,13.25L18,11M18,22V20.5C14.81,20.5 12.91,16.95 14.67,14.29L15.76,15.38C14.94,17.04 16.15,19 18,19V17.5L20.25,19.75L18,22M19,3H18V1H16V3H8V1H6V3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H14C13.36,20.45 12.86,19.77 12.5,19H5V8H19V10.59C19.71,10.7 20.39,10.94 21,11.31V5A2,2 0 0,0 19,3Z"
-                    style="fill: currentColor;"
+                    d="M13 21H5C3.89543 21 3 20.1046 3 19V10H21V15M15 4V2M15 4V6M15 4H10.5"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M3 10V6C3 4.89543 3.89543 4 5 4H7"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7 2V6"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M21 10V6C21 4.89543 20.1046 4 19 4H18.5"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M16 20L18 22L22 18"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
                 </svg>
               </div>
@@ -290,21 +1287,33 @@ exports[`Device main Infos unit test suite Successful render 1`] = `
         id="computerName"
       >
         <div
-          aria-label="My OS!"
-          class=""
-          data-mui-internal-clone-element="true"
           id="OSIcon"
         >
-          <svg
-            role="presentation"
-            style="width: 3rem; height: 3rem;"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M3,12V6.75L9,5.43V11.91L3,12M20,3V11.75L10,11.9V5.21L20,3M3,13L9,13.09V19.9L3,18.75V13M20,13.25V22L10,20.09V13.1L20,13.25Z"
-              style="fill: currentColor;"
-            />
-          </svg>
+          <div>
+            <svg
+              color="currentColor"
+              fill="none"
+              height="1.5em"
+              id="DeviceMainInfosOSIcon"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="1.5em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 16.9865V7.01353C4 6.71792 4.21531 6.46636 4.50737 6.42072L19.3074 4.10822C19.6713 4.05137 20 4.33273 20 4.70103V19.299C20 19.6673 19.6713 19.9486 19.3074 19.8918L4.50737 17.5793C4.21531 17.5336 4 17.2821 4 16.9865Z"
+                stroke="currentColor"
+              />
+              <path
+                d="M4 12H20"
+                stroke="currentColor"
+              />
+              <path
+                d="M10.5 5.5V18.5"
+                stroke="currentColor"
+              />
+            </svg>
+          </div>
         </div>
         <h4
           class="MuiTypography-root MuiTypography-h4 css-f84ov1-MuiTypography-root"
@@ -313,26 +1322,19 @@ exports[`Device main Infos unit test suite Successful render 1`] = `
         </h4>
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedError MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorError MuiButton-root MuiButton-contained MuiButton-containedError MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorError css-1f7qp0x-MuiButtonBase-root-MuiButton-root"
         id="deleteDeviceButton"
-        tabindex="0"
-        type="button"
       >
-        <span
-          class="MuiButton-icon MuiButton-startIcon MuiButton-iconSizeMedium css-1sh91j5-MuiButton-startIcon"
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+          data-testid="DeleteIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
         >
-          <svg
-            aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
-            data-testid="DeleteIcon"
-            focusable="false"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
-            />
-          </svg>
-        </span>
+          <path
+            d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
+          />
+        </svg>
         Delete device
       </button>
     </div>

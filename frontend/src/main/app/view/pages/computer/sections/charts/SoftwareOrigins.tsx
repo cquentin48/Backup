@@ -109,10 +109,11 @@ export default function SoftwareOrigins (): React.JSX.Element {
     }
 
     useEffect(() => {
-        if (!(operationStatus === "initial" || operationStatus === "loading") && snapshotError.message === "" && snapshot !== undefined) {
+        const snapshotErrorMessage = snapshotError.message;
+        if(operationStatus === "error" && snapshotErrorMessage === "" && snapshot !== undefined){
             updatePieChartData(memoFilter)
         }
-    }, [operationStatus])
+    }, [operationStatus]);
 
     if (snapshotError.message === "") {
         return (
@@ -142,29 +143,28 @@ export default function SoftwareOrigins (): React.JSX.Element {
                 </CardContent>
             </Card>
         )
-    } else {
-        return (
-            <Card className="PieChartCard">
-                <CardHeader
-                    avatar={
-                        <Avatar
-                            className="PieChartIcon"
-                            arial-labels="recipe">
-                            <Code />
-                        </Avatar>
-                    }
-                    title={
-                        <Typography variant="h5">
-                            Software origins - error
-                        </Typography>
-                    }
-                />
-                <CardContent>
-                    The softwares origins chart could not be loaded!
-                    <br />
-                    If the problem occurs frequently, please send an email to you admin!
-                </CardContent>
-            </Card>
-        )
     }
+    return (
+        <Card className="PieChartCard">
+            <CardHeader
+                avatar={
+                    <Avatar
+                        className="PieChartIcon"
+                        arial-labels="recipe">
+                        <Code />
+                    </Avatar>
+                }
+                title={
+                    <Typography variant="h5">
+                        Software origins - error
+                    </Typography>
+                }
+            />
+            <CardContent>
+                The softwares origins chart could not be loaded!
+                <br />
+                If the problem occurs frequently, please send an email to you admin!
+            </CardContent>
+        </Card>
+    )
 }

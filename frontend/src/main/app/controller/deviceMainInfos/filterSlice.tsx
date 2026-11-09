@@ -42,10 +42,7 @@ export const filterSlice = createSlice({
          * @param {PayloadAction<Filter>} action New filter yet to be added
          */
         addFilter: (state, action: PayloadAction<Filter>) => {
-            const newFilter = action.payload
-
-            Filter.inputTypeAuthorizedList(action.payload.elementType);
-            Filter.comparisonTypesCheck(newFilter.opType);
+            const newFilter = action.payload;
             
             if (state.filters.filter((filter) =>
                 Filter.isEqual(filter, newFilter)

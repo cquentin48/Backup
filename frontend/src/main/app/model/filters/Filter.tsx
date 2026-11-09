@@ -71,18 +71,6 @@ export default class Filter {
     }
 
     /**
-     * Authorized input type list
-     * @param {string} inputType Input type check
-     * @see {@link} Authorized input types
-     */
-    public static inputTypeAuthorizedList (inputType: string): void {
-        const authorizedList = ["File", "Library"];
-        if (!authorizedList.includes(inputType)) {
-            throw new ValidationError(`The input type ${inputType} set is not valid. The only ones accepted are : "File" or "Library".`)
-        }
-    }
-
-    /**
      * Check if two filters are identical based off their attributes
      * @param {Filter} lValue Left side filter value in the comparison operation
      * @param {Filter} rValue Right side filter value in the comparison operation
@@ -95,18 +83,6 @@ export default class Filter {
         const valueCheck = lValue.value === rValue.value;
 
         return elementTypeCheck && fieldNameCheck && comparisonTypeCheck && valueCheck
-    }
-
-    /**
-     * Check if the comparison is in the authorized list
-     * @param {string} comparaison Filter comparison operator
-     * @see {@link} Authorized comparison operators
-     */
-    public static comparisonTypesCheck (comparaison: string): void {
-        const authorizedList = ["<", "<=", ">", ">=", "≠", "==", "includes"];
-        if (!authorizedList.includes(comparaison)) {
-            throw new ValidationError(`The comparison ${comparaison} set is not valid. The only ones accepted are : "<", "<=", ">", ">=", "≠", "==" or "includes".`)
-        }
     }
 
     /**

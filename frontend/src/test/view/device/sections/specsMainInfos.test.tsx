@@ -14,21 +14,16 @@ import { type EnhancedStore } from "@reduxjs/toolkit";
 import SpecsMainInfos from "../../../../main/app/view/pages/computer/sections/MainInfos";
 
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
-import { type AppState } from "../../../../main/app/controller/store";
 
-import { type ApolloMockResult, renderWithProviders, initApolloMock, initInitialState, initUseSelectorMock } from "../../utils/utils";
-
-jest.mock("react-redux", () => ({
-    ...jest.requireActual('react-redux'),
-    useSelector: jest.fn(),
-    useDispatch: jest.fn()
-}))
+import { type ApolloMockResult, renderWithProviders, initApolloMock, initInitialState } from "../../utils/utils";
 
 describe("Device main infos test suite", () => {
-    const renderMockedComponent = (store: EnhancedStore<AppState>, apolloMocks: Map<string, ApolloMockResult>): RenderResult => {
+
+    const renderMockedComponent = (store: EnhancedStore, apolloMocks: Map<string, ApolloMockResult>): RenderResult => {
         return render(
             <Provider store={store}>
-                <MockedProvider mocks={Array.from(apolloMocks.values())} addTypename={false}>
+                    <MockedProvider
+                        mocks={Array.from(apolloMocks.values())}>
                     <SpecsMainInfos />
                 </MockedProvider>
             </Provider>
@@ -56,7 +51,6 @@ describe("Device main infos test suite", () => {
 
         const initialState = initInitialState("success", ["snapshot", "device"], snapshot, device)
         const store = renderWithProviders(initialState)
-        initUseSelectorMock(store.getState())
 
         // Acts
         const { asFragment } = renderMockedComponent(store, apolloMocks)
@@ -84,7 +78,6 @@ describe("Device main infos test suite", () => {
 
         const initialState = initInitialState("snapshotError", ["snapshot", "device"], snapshot, device)
         const store = renderWithProviders(initialState)
-        initUseSelectorMock(store.getState())
 
         const apolloMocks = initApolloMock("snapshotError", snapshot, device, ["snapshot", "device"])
 
@@ -102,7 +95,6 @@ describe("Device main infos test suite", () => {
 
         const initialState = initInitialState("loadingSnapshot", [])
         const store = renderWithProviders(initialState)
-        initUseSelectorMock(store.getState())
 
         const apolloMocks = initApolloMock("loadingSnapshot")
 

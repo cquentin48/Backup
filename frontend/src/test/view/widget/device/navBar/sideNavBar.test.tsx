@@ -103,8 +103,8 @@ describe("Device main infos side nav bar unit test suite", () => {
                 </BrowserRouter>
             )
 
-            expect(updateSelectedId).toBeCalledTimes(index + 1)
-            expect(updateSelectedId).toBeCalledWith(index)
+            expect(updateSelectedId).toHaveBeenCalledTimes(index + 1)
+            expect(updateSelectedId).toHaveBeenCalledWith(index)
             expect(navBarElement).toHaveClass("selected")
         })
     })

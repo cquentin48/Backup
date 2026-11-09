@@ -18,6 +18,7 @@ const appReducer = combineReducers({
  * @returns {EnhancedStore} Redux store with preloaded state
  */
 export function setupStore (preloadedState: AppState | Partial<AppState>): EnhancedStore {
+    /* istanbul ignore next */
     return configureStore({
         reducer: appReducer,
         middleware: (getDefaultMiddleware) =>

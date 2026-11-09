@@ -19,13 +19,31 @@ exports[`Type of softwares origin chart unit test suite Pending render 1`] = `
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -36,16 +54,45 @@ exports[`Type of softwares origin chart unit test suite Pending render 1`] = `
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            Loading data…
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -68,13 +115,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -85,16 +150,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -117,13 +211,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -134,16 +246,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -166,13 +307,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -183,16 +342,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -215,13 +403,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -232,16 +438,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -264,13 +499,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -281,16 +534,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -313,13 +595,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -330,16 +630,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -362,13 +691,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -379,16 +726,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -411,13 +787,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -428,16 +822,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -460,13 +883,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -477,16 +918,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -509,13 +979,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -526,16 +1014,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -558,13 +1075,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -575,16 +1110,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (Multi
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -607,13 +1171,31 @@ exports[`Type of softwares origin chart unit test suite Successful render (singl
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
         >
           <svg
-            role="presentation"
-            style="width: 1.5rem; height: 1.5rem;"
+            color="currentColor"
+            fill="none"
+            height="1.5em"
+            stroke-width="1.5"
             viewBox="0 0 24 24"
+            width="1.5em"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-              style="fill: currentColor;"
+              d="M13.5 6L10 18.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.5 8.5L3 12L6.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.5 8.5L21 12L17.5 15.5"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </div>
@@ -624,16 +1206,45 @@ exports[`Type of softwares origin chart unit test suite Successful render (singl
         <h5
           class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
         >
-          Software origins - error
+          Software origins
         </h5>
       </div>
     </div>
     <div
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
-      The softwares origins chart could not be loaded!
-      <br />
-      If the problem occurs frequently, please send an email to you admin!
+      <div
+        class="DisplayedPieChart css-ba51a4-MuiResponsiveChart-container"
+      >
+        <svg
+          class="css-1evyvmv-MuiChartsSurface-root"
+          height="200"
+          viewBox="0 0 550 200"
+          width="550"
+        >
+          <title />
+          <desc />
+          <defs />
+          <g>
+            <g
+              transform="translate(227.5, 100)"
+            />
+            <g
+              transform="translate(227.5, 100)"
+            />
+          </g>
+          <text
+            class="css-1f57y8b"
+            x="227.5"
+            y="100"
+          >
+            No data to display
+          </text>
+          <g
+            class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </DocumentFragment>

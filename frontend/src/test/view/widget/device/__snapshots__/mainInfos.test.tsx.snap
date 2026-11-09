@@ -9,13 +9,25 @@ exports[`MainInfosFrame unit test suite Device error render 1`] = `
       id="mainInfosTableSelectHeader"
     >
       <svg
-        role="presentation"
-        style="width: 1.5rem; height: 1.5rem;"
+        color="currentColor"
+        fill="none"
+        height="1.5em"
+        stroke-width="1.5"
         viewBox="0 0 24 24"
+        width="1.5em"
+        xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"
-          style="fill: currentColor;"
+          d="M12 6L12 12L18 12"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         />
       </svg>
       <div
@@ -23,65 +35,25 @@ exports[`MainInfosFrame unit test suite Device error render 1`] = `
         id="mainInfosSelectForm"
       >
         <label
-          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiFormLabel-filled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeMedium MuiInputLabel-outlined css-113d811-MuiFormLabel-root-MuiInputLabel-root"
-          data-shrink="true"
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined css-19qnlrw-MuiFormLabel-root-MuiInputLabel-root"
+          data-shrink="false"
           id="dataType"
         >
           Snapshot list
         </label>
-        <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiSelect-root css-sc8y68-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root"
-          data-testid="dataType-select"
-        >
+        <div>
           <div
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            aria-labelledby="dataType-label dataType-select"
-            class="MuiSelect-select MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input css-18jp67o-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input"
-            id="dataType-select"
-            role="combobox"
-            tabindex="0"
-          >
-            <span
-              aria-hidden="true"
-              class="notranslate"
-            >
-              ​
-            </span>
-          </div>
-          <input
-            aria-hidden="true"
-            aria-invalid="false"
-            class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
-            tabindex="-1"
-            value="1"
+            id="dataType-label"
           />
-          <svg
-            aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconOutlined css-1rfqz7c-MuiSvgIcon-root-MuiNativeSelect-root-MuiSelect-icon"
-            data-testid="ArrowDropDownIcon"
-            focusable="false"
-            viewBox="0 0 24 24"
+          <select
+            id="dataType-select"
           >
-            <path
-              d="M7 10l5 5 5-5z"
-            />
-          </svg>
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-1nf2c5d-MuiNotchedOutlined-root"
+            <option
+              disabled=""
             >
-              <span
-                aria-hidden="true"
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
+              Error : impossible to fetch data
+            </option>
+          </select>
         </div>
       </div>
     </div>
@@ -94,200 +66,14 @@ exports[`MainInfosFrame unit test suite Device error render 1`] = `
         class="DeviceMainInfos"
       >
         <div
-          class="FilterTable MuiBox-root css-0"
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 FilterTable css-1gtchvp-MuiPaper-root"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
-          <span
-            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse MuiSkeleton-withChildren css-doyfti-MuiSkeleton-root"
-            style="width: 100%; height: 203px;"
+          <h1
+            class="MuiTypography-root MuiTypography-h1 css-10l7o3s-MuiTypography-root"
           >
-            <div
-              class="MuiDataGrid-root MuiDataGrid-root--densityStandard MuiDataGrid-root--noToolbar MuiDataGrid-withBorderColor css-5kysay-MuiDataGrid-root"
-              style="--DataGrid-hasScrollX: 0; --DataGrid-hasScrollY: 0; --DataGrid-scrollbarSize: 0px; --DataGrid-rowWidth: 0px; --DataGrid-columnsTotalWidth: 0px; --DataGrid-leftPinnedWidth: 0px; --DataGrid-rightPinnedWidth: 0px; --DataGrid-headerHeight: 56px; --DataGrid-headersTotalHeight: 56px; --DataGrid-topContainerHeight: 56px; --DataGrid-bottomContainerHeight: 0px; --height: 52px;"
-            >
-              <div
-                aria-colcount="0"
-                aria-multiselectable="false"
-                aria-rowcount="1"
-                class="MuiDataGrid-main css-1bgckiu-MuiDataGrid-main"
-                role="grid"
-                tabindex="-1"
-              >
-                <div
-                  class="css-18l11qw"
-                  data-id="gridPanelAnchor"
-                  role="presentation"
-                />
-                <div
-                  class="MuiDataGrid-virtualScroller css-1vigakz-MuiDataGrid-virtualScroller"
-                  role="presentation"
-                  style="overflow-x: hidden;"
-                >
-                  <div
-                    class="MuiDataGrid-topContainer MuiDataGrid-container--top css-b1wygl"
-                    role="presentation"
-                  >
-                    <div
-                      class="MuiDataGrid-columnHeaders css-1gtv474-MuiDataGrid-columnHeaders"
-                      hidden=""
-                      role="presentation"
-                    >
-                      <div
-                        aria-rowindex="1"
-                        class="MuiDataGrid-row--borderBottom css-yseucu-MuiDataGrid-columnHeaderRow"
-                        role="row"
-                      >
-                        <div
-                          role="presentation"
-                          style="width: 0px;"
-                        />
-                        <div
-                          class="MuiDataGrid-filler"
-                          role="presentation"
-                        />
-                        <div
-                          class="MuiDataGrid-scrollbarFiller MuiDataGrid-scrollbarFiller--header"
-                          role="presentation"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="MuiDataGrid-overlayWrapper css-74bi4q-MuiDataGrid-overlayWrapper"
-                  >
-                    <div
-                      class="MuiDataGrid-overlayWrapperInner css-1mbsuzk-MuiDataGrid-overlayWrapperInner"
-                      style="height: var(--DataGrid-overlayHeight, calc(var(--height) * 2)); width: 0px;"
-                    >
-                      <div
-                        class="MuiDataGrid-overlay css-ok32b7-MuiDataGrid-overlay"
-                      >
-                        No rows
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="MuiDataGrid-virtualScrollerContent css-aymtem-MuiDataGrid-virtualScrollerContent"
-                    role="presentation"
-                    style="width: auto; flex-basis: var(--DataGrid-overlayHeight, calc(var(--height) * 2)); flex-shrink: 0;"
-                  >
-                    <div
-                      class="MuiDataGrid-virtualScrollerRenderZone css-11dqcl8-MuiDataGrid-virtualScrollerRenderZone"
-                      role="rowgroup"
-                      style="transform: translate3d(0, 0px, 0);"
-                    />
-                  </div>
-                  <div
-                    class="MuiDataGrid-bottomContainer MuiDataGrid-container--bottom css-gzxaox"
-                    role="presentation"
-                  />
-                </div>
-              </div>
-              <div
-                class="MuiDataGrid-footerContainer MuiDataGrid-withBorderColor css-15lx25q-MuiDataGrid-footerContainer"
-              >
-                <div />
-                <div
-                  class="MuiTablePagination-root css-1hr2sou-MuiTablePagination-root"
-                >
-                  <div
-                    class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular MuiTablePagination-toolbar css-1gak8h1-MuiToolbar-root-MuiTablePagination-toolbar"
-                  >
-                    <div
-                      class="MuiTablePagination-spacer css-1wtxofq-MuiTablePagination-spacer"
-                    />
-                    <p
-                      class="MuiTablePagination-selectLabel css-s09cke-MuiTablePagination-selectLabel"
-                      id=":rv:"
-                    >
-                      Rows per page:
-                    </p>
-                    <div
-                      class="MuiInputBase-root MuiInputBase-colorPrimary MuiTablePagination-select MuiSelect-root MuiTablePagination-input css-oegngy-MuiInputBase-root-MuiTablePagination-select"
-                    >
-                      <div
-                        aria-expanded="false"
-                        aria-haspopup="listbox"
-                        aria-labelledby=":rv: :ru:"
-                        class="MuiSelect-select MuiTablePagination-select MuiSelect-standard MuiInputBase-input css-18zjd9i-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input"
-                        id=":ru:"
-                        role="combobox"
-                        tabindex="0"
-                      >
-                        100
-                      </div>
-                      <input
-                        aria-hidden="true"
-                        aria-invalid="false"
-                        class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
-                        tabindex="-1"
-                        value="100"
-                      />
-                      <svg
-                        aria-hidden="true"
-                        class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiTablePagination-selectIcon MuiSelect-iconStandard css-ug7h84-MuiSvgIcon-root-MuiNativeSelect-root-MuiSelect-icon"
-                        data-testid="ArrowDropDownIcon"
-                        focusable="false"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M7 10l5 5 5-5z"
-                        />
-                      </svg>
-                    </div>
-                    <p
-                      class="MuiTablePagination-displayedRows css-11cfq65-MuiTablePagination-displayedRows"
-                    >
-                      0–0 of 0
-                    </p>
-                    <div
-                      class="MuiTablePagination-actions"
-                    >
-                      <button
-                        aria-label="Go to previous page"
-                        class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorInherit MuiIconButton-sizeMedium css-h7cjts-MuiButtonBase-root-MuiIconButton-root"
-                        disabled=""
-                        tabindex="-1"
-                        title="Go to previous page"
-                        type="button"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
-                          data-testid="KeyboardArrowLeftIcon"
-                          focusable="false"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        aria-label="Go to next page"
-                        class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorInherit MuiIconButton-sizeMedium css-h7cjts-MuiButtonBase-root-MuiIconButton-root"
-                        disabled=""
-                        tabindex="-1"
-                        title="Go to next page"
-                        type="button"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
-                          data-testid="KeyboardArrowRightIcon"
-                          focusable="false"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </span>
+            Error in rendering the table : the snapshot can't be loaded!
+          </h1>
         </div>
         <div
           class="MuiGrid2-root MuiGrid2-container MuiGrid2-direction-xs-row MuiGrid2-spacing-xs-2 css-ubb9a5-MuiGrid2-root"
@@ -311,13 +97,31 @@ exports[`MainInfosFrame unit test suite Device error render 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
                   >
                     <svg
-                      role="presentation"
-                      style="width: 1.5rem; height: 1.5rem;"
+                      color="currentColor"
+                      fill="none"
+                      height="1.5em"
+                      stroke-width="1.5"
                       viewBox="0 0 24 24"
+                      width="1.5em"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-                        style="fill: currentColor;"
+                        d="M13.5 6L10 18.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M6.5 8.5L3 12L6.5 15.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M17.5 8.5L21 12L17.5 15.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       />
                     </svg>
                   </div>
@@ -388,13 +192,25 @@ exports[`MainInfosFrame unit test suite Device error render 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault AvatarIcon css-18k2bs-MuiAvatar-root"
                   >
                     <svg
-                      role="presentation"
-                      style="width: 1.5rem; height: 1.5rem;"
+                      color="currentColor"
+                      fill="none"
+                      height="1.5em"
+                      stroke-width="1.5"
                       viewBox="0 0 24 24"
+                      width="1.5em"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"
-                        style="fill: currentColor;"
+                        d="M4 21.4V2.6C4 2.26863 4.26863 2 4.6 2H16.2515C16.4106 2 16.5632 2.06321 16.6757 2.17574L19.8243 5.32426C19.9368 5.43679 20 5.5894 20 5.74853V21.4C20 21.7314 19.7314 22 19.4 22H4.6C4.26863 22 4 21.7314 4 21.4Z"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       />
                     </svg>
                   </div>
@@ -463,13 +279,25 @@ exports[`MainInfosFrame unit test suite Pending render 1`] = `
       id="mainInfosTableSelectHeader"
     >
       <svg
-        role="presentation"
-        style="width: 1.5rem; height: 1.5rem;"
+        color="currentColor"
+        fill="none"
+        height="1.5em"
+        stroke-width="1.5"
         viewBox="0 0 24 24"
+        width="1.5em"
+        xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"
-          style="fill: currentColor;"
+          d="M12 6L12 12L18 12"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         />
       </svg>
       <span
@@ -494,191 +322,23 @@ exports[`MainInfosFrame unit test suite Pending render 1`] = `
             style="width: 100%; height: 203px;"
           >
             <div
-              class="MuiDataGrid-root MuiDataGrid-root--densityStandard MuiDataGrid-root--noToolbar MuiDataGrid-withBorderColor css-5kysay-MuiDataGrid-root"
-              style="--DataGrid-hasScrollX: 0; --DataGrid-hasScrollY: 0; --DataGrid-scrollbarSize: 0px; --DataGrid-rowWidth: 0px; --DataGrid-columnsTotalWidth: 0px; --DataGrid-leftPinnedWidth: 0px; --DataGrid-rightPinnedWidth: 0px; --DataGrid-headerHeight: 56px; --DataGrid-headersTotalHeight: 56px; --DataGrid-topContainerHeight: 56px; --DataGrid-bottomContainerHeight: 0px; --height: 52px;"
+              data-testid="mock-datagrid"
             >
               <div
-                aria-colcount="0"
-                aria-multiselectable="false"
-                aria-rowcount="1"
-                class="MuiDataGrid-main css-1bgckiu-MuiDataGrid-main"
-                role="grid"
-                tabindex="-1"
-              >
-                <div
-                  class="css-18l11qw"
-                  data-id="gridPanelAnchor"
-                  role="presentation"
-                />
-                <div
-                  class="MuiDataGrid-virtualScroller css-1vigakz-MuiDataGrid-virtualScroller"
-                  role="presentation"
-                  style="overflow-x: hidden;"
-                >
-                  <div
-                    class="MuiDataGrid-topContainer MuiDataGrid-container--top css-b1wygl"
-                    role="presentation"
-                  >
-                    <div
-                      class="MuiDataGrid-columnHeaders css-1gtv474-MuiDataGrid-columnHeaders"
-                      hidden=""
-                      role="presentation"
-                    >
-                      <div
-                        aria-rowindex="1"
-                        class="MuiDataGrid-row--borderBottom css-yseucu-MuiDataGrid-columnHeaderRow"
-                        role="row"
-                      >
-                        <div
-                          role="presentation"
-                          style="width: 0px;"
-                        />
-                        <div
-                          class="MuiDataGrid-filler"
-                          role="presentation"
-                        />
-                        <div
-                          class="MuiDataGrid-scrollbarFiller MuiDataGrid-scrollbarFiller--header"
-                          role="presentation"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="MuiDataGrid-overlayWrapper css-74bi4q-MuiDataGrid-overlayWrapper"
-                  >
-                    <div
-                      class="MuiDataGrid-overlayWrapperInner css-1mbsuzk-MuiDataGrid-overlayWrapperInner"
-                      style="height: var(--DataGrid-overlayHeight, calc(var(--height) * 2)); width: 0px;"
-                    >
-                      <div
-                        class="MuiDataGrid-overlay css-ok32b7-MuiDataGrid-overlay"
-                      >
-                        No rows
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="MuiDataGrid-virtualScrollerContent css-aymtem-MuiDataGrid-virtualScrollerContent"
-                    role="presentation"
-                    style="width: auto; flex-basis: var(--DataGrid-overlayHeight, calc(var(--height) * 2)); flex-shrink: 0;"
-                  >
-                    <div
-                      class="MuiDataGrid-virtualScrollerRenderZone css-11dqcl8-MuiDataGrid-virtualScrollerRenderZone"
-                      role="rowgroup"
-                      style="transform: translate3d(0, 0px, 0);"
-                    />
-                  </div>
-                  <div
-                    class="MuiDataGrid-bottomContainer MuiDataGrid-container--bottom css-gzxaox"
-                    role="presentation"
+                data-testid="datagrid-mock-toolbar"
+                hidden=""
+              />
+              <table>
+                <thead>
+                  <tr
+                    class="MuiDataGrid-topContainer"
                   />
-                </div>
-              </div>
+                </thead>
+                <tbody />
+              </table>
               <div
-                class="MuiDataGrid-footerContainer MuiDataGrid-withBorderColor css-15lx25q-MuiDataGrid-footerContainer"
-              >
-                <div />
-                <div
-                  class="MuiTablePagination-root css-1hr2sou-MuiTablePagination-root"
-                >
-                  <div
-                    class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular MuiTablePagination-toolbar css-1gak8h1-MuiToolbar-root-MuiTablePagination-toolbar"
-                  >
-                    <div
-                      class="MuiTablePagination-spacer css-1wtxofq-MuiTablePagination-spacer"
-                    />
-                    <p
-                      class="MuiTablePagination-selectLabel css-s09cke-MuiTablePagination-selectLabel"
-                      id=":r1:"
-                    >
-                      Rows per page:
-                    </p>
-                    <div
-                      class="MuiInputBase-root MuiInputBase-colorPrimary MuiTablePagination-select MuiSelect-root MuiTablePagination-input css-oegngy-MuiInputBase-root-MuiTablePagination-select"
-                    >
-                      <div
-                        aria-expanded="false"
-                        aria-haspopup="listbox"
-                        aria-labelledby=":r1: :r0:"
-                        class="MuiSelect-select MuiTablePagination-select MuiSelect-standard MuiInputBase-input css-18zjd9i-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input"
-                        id=":r0:"
-                        role="combobox"
-                        tabindex="0"
-                      >
-                        100
-                      </div>
-                      <input
-                        aria-hidden="true"
-                        aria-invalid="false"
-                        class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
-                        tabindex="-1"
-                        value="100"
-                      />
-                      <svg
-                        aria-hidden="true"
-                        class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiTablePagination-selectIcon MuiSelect-iconStandard css-ug7h84-MuiSvgIcon-root-MuiNativeSelect-root-MuiSelect-icon"
-                        data-testid="ArrowDropDownIcon"
-                        focusable="false"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M7 10l5 5 5-5z"
-                        />
-                      </svg>
-                    </div>
-                    <p
-                      class="MuiTablePagination-displayedRows css-11cfq65-MuiTablePagination-displayedRows"
-                    >
-                      0–0 of 0
-                    </p>
-                    <div
-                      class="MuiTablePagination-actions"
-                    >
-                      <button
-                        aria-label="Go to previous page"
-                        class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorInherit MuiIconButton-sizeMedium css-h7cjts-MuiButtonBase-root-MuiIconButton-root"
-                        disabled=""
-                        tabindex="-1"
-                        title="Go to previous page"
-                        type="button"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
-                          data-testid="KeyboardArrowLeftIcon"
-                          focusable="false"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        aria-label="Go to next page"
-                        class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorInherit MuiIconButton-sizeMedium css-h7cjts-MuiButtonBase-root-MuiIconButton-root"
-                        disabled=""
-                        tabindex="-1"
-                        title="Go to next page"
-                        type="button"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
-                          data-testid="KeyboardArrowRightIcon"
-                          focusable="false"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                data-testid="datagrid-mock-footer"
+              />
             </div>
           </span>
         </div>
@@ -704,13 +364,31 @@ exports[`MainInfosFrame unit test suite Pending render 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
                   >
                     <svg
-                      role="presentation"
-                      style="width: 1.5rem; height: 1.5rem;"
+                      color="currentColor"
+                      fill="none"
+                      height="1.5em"
+                      stroke-width="1.5"
                       viewBox="0 0 24 24"
+                      width="1.5em"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-                        style="fill: currentColor;"
+                        d="M13.5 6L10 18.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M6.5 8.5L3 12L6.5 15.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M17.5 8.5L21 12L17.5 15.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       />
                     </svg>
                   </div>
@@ -781,13 +459,25 @@ exports[`MainInfosFrame unit test suite Pending render 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault AvatarIcon css-18k2bs-MuiAvatar-root"
                   >
                     <svg
-                      role="presentation"
-                      style="width: 1.5rem; height: 1.5rem;"
+                      color="currentColor"
+                      fill="none"
+                      height="1.5em"
+                      stroke-width="1.5"
                       viewBox="0 0 24 24"
+                      width="1.5em"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"
-                        style="fill: currentColor;"
+                        d="M4 21.4V2.6C4 2.26863 4.26863 2 4.6 2H16.2515C16.4106 2 16.5632 2.06321 16.6757 2.17574L19.8243 5.32426C19.9368 5.43679 20 5.5894 20 5.74853V21.4C20 21.7314 19.7314 22 19.4 22H4.6C4.26863 22 4 21.7314 4 21.4Z"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       />
                     </svg>
                   </div>
@@ -856,13 +546,25 @@ exports[`MainInfosFrame unit test suite Snapshot error render 1`] = `
       id="mainInfosTableSelectHeader"
     >
       <svg
-        role="presentation"
-        style="width: 1.5rem; height: 1.5rem;"
+        color="currentColor"
+        fill="none"
+        height="1.5em"
+        stroke-width="1.5"
         viewBox="0 0 24 24"
+        width="1.5em"
+        xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"
-          style="fill: currentColor;"
+          d="M12 6L12 12L18 12"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         />
       </svg>
       <div
@@ -870,65 +572,25 @@ exports[`MainInfosFrame unit test suite Snapshot error render 1`] = `
         id="mainInfosSelectForm"
       >
         <label
-          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiFormLabel-filled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeMedium MuiInputLabel-outlined css-113d811-MuiFormLabel-root-MuiInputLabel-root"
-          data-shrink="true"
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined css-19qnlrw-MuiFormLabel-root-MuiInputLabel-root"
+          data-shrink="false"
           id="dataType"
         >
           Snapshot list
         </label>
-        <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiSelect-root css-sc8y68-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root"
-          data-testid="dataType-select"
-        >
+        <div>
           <div
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            aria-labelledby="dataType-label dataType-select"
-            class="MuiSelect-select MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input css-18jp67o-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input"
-            id="dataType-select"
-            role="combobox"
-            tabindex="0"
-          >
-            <span
-              aria-hidden="true"
-              class="notranslate"
-            >
-              ​
-            </span>
-          </div>
-          <input
-            aria-hidden="true"
-            aria-invalid="false"
-            class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
-            tabindex="-1"
-            value="1"
+            id="dataType-label"
           />
-          <svg
-            aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconOutlined css-1rfqz7c-MuiSvgIcon-root-MuiNativeSelect-root-MuiSelect-icon"
-            data-testid="ArrowDropDownIcon"
-            focusable="false"
-            viewBox="0 0 24 24"
+          <select
+            id="dataType-select"
           >
-            <path
-              d="M7 10l5 5 5-5z"
-            />
-          </svg>
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-1nf2c5d-MuiNotchedOutlined-root"
+            <option
+              disabled=""
             >
-              <span
-                aria-hidden="true"
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
+              Error : impossible to fetch data
+            </option>
+          </select>
         </div>
       </div>
     </div>
@@ -972,13 +634,31 @@ exports[`MainInfosFrame unit test suite Snapshot error render 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
                   >
                     <svg
-                      role="presentation"
-                      style="width: 1.5rem; height: 1.5rem;"
+                      color="currentColor"
+                      fill="none"
+                      height="1.5em"
+                      stroke-width="1.5"
                       viewBox="0 0 24 24"
+                      width="1.5em"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-                        style="fill: currentColor;"
+                        d="M13.5 6L10 18.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M6.5 8.5L3 12L6.5 15.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M17.5 8.5L21 12L17.5 15.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       />
                     </svg>
                   </div>
@@ -1020,13 +700,25 @@ exports[`MainInfosFrame unit test suite Snapshot error render 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault AvatarIcon css-18k2bs-MuiAvatar-root"
                   >
                     <svg
-                      role="presentation"
-                      style="width: 1.5rem; height: 1.5rem;"
+                      color="currentColor"
+                      fill="none"
+                      height="1.5em"
+                      stroke-width="1.5"
                       viewBox="0 0 24 24"
+                      width="1.5em"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"
-                        style="fill: currentColor;"
+                        d="M4 21.4V2.6C4 2.26863 4.26863 2 4.6 2H16.2515C16.4106 2 16.5632 2.06321 16.6757 2.17574L19.8243 5.32426C19.9368 5.43679 20 5.5894 20 5.74853V21.4C20 21.7314 19.7314 22 19.4 22H4.6C4.26863 22 4 21.7314 4 21.4Z"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       />
                     </svg>
                   </div>
@@ -1095,13 +787,25 @@ exports[`MainInfosFrame unit test suite Successful render 1`] = `
       id="mainInfosTableSelectHeader"
     >
       <svg
-        role="presentation"
-        style="width: 1.5rem; height: 1.5rem;"
+        color="currentColor"
+        fill="none"
+        height="1.5em"
+        stroke-width="1.5"
         viewBox="0 0 24 24"
+        width="1.5em"
+        xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"
-          style="fill: currentColor;"
+          d="M12 6L12 12L18 12"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         />
       </svg>
       <div
@@ -1109,60 +813,30 @@ exports[`MainInfosFrame unit test suite Successful render 1`] = `
         id="mainInfosSelectForm"
       >
         <label
-          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiFormLabel-filled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeMedium MuiInputLabel-outlined css-113d811-MuiFormLabel-root-MuiInputLabel-root"
-          data-shrink="true"
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined css-19qnlrw-MuiFormLabel-root-MuiInputLabel-root"
+          data-shrink="false"
           id="dataType"
         >
           Snapshot list
         </label>
-        <div
-          class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiSelect-root css-sc8y68-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root"
-          data-testid="dataType-select"
-        >
+        <div>
           <div
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            aria-labelledby="dataType-label dataType-select"
-            class="MuiSelect-select MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input css-18jp67o-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input"
-            id="dataType-select"
-            role="combobox"
-            tabindex="0"
-          >
-            Wednesday, January 1, 2020
-          </div>
-          <input
-            aria-hidden="true"
-            aria-invalid="false"
-            class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
-            tabindex="-1"
-            value="1"
+            id="dataType-label"
           />
-          <svg
-            aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconOutlined css-1rfqz7c-MuiSvgIcon-root-MuiNativeSelect-root-MuiSelect-icon"
-            data-testid="ArrowDropDownIcon"
-            focusable="false"
-            viewBox="0 0 24 24"
+          <select
+            id="dataType-select"
           >
-            <path
-              d="M7 10l5 5 5-5z"
-            />
-          </svg>
-          <fieldset
-            aria-hidden="true"
-            class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-          >
-            <legend
-              class="css-1nf2c5d-MuiNotchedOutlined-root"
+            <option
+              disabled=""
             >
-              <span
-                aria-hidden="true"
-                class="notranslate"
-              >
-                ​
-              </span>
-            </legend>
-          </fieldset>
+              Ubuntu
+            </option>
+            <option
+              value="1"
+            >
+              Wednesday, January 1, 2020
+            </option>
+          </select>
         </div>
       </div>
     </div>
@@ -1182,191 +856,23 @@ exports[`MainInfosFrame unit test suite Successful render 1`] = `
             style="width: 100%; height: 203px;"
           >
             <div
-              class="MuiDataGrid-root MuiDataGrid-root--densityStandard MuiDataGrid-root--noToolbar MuiDataGrid-withBorderColor css-5kysay-MuiDataGrid-root"
-              style="--DataGrid-hasScrollX: 0; --DataGrid-hasScrollY: 0; --DataGrid-scrollbarSize: 0px; --DataGrid-rowWidth: 0px; --DataGrid-columnsTotalWidth: 0px; --DataGrid-leftPinnedWidth: 0px; --DataGrid-rightPinnedWidth: 0px; --DataGrid-headerHeight: 56px; --DataGrid-headersTotalHeight: 56px; --DataGrid-topContainerHeight: 56px; --DataGrid-bottomContainerHeight: 0px; --height: 52px;"
+              data-testid="mock-datagrid"
             >
               <div
-                aria-colcount="0"
-                aria-multiselectable="false"
-                aria-rowcount="1"
-                class="MuiDataGrid-main css-1bgckiu-MuiDataGrid-main"
-                role="grid"
-                tabindex="-1"
-              >
-                <div
-                  class="css-18l11qw"
-                  data-id="gridPanelAnchor"
-                  role="presentation"
-                />
-                <div
-                  class="MuiDataGrid-virtualScroller css-1vigakz-MuiDataGrid-virtualScroller"
-                  role="presentation"
-                  style="overflow-x: hidden;"
-                >
-                  <div
-                    class="MuiDataGrid-topContainer MuiDataGrid-container--top css-b1wygl"
-                    role="presentation"
-                  >
-                    <div
-                      class="MuiDataGrid-columnHeaders css-1gtv474-MuiDataGrid-columnHeaders"
-                      hidden=""
-                      role="presentation"
-                    >
-                      <div
-                        aria-rowindex="1"
-                        class="MuiDataGrid-row--borderBottom css-yseucu-MuiDataGrid-columnHeaderRow"
-                        role="row"
-                      >
-                        <div
-                          role="presentation"
-                          style="width: 0px;"
-                        />
-                        <div
-                          class="MuiDataGrid-filler"
-                          role="presentation"
-                        />
-                        <div
-                          class="MuiDataGrid-scrollbarFiller MuiDataGrid-scrollbarFiller--header"
-                          role="presentation"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="MuiDataGrid-overlayWrapper css-74bi4q-MuiDataGrid-overlayWrapper"
-                  >
-                    <div
-                      class="MuiDataGrid-overlayWrapperInner css-1mbsuzk-MuiDataGrid-overlayWrapperInner"
-                      style="height: var(--DataGrid-overlayHeight, calc(var(--height) * 2)); width: 0px;"
-                    >
-                      <div
-                        class="MuiDataGrid-overlay css-ok32b7-MuiDataGrid-overlay"
-                      >
-                        No rows
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="MuiDataGrid-virtualScrollerContent css-aymtem-MuiDataGrid-virtualScrollerContent"
-                    role="presentation"
-                    style="width: auto; flex-basis: var(--DataGrid-overlayHeight, calc(var(--height) * 2)); flex-shrink: 0;"
-                  >
-                    <div
-                      class="MuiDataGrid-virtualScrollerRenderZone css-11dqcl8-MuiDataGrid-virtualScrollerRenderZone"
-                      role="rowgroup"
-                      style="transform: translate3d(0, 0px, 0);"
-                    />
-                  </div>
-                  <div
-                    class="MuiDataGrid-bottomContainer MuiDataGrid-container--bottom css-gzxaox"
-                    role="presentation"
+                data-testid="datagrid-mock-toolbar"
+                hidden=""
+              />
+              <table>
+                <thead>
+                  <tr
+                    class="MuiDataGrid-topContainer"
                   />
-                </div>
-              </div>
+                </thead>
+                <tbody />
+              </table>
               <div
-                class="MuiDataGrid-footerContainer MuiDataGrid-withBorderColor css-15lx25q-MuiDataGrid-footerContainer"
-              >
-                <div />
-                <div
-                  class="MuiTablePagination-root css-1hr2sou-MuiTablePagination-root"
-                >
-                  <div
-                    class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular MuiTablePagination-toolbar css-1gak8h1-MuiToolbar-root-MuiTablePagination-toolbar"
-                  >
-                    <div
-                      class="MuiTablePagination-spacer css-1wtxofq-MuiTablePagination-spacer"
-                    />
-                    <p
-                      class="MuiTablePagination-selectLabel css-s09cke-MuiTablePagination-selectLabel"
-                      id=":r9:"
-                    >
-                      Rows per page:
-                    </p>
-                    <div
-                      class="MuiInputBase-root MuiInputBase-colorPrimary MuiTablePagination-select MuiSelect-root MuiTablePagination-input css-oegngy-MuiInputBase-root-MuiTablePagination-select"
-                    >
-                      <div
-                        aria-expanded="false"
-                        aria-haspopup="listbox"
-                        aria-labelledby=":r9: :r8:"
-                        class="MuiSelect-select MuiTablePagination-select MuiSelect-standard MuiInputBase-input css-18zjd9i-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input"
-                        id=":r8:"
-                        role="combobox"
-                        tabindex="0"
-                      >
-                        100
-                      </div>
-                      <input
-                        aria-hidden="true"
-                        aria-invalid="false"
-                        class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
-                        tabindex="-1"
-                        value="100"
-                      />
-                      <svg
-                        aria-hidden="true"
-                        class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiTablePagination-selectIcon MuiSelect-iconStandard css-ug7h84-MuiSvgIcon-root-MuiNativeSelect-root-MuiSelect-icon"
-                        data-testid="ArrowDropDownIcon"
-                        focusable="false"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M7 10l5 5 5-5z"
-                        />
-                      </svg>
-                    </div>
-                    <p
-                      class="MuiTablePagination-displayedRows css-11cfq65-MuiTablePagination-displayedRows"
-                    >
-                      0–0 of 0
-                    </p>
-                    <div
-                      class="MuiTablePagination-actions"
-                    >
-                      <button
-                        aria-label="Go to previous page"
-                        class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorInherit MuiIconButton-sizeMedium css-h7cjts-MuiButtonBase-root-MuiIconButton-root"
-                        disabled=""
-                        tabindex="-1"
-                        title="Go to previous page"
-                        type="button"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
-                          data-testid="KeyboardArrowLeftIcon"
-                          focusable="false"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        aria-label="Go to next page"
-                        class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorInherit MuiIconButton-sizeMedium css-h7cjts-MuiButtonBase-root-MuiIconButton-root"
-                        disabled=""
-                        tabindex="-1"
-                        title="Go to next page"
-                        type="button"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
-                          data-testid="KeyboardArrowRightIcon"
-                          focusable="false"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                data-testid="datagrid-mock-footer"
+              />
             </div>
           </span>
         </div>
@@ -1392,13 +898,31 @@ exports[`MainInfosFrame unit test suite Successful render 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault PieChartIcon css-18k2bs-MuiAvatar-root"
                   >
                     <svg
-                      role="presentation"
-                      style="width: 1.5rem; height: 1.5rem;"
+                      color="currentColor"
+                      fill="none"
+                      height="1.5em"
+                      stroke-width="1.5"
                       viewBox="0 0 24 24"
+                      width="1.5em"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d="M11,6.5V9.33L8.33,12L11,14.67V17.5L5.5,12M13,6.43L18.57,12L13,17.57V14.74L15.74,12L13,9.26M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z"
-                        style="fill: currentColor;"
+                        d="M13.5 6L10 18.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M6.5 8.5L3 12L6.5 15.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M17.5 8.5L21 12L17.5 15.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       />
                     </svg>
                   </div>
@@ -1431,74 +955,21 @@ exports[`MainInfosFrame unit test suite Successful render 1`] = `
                     <g>
                       <g
                         transform="translate(227.5, 100)"
-                      >
-                        <g>
-                          <path
-                            class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
-                            cursor="unset"
-                            d="M0,47.5L0,0Z"
-                            fill="#02B2AF"
-                            filter="none"
-                            opacity="1"
-                            stroke-linejoin="round"
-                            stroke-width="1"
-                            visibility="hidden"
-                          />
-                        </g>
-                      </g>
+                      />
                       <g
                         transform="translate(227.5, 100)"
-                      >
-                        <g>
-                          <text
-                            class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
-                            style="opacity: 0; transform: none;"
-                          />
-                        </g>
-                      </g>
+                      />
                     </g>
+                    <text
+                      class="css-1f57y8b"
+                      x="227.5"
+                      y="100"
+                    >
+                      Loading data…
+                    </text>
                     <g
                       class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
-                    >
-                      <g
-                        class="MuiChartsLegend-series MuiChartsLegend-series-0"
-                        transform="translate(505 100)"
-                      >
-                        <rect
-                          class="MuiChartsLegend-itemBackground"
-                          fill="transparent"
-                          height="24"
-                          style="pointer-events: none; cursor: unset;"
-                          width="29"
-                          x="-2"
-                          y="-12"
-                        />
-                        <rect
-                          class="MuiChartsLegend-mark"
-                          fill="#02B2AF"
-                          height="20"
-                          style="pointer-events: none;"
-                          width="20"
-                          x="0"
-                          y="-10"
-                        />
-                        <text
-                          dominant-baseline="central"
-                          style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; color: inherit; fill: rgba(0, 0, 0, 0.87);"
-                          text-anchor="start"
-                          x="25"
-                          y="0"
-                        >
-                          <tspan
-                            dominant-baseline="central"
-                            dy="0px"
-                            x="25"
-                          >
-                            1.0
-                          </tspan>
-                        </text>
-                      </g>
-                    </g>
+                    />
                   </svg>
                 </div>
               </div>
@@ -1522,13 +993,25 @@ exports[`MainInfosFrame unit test suite Successful render 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault AvatarIcon css-18k2bs-MuiAvatar-root"
                   >
                     <svg
-                      role="presentation"
-                      style="width: 1.5rem; height: 1.5rem;"
+                      color="currentColor"
+                      fill="none"
+                      height="1.5em"
+                      stroke-width="1.5"
                       viewBox="0 0 24 24"
+                      width="1.5em"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"
-                        style="fill: currentColor;"
+                        d="M4 21.4V2.6C4 2.26863 4.26863 2 4.6 2H16.2515C16.4106 2 16.5632 2.06321 16.6757 2.17574L19.8243 5.32426C19.9368 5.43679 20 5.5894 20 5.74853V21.4C20 21.7314 19.7314 22 19.4 22H4.6C4.26863 22 4 21.7314 4 21.4Z"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       />
                     </svg>
                   </div>
@@ -1561,339 +1044,21 @@ exports[`MainInfosFrame unit test suite Successful render 1`] = `
                     <g>
                       <g
                         transform="translate(227.5, 100)"
-                      >
-                        <g>
-                          <path
-                            class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-0 css-1mzvvpl-MuiPieArc-root"
-                            cursor="unset"
-                            d="M7.211,-46.95L0,0Z"
-                            fill="#02B2AF"
-                            filter="none"
-                            opacity="1"
-                            stroke-linejoin="round"
-                            stroke-width="1"
-                            visibility="hidden"
-                          />
-                          <path
-                            class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-1 css-1mzvvpl-MuiPieArc-root"
-                            cursor="unset"
-                            d="M26.736,-39.261L0,0Z"
-                            fill="#2E96FF"
-                            filter="none"
-                            opacity="1"
-                            stroke-linejoin="round"
-                            stroke-width="1"
-                            visibility="hidden"
-                          />
-                          <path
-                            class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-2 css-1mzvvpl-MuiPieArc-root"
-                            cursor="unset"
-                            d="M46.135,-11.305L0,0Z"
-                            fill="#B800D8"
-                            filter="none"
-                            opacity="1"
-                            stroke-linejoin="round"
-                            stroke-width="1"
-                            visibility="hidden"
-                          />
-                          <path
-                            class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-3 css-1mzvvpl-MuiPieArc-root"
-                            cursor="unset"
-                            d="M21.217,42.498L0,0Z"
-                            fill="#60009B"
-                            filter="none"
-                            opacity="1"
-                            stroke-linejoin="round"
-                            stroke-width="1"
-                            visibility="hidden"
-                          />
-                          <path
-                            class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-4 css-1mzvvpl-MuiPieArc-root"
-                            cursor="unset"
-                            d="M-36.762,30.08L0,0Z"
-                            fill="#2731C8"
-                            filter="none"
-                            opacity="1"
-                            stroke-linejoin="round"
-                            stroke-width="1"
-                            visibility="hidden"
-                          />
-                          <path
-                            class="MuiPieArc-root MuiPieArc-series-auto-generated-id-0 MuiPieArc-data-index-5 css-1mzvvpl-MuiPieArc-root"
-                            cursor="unset"
-                            d="M-37.457,-29.21L0,0Z"
-                            fill="#03008D"
-                            filter="none"
-                            opacity="1"
-                            stroke-linejoin="round"
-                            stroke-width="1"
-                            visibility="hidden"
-                          />
-                        </g>
-                      </g>
+                      />
                       <g
                         transform="translate(227.5, 100)"
-                      >
-                        <g>
-                          <text
-                            class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
-                            style="opacity: 0; transform: none;"
-                          />
-                          <text
-                            class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
-                            style="opacity: 0; transform: none;"
-                          />
-                          <text
-                            class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
-                            style="opacity: 0; transform: none;"
-                          />
-                          <text
-                            class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
-                            style="opacity: 0; transform: none;"
-                          />
-                          <text
-                            class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
-                            style="opacity: 0; transform: none;"
-                          />
-                          <text
-                            class="MuiPieArcLabel-root MuiPieArcLabel-series-auto-generated-id-0 css-ixpz1i-MuiPieArcLabel-root"
-                            style="opacity: 0; transform: none;"
-                          />
-                        </g>
-                      </g>
+                      />
                     </g>
+                    <text
+                      class="css-1f57y8b"
+                      x="227.5"
+                      y="100"
+                    >
+                      Loading data…
+                    </text>
                     <g
                       class="MuiChartsLegend-root MuiChartsLegend-column css-nsbw82-MuiChartsLegend-root"
-                    >
-                      <g
-                        class="MuiChartsLegend-series MuiChartsLegend-series-0"
-                        transform="translate(505 25)"
-                      >
-                        <rect
-                          class="MuiChartsLegend-itemBackground"
-                          fill="transparent"
-                          height="24"
-                          style="pointer-events: none; cursor: unset;"
-                          width="29"
-                          x="-2"
-                          y="-12"
-                        />
-                        <rect
-                          class="MuiChartsLegend-mark"
-                          fill="#02B2AF"
-                          height="20"
-                          style="pointer-events: none;"
-                          width="20"
-                          x="0"
-                          y="-10"
-                        />
-                        <text
-                          dominant-baseline="central"
-                          style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; color: inherit; fill: rgba(0, 0, 0, 0.87);"
-                          text-anchor="start"
-                          x="25"
-                          y="0"
-                        >
-                          <tspan
-                            dominant-baseline="central"
-                            dy="0px"
-                            x="25"
-                          >
-                            Text/Other
-                          </tspan>
-                        </text>
-                      </g>
-                      <g
-                        class="MuiChartsLegend-series MuiChartsLegend-series-1"
-                        transform="translate(505 55)"
-                      >
-                        <rect
-                          class="MuiChartsLegend-itemBackground"
-                          fill="transparent"
-                          height="24"
-                          style="pointer-events: none; cursor: unset;"
-                          width="29"
-                          x="-2"
-                          y="-12"
-                        />
-                        <rect
-                          class="MuiChartsLegend-mark"
-                          fill="#2E96FF"
-                          height="20"
-                          style="pointer-events: none;"
-                          width="20"
-                          x="0"
-                          y="-10"
-                        />
-                        <text
-                          dominant-baseline="central"
-                          style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; color: inherit; fill: rgba(0, 0, 0, 0.87);"
-                          text-anchor="start"
-                          x="25"
-                          y="0"
-                        >
-                          <tspan
-                            dominant-baseline="central"
-                            dy="0px"
-                            x="25"
-                          >
-                            Images
-                          </tspan>
-                        </text>
-                      </g>
-                      <g
-                        class="MuiChartsLegend-series MuiChartsLegend-series-2"
-                        transform="translate(505 85)"
-                      >
-                        <rect
-                          class="MuiChartsLegend-itemBackground"
-                          fill="transparent"
-                          height="24"
-                          style="pointer-events: none; cursor: unset;"
-                          width="29"
-                          x="-2"
-                          y="-12"
-                        />
-                        <rect
-                          class="MuiChartsLegend-mark"
-                          fill="#B800D8"
-                          height="20"
-                          style="pointer-events: none;"
-                          width="20"
-                          x="0"
-                          y="-10"
-                        />
-                        <text
-                          dominant-baseline="central"
-                          style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; color: inherit; fill: rgba(0, 0, 0, 0.87);"
-                          text-anchor="start"
-                          x="25"
-                          y="0"
-                        >
-                          <tspan
-                            dominant-baseline="central"
-                            dy="0px"
-                            x="25"
-                          >
-                            Videos
-                          </tspan>
-                        </text>
-                      </g>
-                      <g
-                        class="MuiChartsLegend-series MuiChartsLegend-series-3"
-                        transform="translate(505 115)"
-                      >
-                        <rect
-                          class="MuiChartsLegend-itemBackground"
-                          fill="transparent"
-                          height="24"
-                          style="pointer-events: none; cursor: unset;"
-                          width="29"
-                          x="-2"
-                          y="-12"
-                        />
-                        <rect
-                          class="MuiChartsLegend-mark"
-                          fill="#60009B"
-                          height="20"
-                          style="pointer-events: none;"
-                          width="20"
-                          x="0"
-                          y="-10"
-                        />
-                        <text
-                          dominant-baseline="central"
-                          style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; color: inherit; fill: rgba(0, 0, 0, 0.87);"
-                          text-anchor="start"
-                          x="25"
-                          y="0"
-                        >
-                          <tspan
-                            dominant-baseline="central"
-                            dy="0px"
-                            x="25"
-                          >
-                            Shared Libraries
-                          </tspan>
-                        </text>
-                      </g>
-                      <g
-                        class="MuiChartsLegend-series MuiChartsLegend-series-4"
-                        transform="translate(505 145)"
-                      >
-                        <rect
-                          class="MuiChartsLegend-itemBackground"
-                          fill="transparent"
-                          height="24"
-                          style="pointer-events: none; cursor: unset;"
-                          width="29"
-                          x="-2"
-                          y="-12"
-                        />
-                        <rect
-                          class="MuiChartsLegend-mark"
-                          fill="#2731C8"
-                          height="20"
-                          style="pointer-events: none;"
-                          width="20"
-                          x="0"
-                          y="-10"
-                        />
-                        <text
-                          dominant-baseline="central"
-                          style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; color: inherit; fill: rgba(0, 0, 0, 0.87);"
-                          text-anchor="start"
-                          x="25"
-                          y="0"
-                        >
-                          <tspan
-                            dominant-baseline="central"
-                            dy="0px"
-                            x="25"
-                          >
-                            Music
-                          </tspan>
-                        </text>
-                      </g>
-                      <g
-                        class="MuiChartsLegend-series MuiChartsLegend-series-5"
-                        transform="translate(505 175)"
-                      >
-                        <rect
-                          class="MuiChartsLegend-itemBackground"
-                          fill="transparent"
-                          height="24"
-                          style="pointer-events: none; cursor: unset;"
-                          width="29"
-                          x="-2"
-                          y="-12"
-                        />
-                        <rect
-                          class="MuiChartsLegend-mark"
-                          fill="#03008D"
-                          height="20"
-                          style="pointer-events: none;"
-                          width="20"
-                          x="0"
-                          y="-10"
-                        />
-                        <text
-                          dominant-baseline="central"
-                          style="pointer-events: none; font-family: "Roboto", "Helvetica", "Arial", sans-serif; font-weight: 400; font-size: 1rem; line-height: 1; letter-spacing: 0.00938em; color: inherit; fill: rgba(0, 0, 0, 0.87);"
-                          text-anchor="start"
-                          x="25"
-                          y="0"
-                        >
-                          <tspan
-                            dominant-baseline="central"
-                            dy="0px"
-                            x="25"
-                          >
-                            Other
-                          </tspan>
-                        </text>
-                      </g>
-                    </g>
+                    />
                   </svg>
                 </div>
               </div>
