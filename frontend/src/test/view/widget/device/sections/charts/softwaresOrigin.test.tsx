@@ -2,14 +2,11 @@ import React from "react"
 import '@testing-library/jest-dom'
 
 import SoftwareOrigins from "../../../../../../main/app/view/pages/computer/sections/charts/SoftwareOrigins"
-import { initInitialState, renderWithProviders, initApolloMock, renderMockedComponent, initUseSelectorMock } from "../../../../utils/utils"
+import { initInitialState, renderWithProviders, initApolloMock, renderMockedComponent } from "../../../../utils/utils"
 import { useSnackbar } from "notistack"
-import { useDispatch } from "react-redux"
-import { AppDispatch } from "../../../../../../main/app/controller/store"
 import Device from "../../../../../../main/app/model/device/device"
 import Filter from "../../../../../../main/app/model/filters/Filter"
 import SnapshotID from "../../../../../../main/app/model/device/snapshotId"
-import gqlClient from "../../../../../../main/app/model/queries/client"
 import { SnapshotData } from "../../../../../../main/app/model/snapshot/snapshotData"
 
 
@@ -422,7 +419,7 @@ describe("Type of softwares origin chart unit test suite", () => {
             )]
         );
 
-        const initialState = initInitialState("success", ["device", "snapshot", "filter"], snapshot, device, filters, filters.map((filter)=>filter.id));
+        const initialState = initInitialState("success", ["device", "snapshot", "filter"], snapshot, device, filters, filters.map((filter) => filter.id));
         const store = renderWithProviders(initialState);
         const apolloMocks = initApolloMock("success", undefined, device);
 

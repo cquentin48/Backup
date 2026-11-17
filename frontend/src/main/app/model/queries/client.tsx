@@ -37,11 +37,10 @@ class BackupQueryClient {
      * @returns { Promise<ApolloQueryResult<any>> } Result of the query
      */
     async execute_query (query: DocumentNode, variables: BasicQueryParameters | undefined): Promise<ApolloQueryResult<any>> {
-        const data = await this.query_client.query({
+        return this.query_client.query({
             query,
             variables
-        })
-        return data
+        });
     }
 }
 

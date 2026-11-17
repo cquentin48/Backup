@@ -19,6 +19,7 @@ export const fetchSnapshot = createAsyncThunk(
                 parameters
             ) as ApolloQueryResult<LoadSnapshotQueryResult>
         )
+
         if (result.errors != null) {
             return rejectWithValue("The snapshot you try to seek doesn't exist!")
         }

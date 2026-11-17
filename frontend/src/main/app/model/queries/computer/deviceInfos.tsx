@@ -15,11 +15,15 @@ export const fetchDeviceInfos = createAsyncThunk(
     'device/deviceInfos',
     async (parameters: BasicQueryParameters, { rejectWithValue }) => {
         const result = (
-            await gqlClient.execute_query(
+            gqlClient.execute_query(
                 getDeviceInfos,
                 parameters
-            ) as ApolloQueryResult<DeviceInfosQueryResult>
-        )
+            ).then((result: ApolloQueryResult<DeviceInfosQueryResult>)=>console.log(result))
+        );
+
+        /*
+
+        console.log(result);
 
         if (result.errors != null) {
             return rejectWithValue("The device wasn't found!")
@@ -43,6 +47,6 @@ export const fetchDeviceInfos = createAsyncThunk(
             deviceData.cores,
             deviceData.memory,
             snapshots
-        )
+        )*/
     }
 );

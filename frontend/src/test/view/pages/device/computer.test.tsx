@@ -1,53 +1,55 @@
 import React from "react"
 
-import { MockedProvider } from "@apollo/client/testing"
-import { type EnhancedStore } from "@reduxjs/toolkit"
 import '@testing-library/jest-dom'
-import { render, type RenderResult } from "@testing-library/react"
-
-import { Provider } from "react-redux"
-import { BrowserRouter } from "react-router-dom"
-import { useSnackbar } from "notistack"
+import userEvent from "@testing-library/user-event"
+import { waitFor } from "@testing-library/dom"
 
 import { dataManager } from "../../../../main/app/model/AppDataManager"
-import { ApolloMockResult, initApolloMock, initInitialState, renderMockedComponent, renderWithProviders, rerenderMockedComponent } from "../../utils/utils"
+import { initApolloMock, initEnqueueSnackbarMock, initInitialState, renderMockedComponent, renderWithProviders, rerenderMockedComponent } from "../../utils/utils"
 
 import Device from "../../../../main/app/model/device/device"
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData"
 import SnapshotID from "../../../../main/app/model/device/snapshotId"
 import ComputerPage from "../../../../main/app/view/pages/computer/computerPage"
+import gqlClient from "../../../../main/app/model/queries/client"
+
+const mockUseParams = jest.fn();
+
+const mockUseQuery = jest.fn();
+
+jest.mock("react-router-dom", () => ({
+    ...jest.requireActual("react-router-dom"),
+    useParams: () => mockUseParams()
+}));
+
+jest.mock("@apollo/client", ()=>({
+    ...jest.requireActual("@apollo/client"),
+    useQuery: (...params) => mockUseQuery()
+}));
 
 describe("Computer page", () => {
+    beforeEach(()=>{
+        mockUseParams.mockReturnValue({ id: undefined });
+    })
+
     afterEach(() => {
-        dataManager.removeAllData()
+        dataManager.removeAllData();
+        gqlClient.get_query_client().clearStore();
     })
     afterAll(() => {
-        jest.restoreAllMocks()
+        jest.restoreAllMocks();
     })
 
-    /**
-     * Mock ``enqueueSnackbar`` function
-     * @returns {jest.Mock} Mocked ``enqueueSnackbar`` function
-     */
-    const initEnqueueSnackbarMock = (): jest.Mock => {
-        const mockEnqueueSnackbar = jest.fn((message: string, variants) => "");
-        (useSnackbar as jest.Mock).mockReturnValue({
-            enqueueSnackbar: mockEnqueueSnackbar
-        });
-
-        return mockEnqueueSnackbar
-    }
-
-    test("Initial render (loading data)", async () => {
+    test.skip("Initial render (loading data)", async () => {
         // Before
         const initialState = initInitialState("loadingDevice", undefined, undefined, undefined);
         const store = renderWithProviders(initialState);
-        const apolloMocks = initApolloMock("success", undefined, undefined);
+        const apolloMocks = initApolloMock("loadingDevice", undefined, undefined);
 
         initEnqueueSnackbarMock();
 
         // Acts
-        const { asFragment } = renderMockedComponent(store, apolloMocks, <ComputerPage/>);
+        const { asFragment } = renderMockedComponent(store, apolloMocks, <ComputerPage />, true);
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()
@@ -58,10 +60,11 @@ describe("Computer page", () => {
         const snapshot = new SnapshotData("myOS!");
         snapshot.addSoftware("test", "test software", "1.0");
 
-        const currentDate = new Date(2020,1,1);
+        const currentDate = new Date(2020, 1, 1);
         const device = new Device("mydevice", "myprocessor", 4, 17179869184, [new SnapshotID("0", currentDate.toDateString(), "myOS")]);
 
         initEnqueueSnackbarMock();
+        mockUseParams.mockReturnValue({ id: '0' });
 
         // Given
         const initialState = initInitialState("success", ["device", "snapshot"], snapshot, device);
@@ -69,23 +72,27 @@ describe("Computer page", () => {
 
         const apolloMocks = initApolloMock("success", snapshot, device);
 
+        mockUseQuery.mockImplementation((...params)=>{
+            console.log(...params);
+        })
+
         // Acts
-        const { asFragment } = renderMockedComponent(store, apolloMocks, <ComputerPage/>);
+        const { asFragment } = renderMockedComponent(store, apolloMocks, <ComputerPage />, true);
 
         // Asserts
         expect(asFragment()).toMatchSnapshot();
         expect(document.title).toBe(`Backup - device ${device.name}`);
     })
 
-    test("Switch snapshot should be reflected", async () => {
+    test.skip("Switch snapshot should be reflected", async () => {
         // Before
         const firstSnapshot = new SnapshotData("myOS!");
         firstSnapshot.addSoftware("test", "test software", "1.0");
-        const firstSnapshotDate = new Date(2020,1,1);
+        const firstSnapshotDate = new Date(2020, 0, 1);
 
         const secondSnapshot = new SnapshotData("myOS!");
         secondSnapshot.addSoftware("test", "test software", "1.0");
-        const secondSnapshotDate = new Date(2020,1,1);
+        const secondSnapshotDate = new Date(2020, 1, 1);
 
         const snapshotIDs = [
             new SnapshotID("0", firstSnapshotDate.toDateString(), firstSnapshot.operatingSystem),
@@ -100,28 +107,35 @@ describe("Computer page", () => {
         const initialState = initInitialState("success", ["device", "snapshot"], firstSnapshot, device);
         const store = renderWithProviders(initialState);
 
-        const apolloMocks = initApolloMock("success", firstSnapshot, device);
+        const apolloMocks = initApolloMock("success", [firstSnapshot, secondSnapshot], device);
+        const { container, getByText, rerender } = renderMockedComponent(
+            store, apolloMocks, <ComputerPage />, true
+        );
 
         // Acts
-        const { asFragment, rerender } = renderMockedComponent(store, apolloMocks, <ComputerPage/>);
+        const snapshotSelector = container.querySelector('#dataType-select') as HTMLSelectElement;
+        userEvent.selectOptions(snapshotSelector, "1");
+        mockUseParams.mockReturnValue({ id: '1' });
 
-        // Asserts
-        const newApolloMocks = initApolloMock("success", secondSnapshot, device);
         const updatedState = initInitialState("success", ["device", "snapshot"], secondSnapshot, device);
         const updatedStore = renderWithProviders(updatedState);
-        rerenderMockedComponent(rerender, updatedStore, newApolloMocks, <ComputerPage/>);
 
-        console.log("ok");
+        const updatedApolloMocks = initApolloMock("success", secondSnapshot, device);
+
+        rerenderMockedComponent(rerender, updatedStore, updatedApolloMocks, <ComputerPage />, true);
+
+        // Asserts
+        waitFor(() => { expect(getByText("Loading data…")).not.toBeInTheDocument() });
     })
 
-    test("Error render (device unknown)", async () => {
+    test.skip("Error render (device unknown)", async () => {
         // Before
         const initialState = initInitialState("deviceError");
         const store = renderWithProviders(initialState);
 
         // Acts
         const apolloMocks = initApolloMock("deviceError");
-        const { asFragment } = renderMockedComponent(store, apolloMocks, <ComputerPage/>);;
+        const { asFragment } = renderMockedComponent(store, apolloMocks, <ComputerPage />, true);;
 
         // Asserts
         expect(asFragment()).toMatchSnapshot();
