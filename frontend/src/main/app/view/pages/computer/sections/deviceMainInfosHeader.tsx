@@ -10,11 +10,22 @@ import { deviceState } from "../../../../controller/deviceMainInfos/loadDeviceSl
 import { Linux, Windows } from "iconoir-react";
 
 /**
+ * Data transmitted to the parent
+ */
+interface DeviceMainInfosHeadersProps {
+    /**
+     * Currently selected snapshot ID
+     */
+    currentSnapshotID: string;
+};
+
+/**
  * Device header containing OS icon, computer name and delete button
  * @returns {React.JSX.Element} rendered component
  */
-export default function DeviceMainInfosHeader (): React.JSX.Element {
-    const { device } = useSelector(deviceState)
+export default function DeviceMainInfosHeader (props: DeviceMainInfosHeadersProps): React.JSX.Element {
+    const { device } = useSelector(deviceState);
+    const { currentSnapshotID } = props;
 
     /**
      * Fetch the correct icon from the mdi labs
@@ -34,10 +45,13 @@ export default function DeviceMainInfosHeader (): React.JSX.Element {
     let deviceTitle;
     let deleteDeviceButton;
 
-    if (device !== undefined) {
-        const icon = getOSIcon(device.snapshots[0].operatingSystem);
+    let currentSnapshot = device !== undefined ? device?.snapshots.filter((snapshot)=>snapshot.key === currentSnapshotID)[0]: undefined;
+
+    if (device !== undefined && currentSnapshot !== undefined) {
+        const operatingSystem = currentSnapshot.operatingSystem;
+        const icon = getOSIcon(operatingSystem);
         deviceOSIcon = <div id="OSIcon">
-            <Tooltip title={device.snapshots[0].operatingSystem} placement='top'>
+            <Tooltip title={operatingSystem} placement='top'>
                 {icon}
             </Tooltip>
         </div>

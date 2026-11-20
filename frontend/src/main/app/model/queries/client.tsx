@@ -26,7 +26,7 @@ class BackupQueryClient {
      * Getter for the query client (used only in the app component)
      * @returns {ApolloClient<NormalizedCacheObject>} GraphQL query client
      */
-    get_query_client (): ApolloClient<NormalizedCacheObject> {
+    getQueryClient (): ApolloClient<NormalizedCacheObject> {
         return this.query_client;
     }
 
@@ -36,7 +36,7 @@ class BackupQueryClient {
      * @param { BasicQueryParameters } variables query variables
      * @returns { Promise<ApolloQueryResult<any>> } Result of the query
      */
-    async execute_query (query: DocumentNode, variables: BasicQueryParameters | undefined): Promise<ApolloQueryResult<any>> {
+    async executeQuery (query: DocumentNode, variables: BasicQueryParameters | undefined): Promise<ApolloQueryResult<any>> {
         return this.query_client.query({
             query,
             variables
@@ -45,5 +45,7 @@ class BackupQueryClient {
 }
 
 const gqlClient = new BackupQueryClient();
+const executeQuery = gqlClient.executeQuery;
+const clearStore = gqlClient.getQueryClient().clearStore;
 
-export default gqlClient;
+export {executeQuery, clearStore, gqlClient};

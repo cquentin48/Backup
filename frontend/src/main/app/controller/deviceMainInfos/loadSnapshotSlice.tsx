@@ -5,7 +5,7 @@ import { type OperationStatus, type AppState } from "../store";
 import { type NotificationError } from "../utils";
 
 export interface SnapshotSliceState {
-    snapshot: SnapshotData | undefined
+    snapshot?: SnapshotData
     operationStatus: OperationStatus
     snapshotError: NotificationError
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 
 import { FormControl, InputLabel, Select, MenuItem, Paper, Skeleton } from "@mui/material";
 
@@ -17,34 +17,47 @@ import SnapshotID from "../../../model/device/snapshotId";
 import { Clock } from "iconoir-react";
 
 /**
+ * Data transmitted to the parent
+ */
+interface MainInfosFrameProps {
+    /**
+     * Updates the current selected snapshot ID
+     */
+    setCurrentSnapshotID: Dispatch<SetStateAction<string>>;
+
+    /**
+     * Currently used snapshot ID
+     */
+    currentSnapshotID: string;
+};
+
+/**
  * Main informations frame view component
  * @returns {React.JSX.Element} Rendered view component
  */
-export default function MainInfosFrame (): React.JSX.Element {
+export default function MainInfosFrame (props: MainInfosFrameProps): React.JSX.Element {
     const dispatch = useDispatch<AppDispatch>()
 
-    const [snapshotID, setSnapshotID] = React.useState("");
-
-    //const { device, deviceLoading } = useSelector(deviceState);
-    const device = useSelector((state: AppState) => state.device.device);
-    const deviceLoading = useSelector((state: AppState) => state.device.deviceLoading);
-    const deviceError = useSelector((state: AppState) => state.device.deviceError);
+    const { device, deviceLoading, deviceError } = useSelector((state: AppState) => state.device);
 
     const snapshotError = useSelector((state: AppState) => state.snapshot.snapshotError);
 
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSnackbar } = useSnackbar();
+
+    const { currentSnapshotID, setCurrentSnapshotID } = props;
 
     /**
      * Update the selected snapshot
      * @param {string} newSnapshotID ID of the snapshot selected
      */
     const updateSelectedSnapshot = (newSnapshotID: string): void => {
-        setSnapshotID(newSnapshotID);
+        if (currentSnapshotID === newSnapshotID) return;
+        setCurrentSnapshotID(newSnapshotID);
 
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         dispatch(fetchSnapshot({
             snapshotID: newSnapshotID
-        }))
+        }));
     }
 
     /**
@@ -86,10 +99,10 @@ export default function MainInfosFrame (): React.JSX.Element {
     // Device data finished loading
     useEffect(() => {
         if (!deviceLoading && device !== undefined) {
-            const newID = snapshotID !== "" ? snapshotID : device.snapshots[0].key
-            updateSelectedSnapshot(newID)
+            const newID = currentSnapshotID !== "" ? currentSnapshotID : device.snapshots[0].key
+            updateSelectedSnapshot(newID);
         }
-    }, [deviceLoading])
+    }, [deviceLoading]);
 
     // Displaying an error message
     useEffect(() => {
@@ -97,7 +110,7 @@ export default function MainInfosFrame (): React.JSX.Element {
             enqueueSnackbar(
                 deviceError.message, { variant: deviceError.variant }
             )
-        } else if(snapshotError.message !== ""){
+        } else if (snapshotError.message !== "") {
             enqueueSnackbar(
                 snapshotError.message, { variant: snapshotError.variant }
             )
@@ -112,7 +125,7 @@ export default function MainInfosFrame (): React.JSX.Element {
                 labelId="dataType-label"
                 data-testid="dataType-select"
                 id="dataType-select"
-                value={snapshotID}
+                value={currentSnapshotID}
                 autoWidth
             >
                 {
@@ -123,13 +136,13 @@ export default function MainInfosFrame (): React.JSX.Element {
             </Select>
         </FormControl>
 
-    // Data still pending
+        // Data still pending
     } else if (deviceLoading) {
         snapshots = <Skeleton variant="rounded" width={256} height={56} id="mainInfosSelectForm" sx={{
             marginLeft: "8px"
         }} />
 
-    // Successful rendering
+        // Successful rendering
     } else if (!deviceLoading && device !== undefined) {
         const snapshotMenuItems = buildMenuItems(device);
         snapshots =
@@ -139,7 +152,7 @@ export default function MainInfosFrame (): React.JSX.Element {
                     labelId="dataType-label"
                     data-testid="dataType-select"
                     id="dataType-select"
-                    value={snapshotID}
+                    value={currentSnapshotID}
                     onChange={(e) => { updateSelectedSnapshot(e.target.value); }}
                     autoWidth>
                     {

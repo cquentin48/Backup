@@ -204,7 +204,7 @@ export const initApolloMock = (operationStatus: MockOperationStatus, snapshot: S
                     snapshotInfos: snapshot instanceof SnapshotData ? snapshot : ((snapshot as Array<SnapshotData>)[selectedSnapshot])
                 }
                 : undefined,
-            errors: operationStatus === "deviceError"
+            errors: operationStatus === "snapshotError"
                 ? [
                     {
                         message: "Snapshot GraphQL error message here!"

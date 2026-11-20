@@ -29,7 +29,11 @@ interface MockedMenuItemProps {
  * @see{@link MenuItem} Based component
  */
 const mockedMenuItem = forwardRef(({ value, children, disabled }: MockedMenuItemProps, ref) => (
-    <option value={value} disabled={disabled}>
+    disabled ? 
+    <option value={value} disabled>
+        {children}
+    </option> :
+    <option value={value}>
         {children}
     </option>
 ));

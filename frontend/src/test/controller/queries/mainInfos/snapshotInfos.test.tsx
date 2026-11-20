@@ -5,62 +5,30 @@ import { type LoadSnapshotQueryResult, fetchSnapshot } from "../../../../main/ap
 import NotFoundError from "../../../../main/app/model/exception/errors/notFoundError";
 
 import FETCH_SNAPSHOT from '../../../../main/res/queries/snapshot.graphql';
-import gqlClient from "../../../../main/app/model/queries/client";
+import { executeQuery } from "../../../../main/app/model/queries/client";
 import { SnapshotData } from "../../../../main/app/model/snapshot/snapshotData";
+import { initApolloMock } from "../../../view/utils/utils";
 
-interface ApolloMockResult {
-    request: {
-        query: DocumentNode
-    }
-    result: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined
-}
+jest.mock("../../../../main/app/model/queries/client", () => ({
+    ...jest.requireActual("../../../../main/app/model/queries/client"),
+    executeQuery: jest.fn()
+}));
 
 describe("Load device infos GraphQL query unit test", () => {
     afterAll(() => {
         jest.clearAllMocks()
     })
 
-    const initMockApolloCalls = (operationStatus: "success" | "failure" | "loading" | "initial", snapshot: SnapshotData | undefined = undefined): ApolloMockResult => {
-        let queryResult: FetchResult<LoadSnapshotQueryResult> | ResultFunction<FetchResult<LoadSnapshotQueryResult>, any> | undefined;
-
-        if (operationStatus === "success") {
-            if (snapshot === undefined && operationStatus !== "success") {
-                throw new NotFoundError("Invalid operation : if the test type is a success, the snapshot must be defined!")
-            }
-            queryResult = {
-                data: {
-                    snapshotInfos: snapshot
-                }
-            }
-
-        } else if (operationStatus === "failure") {
-            const errorMessage = "Raised error message here!"
-            queryResult = {
-                errors: [
-                    {
-                        message: errorMessage
-                    }
-                ]
-            }
-        }
-        return {
-            request: {
-                query: FETCH_SNAPSHOT
-            },
-            result: queryResult
-        }
-    }
-
     test("Successful request", async () => {
         // Given
         const snapshot = new SnapshotData("My os!")
         snapshot.addSoftware("test", "test software", "test version")
 
-        const mockResult = initMockApolloCalls("success", snapshot)
-        const dispatch = jest.fn()
-        const getState = jest.fn()
+        const mockResult = initApolloMock("success", snapshot);
+        (executeQuery as jest.Mock).mockReturnValue(mockResult.get('fetchSnapshot')!.result!["data"]);
 
-        gqlClient.get_query_client().query = jest.fn().mockReturnValue(mockResult.result)
+        const dispatch = jest.fn();
+        const getState = jest.fn();
 
         // Acts
         const result = await fetchSnapshot("1")(dispatch, getState, undefined)
@@ -77,11 +45,15 @@ describe("Load device infos GraphQL query unit test", () => {
 
     test("Error request", async () => {
         // Given
-        const mockResult = initMockApolloCalls("failure")
-        const dispatch = jest.fn()
-        const getState = jest.fn()
+        const mockResult = initApolloMock("snapshotError");
+        (executeQuery as jest.Mock).mockReturnValue(
+            {
+                errors: mockResult.get('fetchSnapshot')!.result!["errors"][0]
+            }
+        );
 
-        gqlClient.get_query_client().query = jest.fn().mockReturnValue(mockResult.result)
+        const dispatch = jest.fn();
+        const getState = jest.fn();
 
         const result = await fetchSnapshot("1")(dispatch, getState, undefined)
 

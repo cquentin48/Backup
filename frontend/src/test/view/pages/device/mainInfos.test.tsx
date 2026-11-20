@@ -39,7 +39,9 @@ describe("Device main Infos unit test suite", () => {
         const apolloMocks = initApolloMock("success", undefined, device);
 
         // Acts
-        const { asFragment } = renderMockedComponent(store, apolloMocks, <DeviceMainInfos/>);
+        const { asFragment } = renderMockedComponent(
+            store, apolloMocks, <DeviceMainInfos currentSnapshotID='1'/>
+        );
 
         // Asserts
         expect(asFragment()).toMatchSnapshot();
@@ -67,7 +69,9 @@ describe("Device main Infos unit test suite", () => {
         const apolloMocks = initApolloMock("success", undefined, device);
 
         // Acts
-        const { asFragment, getByText } = renderMockedComponent(store, apolloMocks, <DeviceMainInfos/>);
+        const { asFragment, getByText } = renderMockedComponent(
+            store, apolloMocks, <DeviceMainInfos currentSnapshotID='1'/>
+        );
 
         // Asserts
 
@@ -97,7 +101,9 @@ describe("Device main Infos unit test suite", () => {
         const apolloMocks = initApolloMock("deviceError", undefined, device);
 
         // Acts
-        const { asFragment, getAllByText } = renderMockedComponent(store, apolloMocks, <DeviceMainInfos/>);
+        const { asFragment, getAllByText } = renderMockedComponent(
+            store, apolloMocks, <DeviceMainInfos currentSnapshotID='1'/>
+        );
 
         // Asserts
         const errorText = getAllByText("Error in loading data")[0];
@@ -127,7 +133,9 @@ describe("Device main Infos unit test suite", () => {
         const apolloMocks = initApolloMock("success", undefined, device);
 
         // Acts
-        const { container, getByText } = renderMockedComponent(store, apolloMocks, <DeviceMainInfos/>);
+        const { container, getByText } = renderMockedComponent(
+            store, apolloMocks, <DeviceMainInfos currentSnapshotID='1'/>
+        );
         const renderedDeviceHeader = container.querySelector("#deviceMainInfosHeader")
 
         const osIcon = (getByText(device.name).parentNode as HTMLElement).querySelector("svg") as Element
@@ -160,7 +168,9 @@ describe("Device main Infos unit test suite", () => {
         const apolloMocks = initApolloMock("success", undefined, device);
 
         // Acts
-        const { container } = renderMockedComponent(store, apolloMocks, <DeviceMainInfos/>);
+        const { container } = renderMockedComponent(
+            store, apolloMocks, <DeviceMainInfos currentSnapshotID='1'/>
+        );
         const renderedDeviceHeader = container.querySelector("#deviceMainInfosHeader") as HTMLDivElement;
 
         fireEvent.mouseOver(renderedDeviceHeader);

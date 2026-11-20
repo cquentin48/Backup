@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
-import gqlClient from "./model/queries/client";
+import { gqlClient } from "./model/queries/client";
 
 import "../res/css/App.css";
 import ComputerPage from "./view/pages/computer/computerPage";
@@ -18,7 +18,7 @@ function App (): React.JSX.Element {
     return (
         <div className="App">
             <Provider store={store}>
-                <ApolloProvider client={gqlClient.get_query_client()}>
+                <ApolloProvider client={gqlClient.getQueryClient()}>
                     <SnackbarProvider
                         maxSnack={4}
                         anchorOrigin={{

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,14 +21,17 @@ export default function ComputerPage (): React.JSX.Element {
     const { deviceLoading, device, deviceError } = useSelector(deviceState);
 
     const { id } = useParams();
+    const lastDeviceID = useRef<string | null>(null);
+
+    const [currentSnapshotID, setCurrentSnapshotID] = React.useState<string>("");
 
     useEffect(() => {
-        if (id !== undefined) {
-            // eslint-disable-next-line @typescript-eslint/no-floating-promises
-            dispatch(fetchDeviceInfos({
-                deviceID: id
-            }))
-        }
+        if (id === undefined || id === lastDeviceID.current) return;
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        lastDeviceID.current = id;
+        dispatch(fetchDeviceInfos({
+            deviceID: id
+        }));
     }, [id]);
 
     if (deviceError === undefined || (deviceError !== undefined && deviceError.message === "")) {
@@ -40,8 +43,11 @@ export default function ComputerPage (): React.JSX.Element {
         return (
             <div id="DeviceMainInfosPage">
                 <LoadingDeviceModal />
-                <DeviceMainInfos />
-                <DeviceElements />
+                <DeviceMainInfos currentSnapshotID={currentSnapshotID}/>
+                <DeviceElements
+                    setCurrentSnapshotID={setCurrentSnapshotID}
+                    previousCurrentSnapshotID={currentSnapshotID}
+                />
             </div>
         )
     }

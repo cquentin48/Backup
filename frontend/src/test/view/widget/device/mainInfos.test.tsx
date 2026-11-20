@@ -17,6 +17,8 @@ describe("MainInfosFrame unit test suite", () => {
         jest.clearAllMocks()
     })
 
+    const updateCurrentSnapshotID = jest.fn();
+
     test("Pending render", async () => {
         // Given
         const initialState = initInitialState("loadingDevice", undefined, undefined, undefined);
@@ -26,7 +28,10 @@ describe("MainInfosFrame unit test suite", () => {
         initEnqueueSnackbarMock();
 
         // Acts
-        const { asFragment } = renderMockedComponent(store, apolloMocks, <MainInfosFrame />, false);
+        const { asFragment } = renderMockedComponent(
+            store, apolloMocks,
+            <MainInfosFrame currentSnapshotID="" setCurrentSnapshotID={updateCurrentSnapshotID} />
+        );
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()
@@ -54,7 +59,7 @@ describe("MainInfosFrame unit test suite", () => {
 
         // Acts
         const { asFragment } = renderMockedComponent(store, apolloMocks,
-            <MainInfosFrame />);
+            <MainInfosFrame currentSnapshotID="" setCurrentSnapshotID={updateCurrentSnapshotID} />);
 
         // Asserts
         expect(asFragment()).toMatchSnapshot()
@@ -81,7 +86,8 @@ describe("MainInfosFrame unit test suite", () => {
         const apolloMocks = initApolloMock("deviceError", undefined, device);
 
         // Acts
-        const { asFragment } = renderMockedComponent(store, apolloMocks, <MainInfosFrame />);
+        const { asFragment } = renderMockedComponent(store, apolloMocks,
+            <MainInfosFrame currentSnapshotID="" setCurrentSnapshotID={updateCurrentSnapshotID} />);
 
         // Asserts
         expect(enqueueSnackbar).toHaveBeenCalled()
@@ -111,7 +117,8 @@ describe("MainInfosFrame unit test suite", () => {
         const enqueueSnackbar = initEnqueueSnackbarMock();
 
         // Acts
-        const { asFragment } = renderMockedComponent(store, apolloMocks, <MainInfosFrame />);
+        const { asFragment } = renderMockedComponent(store, apolloMocks,
+            <MainInfosFrame currentSnapshotID="" setCurrentSnapshotID={updateCurrentSnapshotID} />);
 
         // Asserts
         expect(enqueueSnackbar).toHaveBeenCalled()
@@ -147,7 +154,7 @@ describe("MainInfosFrame unit test suite", () => {
 
         // Acts
         const { container, getByText } = renderMockedComponent(store, apolloMocks,
-            <MainInfosFrame />);
+            <MainInfosFrame currentSnapshotID="" setCurrentSnapshotID={updateCurrentSnapshotID}/>);
 
         const snapshotSelect = container.querySelector("#dataType-select")
         fireEvent.change(snapshotSelect!, { target: { value: device.snapshots[1].key } })
